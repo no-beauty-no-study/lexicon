@@ -17,7 +17,8 @@
   function render(mode) {
     const grid = document.querySelector(".slot-grid");
     const slots = Storage.getSlots();
-    grid.innerHTML = slots.map((slot, i) => slotHtml(slot, i)).join("");
+    const accent = mode === "save" ? "is-save" : "is-load";
+    grid.innerHTML = slots.map((slot, i) => slotHtml(slot, i, accent)).join("");
     grid.addEventListener("click", e => {
       const card = e.target.closest(".slot");
       if (!card) return;
@@ -27,10 +28,10 @@
     });
   }
 
-  function slotHtml(slot, i) {
+  function slotHtml(slot, i, accent) {
     if (!slot) {
       return `
-        <div class="slot is-empty" data-index="${i}">
+        <div class="slot ornate-panel is-strip is-clickable is-empty ${accent}" data-index="${i}">
           <div class="slot-no">Slot ${pad(i + 1)}</div>
           <div class="slot-empty">— Empty —</div>
           <div class="slot-meta">&nbsp;</div>
@@ -39,7 +40,7 @@
     }
     const ch = getChapter(slot.chapter) || { title: slot.chapter, number: "??" };
     return `
-      <div class="slot" data-index="${i}">
+      <div class="slot ornate-panel is-strip is-clickable ${accent}" data-index="${i}">
         <div class="slot-no">Slot ${pad(i + 1)} · Ch ${ch.number}</div>
         <div class="slot-chapter">${esc(ch.title)}</div>
         <div class="slot-meta">${esc(slot.position || "Page 1")} · ${esc(slot.time)}</div>

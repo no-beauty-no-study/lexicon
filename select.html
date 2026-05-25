@@ -41,16 +41,14 @@
     background: rgba(154, 131, 88, 0.10);
     box-shadow: 0 0 0 1px rgba(154, 131, 88, 0.30) inset;
   }
+  /* Visual frame comes from .ornate-panel.is-small. */
   .arch-hit .arch-label {
     font-family: var(--font-display);
     font-size: 18px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-title);
-    background: rgba(244, 236, 218, 0.78);
-    border: 1px solid rgba(184, 158, 111, 0.55);
-    padding: 4px 14px;
-    border-radius: 2px;
+    text-align: center;
   }
 </style>
 </head>
@@ -59,13 +57,13 @@
   <main class="page select-art">
     <div class="arch-hits">
       <div class="arch-hit" onclick="go('reading.html?chapter=universe')">
-        <span class="arch-label">Main Story</span>
+        <span class="arch-label ornate-panel is-small">Main Story</span>
       </div>
       <div class="arch-hit" onclick="go('notes.html')">
-        <span class="arch-label">The Notes</span>
+        <span class="arch-label ornate-panel is-small">The Notes</span>
       </div>
       <div class="arch-hit" onclick="go('word-garden.html')">
-        <span class="arch-label">Word Garden</span>
+        <span class="arch-label ornate-panel is-small">Word Garden</span>
       </div>
     </div>
 

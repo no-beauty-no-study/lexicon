@@ -67,12 +67,11 @@
   color: var(--color-muted);
 }
 
+/* Visual frame comes from .ornate-panel; .detail-pane only sets fill rules. */
 .detail-pane {
-  /* Reuses .word-card-full styles inside */
-  padding: 20px 28px 40px;
-  border: var(--frame-border-soft);
-  background: rgba(246, 239, 217, 0.55);
-  border-radius: 4px;
   min-height: 100%;
+}
+.detail-pane.ornate-panel {
+  padding: 26px 32px 36px;
 }
 .detail-pane .empty-state { margin: 0; }

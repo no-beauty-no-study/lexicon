@@ -41,6 +41,15 @@
   --highlight-border-hover: rgba(154, 131, 88, 0.85);
   --select-bg:           rgba(162, 139, 96, 0.16);
 
+  /* ----- Ornate-panel tokens (site-wide framed component) ----- */
+  --paper-bg:        #f4eddd;
+  --paper-bg-soft:   #f8f2e6;
+  --paper-line:      #b9aa8a;
+  --paper-line-dark: #8f805f;
+  --paper-text:      #3f3a31;
+  --paper-muted:     #7d705c;
+  --paper-gold:      #a78d5b;
+
   /* ----- Font stacks ----- */
   --font-body:    "Georgia", "Times New Roman", "Songti SC", "STSong", serif;
   --font-display: "Georgia", "Times New Roman", "Songti SC", serif;

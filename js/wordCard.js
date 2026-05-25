@@ -11,8 +11,10 @@ const WordCard = (function () {
     if (!w) return `<div class="empty-state">No Word Selected</div>`;
     return `
       <div class="word-card-full">
-        <div class="wd-title">${esc(w.word)}</div>
-        <div class="wd-meaning">${esc(w.meaning)}</div>
+        <div class="ornate-panel wd-titleframe">
+          <div class="wd-title">${esc(w.word)}</div>
+          <div class="wd-meaning">${esc(w.meaning)}</div>
+        </div>
 
         <div class="wd-section-title">Her Family</div>
         <ul class="wd-list">

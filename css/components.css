@@ -1,7 +1,227 @@
 /* ============================================================
    The Princess Lexicon — components.css
-   Reusable UI components: buttons, cards, word drawer, slots.
+   Reusable UI components: buttons, cards, word drawer, slots,
+   and the site-wide .ornate-panel framing component.
    ============================================================ */
+
+/* ============================================================
+   ORNATE PANEL
+   Universal classical thin-line frame. Use everywhere a boxed
+   surface needs the "old paper page" look — never write a custom
+   frame in page-level CSS.
+
+   Variants (combine freely):
+     .is-small      tighter padding, smaller corner notch
+     .is-strip      wide horizontal strip (Save/Load/Notes rows)
+     .is-clickable  pointer cursor + lift on hover
+     .is-selected   gold tint, no modern blue selection
+     .is-empty      dashed border + lower opacity
+     .is-save       muted wine accent border
+     .is-load       muted blue  accent border
+
+   Optional child:
+     .ornate-panel-header-line  → manual horizontal flourish line
+                                  flanking the top center symbol
+   Helper text classes:
+     .ornate-panel-title, .ornate-panel-subtitle
+   ============================================================ */
+.ornate-panel {
+  position: relative;
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.32), transparent 28%),
+    linear-gradient(180deg, rgba(255, 251, 240, 0.72), rgba(238, 226, 202, 0.56)),
+    var(--paper-bg);
+  color: var(--paper-text);
+  border: 1px solid rgba(143, 128, 95, 0.62);
+  padding: 22px 28px;
+  clip-path: polygon(
+    18px 0,
+    calc(100% - 18px) 0,
+    100% 18px,
+    100% calc(100% - 18px),
+    calc(100% - 18px) 100%,
+    18px 100%,
+    0 calc(100% - 18px),
+    0 18px
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.55),
+    inset 0 0 0 4px rgba(185, 170, 138, 0.10),
+    0 2px 8px rgba(77, 62, 39, 0.08);
+}
+
+/* Inner thin line — classical double-rule border. */
+.ornate-panel::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  pointer-events: none;
+  border: 1px solid rgba(185, 170, 138, 0.58);
+  clip-path: polygon(
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0 calc(100% - 14px),
+    0 14px
+  );
+}
+
+/* Top-centre flourish symbol. */
+.ornate-panel::after {
+  content: "✤";
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 12px;
+  background: var(--paper-bg-soft);
+  color: var(--paper-gold);
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+
+/* Top horizontal flourish lines flanking the centre symbol. */
+.ornate-panel-header-line {
+  position: absolute;
+  top: 10px;
+  left: 26px;
+  right: 26px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(143, 128, 95, 0.45) 18%,
+    transparent 44%,
+    transparent 56%,
+    rgba(143, 128, 95, 0.45) 82%,
+    transparent 100%
+  );
+}
+
+/* ----- Size variants ----- */
+.ornate-panel.is-small {
+  padding: 14px 18px;
+  clip-path: polygon(
+    12px 0,
+    calc(100% - 12px) 0,
+    100% 12px,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    12px 100%,
+    0 calc(100% - 12px),
+    0 12px
+  );
+}
+.ornate-panel.is-small::before {
+  inset: 6px;
+  clip-path: polygon(
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0 calc(100% - 10px),
+    0 10px
+  );
+}
+.ornate-panel.is-small::after { font-size: 12px; padding: 0 8px; }
+
+.ornate-panel.is-strip {
+  padding: 18px 26px;
+  min-height: 86px;
+}
+
+/* ----- State variants ----- */
+.ornate-panel.is-clickable {
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+.ornate-panel.is-clickable:hover {
+  transform: translateY(-1px);
+  border-color: rgba(167, 141, 91, 0.78);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.38), transparent 28%),
+    linear-gradient(180deg, rgba(255, 251, 240, 0.82), rgba(240, 228, 204, 0.64)),
+    var(--paper-bg-soft);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.62),
+    inset 0 0 0 4px rgba(185, 170, 138, 0.13),
+    0 4px 12px rgba(77, 62, 39, 0.12);
+}
+.ornate-panel.is-selected {
+  border-color: rgba(167, 141, 91, 0.9);
+  background:
+    linear-gradient(180deg, rgba(255, 248, 230, 0.88), rgba(238, 224, 195, 0.72)),
+    var(--paper-bg);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.68),
+    inset 0 0 0 4px rgba(167, 141, 91, 0.16),
+    0 0 0 1px rgba(167, 141, 91, 0.18);
+}
+.ornate-panel.is-empty {
+  opacity: 0.72;
+  border-style: dashed;
+  background:
+    linear-gradient(180deg, rgba(248, 242, 230, 0.50), rgba(231, 219, 196, 0.38)),
+    var(--paper-bg);
+}
+.ornate-panel.is-save {
+  --accent-color: #9b5b55;
+  border-color: rgba(155, 91, 85, 0.42);
+}
+.ornate-panel.is-load {
+  --accent-color: #667b91;
+  border-color: rgba(102, 123, 145, 0.42);
+}
+
+/* Allow a <button> to be an ornate-panel without UA chrome. */
+button.ornate-panel {
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Home page giant CTA. Used on index.html. */
+.home-cta {
+  font-family: var(--font-display);
+  font-size: var(--fs-btn-lg);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-button-ink);
+  min-width: 280px;
+  padding: 28px 38px;
+  text-align: center;
+}
+
+/* ----- Text helpers inside an ornate panel ----- */
+.ornate-panel-title {
+  margin: 0 0 10px 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.10em;
+  color: var(--paper-text);
+}
+.ornate-panel-subtitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0.035em;
+  color: var(--paper-muted);
+}
 
 /* ----- Buttons (plaque-style) ----- */
 .btn {
@@ -221,6 +441,7 @@
   flex-direction: column;
   gap: 14px;
 }
+/* .pin-empty inner text — frame comes from .ornate-panel.is-small.is-empty. */
 .side-pinned .pin-empty {
   font-family: var(--font-display);
   font-size: 13px;
@@ -228,14 +449,12 @@
   text-transform: uppercase;
   color: var(--color-muted);
   text-align: center;
-  padding: 40px 12px;
-  border: 1px dashed rgba(120, 95, 55, 0.25);
+  padding: 28px 12px;
 }
+/* .pin-card layout-only. Visual frame comes from .ornate-panel.is-small. */
 .pin-card {
-  border: var(--frame-border-soft);
-  background: rgba(246, 239, 217, 0.55);
-  padding: 14px 16px 16px;
-  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
 }
 .pin-card .pin-label {
   font-family: var(--font-display);
@@ -346,6 +565,11 @@
   padding: 60px 56px 50px;
 }
 
+.word-card-full .wd-titleframe {
+  margin: 0 0 12px;
+  padding: 22px 28px 20px;
+  text-align: center;
+}
 .word-card-full .wd-title {
   font-family: var(--font-display);
   font-size: var(--fs-drawer-title);
@@ -460,29 +684,14 @@
   border-color: var(--color-gold-soft);
 }
 
-/* ----- Save / Load slots ----- */
+/* ----- Save / Load slots (visual frame from .ornate-panel) ----- */
 .slot {
-  position: relative;
-  border: var(--frame-border);
-  background: linear-gradient(180deg, #f3e8c8 0%, #ead9b3 100%);
-  border-radius: 4px;
-  padding: 22px 26px;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 8px;
   min-height: 150px;
-  transition: border-color 200ms ease, transform 200ms ease;
 }
-.slot::before {
-  content: "";
-  position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(150, 120, 70, 0.30);
-  pointer-events: none;
-}
-.slot:hover { transform: translateY(-2px); }
 .slot .slot-no {
   font-family: var(--font-display);
   font-size: 13px;
@@ -511,16 +720,10 @@
   text-align: center;
   padding: 24px 0;
 }
-.slot.is-empty {
-  background: linear-gradient(180deg, #f3ecd6 0%, var(--accent-empty) 100%);
-}
 
-/* Save accent: muted wine red */
-.theme-save .slot:hover { border-color: var(--accent-wine-soft); }
+/* Page-level accent on the SAVE / LOAD header title only.
+   Slot accent comes from .ornate-panel.is-save / .is-load. */
 .theme-save .save-header .t-chapter { color: var(--accent-wine); }
-
-/* Load accent: muted blue */
-.theme-load .slot:hover { border-color: var(--accent-blue-soft); }
 .theme-load .save-header .t-chapter { color: var(--accent-blue); }
 
 /* ----- Toast (saved confirmation) ----- */
@@ -547,7 +750,10 @@
   transform: translate(-50%, 0);
 }
 
-/* ----- Empty states ----- */
+/* ----- Empty states -----
+   Visual frame from .ornate-panel.is-empty when wrapped.
+   Standalone .empty-state still works without ornate-panel for inline
+   use (kept minimal so wrapping in ornate-panel doesn't double-frame). */
 .empty-state {
   font-family: var(--font-display);
   font-size: 16px;
@@ -555,7 +761,9 @@
   text-transform: uppercase;
   color: var(--color-muted);
   text-align: center;
-  padding: 80px 20px;
+  padding: 60px 20px;
+}
+.empty-state:not(.ornate-panel) {
   border: 1px dashed rgba(120, 95, 55, 0.30);
   border-radius: 4px;
   margin: 40px;

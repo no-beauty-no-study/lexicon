@@ -54,14 +54,14 @@
     const host = document.querySelector(".side-pinned");
     if (!host) return;
     if (!word) {
-      host.innerHTML = `<div class="pin-empty">Tap a word to pin</div>`;
+      host.innerHTML = `<div class="pin-empty ornate-panel is-small is-empty">Tap a word to pin</div>`;
       return;
     }
     const collocs = (word.collocations || [])
       .map(c => `<li>${escapeHtml(c)}</li>`).join("");
     const saved = Storage.isSaved(word.id);
     host.innerHTML = `
-      <div class="pin-card">
+      <div class="pin-card ornate-panel is-small">
         <div class="pin-label">Pinned Word</div>
         <div class="pin-word">${escapeHtml(word.word)}</div>
         <div class="pin-meaning">${escapeHtml(word.meaning)}</div>
