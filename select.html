@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Select a Mode · The Princess Lexicon</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  /* "SELECT A MODE" title + 3 arched frames are baked into the artwork.
+     We overlay three invisible hit-zones over those arches plus a small
+     footer bar for SAVE / LOAD / MENU. */
+  .page.select-art {
+    background-image: url("assets/bg/ui/select-mode.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+  .page.select-art::before, .page.select-art::after { display: none; }
+
+  .arch-hits {
+    position: absolute;
+    /* Three arches occupy ~28%..86% horizontally, ~22%..78% vertically. */
+    left: 25%; right: 8%; top: 22%; bottom: 22%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5%;
+  }
+  .arch-hit {
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 220ms ease, box-shadow 220ms ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 18px;
+  }
+  .arch-hit:hover {
+    background: rgba(154, 131, 88, 0.10);
+    box-shadow: 0 0 0 1px rgba(154, 131, 88, 0.30) inset;
+  }
+  .arch-hit .arch-label {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-title);
+    background: rgba(244, 236, 218, 0.78);
+    border: 1px solid rgba(184, 158, 111, 0.55);
+    padding: 4px 14px;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <main class="page select-art">
+    <div class="arch-hits">
+      <div class="arch-hit" onclick="go('reading.html?chapter=universe')">
+        <span class="arch-label">Main Story</span>
+      </div>
+      <div class="arch-hit" onclick="go('notes.html')">
+        <span class="arch-label">The Notes</span>
+      </div>
+      <div class="arch-hit" onclick="go('word-garden.html')">
+        <span class="arch-label">Word Garden</span>
+      </div>
+    </div>
+
+    <nav class="nav-bar">
+      <button type="button" class="nav-btn" onclick="go('save.html')">
+        <span class="glyph">✦</span> Save
+      </button>
+      <span class="nav-sep"></span>
+      <button type="button" class="nav-btn" onclick="go('load.html')">
+        <span class="glyph">✦</span> Load
+      </button>
+      <span class="nav-sep"></span>
+      <button type="button" class="nav-btn" onclick="go('index.html')">
+        <span class="glyph">‹</span> Menu
+      </button>
+    </nav>
+  </main>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+/* ============================================================
+   The Princess Lexicon — layout.css
+   Page-level scaffolding. Each page is centered in a 1448x1086
+   "book" stage that scales to viewport.
+   ============================================================ */
+
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center,
+              #3a342a 0%, #221d17 80%);
+}
+
+.page {
+  position: relative;
+  width: var(--page-w);
+  height: var(--page-h);
+  background-color: var(--paper-warm);
+  background-image:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 245, 220, 0.55) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(120, 95, 55, 0.10) 0%, transparent 65%),
+    repeating-linear-gradient(
+      135deg,
+      rgba(150, 120, 70, 0.025) 0 2px,
+      transparent 2px 5px
+    );
+  border-radius: var(--page-radius);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(120, 95, 55, 0.30) inset;
+  transform-origin: center center;
+  overflow: hidden;
+}
+
+/* Decorative double frame inside every page */
+.page::before,
+.page::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border: var(--frame-border);
+}
+.page::before {
+  inset: 22px;
+  border-color: var(--paper-frame);
+  opacity: 0.55;
+}
+.page::after {
+  inset: 30px;
+  border: var(--frame-border-soft);
+  opacity: 0.35;
+}
+
+/* ----- Page-level shells ----- */
+.page-inner {
+  position: absolute;
+  inset: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ----- Bottom navigation bar (shared) ----- */
+.nav-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 10px 28px;
+  background: rgba(246, 239, 217, 0.55);
+  border: var(--frame-border-soft);
+  border-radius: 4px;
+}
+.nav-bar .nav-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--paper-frame);
+  opacity: 0.55;
+}
+
+/* ----- Home (index) layout ----- */
+.home-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  text-align: center;
+}
+.home-layout .home-hero {
+  margin-top: -40px;
+}
+.home-layout .home-buttons {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 60px;
+}
+
+/* ----- Select layout ----- */
+.select-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.select-layout .select-header {
+  text-align: center;
+  padding-top: 30px;
+}
+.select-layout .select-cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  padding: 60px 60px 120px;
+  align-items: center;
+}
+
+/* ----- Reading layout: 3 columns + footer ----- */
+.reading-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 280px;
+  grid-template-rows: 1fr auto;
+  gap: 28px;
+  height: 100%;
+  padding-bottom: 80px;       /* room for nav bar */
+}
+.reading-illus {
+  grid-row: 1;
+  grid-column: 1;
+  border: var(--hairline);
+  background:
+    linear-gradient(180deg, rgba(220, 200, 160, 0.20), rgba(120, 95, 55, 0.10));
+  position: relative;
+}
+.reading-illus .illus-placeholder {
+  position: absolute;
+  inset: 16px;
+  border: 1px dashed rgba(120, 95, 55, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 12px;
+}
+.reading-main {
+  grid-row: 1;
+  grid-column: 2;
+  overflow-y: auto;
+  padding: 10px 30px 30px;
+}
+.reading-side {
+  grid-row: 1;
+  grid-column: 3;
+  border-left: var(--hairline);
+  padding-left: 22px;
+  overflow-y: auto;
+}
+
+/* ----- Chapters layout ----- */
+.chapters-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100px;
+}
+.chapters-layout .chapters-header {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.chapters-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: min-content;
+  gap: 20px 36px;
+  overflow-y: auto;
+  padding: 10px 30px;
+}
+
+/* ----- Notes + Word Garden share a 2-column shape ----- */
+.split-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 30px;
+  height: 100%;
+  padding-bottom: 90px;
+}
+.split-layout .split-left {
+  border-right: var(--hairline);
+  padding-right: 22px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.split-layout .split-right {
+  padding-left: 6px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Word Garden two-column list */
+.wg-list-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+  overflow-y: auto;
+  align-content: start;
+  padding-right: 6px;
+}
+
+/* ----- Save / Load layout ----- */
+.save-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100px;
+}
+.save-layout .save-header {
+  text-align: center;
+  padding-top: 30px;
+}
+.slot-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(150px, 1fr);
+  gap: 24px 32px;
+  padding: 40px 60px;
+  overflow-y: auto;
+}

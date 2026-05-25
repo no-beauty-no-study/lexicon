@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Princess Lexicon · Main Menu</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  /* index uses the painted Main Menu artwork as full background. */
+  .page.home {
+    background-image: url("assets/bg/ui/main-menu.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+  .page.home::before, .page.home::after { display: none; } /* artwork already has frame */
+  .home-buttons { bottom: 60px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <main class="page home">
+    <div class="page-inner home-layout">
+      <!-- Title is baked into the artwork; we only overlay the two action buttons. -->
+      <div class="home-buttons">
+        <button type="button" class="btn btn-lg" onclick="go('select.html')">Enter the Book</button>
+        <button type="button" class="btn btn-lg" onclick="go('chapters.html')">Chapter Index</button>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

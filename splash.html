@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Princess Lexicon</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .page.splash {
+    background-image: url("assets/bg/ui/splash.jpg");
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+  }
+  .page.splash::before, .page.splash::after { display: none; }
+  /* "Tap to begin" hint is baked into the artwork; whole page is clickable. */
+  .splash-hit { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <main class="page splash" onclick="go('index.html')">
+    <div class="splash-hit" aria-label="Tap to begin"></div>
+  </main>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
