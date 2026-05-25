@@ -32,6 +32,17 @@
     return u.searchParams.get(key) ?? fallback;
   };
 
+  // ----- Press-flash effect on any clickable ornate-panel -----
+  document.addEventListener("click", e => {
+    const el = e.target.closest(".ornate-panel.is-clickable");
+    if (!el) return;
+    el.classList.remove("is-pressed");
+    // restart animation
+    void el.offsetWidth;
+    el.classList.add("is-pressed");
+    setTimeout(() => el.classList.remove("is-pressed"), 460);
+  });
+
   // ----- Toast helper (requires <div class="toast"> in page) -----
   window.toast = function (msg) {
     let el = document.querySelector(".toast");
