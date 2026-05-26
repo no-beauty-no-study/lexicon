@@ -9,27 +9,38 @@
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
 <style>
-  /* index uses the painted Main Menu artwork as full background. */
+  /* main-menu.jpg is the full painted UI. Buttons sit in the empty
+     strip between the oval portrait and the floral bottom border. */
   .page.home {
     background-image: url("assets/bg/ui/main-menu.jpg");
-    background-size: cover;
-    background-position: center;
   }
-  .page.home::before, .page.home::after { display: none; } /* artwork already has frame */
-  .home-buttons { bottom: 60px; }
+  .home-action-row {
+    position: absolute;
+    left: 28.5%; top: 78%;
+    width: 43%; height: 6.4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5%;
+    z-index: 8;
+  }
+  .home-action-row .antique-label {
+    width: 47%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    font-size: 15px;
+  }
 </style>
 </head>
 <body>
 <div class="stage">
-  <main class="page home">
-    <div class="page-inner home-layout">
-      <!-- Title is baked into the artwork; we only overlay the two action buttons. -->
-      <div class="home-buttons">
-        <button type="button" class="ornate-panel is-clickable home-cta"
-                onclick="go('select.html')">Enter the Book</button>
-        <button type="button" class="ornate-panel is-clickable home-cta"
-                onclick="go('chapters.html')">Chapter Index</button>
-      </div>
+  <main class="page art-bg home">
+    <!-- Title (banner + "Main Menu" + oval portrait) is painted into the
+         artwork. We only overlay the two entry plaques. -->
+    <div class="home-action-row">
+      <button type="button" class="antique-label" onclick="go('select.html')">Enter the Book</button>
+      <button type="button" class="antique-label" onclick="go('chapters.html')">Chapter Index</button>
     </div>
   </main>
 </div>

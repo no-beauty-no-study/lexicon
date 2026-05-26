@@ -16,7 +16,7 @@
     <div class="reading-content quiz-content">
       <div class="reading-kicker" data-chapter-number>Chapter 01</div>
       <h1 class="reading-title" data-chapter-title>The Universe</h1>
-      <span class="reading-ornament">✦ ✦ ✦</span>
+      <span class="reading-ornament">✤ ✤ ✤</span>
       <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
       <div class="reading-body quiz-body"><!-- quiz items injected by quiz.js --></div>
     </div>
@@ -30,13 +30,19 @@
       <div class="tap-overlay-card">Tap to reveal the questions</div>
     </div>
 
-    <nav class="reading-bottom-nav">
+    <nav class="page-bottom-nav">
       <button type="button" onclick="go('save.html')">Save</button>
       <button type="button" onclick="go('load.html')">Load</button>
       <button type="button" onclick="go('select.html')">Menu</button>
       <button type="button" data-back>Back</button>
       <button type="button" data-next>Next</button>
     </nav>
+
+    <!-- Chapter Complete toast — fades in only when ALL answers correct. -->
+    <div class="chapter-complete-toast" aria-hidden="true">
+      <div class="chapter-complete-title">Chapter Complete</div>
+      <p class="chapter-complete-subtitle">The next page opens.</p>
+    </div>
   </main>
 </div>
 

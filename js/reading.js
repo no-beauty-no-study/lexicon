@@ -130,8 +130,8 @@
         ${collocs.map(c => `<li>${esc(c)}</li>`).join("")}
       </ul>
       <div class="marginalia-actions">
-        <button type="button" data-act="full">Full</button>
-        <button type="button" data-act="save" ${saved ? "disabled" : ""}>${saved ? "Saved" : "Save"}</button>
+        <button type="button" class="antique-label is-tiny" data-act="full">Full</button>
+        <button type="button" class="antique-label is-tiny" data-act="save" ${saved ? "disabled" : ""}>${saved ? "Saved" : "Save"}</button>
       </div>
     `;
     host.querySelector('[data-act="full"]').addEventListener("click", (e) => {

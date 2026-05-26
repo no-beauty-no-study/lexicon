@@ -241,65 +241,12 @@
   gap: 5px;
   margin-top: 6px;
 }
-.reading-marginalia .marginalia-actions button {
+.reading-marginalia .marginalia-actions .antique-label.is-tiny {
   flex: 1;
-  border: 1px solid rgba(143, 128, 95, 0.40);
-  background: rgba(248, 242, 230, 0.28);
-  color: #5a4b35;
-  font-family: var(--font-display);
-  font-size: 8.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 4px 4px;
-  cursor: pointer;
-}
-.reading-marginalia .marginalia-actions button:hover {
-  background: rgba(244, 233, 205, 0.55);
-  border-color: rgba(167, 141, 91, 0.75);
-}
-.reading-marginalia .marginalia-actions button[disabled] {
-  opacity: 0.55;
-  cursor: not-allowed;
 }
 
-/* Bottom 5-button nav — SAVE LOAD MENU BACK NEXT — tucked into the
-   painted footer slot. Text only, no extra frames. */
-.reading-bottom-nav {
-  position: absolute;
-  left: 31.7%; top: 88.25%;
-  width: 48%;
-  height: 5.4%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7.2%;
-  z-index: 10;
-}
-.reading-bottom-nav button {
-  border: 0;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  color: #6a5b42;
-  font-family: var(--font-display);
-  font-size: 13px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-weight: 400;
-  line-height: 1;
-  cursor: pointer;
-}
-.reading-bottom-nav button::before {
-  content: "✦";
-  margin-right: 0.52em;
-  color: #a78d5b;
-  opacity: 0.62;
-  font-size: 0.72em;
-}
-.reading-bottom-nav button:hover {
-  color: #9a8358;
-  text-shadow: 0 0 7px rgba(167, 141, 91, 0.22);
-}
+/* Bottom 5-button nav is .page-bottom-nav in components.css. No
+   reading-specific overrides needed. */
 
 /* Tap-to-begin overlay — keep painted feel. */
 .reading-art .tap-overlay {
@@ -321,14 +268,14 @@
 .reading-art .quiz-body {
   font-family: var(--font-body);
 }
-.reading-art .quiz-item { margin-bottom: 22px; }
+.reading-art .quiz-item { margin: 0 0 22px; padding-left: 18px; }
 .reading-art .quiz-no {
   font-family: var(--font-display);
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-subtitle);
-  margin-bottom: 4px;
+  margin: 0 0 4px -18px;
 }
 .reading-art .quiz-question {
   font-family: var(--font-body);
@@ -336,42 +283,114 @@
   line-height: 1.55;
   letter-spacing: 0.03em;
   color: var(--color-body);
-  margin: 0 0 14px;
+  margin: 0 0 12px -18px;
 }
-.reading-art .quiz-options { margin: 0 0 18px 14px; padding: 0; list-style: none; }
+.reading-art .quiz-options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* PAPER-GRADING quiz option style. No modern row highlight, no
+   coloured backgrounds, no blue selection. Each option is just
+   "letter + text" inked on paper; feedback is a small marginal
+   mark to the LEFT of the letter (✤ for correct, × for wrong)
+   plus, for correct, a faint gold under-ink-stain under the text. */
 .reading-art .quiz-option {
+  position: relative;
   display: flex;
-  gap: 12px;
   align-items: baseline;
-  padding: 4px 6px;
+  gap: 1.15em;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 0.72em;
+  padding: 0.1em 0.35em 0.1em 0.2em;
   font-family: var(--font-body);
-  font-size: 14px;
-  line-height: 1.45;
-  letter-spacing: 0.03em;
-  color: var(--color-body);
+  font-size: 15px;
+  line-height: 1.42;
+  letter-spacing: 0.035em;
+  color: #3f3a31;
   cursor: pointer;
-  border-left: 2px solid transparent;
+  background: transparent;
+  border: 0;
+  text-align: left;
 }
-.reading-art .quiz-option:hover {
-  background: rgba(168, 143, 93, 0.08);
-  border-left-color: rgba(167, 141, 91, 0.45);
+.reading-art .quiz-option::before {
+  content: "";
+  position: absolute;
+  left: -0.9em;
+  top: 50%;
+  width: 0.42em;
+  height: 0.42em;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: transparent;
+}
+.reading-art .quiz-option:hover { color: #2f281f; }
+.reading-art .quiz-option:hover::before {
+  background: rgba(167, 141, 91, 0.42);
 }
 .reading-art .quiz-option-letter {
-  width: 18px;
-  color: var(--color-subtitle);
+  width: 1.85em;
+  color: #8a7653;
   letter-spacing: 0.12em;
-  flex-shrink: 0;
+  flex: 0 0 auto;
 }
-.reading-art .quiz-option.is-correct {
-  color: #5d4d2f;
-  text-shadow: 0 0 8px rgba(167, 141, 91, 0.25);
-  border-left-color: var(--color-gold-soft);
-  background: rgba(167, 141, 91, 0.10);
+.reading-art .quiz-option-text {
+  position: relative;
+  display: inline;
 }
+
+/* User-picked but not yet judged — short gold tick at the left. */
+.reading-art .quiz-option.is-selected { color: #3a3024; }
+.reading-art .quiz-option.is-selected::before {
+  content: "";
+  width: 2px;
+  height: 1.4em;
+  border-radius: 0;
+  background: rgba(167, 141, 91, 0.72);
+}
+
+/* Correct answer — gold ✤ mark + faint gold under-ink on the text. */
+.reading-art .quiz-option.is-correct { color: #5d4d2f; }
+.reading-art .quiz-option.is-correct::before {
+  content: "✤";
+  left: -1.25em;
+  width: auto; height: auto;
+  transform: translateY(-50%);
+  background: transparent;
+  color: #a78d5b;
+  font-size: 0.82em;
+  border-radius: 0;
+}
+.reading-art .quiz-option.is-correct .quiz-option-text {
+  background: linear-gradient(180deg, transparent 58%, rgba(201, 174, 103, 0.22) 58%);
+}
+
+/* Wrong answer — red-brown × in the margin + strikethrough line. */
 .reading-art .quiz-option.is-wrong {
   color: #7a5048;
-  opacity: 0.78;
-  border-left-color: rgba(155, 91, 85, 0.45);
+  opacity: 0.72;
+}
+.reading-art .quiz-option.is-wrong::before {
+  content: "×";
+  left: -1.1em;
+  width: auto; height: auto;
+  transform: translateY(-52%);
+  background: transparent;
+  color: rgba(122, 80, 72, 0.72);
+  font-size: 0.92em;
+  border-radius: 0;
+}
+.reading-art .quiz-option.is-wrong .quiz-option-text::after {
+  content: "";
+  position: absolute;
+  left: -0.08em;
+  right: -0.08em;
+  top: 54%;
+  height: 1px;
+  background: rgba(122, 80, 72, 0.58);
+  transform: rotate(-1.5deg);
 }
 .reading-art .quiz-option.is-locked { pointer-events: none; }
 

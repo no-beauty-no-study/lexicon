@@ -33,8 +33,11 @@ async def main():
         ctx = await browser.new_context(viewport=VIEWPORT, device_scale_factor=2)
         page = await ctx.new_page()
 
-        # 1. Home — main menu
+        # 1. Home — main menu (antique-label buttons)
         await snap(page, f"{BASE}/index.html", "01-home")
+
+        # 1b. Select mode page
+        await snap(page, f"{BASE}/select.html", "01b-select")
 
         # 2. Chapter Index — TOC
         await snap(page, f"{BASE}/chapters.html", "02-chapters")
@@ -94,14 +97,49 @@ async def main():
         await snap(page, f"{BASE}/reading.html?chapter=universe&section=1.1",
                    "04-word-drawer", prepare=drawer_setup, wait_ms=700)
 
-        # 5. Quiz page — Universe 1.1, all questions revealed
-        async def quiz_setup(p):
+        # 5a. Quiz page — mid grading: 1 wrong (struck through), 1 unanswered, 1 correct
+        async def quiz_mixed(p):
             await p.click(".tap-overlay")
             for _ in range(4):
                 await p.mouse.click(900, 700)
                 await p.wait_for_timeout(100)
+            # Click the WRONG option of Q1 (a known distractor we control).
+            await p.evaluate("""() => {
+              const items = document.querySelectorAll('.quiz-item');
+              if (items[0]) {
+                const ans = items[0].dataset.answer.toLowerCase();
+                const wrong = [...items[0].querySelectorAll('.quiz-option')]
+                  .find(o => (o.dataset.value||'').toLowerCase() !== ans);
+                if (wrong) wrong.click();
+              }
+              if (items[2]) {
+                const ans = items[2].dataset.answer.toLowerCase();
+                const right = [...items[2].querySelectorAll('.quiz-option')]
+                  .find(o => (o.dataset.value||'').toLowerCase() === ans);
+                if (right) right.click();
+              }
+            }""")
         await snap(page, f"{BASE}/quiz.html?chapter=universe&section=1.1",
-                   "05-quiz", prepare=quiz_setup, wait_ms=800)
+                   "05a-quiz-mid", prepare=quiz_mixed, wait_ms=600)
+
+        # 5b. Quiz complete — all correct, toast visible
+        async def quiz_done(p):
+            await p.click(".tap-overlay")
+            for _ in range(4):
+                await p.mouse.click(900, 700)
+                await p.wait_for_timeout(100)
+            await p.evaluate("""() => {
+              window.go = () => {};   // suppress navigation for screenshot
+              for (const item of document.querySelectorAll('.quiz-item')) {
+                const ans = item.dataset.answer.toLowerCase();
+                const right = [...item.querySelectorAll('.quiz-option')]
+                  .find(o => (o.dataset.value||'').toLowerCase() === ans);
+                if (right) right.click();
+              }
+            }""")
+            await p.wait_for_timeout(400)
+        await snap(page, f"{BASE}/quiz.html?chapter=universe&section=1.1",
+                   "05b-quiz-complete", prepare=quiz_done, wait_ms=600)
 
         # 6. Reading — Europe / Alice sub-chapter (different painted bg)
         async def alice_setup(p):

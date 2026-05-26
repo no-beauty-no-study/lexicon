@@ -9,76 +9,95 @@
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
 <style>
-  /* "SELECT A MODE" title + 3 arched frames are baked into the artwork.
-     We overlay three invisible hit-zones over those arches plus a small
-     footer bar for SAVE / LOAD / MENU. */
+  /* select-mode.jpg already paints: "SELECT A MODE" title, "Every story
+     is a path to wisdom" ribbon, 3 arched scenes (princess / glowing
+     book / moonlit garden), and 3 small round icons (book/star/rose)
+     at each arch's top. We overlay STORY / NOTES / WORD GARDEN titles
+     in the painted "title plaque" band beneath each arch icon, plus
+     invisible hotspots that cover each arch. */
   .page.select-art {
     background-image: url("assets/bg/ui/select-mode.jpg");
-    background-size: cover;
-    background-position: center;
   }
-  .page.select-art::before, .page.select-art::after { display: none; }
-
-  .arch-hits {
+  .select-card-text {
     position: absolute;
-    /* Three arches occupy ~28%..86% horizontally, ~22%..78% vertically. */
-    left: 25%; right: 8%; top: 22%; bottom: 22%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5%;
-  }
-  .arch-hit {
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 220ms ease, box-shadow 220ms ease;
+    width: 16.6%;
+    top: 25.5%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     align-items: center;
-    padding-bottom: 18px;
+    justify-content: center;
+    z-index: 6;
+    pointer-events: none;     /* hotspot below catches the clicks */
   }
-  .arch-hit:hover {
-    background: rgba(154, 131, 88, 0.10);
-    box-shadow: 0 0 0 1px rgba(154, 131, 88, 0.30) inset;
-  }
-  /* Visual frame comes from .ornate-panel.is-small. */
-  .arch-hit .arch-label {
+  .select-card-text.story  { left: 24.2%; }
+  .select-card-text.notes  { left: 41.7%; }
+  .select-card-text.garden { left: 59.2%; }
+  .select-card-text .select-card-title {
+    margin: 0;
     font-family: var(--font-display);
     font-size: 18px;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-title);
+    font-weight: 400;
+    color: #4d4436;
     text-align: center;
+  }
+  .select-card-text .select-card-subtitle {
+    margin: 6px 0 0;
+    font-family: var(--font-body);
+    font-size: 11px;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+    color: #6f6250;
+    font-style: italic;
+    text-align: center;
+  }
+  .select-hotspot {
+    position: absolute;
+    top: 22%;
+    width: 17.5%;
+    height: 56%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 5;
+    transition: background 220ms ease;
+  }
+  .select-hotspot.story  { left: 23.7%; }
+  .select-hotspot.notes  { left: 41.3%; }
+  .select-hotspot.garden { left: 58.9%; }
+  .select-hotspot:hover {
+    background: rgba(167, 141, 91, 0.06);
   }
 </style>
 </head>
 <body>
 <div class="stage">
-  <main class="page select-art">
-    <div class="arch-hits">
-      <div class="arch-hit" onclick="go('reading.html?chapter=universe')">
-        <span class="arch-label ornate-panel is-small">Main Story</span>
-      </div>
-      <div class="arch-hit" onclick="go('notes.html')">
-        <span class="arch-label ornate-panel is-small">The Notes</span>
-      </div>
-      <div class="arch-hit" onclick="go('word-garden.html')">
-        <span class="arch-label ornate-panel is-small">Word Garden</span>
-      </div>
+  <main class="page art-bg select-art">
+
+    <!-- Invisible click areas covering each painted arch. -->
+    <button type="button" class="select-hotspot story"  onclick="go('chapters.html')"      aria-label="Story"></button>
+    <button type="button" class="select-hotspot notes"  onclick="go('notes.html')"         aria-label="Notes"></button>
+    <button type="button" class="select-hotspot garden" onclick="go('word-garden.html')"   aria-label="Word Garden"></button>
+
+    <!-- Title text inked into the painted title plaque of each arch. -->
+    <div class="select-card-text story">
+      <h2 class="select-card-title">Story</h2>
+      <p class="select-card-subtitle">Read the tale.</p>
+    </div>
+    <div class="select-card-text notes">
+      <h2 class="select-card-title">Notes</h2>
+      <p class="select-card-subtitle">Keep saved words.</p>
+    </div>
+    <div class="select-card-text garden">
+      <h2 class="select-card-title">Word Garden</h2>
+      <p class="select-card-subtitle">Search every word.</p>
     </div>
 
-    <nav class="nav-bar">
-      <button type="button" class="nav-btn" onclick="go('save.html')">
-        <span class="glyph">✦</span> Save
-      </button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-btn" onclick="go('load.html')">
-        <span class="glyph">✦</span> Load
-      </button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-btn" onclick="go('index.html')">
-        <span class="glyph">‹</span> Menu
-      </button>
+    <!-- Bottom nav: MENU / LOAD only. No SAVE on the Select screen. -->
+    <nav class="page-bottom-nav is-two" style="left: 39.5%; width: 21%;">
+      <button type="button" onclick="go('index.html')">Menu</button>
+      <button type="button" onclick="go('load.html')">Load</button>
     </nav>
   </main>
 </div>
