@@ -35,17 +35,24 @@
     const section        = ChapterNav.findSection(chapterId, sectionNum);
     const page           = document.querySelector(".page");
 
-    // Remember where the reader is — so the menu's left button (and
-    // Select's Story arch) can resume to exactly this page on the
-    // next session. localStorage so it survives a full close.
-    try {
-      localStorage.setItem("tpl.lastRead", JSON.stringify({
-        chapter: chapterId,
-        section: sectionNum,
-        page:    illustrationId,
-        at:      Date.now(),
-      }));
-    } catch (_) {}
+    // Remember where the reader is — so the menu's START READING
+    // button (and Select's Story arch) can resume to exactly this
+    // page next session. localStorage so it survives a full close.
+    // SKIP when ?browse=1 is in the URL (user came from menu's
+    // ENTER CHAPTER → chapter index → this chapter, in 'browse /
+    // explore mode'). That mode shouldn't overwrite the user's
+    // main 'continue game' position.
+    const isBrowse = qparam("browse", null) === "1";
+    if (!isBrowse) {
+      try {
+        localStorage.setItem("tpl.lastRead", JSON.stringify({
+          chapter: chapterId,
+          section: sectionNum,
+          page:    illustrationId,
+          at:      Date.now(),
+        }));
+      } catch (_) {}
+    }
 
     // Painted UI background per chapter.
     const bg = getChapterBackground(chapterId, illustrationId);

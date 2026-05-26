@@ -76,13 +76,29 @@
   let audio = null;
   let unlocked = false;
 
+  const TARGET_VOLUME = 0.32;
   function ensureAudio() {
     if (audio) return audio;
     audio = new Audio();
     audio.loop = true;
     audio.preload = "auto";
-    audio.volume = 0.32;
+    audio.volume = 0;          // start silent → fade-in on first play
     return audio;
+  }
+
+  // Smooth volume ramp from current to target over `ms` (user
+  // request: '记得渐隐'). Used to fade IN at page load and across
+  // navigations so the BGM doesn't pop.
+  function fadeVolume(target, ms) {
+    if (!audio) return;
+    const start = audio.volume;
+    const t0 = performance.now();
+    function step(now) {
+      const p = Math.min(1, (now - t0) / ms);
+      audio.volume = start + (target - start) * p;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
 
   function setTrack(track) {
@@ -101,7 +117,11 @@
   function playNow() {
     if (!audio) return;
     const p = audio.play();
-    if (p && p.catch) p.catch(() => { /* iOS will retry on gesture */ });
+    if (p && p.then) {
+      // Once playback actually starts, fade volume from 0 → target.
+      p.then(() => fadeVolume(TARGET_VOLUME, 600))
+       .catch(() => { /* iOS will retry on gesture */ });
+    }
   }
 
   function persist() {
@@ -115,25 +135,44 @@
   function init() {
     const track = detectTrack();
     setTrack(track);
-    // Try immediately (in case the browser still has autoplay
-    // permission from a previous tap on a previous page).
-    playNow();
-    // ALSO try on every user click — `once: true` was wrong; iOS
-    // sometimes refuses the first attempt then permits a later one.
-    // We keep retrying until the audio is actually playing, then
-    // the listener becomes a no-op.
+
+    // Persist 'unlocked' across pages so a fresh page can attempt
+    // autoplay without waiting (Safari respects the autoplay grant
+    // within the session origin once a real gesture happened on
+    // any page in the tab).
+    if (audio) audio.addEventListener("playing", () => {
+      sessionStorage.setItem("tpl.bgm.unlocked", "1");
+    });
+
+    // User's idea ('上一个按钮作为下一幕开始音乐的按钮'): when the
+    // user clicks the navigation button on the PREVIOUS page, that
+    // gesture is what should unlock audio on the NEXT page. We
+    // can't carry an Audio object across navigations (the new doc
+    // gets a fresh tab context), but we CAN remember the unlock
+    // flag and immediately call play() on the new page — Safari
+    // honours the autoplay grant within the origin.
+    const wasUnlocked = sessionStorage.getItem("tpl.bgm.unlocked") === "1";
+    if (wasUnlocked) {
+      // Try multiple times in case the audio buffer isn't ready
+      // immediately on a fresh page load.
+      playNow();
+      setTimeout(playNow, 60);
+      setTimeout(playNow, 240);
+      setTimeout(playNow, 600);
+    } else {
+      playNow();
+    }
+
+    // Per-page wake-up listener: if autoplay still didn't take,
+    // the next user gesture triggers it. Stays attached the whole
+    // session — every click re-checks the paused state. Cheap.
     const wakeUp = () => {
       if (audio && !audio.paused) return;
       playNow();
     };
     ["touchstart","pointerdown","click","keydown"].forEach(ev =>
       document.addEventListener(ev, wakeUp, { passive: true }));
-    // Persist 'unlocked' across pages so a fresh page can attempt
-    // autoplay without waiting (Safari respects the autoplay grant
-    // within the session origin once a real gesture happened).
-    if (audio) audio.addEventListener("playing", () => {
-      sessionStorage.setItem("tpl.bgm.unlocked", "1");
-    });
+
     window.addEventListener("pagehide", persist);
     window.addEventListener("beforeunload", persist);
     document.addEventListener("visibilitychange", () => {

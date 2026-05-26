@@ -600,9 +600,10 @@ button.ornate-panel {
 .quiz-option {
   display: flex;
   gap: 18px;
-  align-items: baseline;
-  margin-bottom: 12px;
-  padding: 6px 10px;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 12px 14px;          /* bigger tap target — was 6px/10px */
+  min-height: 44px;            /* Apple touch-target minimum */
   font-family: var(--font-body);
   font-size: 19px;
   line-height: 1.45;

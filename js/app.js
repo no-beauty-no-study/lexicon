@@ -33,17 +33,18 @@
     }
   });
 
-  // ----- Navigation helper with a quick consistent fade -----
-  // Per user: the book-page-flip rotateY was '诡异' and uneven across
-  // pages. Switched to a single 180 ms fade-out for every navigation
-  // (including reading) — the incoming page does its own fade-in
-  // via .stage's animation: stage-fade-in. Result is uniform across
-  // the site and noticeably snappier than the old 380 ms flip.
+  // ----- Navigation: page fade + BGM cross-fade -----
+  // User wants the music to feel continuous across the menu →
+  // select → save / load arc. We crossfade by fading the current
+  // page's audio to zero in lockstep with the visual fade-out;
+  // the next page's bgm.js will fade audio IN from 0 → target.
   function fadeOut(cb) {
     const s = document.querySelector(".stage");
-    if (!s) return cb();
-    s.classList.add("is-leaving");
-    setTimeout(cb, 180);
+    if (s) s.classList.add("is-leaving");
+    if (window.BGM && typeof window.BGM.fadeOut === "function") {
+      window.BGM.fadeOut(220);
+    }
+    setTimeout(cb || (() => {}), 230);
   }
   window.go = function (href) {
     if (!href) return;
