@@ -35,6 +35,28 @@
   overflow: hidden;
 }
 
+/* ============================================================
+   MASTER FRAME — the single legal layout coordinate system.
+   Hand-measured by the user: the 4 blue corner medallions on
+   every painted background are at (1.78%, 2.15%) and
+   (98.11%, 98.00%) of the page, so the frame is:
+       left 1.78%  top 2.15%  width 96.33%  height 95.85%
+
+   Every interactive zone, hotspot and bottom-nav lives INSIDE
+   this element. Zones inside .master-frame use percentages
+   relative to .master-frame, NOT to the full .page.
+   ============================================================ */
+.master-frame {
+  position: absolute;
+  left: 1.78%;
+  top: 2.15%;
+  width: 96.33%;
+  height: 95.85%;
+  /* pointer-events:none would defeat the whole purpose: zones inside
+     need to receive clicks. Master frame itself has no UI, so the
+     transparent child zones determine hit behaviour. */
+}
+
 /* Decorative double frame inside every page */
 .page::before,
 .page::after {

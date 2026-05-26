@@ -57,22 +57,64 @@
       body.innerHTML = `<p class="reveal-block">No content available yet for this section.</p>`;
     }
 
+    let currentEntry = null;            // last selected word's head entry
     renderMarginalia(null);
+    wireMarginaliaButtons(chapterId, sectionNum);
 
-    // Word click → select + show marginalia for the resolved head.
-    // stopPropagation so the click doesn't trigger Reveal next-block.
     body.addEventListener("click", (e) => {
       const el = e.target.closest(".clickable-word");
       if (!el) return;
       e.stopPropagation();
-
       document.querySelectorAll(".clickable-word.is-selected")
         .forEach(x => x.classList.remove("is-selected"));
       el.classList.add("is-selected");
-
       const resolved = resolveClickedWord(el.dataset.word);
+      currentEntry = (resolved && resolved.headEntry) || null;
       renderMarginalia(resolved);
+      syncMarginaliaButtons(currentEntry);
     });
+
+    function wireMarginaliaButtons(chapterId, sectionNum) {
+      const fold = document.querySelector('.marginalia-btn[data-action="fold"]');
+      const save = document.querySelector('.marginalia-btn[data-action="save"]');
+      if (fold) fold.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (!currentEntry) return;
+        const id = currentEntry.id || currentEntry.word;
+        if (Storage.isSaved(id)) return;
+        Storage.saveWord(id);
+        syncMarginaliaButtons(currentEntry);
+        toast("Folded into Notes");
+      });
+      if (save) save.addEventListener("click", (e) => {
+        e.stopPropagation();
+        // Save chapter bookmark so the reader can return to this exact
+        // section even if local state would otherwise be cleared.
+        try { Storage.saveChapter(chapterId, sectionNum); } catch(_) {}
+        save.classList.add("is-active");
+        toast("Chapter saved");
+        setTimeout(() => save.classList.remove("is-active"), 1200);
+      });
+    }
+
+    // Sync the FOLD button's enabled/active state to the current word.
+    function syncMarginaliaButtons(entry) {
+      const fold = document.querySelector('.marginalia-btn[data-action="fold"]');
+      if (!fold) return;
+      if (!entry) {
+        fold.disabled = true;
+        fold.classList.remove("is-active");
+        return;
+      }
+      const id = entry.id || entry.word;
+      if (Storage.isSaved(id)) {
+        fold.disabled = true;
+        fold.classList.add("is-active");
+      } else {
+        fold.disabled = false;
+        fold.classList.remove("is-active");
+      }
+    }
 
     // Reveal — tap on .page reveals next block; interactive children stop it.
     Reveal.init({
@@ -93,21 +135,22 @@
     });
   }
 
-  /** Marginalia panel. `resolved` is the output of resolveClickedWord
-      ({head, type, relationWord, headEntry}) or null. */
+  /** Marginalia body. Renders into .marginalia-card-body only —
+      header + buttons are fixed pieces of the card (see reading.html)
+      and never get rewritten. Card spec:
+        - headword (clickable → drawer)
+        - 1-2 short collocations
+      Anything longer goes to the drawer (WordCard.openDrawer). */
   function renderMarginalia(resolved) {
-    const host = document.querySelector(".side-pinned");
-    if (!host) return;
+    const body = document.querySelector(".marginalia-card-body");
+    if (!body) return;
 
     if (!resolved || !resolved.headEntry) {
-      host.innerHTML = `<div class="marginalia-hint">Tap a word</div>`;
+      body.innerHTML = `<div class="marginalia-card-empty">Tap a word</div>`;
       return;
     }
     const entry = resolved.headEntry;
-    const rel   = relationLabel(resolved.type);
-    const showRelation = rel && resolved.relationWord.toLowerCase() !== (entry.word || "").toLowerCase();
 
-    // Collocations: prefer entry.collocations, else first 2 phrases from kin.
     let collocs = (entry.collocations || []).slice(0, 2);
     if (collocs.length < 2 && Array.isArray(entry.kin)) {
       for (const k of entry.kin) {
@@ -120,34 +163,17 @@
       }
     }
 
-    const saved = Storage.isSaved(entry.id || entry.word);
-    host.innerHTML = `
-      <h3 class="marginalia-word">${esc(entry.word || entry.id)}</h3>
-      ${showRelation
-        ? `<div class="marginalia-relation">via <strong>${esc(resolved.relationWord)}</strong> · ${rel}</div>`
-        : ""}
+    body.innerHTML = `
+      <h3 class="marginalia-headword">${esc(entry.word || entry.id)}</h3>
       <ul class="marginalia-collocations">
         ${collocs.map(c => `<li>${esc(c)}</li>`).join("")}
       </ul>
-      <div class="marginalia-actions">
-        <button type="button" class="antique-mini-button" data-act="full">Full</button>
-        <button type="button" class="antique-mini-button" data-act="save" ${saved ? "disabled" : ""}>${saved ? "Saved" : "Save"}</button>
-      </div>
     `;
-    host.querySelector('[data-act="full"]').addEventListener("click", (e) => {
+    const hw = body.querySelector(".marginalia-headword");
+    if (hw) hw.addEventListener("click", (e) => {
       e.stopPropagation();
-      WordCard.openDrawer(entry);
+      try { WordCard.openDrawer(entry); } catch(_) {}
     });
-    const saveBtn = host.querySelector('[data-act="save"]');
-    if (saveBtn && !saved) {
-      saveBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        Storage.saveWord(entry.id || entry.word);
-        saveBtn.textContent = "Saved";
-        saveBtn.disabled = true;
-        toast("Saved to Notes");
-      });
-    }
   }
 
   function esc(s) {

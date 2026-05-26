@@ -14,33 +14,36 @@
 <div class="stage">
   <main class="page art-bg reading-art" data-page="quiz">
 
-    <div class="ui-zone is-master-frame zone-master-frame" data-zone="master frame"></div>
+    <div class="master-frame">
 
-    <div class="ui-zone zone-reading-title is-text" data-zone="quiz title">
-      <div class="reading-kicker" data-chapter-number>Chapter 01</div>
-      <h1 class="reading-title" data-chapter-title>The Universe</h1>
-      <span class="reading-ornament">✤ ✤ ✤</span>
-      <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
+      <div class="ui-zone zone-reading-title is-text" data-zone="quiz title">
+        <div class="reading-kicker" data-chapter-number>Chapter 01</div>
+        <h1 class="reading-title" data-chapter-title>The Universe</h1>
+        <span class="reading-ornament">✤ ✤ ✤</span>
+        <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
+      </div>
+
+      <div class="ui-zone zone-reading-body is-text" data-zone="quiz body">
+        <div class="reading-body quiz-body"><!-- quiz items injected by quiz.js --></div>
+      </div>
+
+      <div class="ui-zone zone-marginalia" data-zone="comprehension">
+        <aside class="marginalia-card">
+          <div class="marginalia-card-header">COMPREHENSION</div>
+          <div class="marginalia-card-body">
+            <div class="marginalia-card-empty">Three questions</div>
+          </div>
+        </aside>
+      </div>
+
+      <nav class="ui-bottom-nav">
+        <button type="button" onclick="go('save.html')">Save</button>
+        <button type="button" onclick="go('load.html')">Load</button>
+        <button type="button" onclick="go('select.html')">Menu</button>
+        <button type="button" data-back>Back</button>
+        <button type="button" data-next>Next</button>
+      </nav>
     </div>
-
-    <div class="ui-zone zone-reading-body is-text" data-zone="quiz body">
-      <div class="reading-body quiz-body"><!-- quiz items injected by quiz.js --></div>
-    </div>
-
-    <div class="ui-zone zone-marginalia" data-zone="comprehension">
-      <aside class="reading-marginalia antique-frame is-small is-soft">
-        <div class="marginalia-label">Comprehension</div>
-        <div class="marginalia-hint">Three questions</div>
-      </aside>
-    </div>
-
-    <nav class="ui-bottom-nav">
-      <button type="button" onclick="go('save.html')">Save</button>
-      <button type="button" onclick="go('load.html')">Load</button>
-      <button type="button" onclick="go('select.html')">Menu</button>
-      <button type="button" data-back>Back</button>
-      <button type="button" data-next>Next</button>
-    </nav>
 
     <!-- Tap-to-begin overlay -->
     <div class="tap-overlay">

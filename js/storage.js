@@ -52,9 +52,34 @@ const Storage = (function () {
     write(SLOTS_KEY, list);
   }
 
+  /* ----- chapter bookmark (Marginalia SAVE button) -----
+     Saves the reader's current chapter+section so it isn't lost.
+     Drops into the first empty slot, or overwrites the most recent
+     chapter-bookmark slot if every slot is full. */
+  function saveChapter(chapterId, sectionNum) {
+    const slots = getSlots();
+    const stamp = new Date().toISOString();
+    const slot  = {
+      kind: "chapter-bookmark",
+      chapter: chapterId,
+      section: sectionNum,
+      savedAt: stamp,
+    };
+    let idx = slots.indexOf(null);
+    if (idx === -1) {
+      idx = 0;
+      for (let i = 1; i < slots.length; i++) {
+        if (slots[i] && slots[i].kind === "chapter-bookmark") { idx = i; break; }
+      }
+    }
+    setSlot(idx, slot);
+    return idx;
+  }
+
   return {
     SLOT_COUNT,
     getNotes, isSaved, saveWord, unsaveWord,
     getSlots, setSlot, clearSlot,
+    saveChapter,
   };
 })();

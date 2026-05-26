@@ -19,45 +19,37 @@
 <div class="stage">
   <main class="page art-bg select-art">
 
-    <!-- Master frame = the 4 painted blue star medallions' bbox.
-         All title plates, hotspots and the bottom nav must stay inside it. -->
-    <div class="ui-zone is-master-frame zone-master-frame" data-zone="master frame"></div>
+    <div class="master-frame">
 
-    <!-- Each arch is a BUTTON. The arch has two parts:
-         * upper half = cream-coloured TITLE PLATE (write text HERE)
-         * lower half = painted illustration (Princess / Book / Garden)
-         * hotspot covers the WHOLE arch and triggers a gold glow + sine
-           arpeggio on click.
-         Coordinates measured against the painted slots, not guessed. -->
+      <!-- Title plates: upper-half cream strip inside each arch -->
+      <div class="ui-zone zone-select-story-title is-text select-title-text" data-zone="story title">
+        <h2 class="select-card-title">Story</h2>
+        <p class="select-card-subtitle">Read the tale.</p>
+      </div>
+      <div class="ui-zone zone-select-notes-title is-text select-title-text" data-zone="notes title">
+        <h2 class="select-card-title">Notes</h2>
+        <p class="select-card-subtitle">Keep saved words.</p>
+      </div>
+      <div class="ui-zone zone-select-garden-title is-text select-title-text" data-zone="garden title">
+        <h2 class="select-card-title">Word Garden</h2>
+        <p class="select-card-subtitle">Search every word.</p>
+      </div>
 
-    <!-- Title plates: only the upper-half cream strip inside each arch -->
-    <div class="ui-zone zone-select-story-title is-text select-title-text" data-zone="story title">
-      <h2 class="select-card-title">Story</h2>
-      <p class="select-card-subtitle">Read the tale.</p>
+      <!-- Full-arch hotspots cover the entire arch and sit above the
+           title plates so the cursor on any part of an arch reads as
+           a click on that arch. -->
+      <button type="button" class="select-hotspot ui-zone zone-select-story-hit"
+              data-go="chapters.html"     aria-label="Story"></button>
+      <button type="button" class="select-hotspot ui-zone zone-select-notes-hit"
+              data-go="notes.html"        aria-label="Notes"></button>
+      <button type="button" class="select-hotspot ui-zone zone-select-garden-hit"
+              data-go="word-garden.html"  aria-label="Word Garden"></button>
+
+      <nav class="ui-bottom-nav is-two">
+        <button type="button" onclick="go('index.html')">Menu</button>
+        <button type="button" onclick="go('load.html')">Load</button>
+      </nav>
     </div>
-    <div class="ui-zone zone-select-notes-title is-text select-title-text" data-zone="notes title">
-      <h2 class="select-card-title">Notes</h2>
-      <p class="select-card-subtitle">Keep saved words.</p>
-    </div>
-    <div class="ui-zone zone-select-garden-title is-text select-title-text" data-zone="garden title">
-      <h2 class="select-card-title">Word Garden</h2>
-      <p class="select-card-subtitle">Search every word.</p>
-    </div>
-
-    <!-- Full-arch hotspots: cover both the title plate and the painted
-         illustration. They sit ABOVE the title plates so they catch clicks. -->
-    <button type="button" class="select-hotspot ui-zone zone-select-story-hit"
-            data-go="chapters.html"     aria-label="Story"></button>
-    <button type="button" class="select-hotspot ui-zone zone-select-notes-hit"
-            data-go="notes.html"        aria-label="Notes"></button>
-    <button type="button" class="select-hotspot ui-zone zone-select-garden-hit"
-            data-go="word-garden.html"  aria-label="Word Garden"></button>
-
-    <!-- Bottom nav lives INSIDE the curved footer channel — top:91.25%. -->
-    <nav class="ui-bottom-nav is-two">
-      <button type="button" onclick="go('index.html')">Menu</button>
-      <button type="button" onclick="go('load.html')">Load</button>
-    </nav>
   </main>
 </div>
 

@@ -63,24 +63,17 @@ body.debug-ui .ui-zone.is-hit    {
 body.debug-ui .ui-zone > :not(.debug-keep) { opacity: 0.18; }
 
 /* ============================================================
-   MASTER FRAME — the single legal layout coordinate system for
-   each page. Defined by the 4 painted corner medallions (the blue
-   star / flower icons at each corner of the inner page border).
-   EVERY interactive zone — titles, body, marginalia, hotspots,
-   bottom nav — must stay inside this rectangle. Anything outside
-   it is decorative painting and is not writable.
-
-   Coordinates measured by scripts/measure-master-frame.py.
+   MASTER FRAME DEBUG OUTLINE
+   The real positioning rules live in layout.css (.master-frame
+   is now a real container, not an overlay div). This rule just
+   adds a gold outline so you can SEE where the frame is when
+   ?debug=1 is on.
    ============================================================ */
-.is-master-frame {
-  pointer-events: none;
+body.debug-ui .master-frame {
+  outline: 2px solid rgba(190, 150, 60, 0.62);
 }
-body.debug-ui .is-master-frame {
-  border: 2px solid rgba(190, 150, 60, 0.62);
-  background: transparent;
-}
-body.debug-ui .is-master-frame::after {
-  content: "MASTER FRAME";
+body.debug-ui .master-frame::after {
+  content: "MASTER FRAME (1.78% / 2.15% / 96.33% / 95.85%)";
   position: absolute;
   top: -19px; left: 6px;
   padding: 2px 7px;
@@ -91,30 +84,19 @@ body.debug-ui .is-master-frame::after {
   background: rgba(246, 232, 198, 0.92);
   border: 1px solid rgba(170, 140, 90, 0.55);
   font-family: Georgia, serif;
-}
-
-/* Reading + Quiz share the chapter illustration frame. */
-.page[data-page="reading"] .zone-master-frame,
-.page[data-page="quiz"] .zone-master-frame {
-  left: 3.59%; top: 4.42%; width: 92.75%; height: 91.53%;
-}
-/* Select page's master frame is slightly tighter (the painted
-   curtains / banner consume more outer space). */
-.page.select-art .zone-master-frame {
-  left: 3.94%; top: 4.79%; width: 92.06%; height: 90.06%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* ============================================================
    ZONE coordinates — Reading page
-   Each coordinate matches a painted slot in the chapter
-   illustration jpg. Tune ONLY these numbers when something looks
-   off. Do NOT add per-element absolute positions to title / body
-   / marginalia / buttons; those flow inside the zones.
+   ALL coordinates are now MASTER-FRAME-RELATIVE because every
+   .ui-zone is a child of .master-frame. Do NOT convert to
+   page-relative.
    ============================================================ */
-.zone-reading-title    { left: 35.0%; top:  7.6%; width: 38.0%; height: 15.0%; }
-.zone-reading-body     { left: 31.4%; top: 25.2%; width: 48.2%; height: 51.5%; }
-.zone-marginalia       { left: 80.2%; top: 18.2%; width: 13.5%; height: 22.0%; }
-.zone-bottom-nav       { left: 31.2%; top: 87.65%; width: 49.5%; height: 5.2%; }
+.zone-reading-title    { left: 34.49%; top:  5.69%; width: 39.45%; height: 15.65%; }
+.zone-reading-body     { left: 30.75%; top: 24.05%; width: 50.04%; height: 53.73%; }
+.zone-marginalia       { left: 81.41%; top: 16.74%; width: 14.01%; height: 35.00%; }
 
 /* In CSS-var nav mode (.ui-bottom-nav reads --nav-* directly), it has
    no .ui-zone wrapper, so we outline it ourselves in debug mode. */
@@ -173,17 +155,17 @@ body.debug-ui .ui-bottom-nav::after {
    Title zone = only the cream-coloured TITLE PLATE inside the upper
    half of the arch — the lighter-tinted strip painted into each arch
    button. NEVER use the area outside / above the arch. */
-/* Hand-measured by the user (red & blue dots on the painted bg).
-   Do NOT auto-adjust these — they are the ground truth. */
-.zone-select-story-title  { left: 22.72%; top: 37.75%; width: 15.47%; height: 12.06%; }
-.zone-select-notes-title  { left: 43.72%; top: 37.94%; width: 15.75%; height: 11.79%; }
-.zone-select-garden-title { left: 64.92%; top: 37.66%; width: 14.85%; height: 12.25%; }
+/* Hand-measured by the user (red & blue dot midpoints on the
+   painted bg), then converted from page-relative to MASTER-FRAME-
+   RELATIVE via (p-1.78)/96.33 horizontally, (p-2.15)/95.85
+   vertically. Do NOT auto-adjust — these are ground truth. */
+.zone-select-story-title  { left: 21.74%; top: 37.14%; width: 16.06%; height: 12.58%; }
+.zone-select-notes-title  { left: 43.54%; top: 37.34%; width: 16.35%; height: 12.30%; }
+.zone-select-garden-title { left: 65.55%; top: 37.05%; width: 15.42%; height: 12.78%; }
 
-.zone-select-story-hit    { left: 21.06%; top: 29.47%; width: 18.85%; height: 56.45%; }
-.zone-select-notes-hit    { left: 42.27%; top: 29.10%; width: 18.51%; height: 56.45%; }
-.zone-select-garden-hit   { left: 62.98%; top: 29.01%; width: 18.92%; height: 57.27%; }
-
-.zone-select-bottom-nav   { left: 23.55%; top: 90.52%; width: 52.90%; height:  7.27%; }
+.zone-select-story-hit    { left: 20.01%; top: 28.50%; width: 19.57%; height: 58.89%; }
+.zone-select-notes-hit    { left: 42.03%; top: 28.12%; width: 19.22%; height: 58.89%; }
+.zone-select-garden-hit   { left: 63.53%; top: 28.02%; width: 19.64%; height: 59.75%; }
 
 .zone-select-story-title,
 .zone-select-notes-title,

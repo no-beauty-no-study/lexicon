@@ -161,82 +161,149 @@
   color: #33291f;
 }
 
-/* Marginalia — positioned by .zone-marginalia, framed by
-   .antique-frame.is-small.is-soft. This block only sets the
-   internal padding so the broken corner ticks have room to breathe. */
-.reading-marginalia {
+/* ============================================================
+   MARGINALIA CARD — the fixed right-side word card. Per the user
+   spec: a stable card with HEADER / headword / 1-2 collocations
+   / FOLD button / SAVE button — NOTHING else. Longer entries
+   open in the drawer.
+     FOLD = save this word to Notes (per-word bookmark)
+     SAVE = save the current chapter to Storage (chapter bookmark)
+   The card is left-aligned to form one continuous text spine
+   that never reflows.
+   ============================================================ */
+.marginalia-card {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px 14px;
+  background:
+    linear-gradient(180deg,
+      rgba(252, 245, 226, 0.72) 0%,
+      rgba(241, 230, 204, 0.62) 100%);
+  border: 1px solid rgba(167, 141, 91, 0.42);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.55),
+    inset 0 0 0 3px rgba(185, 170, 138, 0.08),
+    0 2px 6px rgba(77, 62, 39, 0.05);
   z-index: 9;
 }
-.reading-marginalia .marginalia-label {
-  margin: 0 0 8px;
-  text-align: center;
+.marginalia-card-header {
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(167, 141, 91, 0.30);
   font-family: var(--font-display);
-  font-size: 9px;
-  letter-spacing: 0.22em;
+  font-size: 10px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: #9a8358;
   font-weight: 400;
+  text-align: center;
 }
-.reading-marginalia .marginalia-word {
-  margin: 0 0 6px;
+.marginalia-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  text-align: left;
+}
+.marginalia-card-empty {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: #8d7f68;
+  font-style: italic;
+  opacity: 0.78;
+}
+.marginalia-headword {
+  margin: 0 0 8px;
   font-family: var(--font-display);
-  font-size: 15px;
-  line-height: 1.2;
-  letter-spacing: 0.05em;
+  font-size: 16px;
+  line-height: 1.18;
+  letter-spacing: 0.04em;
   color: #3f3a31;
   font-weight: 400;
   text-align: left;
+  cursor: pointer;
 }
-.reading-marginalia .marginalia-relation {
-  margin: -2px 0 8px;
-  font-family: var(--font-body);
-  font-size: 9.5px;
-  font-style: italic;
-  letter-spacing: 0.02em;
-  color: #8a7e6a;
+.marginalia-headword:hover { color: #6b5a37; }
+.marginalia-collocations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   text-align: left;
 }
-.reading-marginalia .marginalia-collocations {
-  list-style: none;
-  margin: 0 0 8px;
-  padding: 0;
-}
-.reading-marginalia .marginalia-collocations li {
+.marginalia-collocations li {
   position: relative;
-  padding-left: 9px;
+  padding-left: 10px;
   margin-bottom: 4px;
-  font-size: 10px;
-  line-height: 1.35;
-  letter-spacing: 0.02em;
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  line-height: 1.38;
+  letter-spacing: 0.01em;
   color: #6c6254;
+  text-align: left;
 }
-.reading-marginalia .marginalia-collocations li::before {
+.marginalia-collocations li::before {
   content: "·";
   position: absolute;
   left: 0;
   color: #a78d5b;
+  font-weight: 700;
 }
-.reading-marginalia .marginalia-actions {
-  display: flex;
+/* Action row — two equal buttons. */
+.marginalia-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(167, 141, 91, 0.30);
+}
+.marginalia-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 1px solid rgba(167, 141, 91, 0.52);
+  padding: 6px 4px;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: #5a4b35;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease,
+              color 160ms ease, transform 80ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 5px;
-  margin-top: 6px;
 }
-.reading-marginalia .marginalia-actions .antique-mini-button {
-  flex: 1;
+.marginalia-btn-glyph {
+  color: rgba(167, 141, 91, 0.78);
+  font-size: 0.78em;
+  line-height: 1;
 }
-.reading-marginalia .marginalia-hint {
-  font-family: var(--font-body);
-  font-size: 10px;
-  line-height: 1.38;
-  color: #6c6254;
-  text-align: center;
-  opacity: 0.78;
-  margin-top: 4px;
+.marginalia-btn:hover:not(:disabled):not(.is-active) {
+  background: rgba(255, 248, 226, 0.50);
+  border-color: rgba(167, 141, 91, 0.78);
+  color: #3f3527;
 }
+.marginalia-btn:active:not(:disabled) { transform: translateY(1px); }
+.marginalia-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  border-color: rgba(167, 141, 91, 0.30);
+  color: #8e826b;
+}
+.marginalia-btn.is-active {
+  background: rgba(167, 141, 91, 0.18);
+  border-color: rgba(167, 141, 91, 0.90);
+  color: #3f3527;
+  cursor: default;
+}
+.marginalia-btn.is-active .marginalia-btn-glyph { color: rgba(124, 95, 50, 0.95); }
 
 /* Bottom 5-button nav is .page-bottom-nav in components.css. No
    reading-specific overrides needed. */
@@ -638,25 +705,27 @@
 .detail-pane .empty-state { margin: 0; }
 
 /* ============================================================
-   BOTTOM NAV — per-page slot coordinates (MEASURED, not guessed)
-   Values come from scripts/measure-ui-zones.py — the blank-island
-   detector. These are the truly empty horizontal channels inside
-   the painted footer trays, NOT the bounding box of the painted
-   decoration. Re-run the script after any painting change.
+   BOTTOM NAV — per-page slot coordinates.
+   ALL values are MASTER-FRAME-RELATIVE — the nav lives inside
+   the .master-frame container, so its absolute % positioning
+   resolves against the master frame, not the full page.
+   Reading nav: directly hand-measured by the user (red dots).
+   Select nav: measured page-relative, then converted to
+   master-relative via (p-1.78)/96.33 horizontally and
+   (p-2.15)/95.85 vertically.
    ============================================================ */
 .page[data-page="reading"],
 .page[data-page="quiz"] {
   --nav-count:  5;
-  --nav-left:   29.97%;
-  --nav-top:    85.00%;
-  --nav-width:  48.00%;
-  --nav-height:  4.79%;
+  --nav-left:   29.47%;
+  --nav-top:    91.50%;
+  --nav-width:  51.04%;
+  --nav-height:  8.19%;
 }
 .page.select-art {
-  /* Hand-measured by the user (red dots on painted bg). Ground truth. */
   --nav-count:  2;
-  --nav-left:   23.55%;
-  --nav-top:    90.52%;
-  --nav-width:  52.90%;
-  --nav-height:  7.27%;
+  --nav-left:   22.60%;
+  --nav-top:    92.20%;
+  --nav-width:  54.92%;
+  --nav-height:  7.58%;
 }
