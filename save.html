@@ -13,32 +13,59 @@
 <style>
   .page.save-art {
     background-image: url("assets/bg/ui/page-blank.jpg");
-    background-size: cover;
-    background-position: center;
   }
-  .page.save-art::before, .page.save-art::after { display: none; }
+  /* The painted page-blank.jpg already has:
+       - top centre banner (empty — for our "Save" title)
+       - bottom centre painted BACK / MENU plaques
+     We OVERLAY only the title text inside the banner + the slot
+     grid in the empty middle area + invisible hit-zones on the
+     painted BACK / MENU labels (no duplicate HTML labels). */
+  .save-banner-title {
+    position: absolute;
+    left: 30%; top: 5.5%;
+    width: 40%; height: 6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    font-family: var(--font-display);
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-wine);
+    z-index: 5;
+  }
+  .save-slot-grid {
+    position: absolute;
+    left: 18%; top: 18%;
+    width: 64%; height: 65%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 16px 24px;
+    z-index: 4;
+  }
+  /* Invisible hit-zones over the painted BACK / MENU labels. */
+  .save-hit-back, .save-hit-menu {
+    position: absolute;
+    width: 12%;  height: 5%;
+    top: 88%;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    z-index: 6;
+  }
+  .save-hit-back { left: 32%; }
+  .save-hit-menu { left: 56%; }
 </style>
 </head>
 <body>
 <div class="stage">
-  <main class="page save-art theme-save">
-    <div class="page-inner save-layout" data-mode="save">
-      <header class="save-header">
-        <h1 class="t-chapter">Save</h1>
-        <span class="t-divider"></span>
-      </header>
-      <div class="slot-grid"></div>
-    </div>
-
-    <nav class="nav-bar">
-      <button type="button" class="nav-btn" onclick="go('select.html')">
-        <span class="glyph">‹</span> Back
-      </button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-btn" onclick="go('menu.html')">
-        <span class="glyph">✤</span> Menu
-      </button>
-    </nav>
+  <main class="page art-bg save-art theme-save" data-page="save">
+    <h1 class="save-banner-title">Save</h1>
+    <div class="save-slot-grid slot-grid" data-mode="save"></div>
+    <button type="button" class="save-hit-back" onclick="go('select.html')" aria-label="Back"></button>
+    <button type="button" class="save-hit-menu" onclick="go('menu.html')"   aria-label="Menu"></button>
   </main>
 </div>
 

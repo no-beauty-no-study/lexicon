@@ -21,9 +21,13 @@
    the same parchment shade as the painted bleed, so the seam is
    invisible. */
 .stage {
-  width:  min(100vw, calc(100dvh * 1448 / 1068.62));
-  height: min(100dvh, calc(100vw * 1068.62 / 1448));
-  aspect-ratio: 1448 / 1068.62;
+  /* Aspect = effective area 1433.52 × 1053.42 (= 1.361).
+     Painted page is scaled by JS so this effective area fills
+     the stage exactly; outer 0.5% L/R + 1.5% T/B bleed overflows
+     and gets clipped by overflow:hidden. */
+  width:  min(100vw, calc(100dvh * 1433.52 / 1053.42));
+  height: min(100dvh, calc(100vw * 1053.42 / 1433.52));
+  aspect-ratio: 1433.52 / 1053.42;
   position: relative;
   flex-shrink: 0;
   overflow: hidden;

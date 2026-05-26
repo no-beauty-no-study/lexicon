@@ -923,23 +923,24 @@
    The text block aligns left; the plaque centres.
    ============================================================ */
 /* TEXT zone — title + italic tagline. No button inside. */
-/* Each .toc-card zone covers the right-hand text area of a chapter
-   card (image is on the LEFT side, painted into bg). The painted
-   '01 THE UNIVERSE' header lives in the top half of that area;
-   our HTML tagline must align in the BOTTOM half across all 10
-   cards — same way the OPEN CHAPTER plaques are uniformly aligned
-   (user: '跟按钮一样的方法对齐 5行2列'). */
+/* Per user feedback: 'tagline 直接写在填空区的顶端 — 同列同行
+   不要参差不齐'. The hand-measured .zone-toc-NN already covers
+   the BLANK text-writing area UNDER each painted '01 THE UNIVERSE'
+   label (the painted label is above the zone, not inside). Pinning
+   the tagline to the TOP of every zone gives an even baseline
+   across the 5×2 grid — every italic intro sits at the same
+   relative height inside its zone. */
 .toc-card {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;     /* tagline at the bottom of the zone */
-  padding: 0 8px 2px;
+  justify-content: flex-start;     /* tagline at the TOP of the zone */
+  padding: 2px 8px 0;
   pointer-events: none;
 }
 .toc-card-text {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-self: stretch;
 }
 .toc-card-title {

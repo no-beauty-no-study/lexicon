@@ -11,13 +11,19 @@
    tightens it to the actual stage box dimensions at runtime.
    ============================================================ */
 (function () {
-  // CONTAIN with TOP/BOTTOM-only bleed crop. Stage aspect 1448 /
-  // 1068.62 (= 1.355) carries the page WIDTH intact and trims 0.8%
-  // of bleed off the top and bottom (~8.69 px design each side).
-  // The painted frame line at ~1.1% from each edge stays fully
-  // visible. Side letterbox (when viewport > 1.355 aspect) is the
-  // body's parchment colour and matches the painted bleed.
-  const BLEED_TOP = 8.69;   // 0.8% × 1086, design px
+  // CONTAIN with aggressive TOP/BOTTOM bleed crop + tiny SIDE crop.
+  // Per user: '上下出血边要裁（留边框线）' — crop top/bottom right
+  // up to the painted frame line. '左右两边的出血边裁一点' — also
+  // shave a small slice off the sides so the painted outer frame
+  // reads cleanly against the viewport edge. The leftover side
+  // letterbox is body-bg parchment matching the painted bleed so
+  // visually 'transparent'.
+  const BLEED_X = 1448 * 0.005;   // 0.5% per side = 7.24 design px
+  const BLEED_Y = 1086 * 0.015;   // 1.5% per side = 16.29 design px
+  const EFF_W   = 1448 - 2 * BLEED_X;   // 1433.52
+  const EFF_H   = 1086 - 2 * BLEED_Y;   // 1053.42
+  const EFF_ASPECT = EFF_W / EFF_H;     // 1.361
+
   function fitStage() {
     const stage = document.querySelector(".stage");
     const page  = document.querySelector(".stage .page");
@@ -27,15 +33,15 @@
       requestAnimationFrame(fitStage);
       return;
     }
-    const scale = sw / 1448;
-    // Translate the page UP by BLEED_TOP × scale so the cropped
-    // strip is split equally top/bottom. Stage height is
-    // 1068.62 × scale; page height is 1086 × scale, so the extra
-    // 17.38 × scale overflows — 8.69 above the stage, 8.69 below.
-    const offY = -BLEED_TOP * scale;
+    // Scale so the EFFECTIVE area width fills the stage. Page
+    // overflows by BLEED_X each side horizontally and BLEED_Y each
+    // side vertically; the stage's overflow:hidden clips them.
+    const scale = sw / EFF_W;
+    const offX  = -BLEED_X * scale;
+    const offY  = -BLEED_Y * scale;
     page.style.transformOrigin = "top left";
     page.style.transform =
-      `translate(0px, ${offY.toFixed(3)}px) scale(${scale.toFixed(6)})`;
+      `translate(${offX.toFixed(3)}px, ${offY.toFixed(3)}px) scale(${scale.toFixed(6)})`;
     page.style.setProperty("--page-scale", scale.toFixed(6));
   }
 

@@ -61,25 +61,14 @@
 </div>
 <script src="js/app.js"></script>
 <script>
-  // Resume = jump straight back to the most-recently-read chapter
-  // (set by reading.js on every page visit). Falls back to the
-  // chapter index if no reading history yet — that's also what
-  // Select's Story arch will do (user: '点 Story 是继续上一章 不是 index').
-  function resumeOrPick() {
-    let last = null;
-    try { last = JSON.parse(localStorage.getItem("tpl.lastRead") || "null"); }
-    catch (_) {}
-    if (last && last.chapter) {
-      window.go(`reading.html?chapter=${encodeURIComponent(last.chapter)}`
-              + `&section=${encodeURIComponent(last.section || "1.1")}`);
-    } else {
-      window.go("chapters.html");
-    }
-  }
+  // Per user: 'manu 点击之后是 select… 然后按 Story 才是继续故事'.
+  // Menu's left plaque enters SELECT (where Story / Notes / Word
+  // Garden live); from there the Story arch resumes last reading.
+  // Right plaque jumps directly to the chapter index.
   document.querySelectorAll(".menu-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const a = btn.dataset.action;
-      if (a === "resume")   resumeOrPick();
+      if (a === "resume")   window.go("select.html");
       else                  window.go("chapters.html");
     });
   });

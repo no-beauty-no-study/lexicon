@@ -13,32 +13,54 @@
 <style>
   .page.load-art {
     background-image: url("assets/bg/ui/page-blank.jpg");
-    background-size: cover;
-    background-position: center;
   }
-  .page.load-art::before, .page.load-art::after { display: none; }
+  /* Same banner-title + slot-grid + hit-zones as save.html, just
+     a different accent colour (blue instead of wine). */
+  .save-banner-title {
+    position: absolute;
+    left: 30%; top: 5.5%;
+    width: 40%; height: 6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    font-family: var(--font-display);
+    font-size: 26px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-blue);
+    z-index: 5;
+  }
+  .save-slot-grid {
+    position: absolute;
+    left: 18%; top: 18%;
+    width: 64%; height: 65%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 16px 24px;
+    z-index: 4;
+  }
+  .save-hit-back, .save-hit-menu {
+    position: absolute;
+    width: 12%;  height: 5%;
+    top: 88%;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    z-index: 6;
+  }
+  .save-hit-back { left: 32%; }
+  .save-hit-menu { left: 56%; }
 </style>
 </head>
 <body>
 <div class="stage">
-  <main class="page load-art theme-load">
-    <div class="page-inner save-layout" data-mode="load">
-      <header class="save-header">
-        <h1 class="t-chapter">Load</h1>
-        <span class="t-divider"></span>
-      </header>
-      <div class="slot-grid"></div>
-    </div>
-
-    <nav class="nav-bar">
-      <button type="button" class="nav-btn" onclick="go('select.html')">
-        <span class="glyph">‹</span> Back
-      </button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-btn" onclick="go('menu.html')">
-        <span class="glyph">✤</span> Menu
-      </button>
-    </nav>
+  <main class="page art-bg load-art theme-load" data-page="load">
+    <h1 class="save-banner-title">Load</h1>
+    <div class="save-slot-grid slot-grid" data-mode="load"></div>
+    <button type="button" class="save-hit-back" onclick="go('select.html')" aria-label="Back"></button>
+    <button type="button" class="save-hit-menu" onclick="go('menu.html')"   aria-label="Menu"></button>
   </main>
 </div>
 
