@@ -105,7 +105,7 @@ body,
   height: 100dvh;       /* dynamic vh — accounts for iOS toolbars */
   min-height: 100dvh;
   overflow: hidden;
-  background: #d0bea6;  /* parchment, NEVER black */
+  background: #e2d1bb;  /* parchment, NEVER black */
   overscroll-behavior: none;
 }
 
