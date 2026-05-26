@@ -27,7 +27,6 @@
     top: 50%;
     width: 21%;
     aspect-ratio: 601 / 645;
-    background-image: url("assets/bg/ui/menu-button-enter.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -40,8 +39,14 @@
   }
   .menu-btn:active   { transform: translateY(-50%) scale(0.92); }
   .menu-btn:focus    { outline: none; }
-  .menu-btn.left  { left:  10.5%; }
-  .menu-btn.right { right: 10.5%; }
+  .menu-btn.left  {
+    left:  10.5%;
+    background-image: url("assets/bg/ui/menu-button-start.png");
+  }
+  .menu-btn.right {
+    right: 10.5%;
+    background-image: url("assets/bg/ui/menu-button-enter.png");
+  }
 </style>
 </head>
 <body>

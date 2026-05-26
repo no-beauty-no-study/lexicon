@@ -95,43 +95,54 @@ const Reveal = (function () {
     speak(fallbackText);
   }
 
-  /* TTS — Web Speech API. PIN TO A MALE VOICE: the user's iPad
-     was alternating between a robotic female voice and a smoother
-     male one. Web Speech API has no gender field, so we match
-     known male voice names (Daniel/Alex/Tom/Aaron/Fred/Oliver/
-     Microsoft David etc.) before falling back to any English
-     voice. Cancels the previous utterance so successive taps
-     don't pile up. */
-  const MALE_VOICE_RE  = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
-  let pickedVoice = null;
+  /* TTS — Web Speech API. PER USER SPEC:
+       reading page  → female voice 'Ava' (iOS Voices > English)
+       quiz page     → male voice 'Daniel' (kept around for quiz)
+     We expose Reveal.speak(text, opts) so callers can override the
+     voice family explicitly, but auto-detection uses the data-page
+     attribute on .page to pick a sensible default. */
+  const FEMALE_RE = /(Ava|Samantha|Karen|Victoria|Allison|Susan|Catherine|Serena|Moira|Tessa|Fiona)/i;
+  const MALE_RE   = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
 
-  function pickVoice() {
-    if (pickedVoice) return pickedVoice;
+  // Per-gender pick cache, since voice loading is async on iOS.
+  let cache = { female: null, male: null };
+
+  function pickVoice(prefer) {
+    // prefer = 'female' | 'male' | undefined
+    const key = (prefer === "male") ? "male" : "female";
+    if (cache[key]) return cache[key];
     try {
       const synth = window.speechSynthesis;
       if (!synth) return null;
       const voices = synth.getVoices();
       if (!voices.length) return null;
-      // 1. English + male name + premium-ish (en-US/en-GB/en-AU).
-      pickedVoice = voices.find(v =>
-        /^en[-_]/i.test(v.lang) && MALE_VOICE_RE.test(v.name)
-      );
-      if (pickedVoice) return pickedVoice;
-      // 2. Any voice whose name suggests it's male.
-      pickedVoice = voices.find(v => MALE_VOICE_RE.test(v.name));
-      if (pickedVoice) return pickedVoice;
-      // 3. Any English voice.
-      pickedVoice = voices.find(v => /^en[-_]/i.test(v.lang));
-      return pickedVoice;
+      const re = (key === "male") ? MALE_RE : FEMALE_RE;
+      // 1. English + the gender's name list.
+      let v = voices.find(x => /^en[-_]/i.test(x.lang) && re.test(x.name));
+      if (!v) v = voices.find(x => re.test(x.name));
+      if (!v) v = voices.find(x => /^en[-_]/i.test(x.lang));
+      cache[key] = v || null;
+      return v || null;
     } catch (_) { return null; }
   }
-  // Voices may be loaded asynchronously on iPad / Chrome. Re-pick
-  // when the voiceschanged event fires.
+
+  // Decide the default voice gender for the CURRENT page once at
+  // boot. reading → female (Ava), quiz → male (Daniel), else female.
+  let defaultGender = "female";
+  function detectDefaultGender() {
+    const dp = document.querySelector(".page")?.dataset?.page;
+    defaultGender = (dp === "quiz") ? "male" : "female";
+  }
+  detectDefaultGender();
+
   if (window.speechSynthesis && typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
-    window.speechSynthesis.onvoiceschanged = () => { pickedVoice = null; pickVoice(); };
+    window.speechSynthesis.onvoiceschanged = () => {
+      cache = { female: null, male: null };
+      pickVoice(defaultGender);
+    };
   }
 
-  function speak(text) {
+  function speak(text, opts) {
     if (!text) return;
     try {
       const synth = window.speechSynthesis;
@@ -141,7 +152,8 @@ const Reveal = (function () {
       u.lang = "en-US";
       u.rate = 0.96;
       u.pitch = 1.0;
-      const v = pickVoice();
+      const gender = (opts && opts.gender) || defaultGender;
+      const v = pickVoice(gender);
       if (v) u.voice = v;
       synth.speak(u);
     } catch (_) { /* swallow */ }

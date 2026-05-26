@@ -11,14 +11,18 @@
    so cropping AT the master container left no buffer. The stage
    now uses the original page aspect (1448/1086 = 4:3) — nothing
    is cropped, parchment letterbox covers any leftover sides. */
+/* COVER fill-width layout — per user insight: 'if the bleed
+   blends with the body bg, sides don't need cropping at all'.
+   Stage fills 100vw × 100dvh (no letterbox bars). The .page is
+   scaled by Math.max(sw/1448, sh/1086) so the painted UI fills
+   the stage on the WIDER axis; the narrower axis overflows and
+   is hidden by the stage's overflow:hidden. Result on iPad
+   landscape: painted edges flush to the left/right edges, top +
+   bottom bleed cropped (~3% each) — exactly what the user means
+   by '上下要裁 否则浪费空间 高低起伏'. */
 .stage {
-  /* Effective area after asymmetric bleed crop: 1442.20 × 1068.62.
-     Sides cropped only 0.2% (preserves reading-page figures that
-     step past the frame); top + bottom cropped 0.8% (right at the
-     painted frame line) so we get a much tighter top/bottom fit. */
-  width:  min(calc(100dvh * 1442.20 / 1068.62), 100vw);
-  height: min(100dvh, calc(100vw * 1068.62 / 1442.20));
-  aspect-ratio: 1442.20 / 1068.62;
+  width: 100vw;
+  height: 100dvh;
   position: relative;
   flex-shrink: 0;
   overflow: hidden;

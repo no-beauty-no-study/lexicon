@@ -11,41 +11,31 @@
    tightens it to the actual stage box dimensions at runtime.
    ============================================================ */
 (function () {
-  // ASYMMETRIC bleed crop per user spec: top/bottom can crop right
-  // up to the painted frame line, but sides must stay safe (some
-  // reading pages have a princess intentionally stepping past the
-  // frame on the side). Programmatic frame-line scan minimum:
-  //   chapters top/bottom: 0.83% — so safe TB crop is ~0.7%.
-  //   chapters right    : 0.69% — so safe LR crop is ~0.2%.
-  const BLEED_X_PCT = 0.002;               // 0.2% per side
-  const BLEED_Y_PCT = 0.008;               // 0.8% per side
-  const BLEED_X = 1448 * BLEED_X_PCT;      //  2.90 px
-  const BLEED_Y = 1086 * BLEED_Y_PCT;      //  8.69 px
-  const EFF_W   = 1448 - 2 * BLEED_X;      // 1442.20
-  // const EFF_H = 1086 - 2 * BLEED_Y;     // 1068.62
-
+  // COVER fill-max scaling. The .page (1448×1086 design canvas) is
+  // scaled to FILL the stage on whichever axis is the limiting
+  // factor; the other axis overflows and is clipped by the stage's
+  // overflow:hidden. On iPad landscape this means painted edges
+  // flush to viewport left+right (no parchment letterbox bars) and
+  // ~3% top + bottom bleed cropped naturally — exactly the page
+  // continuity the user asked for.
   function fitStage() {
     const stage = document.querySelector(".stage");
     const page  = document.querySelector(".stage .page");
     if (!stage || !page) return;
     const sw = stage.clientWidth;
-    // Defensive: when the browser navigates between pages, the
-    // stage's layout box can briefly read as 0 (or a tiny intrinsic
-    // size) before CSS settles. If that happens we'd scale the
-    // 1448 px page by some bogus factor — usually scaling it WAY
-    // too big — which is the 'select page suddenly looks huge' bug.
-    // Defer and retry on the next frame until the stage measures
-    // sensibly.
-    if (!sw || sw < 200) {
+    const sh = stage.clientHeight;
+    if (!sw || sw < 200 || !sh || sh < 200) {
       requestAnimationFrame(fitStage);
       return;
     }
-    const scale = sw / EFF_W;
-    const offX  = -BLEED_X * scale;
-    const offY  = -BLEED_Y * scale;
+    const scale = Math.max(sw / 1448, sh / 1086);
+    // Centre the (possibly oversized) page in the stage so the
+    // crop happens equally on both sides of the overflowing axis.
+    const left = (sw - 1448 * scale) / 2;
+    const top  = (sh - 1086 * scale) / 2;
     page.style.transformOrigin = "top left";
     page.style.transform =
-      `translate(${offX.toFixed(3)}px, ${offY.toFixed(3)}px) scale(${scale.toFixed(6)})`;
+      `translate(${left.toFixed(3)}px, ${top.toFixed(3)}px) scale(${scale.toFixed(6)})`;
     page.style.setProperty("--page-scale", scale.toFixed(6));
   }
 

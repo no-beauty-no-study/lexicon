@@ -77,10 +77,12 @@
     CHAPTERS.forEach((c) => {
       const text = document.querySelector(".zone-toc-" + c.number);
       const btn  = document.querySelector(".zone-toc-btn-" + c.number);
+      // User: the painted bg already has '01 THE UNIVERSE' etc.
+      // on each card. Don't write a duplicate title — only the
+      // italic tagline that's NOT painted in the bg.
       if (text) text.innerHTML = `
         <div class="toc-card-text">
-          <h3 class="toc-card-title">${c.title}</h3>
-          <p  class="toc-card-tagline">${c.tagline || ""}</p>
+          <p class="toc-card-tagline">${c.tagline || ""}</p>
         </div>`;
       if (btn) btn.innerHTML = `
         <button type="button" class="antique-button toc-open-btn"
