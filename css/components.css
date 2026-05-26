@@ -1679,9 +1679,12 @@ button.ornate-panel {
    The painted artwork's arch frame remains the visual button;
    we only add a transient "press" glow.
    ============================================================ */
+.select-hotspot.ui-zone,
 .select-hotspot {
   /* Crucial: kill the UA <button> defaults so the painted arch shows
-     through. The visible button is the painted artwork, not CSS. */
+     through. The visible button is the painted artwork, not CSS.
+     Compound selector .select-hotspot.ui-zone wins over the bare
+     .ui-zone { pointer-events: none } rule that loads later. */
   background: transparent;
   border: 0;
   padding: 0;
@@ -1691,6 +1694,7 @@ button.ornate-panel {
   appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
+  pointer-events: auto;
   z-index: 4;
   transition: background 220ms ease, box-shadow 220ms ease;
 }

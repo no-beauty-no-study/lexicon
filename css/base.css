@@ -84,20 +84,34 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html, body {
+/* The page chrome (html / body / .app) must fill the dynamic viewport
+   exactly — no black margins, no scrolling, no zoomable image vibes.
+   Background uses a parchment tone sampled from the artwork's outer
+   paper, so any letterboxing reads as natural manuscript border. */
+html,
+body,
+#root,
+.app {
   margin: 0;
   padding: 0;
-  height: 100%;
+  width: 100vw;
+  height: 100dvh;       /* dynamic vh — accounts for iOS toolbars */
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #e8dfd0;  /* parchment, NEVER black */
+  overscroll-behavior: none;
 }
 
 body {
   font-family: var(--font-body);
   font-size: var(--fs-body);
   color: var(--color-ink);
-  background-color: #2b261e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow: hidden;          /* iPad landscape: no body scroll */
 }
 
 button,

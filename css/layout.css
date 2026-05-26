@@ -4,20 +4,34 @@
    "book" stage that scales to viewport.
    ============================================================ */
 
+/* The stage is the 4:3 box the 1448×1086 design lives inside. It
+   grows as large as the viewport allows without distortion. The
+   actual artwork stays at its design resolution; .page is scaled
+   via CSS transform so every internal % / px coordinate keeps
+   working unchanged. JS in viewport.js fine-tunes the scale on
+   resize / orientation change for pixel-perfect fit. */
 .stage {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(ellipse at center,
-              #3a342a 0%, #221d17 80%);
+  position: relative;
+  width: min(100vw, calc(100dvh * 4 / 3));
+  height: min(100dvh, calc(100vw * 3 / 4));
+  aspect-ratio: 4 / 3;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #e8dfd0;
+  /* Anchor for the absolutely-positioned, transformed .page below. */
 }
 
 .page {
-  position: relative;
-  width: var(--page-w);
-  height: var(--page-h);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1448px;
+  height: 1086px;
+  /* Scale + centring are set by viewport.js. This pre-JS fallback
+     scales by 1 (no-op) so the page still centres correctly before
+     viewport.js runs. JS replaces this on DOMContentLoaded. */
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: center center;
   background-color: var(--paper-warm);
   background-image:
     radial-gradient(ellipse at 30% 20%, rgba(255, 245, 220, 0.55) 0%, transparent 60%),
@@ -29,9 +43,8 @@
     );
   border-radius: var(--page-radius);
   box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 30px 80px rgba(0, 0, 0, 0.18),
     0 0 0 1px rgba(120, 95, 55, 0.30) inset;
-  transform-origin: center center;
   overflow: hidden;
 }
 
@@ -52,9 +65,11 @@
   top: 2.15%;
   width: 96.33%;
   height: 95.85%;
-  /* pointer-events:none would defeat the whole purpose: zones inside
-     need to receive clicks. Master frame itself has no UI, so the
-     transparent child zones determine hit behaviour. */
+  /* The frame itself must NOT catch clicks — interactive children
+     (hotspots, nav buttons) explicitly re-enable pointer-events.
+     Otherwise the master-frame would sit on top of every painted
+     button and swallow the tap. */
+  pointer-events: none;
 }
 
 /* Decorative double frame inside every page */

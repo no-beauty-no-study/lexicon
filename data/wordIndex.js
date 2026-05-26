@@ -66,16 +66,82 @@ const HEAD_LOOKUP   = {};   // head_lower -> source entry
   }
 })();
 
-/** Look up a clicked surface word. Returns:
-    { head, type, relationWord, headEntry } or null if not in index. */
+/** Look up a clicked surface word and return the entry FOR THAT
+    EXACT WORD — not the head's entry. The marginalia card should
+    show the translation + phrases of the word the user clicked.
+      - If the clicked word IS a head (or has its own entry in the
+        library), return that entry directly.
+      - If the clicked word is a kin sub-word, synthesise an entry
+        from the kin record: word + zh + phrases live on that record.
+      - If the clicked word is a family sub-word, the source data
+        only carries .text (a definition string); use that as meaning.
+    The result has the same shape as a normal word entry — id, word,
+    meaning, phrases — so reading.js can render it without branching.
+    Returns: { head, type, relationWord, clickEntry, headEntry } or null. */
 function resolveClickedWord(surface) {
   if (!surface) return null;
   const key = String(surface).toLowerCase().trim();
   const hits = WORD_TO_HEADS[key];
   if (!hits || !hits.length) return null;
-  const hit = hits[0];                               // first match
+
+  for (const hit of hits) {
+    const headEntry = HEAD_LOOKUP[hit.head.toLowerCase()] || null;
+    if (!headEntry) continue;
+
+    // 1. Clicked word IS the head word: return head as-is.
+    if (hit.type === "head" || hit.head.toLowerCase() === key) {
+      return { ...hit, clickEntry: headEntry, headEntry };
+    }
+
+    // 2. Clicked word is a kin entry under this head. The kin record
+    //    holds the data we want (zh + phrases).
+    if (hit.type === "kin" && Array.isArray(headEntry.kin)) {
+      for (const k of headEntry.kin) {
+        if (k && typeof k === "object" && (k.word || "").toLowerCase() === key) {
+          return {
+            ...hit,
+            clickEntry: {
+              id: k.word,
+              word: k.word,
+              meaning: k.zh || "",
+              kin: [],
+              friend: [],
+              collocations: [],
+              phrases: Array.isArray(k.phrases) ? k.phrases.slice() : [],
+            },
+            headEntry,
+          };
+        }
+      }
+    }
+
+    // 3. Clicked word is a family derivative.
+    if (hit.type === "family" && Array.isArray(headEntry.family)) {
+      for (const f of headEntry.family) {
+        if (f && (f.word || "").toLowerCase() === key) {
+          return {
+            ...hit,
+            clickEntry: {
+              id: f.word,
+              word: f.word,
+              meaning: f.text || "",
+              kin: [],
+              friend: [],
+              collocations: [],
+              phrases: [],
+            },
+            headEntry,
+          };
+        }
+      }
+    }
+  }
+
+  // No matching sub-entry — fall back to the first hit's head entry
+  // so we always show SOMETHING rather than nothing.
+  const hit = hits[0];
   const headEntry = HEAD_LOOKUP[hit.head.toLowerCase()] || null;
-  return { ...hit, headEntry };
+  return { ...hit, clickEntry: headEntry, headEntry };
 }
 
 /** Does this surface word have any entry (head or sub-word)? */

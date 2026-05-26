@@ -133,23 +133,19 @@
       }
     }
 
-    // Reveal — tap on .page reveals next block; interactive children stop it.
-    // Speak the chapter title aloud on first tap (before the first block),
-    // then each tap reveals + auto-speaks the next sentence.
-    let titleSpoken = false;
-    Reveal.init({
-      container: ".page",
-      overlaySelector: ".tap-overlay",
-      onReveal: (block, i) => {
-        if (titleSpoken || i !== 0) return;
-        titleSpoken = true;
-        const t1 = document.querySelector("[data-chapter-title]")?.textContent || "";
-        const t2 = document.querySelector("[data-chapter-section]")?.textContent || "";
-        // Speak title BEFORE the first sentence by queueing a short
-        // utterance ahead of whatever the block's audio is playing.
-        Reveal.speak((t1 + ". " + t2).trim());
-      },
-    });
+    // Reveal — tap anywhere on .page reveals next block. There is no
+    // tap-overlay; on the very FIRST tap the chapter heading is
+    // spoken first by prepending it to the first block's TTS text.
+    const firstBlock = body.querySelector(".reveal-block");
+    if (firstBlock) {
+      const t1 = (document.querySelector("[data-chapter-title]")?.textContent || "").trim();
+      const t2 = (document.querySelector("[data-chapter-section]")?.textContent || "").trim();
+      const intro = [t1, t2].filter(Boolean).join(". ");
+      firstBlock.dataset.speakText = intro
+        ? `${intro}. ${firstBlock.textContent}`
+        : firstBlock.textContent;
+    }
+    Reveal.init({ container: ".page" });
 
     // Bottom nav — stop bubble so reveal doesn't fire.
     const next = document.querySelector("[data-next]");
@@ -192,12 +188,21 @@
     return "";
   }
 
-  /** Up to two phrase pairs {en, zh}. Tries kin[].phrases[] first
-      (structured), then falls back to splitting friend[] strings
-      of the shape "en phrase 中文". */
+  /** Up to two phrase pairs {en, zh}. Tries (in order):
+        entry.phrases  — set by wordIndex.resolveClickedWord when the
+                         clicked word was a kin sub-word.
+        entry.kin[].phrases  — for head-word entries.
+        entry.friend         — curated 'en … zh' strings.
+        entry.collocations   — last resort, en-only. */
   function getPhrasePairs(entry) {
     const out = [];
-    if (Array.isArray(entry.kin)) {
+    if (Array.isArray(entry.phrases)) {
+      for (const p of entry.phrases) {
+        if (out.length >= 2) break;
+        if (p && p.en && p.zh) out.push({ en: p.en, zh: p.zh });
+      }
+    }
+    if (out.length < 2 && Array.isArray(entry.kin)) {
       for (const k of entry.kin) {
         if (out.length >= 2) break;
         if (k && typeof k === "object" && Array.isArray(k.phrases)) {
@@ -217,7 +222,6 @@
         }
       }
     }
-    // Last resort: collocations[] without zh.
     if (out.length < 2 && Array.isArray(entry.collocations)) {
       for (const c of entry.collocations) {
         if (out.length >= 2) break;
@@ -235,8 +239,11 @@
   function renderMarginalia(resolved) {
     const stack = document.querySelector(".word-card-stack");
     if (!stack) return;
-    if (!resolved || !resolved.headEntry) return;
-    const entry = resolved.headEntry;
+    // Use the SUB-WORD entry, not the head's. resolveClickedWord
+    // synthesises this when the clicked word is a kin / family
+    // derivative so the card shows the right translation + phrases.
+    const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
+    if (!entry) return;
     const id = entry.id || entry.word;
 
     const empty = stack.querySelector(".word-card-empty");

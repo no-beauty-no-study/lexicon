@@ -26,26 +26,33 @@ const Reveal = (function () {
 
   function init(opts) {
     const container = document.querySelector(opts.container);
-    const overlay   = document.querySelector(opts.overlaySelector || ".tap-overlay");
+    const overlay   = opts.overlaySelector
+                      ? document.querySelector(opts.overlaySelector)
+                      : null;
     if (!container) return;
     onReveal = opts.onReveal || null;
 
     blocks = Array.from(container.querySelectorAll(".reveal-block"));
     if (blocks.length === 0) return;
 
-    // Overlay dismisses on first tap; reveal block 0 + start audio.
-    const dismiss = () => {
-      if (overlay) overlay.classList.add("is-gone");
-      revealNext();
-    };
-    if (overlay) overlay.addEventListener("click", dismiss, { once: true });
+    // Legacy overlay path (if a tap-overlay element exists) — dismiss
+    // on first tap and reveal block 0.
+    if (overlay) {
+      const dismiss = () => {
+        overlay.classList.add("is-gone");
+        revealNext();
+      };
+      overlay.addEventListener("click", dismiss, { once: true });
+    }
 
-    // Subsequent clicks anywhere inside the container reveal next block,
-    // unless the click was on a clickable element (button, link, word).
+    // Any tap anywhere in the container reveals the next block
+    // (provided the overlay is gone, or never existed). Interactive
+    // children — buttons, links, clickable words — are NOT treated
+    // as a reveal-tap so the user can interact with them normally.
     container.addEventListener("click", e => {
       if (overlay && !overlay.classList.contains("is-gone")) return;
-      // Don't intercept clicks on interactive children.
-      if (e.target.closest("button, a, .clickable-word, .side-note-button")) return;
+      if (e.target.closest("button, a, .clickable-word, .side-note-button," +
+                           " .marginalia-card, .word-card, input, select, textarea")) return;
       revealNext();
     });
   }
@@ -60,8 +67,14 @@ const Reveal = (function () {
       r.className = "ink-ripple";
       b.appendChild(r);
     }
-    playAudio(b.dataset.audio, b.textContent);
+    // Notify the page BEFORE we read — that's the caller's chance to
+    // set data-speak-text on the block (e.g. prepend the chapter
+    // title to the first sentence so the narrator opens with the
+    // chapter heading instead of dropping the user into the middle
+    // of paragraph one).
     if (onReveal) onReveal(b, index);
+    const speakText = b.dataset.speakText || b.textContent;
+    playAudio(b.dataset.audio, speakText);
   }
 
   function revealAll() {
