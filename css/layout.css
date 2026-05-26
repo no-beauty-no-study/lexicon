@@ -4,21 +4,26 @@
    "book" stage that scales to viewport.
    ============================================================ */
 
-/* The stage is the 4:3 box the 1448×1086 design lives inside. It
-   grows as large as the viewport allows without distortion. The
-   actual artwork stays at its design resolution; .page is scaled
-   via CSS transform so every internal % / px coordinate keeps
-   working unchanged. JS in viewport.js fine-tunes the scale on
-   resize / orientation change for pixel-perfect fit. */
+/* The 1448×1086 design fills the viewport like a real app screen,
+   NOT like a contained image. Cover-style: the stage matches the
+   viewport width (or height in narrow / portrait viewports) at the
+   design's 4:3 ratio; any slight overflow on the cross axis is
+   clipped by overflow:hidden. No letterbox parchment bars, no
+   "small image floating in the middle of a page" feeling. */
 .stage {
+  width: 100vw;
+  height: calc(100vw * 1086 / 1448);
+  aspect-ratio: 1448 / 1086;
   position: relative;
-  width: min(100vw, calc(100dvh * 4 / 3));
-  height: min(100dvh, calc(100vw * 3 / 4));
-  aspect-ratio: 4 / 3;
   flex-shrink: 0;
   overflow: hidden;
   background: #e3d4be;
-  /* Anchor for the absolutely-positioned, transformed .page below. */
+}
+@media (max-aspect-ratio: 1448 / 1086) {
+  .stage {
+    width: calc(100dvh * 1448 / 1086);
+    height: 100dvh;
+  }
 }
 
 .page {

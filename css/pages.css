@@ -199,25 +199,25 @@
   flex-direction: column;
   padding: 14px 14px 14px;
   background: transparent;
-  border: 1px solid rgba(126, 105, 74, 0.58);
+  border: 2px solid var(--ink-frame);
   box-shadow: inset 0 0 0 1px rgba(245, 236, 214, 0.42);
   z-index: 9;
 }
 .marginalia-card > .corner-tick {
   position: absolute;
-  width: 8px;
-  height: 8px;
-  border-color: rgba(126, 105, 74, 0.78);
+  width: 10px;
+  height: 10px;
+  border-color: var(--ink-frame);
   pointer-events: none;
 }
-.marginalia-card > .corner-tick.tl { left: -1px; top: -1px;
-  border-left: 1px solid; border-top: 1px solid; }
-.marginalia-card > .corner-tick.tr { right: -1px; top: -1px;
-  border-right: 1px solid; border-top: 1px solid; }
-.marginalia-card > .corner-tick.bl { left: -1px; bottom: -1px;
-  border-left: 1px solid; border-bottom: 1px solid; }
-.marginalia-card > .corner-tick.br { right: -1px; bottom: -1px;
-  border-right: 1px solid; border-bottom: 1px solid; }
+.marginalia-card > .corner-tick.tl { left: -2px; top: -2px;
+  border-left: 2px solid; border-top: 2px solid; }
+.marginalia-card > .corner-tick.tr { right: -2px; top: -2px;
+  border-right: 2px solid; border-top: 2px solid; }
+.marginalia-card > .corner-tick.bl { left: -2px; bottom: -2px;
+  border-left: 2px solid; border-bottom: 2px solid; }
+.marginalia-card > .corner-tick.br { right: -2px; bottom: -2px;
+  border-right: 2px solid; border-bottom: 2px solid; }
 
 /* Top rule inside the card — same visual grammar as antique-divider. */
 .marginalia-card-rule {
@@ -395,17 +395,17 @@
   appearance: none;
   -webkit-appearance: none;
   background: transparent;
-  border: 1px solid rgba(167, 141, 91, 0.52);
-  padding: 6px 4px;
+  border: 2px solid var(--ink-frame);
+  padding: 6px 8px;
   margin: 0;
   font-family: var(--font-display);
-  font-size: 9.5px;
+  font-size: 10px;
   letter-spacing: 0.20em;
   text-transform: uppercase;
-  color: #5a4b35;
+  color: var(--ink-frame);
+  font-weight: 500;
   cursor: pointer;
-  transition: background 160ms ease, border-color 160ms ease,
-              color 160ms ease, transform 80ms ease;
+  transition: color 160ms ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -953,21 +953,20 @@
   align-items: center;
   justify-content: center;
   background: rgba(247, 241, 226, 0.18);
-  border: 1px solid rgba(126, 105, 74, 0.62);
-  box-shadow:
-    inset 0 0 0 1px rgba(245, 236, 214, 0.62),
-    0 1px 0 rgba(255, 255, 255, 0.28);
+  border: 2px solid var(--ink-frame);
+  box-shadow: inset 0 0 0 1px rgba(245, 236, 214, 0.42);
   font-family: var(--font-display);
   font-size: 11px;
   line-height: 1;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(65, 55, 42, 0.92);
+  color: var(--ink-frame);
+  font-weight: 500;
   cursor: pointer;
-  transition: background 160ms ease, border-color 160ms ease,
-              color 160ms ease, box-shadow 160ms ease;
+  transition: border-color 160ms ease, color 160ms ease;
 }
-/* Inner top + bottom thin lines — make the plaque read as engraved. */
+/* Inner top + bottom rules — thicker / darker ink so the plaque
+   reads even at small zoom levels. */
 .antique-button::before,
 .antique-button::after {
   content: "";
@@ -975,27 +974,28 @@
   left: 8px;
   right: 8px;
   height: 1px;
-  background: rgba(150, 124, 84, 0.45);
+  background: var(--ink-frame);
+  opacity: 0.55;
   pointer-events: none;
 }
 .antique-button::before { top: 4px; }
 .antique-button::after  { bottom: 4px; }
-/* Four broken corner ticks — small L-shapes sitting on the corner. */
+/* Four broken corner ticks — 2px ink for visibility. */
 .antique-button-corner {
   position: absolute;
-  width: 7px;
-  height: 7px;
-  border-color: rgba(126, 105, 74, 0.62);
+  width: 8px;
+  height: 8px;
+  border-color: var(--ink-frame);
   pointer-events: none;
 }
-.antique-button-corner.tl { left: -1px; top: -1px;
-  border-left: 1px solid; border-top: 1px solid; }
-.antique-button-corner.tr { right: -1px; top: -1px;
-  border-right: 1px solid; border-top: 1px solid; }
-.antique-button-corner.bl { left: -1px; bottom: -1px;
-  border-left: 1px solid; border-bottom: 1px solid; }
-.antique-button-corner.br { right: -1px; bottom: -1px;
-  border-right: 1px solid; border-bottom: 1px solid; }
+.antique-button-corner.tl { left: -2px; top: -2px;
+  border-left: 2px solid; border-top: 2px solid; }
+.antique-button-corner.tr { right: -2px; top: -2px;
+  border-right: 2px solid; border-top: 2px solid; }
+.antique-button-corner.bl { left: -2px; bottom: -2px;
+  border-left: 2px solid; border-bottom: 2px solid; }
+.antique-button-corner.br { right: -2px; bottom: -2px;
+  border-right: 2px solid; border-bottom: 2px solid; }
 .antique-button-label { position: relative; z-index: 1; }
 /* Per user spec: NO modern internal-colour change on hover. The
    plaque stays the same; only the LABEL warms + glows. */
@@ -1125,26 +1125,26 @@
    ticks so they stay pinned while the list scrolls inside. */
 .wg-col-frame {
   position: relative;
-  background: rgba(248, 240, 223, 0.18);   /* thin paper wash, not white */
-  border: 1px solid rgba(126, 105, 74, 0.58);
+  background: rgba(248, 240, 223, 0.18);
+  border: 2px solid var(--ink-frame);
   box-shadow: inset 0 0 0 1px rgba(245, 236, 214, 0.42);
 }
 .wg-col-frame > .corner-tick {
   position: absolute;
-  width: 8px;
-  height: 8px;
-  border-color: rgba(126, 105, 74, 0.78);
+  width: 10px;
+  height: 10px;
+  border-color: var(--ink-frame);
   pointer-events: none;
   z-index: 2;
 }
-.wg-col-frame > .corner-tick.tl { left: -1px;  top: -1px;
-  border-left: 1px solid; border-top: 1px solid; }
-.wg-col-frame > .corner-tick.tr { right: -1px; top: -1px;
-  border-right: 1px solid; border-top: 1px solid; }
-.wg-col-frame > .corner-tick.bl { left: -1px;  bottom: -1px;
-  border-left: 1px solid; border-bottom: 1px solid; }
-.wg-col-frame > .corner-tick.br { right: -1px; bottom: -1px;
-  border-right: 1px solid; border-bottom: 1px solid; }
+.wg-col-frame > .corner-tick.tl { left: -2px;  top: -2px;
+  border-left: 2px solid; border-top: 2px solid; }
+.wg-col-frame > .corner-tick.tr { right: -2px; top: -2px;
+  border-right: 2px solid; border-top: 2px solid; }
+.wg-col-frame > .corner-tick.bl { left: -2px;  bottom: -2px;
+  border-left: 2px solid; border-bottom: 2px solid; }
+.wg-col-frame > .corner-tick.br { right: -2px; bottom: -2px;
+  border-right: 2px solid; border-bottom: 2px solid; }
 .wg-col {
   position: relative;
   margin: 0;
