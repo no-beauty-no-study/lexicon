@@ -880,48 +880,47 @@
    master-relative via (p-1.78)/96.33 horizontally and
    (p-2.15)/95.85 vertically.
    ============================================================ */
-/* CONTAIN-style layout means master frame fits FULLY inside the
-   viewport (top + bottom visible), so we can use the user's
-   original hand-measured nav coordinates without compensating
-   for a vertical crop. */
+/* USER FIX-UP: when we pre-cropped every painted bg at source
+   (~1.5% trimmed off top + bottom), the painted bottom strip
+   shifted UP about 1.5% in displayed page-relative coords. The
+   user-originally-measured nav-top values are kept below for
+   reference; the .pre-crop column is what we actually use. */
 .page[data-page="reading"],
 .page[data-page="quiz"] {
   --nav-count:  5;
   --nav-left:   29.47%;
-  --nav-top:    91.50%;
+  --nav-top:    93.00%;   /* was 91.50%, +1.5% pre-crop comp */
   --nav-width:  51.04%;
-  --nav-height:  8.19%;
+  --nav-height:  6.70%;   /* was 8.19% */
 }
 .page.select-art {
   --nav-count:  2;
   --nav-left:   22.60%;
-  --nav-top:    92.20%;
+  --nav-top:    93.70%;   /* was 92.20% */
   --nav-width:  54.92%;
-  --nav-height:  7.58%;
+  --nav-height:  6.10%;   /* was 7.58% */
 }
 .page[data-page="chapters"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    93.50%;
+  --nav-top:    95.00%;   /* was 93.50% */
   --nav-width:  30.00%;
-  --nav-height:  5.50%;
+  --nav-height:  4.50%;   /* was 5.50% */
 }
 .page[data-page="word-garden"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    91.50%;
+  --nav-top:    93.00%;   /* was 91.50% */
   --nav-width:  30.00%;
-  --nav-height:  6.50%;
+  --nav-height:  5.50%;   /* was 6.50% */
 }
-/* Save / Load — bottom nav lives in the cleared bottom strip of
-   page-blank.jpg (user erased the painted BACK / MENU plaques). */
 .page[data-page="save"],
 .page[data-page="load"] {
   --nav-count:  2;
   --nav-left:   30.00%;
-  --nav-top:    89.00%;
+  --nav-top:    90.50%;   /* was 89.00% */
   --nav-width:  40.00%;
-  --nav-height:  6.50%;
+  --nav-height:  5.50%;   /* was 6.50% */
 }
 
 /* ============================================================

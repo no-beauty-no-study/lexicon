@@ -147,30 +147,57 @@ const Reveal = (function () {
     try {
       const synth = window.speechSynthesis;
       if (!synth) return;
-      // Cancel any pending utterance, THEN wait a tick before
-      // queueing the new one — iOS Safari drops the voice setting
-      // if cancel() and speak() happen in the same JS call.
-      if (synth.speaking || synth.pending) synth.cancel();
+      // STRATEGY: chunk text into sentences and queue ONE utterance
+      // per sentence, each with the voice EXPLICITLY set. iOS Safari
+      // sometimes loses the voice setting after the first utterance
+      // in a long single-utterance call — chunking sidesteps that
+      // by re-asserting the voice for every sentence. Don't call
+      // synth.cancel() (it also drops the voice setting).
+      if (synth.paused) synth.resume();
       const gender = (opts && opts.gender) || defaultGender;
-      const startUtter = () => {
-        try {
-          const u = new SpeechSynthesisUtterance(text);
-          u.lang = "en-US";
-          u.rate = 0.96;
-          u.pitch = 1.0;
-          const v = pickVoice(gender);
-          if (v) {
-            u.voice = v;
-            // iOS sometimes honours voiceURI better than .voice.
-            if (v.voiceURI) u.voiceURI = v.voiceURI;
-          }
-          synth.speak(u);
-        } catch (_) {}
-      };
-      // 60 ms is enough on iOS 17/18 to let cancel propagate.
-      setTimeout(startUtter, 60);
+      const v = pickVoice(gender);
+      // Split on sentence boundaries; keep punctuation with the
+      // chunk for natural cadence. Fallback to whole string if
+      // splitting yielded nothing.
+      const chunks = (text.match(/[^.!?。！？]+[.!?。！？]?\s*/g) || [text])
+                     .map(s => s.trim())
+                     .filter(Boolean);
+      for (const chunk of chunks) {
+        const u = new SpeechSynthesisUtterance(chunk);
+        u.lang  = "en-US";
+        u.rate  = 0.96;
+        u.pitch = 1.0;
+        if (v) {
+          u.voice = v;
+          if (v.voiceURI) u.voiceURI = v.voiceURI;
+        }
+        synth.speak(u);
+      }
     } catch (_) { /* swallow */ }
   }
+
+  /* Pre-warm the voice with a silent utterance once voices load.
+     On iOS Safari the first real utterance triggers voice loading;
+     during that load the second utterance can fall back to system
+     default. Burning the load on a 0-volume utterance eliminates
+     the race. */
+  function warmUpVoice() {
+    try {
+      const synth = window.speechSynthesis;
+      if (!synth) return;
+      const v = pickVoice(defaultGender);
+      if (!v) return;
+      const u = new SpeechSynthesisUtterance(" ");
+      u.volume = 0;
+      u.rate = 1;
+      u.voice = v;
+      if (v.voiceURI) u.voiceURI = v.voiceURI;
+      synth.speak(u);
+    } catch (_) {}
+  }
+  // Run on the first user gesture (iOS needs that).
+  ["touchstart","pointerdown","click"].forEach(ev =>
+    document.addEventListener(ev, warmUpVoice, { passive: true, once: true }));
 
   /* Unlock speechSynthesis on first user gesture (iPad Safari needs
      a sacrificial utterance before any TTS will play in a session). */
