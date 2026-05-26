@@ -414,22 +414,23 @@
   font-size: 0.78em;
   line-height: 1;
 }
+/* No modern background-fill on hover. Only the text + glyph
+   warm up; the parchment behind the button stays unchanged. */
 .marginalia-btn:hover:not(:disabled):not(.is-active) {
-  background: rgba(255, 248, 226, 0.50);
-  border-color: rgba(167, 141, 91, 0.78);
-  color: #3f3527;
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.55);
 }
-.marginalia-btn:active:not(:disabled) { transform: translateY(1px); }
+.marginalia-btn:hover:not(:disabled):not(.is-active) .marginalia-btn-glyph {
+  color: rgba(124, 95, 50, 0.95);
+}
 .marginalia-btn:disabled {
   opacity: 0.42;
   cursor: not-allowed;
-  border-color: rgba(167, 141, 91, 0.30);
   color: #8e826b;
 }
 .marginalia-btn.is-active {
-  background: rgba(167, 141, 91, 0.18);
-  border-color: rgba(167, 141, 91, 0.90);
-  color: #3f3527;
+  color: #2a1e08;
+  text-shadow: 0 0 8px rgba(201, 174, 103, 0.75);
   cursor: default;
 }
 .marginalia-btn.is-active .marginalia-btn-glyph { color: rgba(124, 95, 50, 0.95); }
@@ -994,16 +995,16 @@
 .antique-button-corner.br { right: -1px; bottom: -1px;
   border-right: 1px solid; border-bottom: 1px solid; }
 .antique-button-label { position: relative; z-index: 1; }
+/* Per user spec: NO modern internal-colour change on hover. The
+   plaque stays the same; only the LABEL warms + glows. */
 .antique-button:hover {
-  color: rgba(72, 54, 30, 0.98);
-  border-color: rgba(157, 128, 78, 0.78);
-  background: rgba(250, 242, 221, 0.32);
-  text-shadow: 0 0 6px rgba(177, 146, 84, 0.28);
-  box-shadow:
-    inset 0 0 0 1px rgba(248, 238, 210, 0.78),
-    0 0 8px rgba(166, 134, 82, 0.14);
+  background: rgba(247, 241, 226, 0.18);  /* unchanged from rest */
 }
-.antique-button:active { transform: translateY(1px); }
+.antique-button:hover .antique-button-label {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.65);
+}
+.antique-button:active { background: rgba(247, 241, 226, 0.18); }
 .antique-button:focus  { outline: none; }
 
 /* ============================================================

@@ -47,24 +47,69 @@ const HEAD_LOOKUP   = {};   // head_lower -> source entry
     }
   }
 
-  // Hand-curated WORDS take priority (richer data, full meaning/example).
+  // Hand-curated WORDS take priority for the HEAD_LOOKUP (richer
+  // data, full meaning/example). But we still index every kin /
+  // family sub-word from WORD_LIBRARY so the article gets full
+  // clickable coverage — that's what the user means by "我手机端
+  // 基本上一整篇的单词都可以被覆盖到啊".
   if (typeof WORDS !== "undefined") {
     for (const w of WORDS) indexEntry(w);
   }
   if (typeof WORD_LIBRARY !== "undefined") {
     for (const w of WORD_LIBRARY) {
-      // Don't override curated entry; but still index its sub-words
-      // pointing at it as head if not already known.
-      const key = (w.word || "").toLowerCase();
-      if (key && !HEAD_LOOKUP[key]) indexEntry(w);
-      else {
-        // Already have a curated head — but still add kin sub-words
-        // that point at THIS auto-generated head only if no curated
-        // entry exists for the same head.
+      if (!w || !w.word) continue;
+      const key = w.word.toLowerCase();
+      // Only set HEAD_LOOKUP if no curated entry exists.
+      if (!HEAD_LOOKUP[key]) {
+        HEAD_LOOKUP[key] = w;
+        addIndex(w.word, w.word, "head", w.word);
+      }
+      // ALWAYS index this entry's kin / family sub-words so they
+      // become clickable, even if the head is already curated.
+      for (const f of (w.family || [])) {
+        if (f && f.word) addIndex(f.word, w.word, "family", f.word);
+      }
+      for (const k of (w.kin || [])) {
+        if (k && typeof k === "object" && k.word) {
+          addIndex(k.word, w.word, "kin", k.word);
+        } else if (typeof k === "string") {
+          const tok = firstToken(k);
+          if (tok) addIndex(tok, w.word, "kin", tok);
+        }
       }
     }
   }
 })();
+
+/** Try a surface word and a few simple inflection-stripped variants
+    against WORD_TO_HEADS. Returns the matched key string or null.
+    This widens coverage so 'atoms' matches 'atom', 'cooling' matches
+    'cool', 'dissipated' matches 'dissipate', etc. — without needing
+    every inflected form curated in the data files. */
+function findIndexedSurface(surface) {
+  if (!surface) return null;
+  const k = String(surface).toLowerCase().trim();
+  if (!k) return null;
+  if (WORD_TO_HEADS[k]) return k;
+  // Try common English suffix strips.
+  const tries = [];
+  if (k.endsWith("ies") && k.length > 4)  tries.push(k.slice(0, -3) + "y");
+  if (k.endsWith("es")  && k.length > 3)  tries.push(k.slice(0, -2));
+  if (k.endsWith("s")   && k.length > 2)  tries.push(k.slice(0, -1));
+  if (k.endsWith("ing") && k.length > 4)  tries.push(k.slice(0, -3),
+                                                     k.slice(0, -3) + "e");
+  if (k.endsWith("ed")  && k.length > 3)  tries.push(k.slice(0, -2),
+                                                     k.slice(0, -1));
+  if (k.endsWith("er")  && k.length > 3)  tries.push(k.slice(0, -2),
+                                                     k.slice(0, -1));
+  if (k.endsWith("est") && k.length > 4)  tries.push(k.slice(0, -3),
+                                                     k.slice(0, -2));
+  if (k.endsWith("ly")  && k.length > 3)  tries.push(k.slice(0, -2));
+  for (const t of tries) {
+    if (WORD_TO_HEADS[t]) return t;
+  }
+  return null;
+}
 
 /** Look up a clicked surface word and return the entry FOR THAT
     EXACT WORD — not the head's entry. The marginalia card should
@@ -80,8 +125,10 @@ const HEAD_LOOKUP   = {};   // head_lower -> source entry
     Returns: { head, type, relationWord, clickEntry, headEntry } or null. */
 function resolveClickedWord(surface) {
   if (!surface) return null;
-  const key = String(surface).toLowerCase().trim();
-  const hits = WORD_TO_HEADS[key];
+  // Fall back to inflection-stripped surface so plural / -ed / -ing
+  // forms resolve even when only the base form is curated.
+  const key = findIndexedSurface(surface);
+  const hits = key ? WORD_TO_HEADS[key] : null;
   if (!hits || !hits.length) return null;
 
   for (const hit of hits) {
@@ -144,8 +191,9 @@ function resolveClickedWord(surface) {
   return { ...hit, clickEntry: headEntry, headEntry };
 }
 
-/** Does this surface word have any entry (head or sub-word)? */
+/** Does this surface word have any entry (head or sub-word)?
+    Uses the same inflection fallback as resolveClickedWord. */
 function hasClickableWord(surface) {
   if (!surface) return false;
-  return Boolean(WORD_TO_HEADS[String(surface).toLowerCase().trim()]);
+  return Boolean(findIndexedSurface(surface));
 }

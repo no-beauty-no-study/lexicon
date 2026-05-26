@@ -85,11 +85,24 @@
       setTimeout(() => { try { ctx.close(); } catch(_) {} }, 1300);
     } catch (_) { /* silent */ }
   }
+  // The painted arch IS the button — never recolour it. Click feedback
+  // is a brief gold glow on the title-plate TEXT (which sits inside
+  // the arch as a sibling element) plus the sine arpeggio chime.
+  const HOT_TO_TITLE = {
+    "zone-select-story-hit":  ".zone-select-story-title",
+    "zone-select-notes-hit":  ".zone-select-notes-title",
+    "zone-select-garden-hit": ".zone-select-garden-title",
+  };
   document.querySelectorAll(".select-hotspot").forEach(el => {
-    el.addEventListener("click", e => {
-      el.classList.remove("is-pressed");
-      void el.offsetWidth;                       // restart the animation
-      el.classList.add("is-pressed");
+    el.addEventListener("click", () => {
+      const titleSel = Object.entries(HOT_TO_TITLE)
+        .find(([cls]) => el.classList.contains(cls))?.[1];
+      const titleEl = titleSel && document.querySelector(titleSel);
+      if (titleEl) {
+        titleEl.classList.remove("is-pressed");
+        void titleEl.offsetWidth;                 // restart animation
+        titleEl.classList.add("is-pressed");
+      }
       playSelectChime();
       const dest = el.dataset.go;
       setTimeout(() => window.go(dest), 380);

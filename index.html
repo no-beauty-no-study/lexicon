@@ -11,39 +11,44 @@
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
 <style>
-  /* main-menu.jpg is the full painted UI. Buttons sit in the empty
-     strip between the oval portrait and the floral bottom border. */
+  /* main-menu.jpg is the full painted UI. Two buttons flank the
+     central portrait, one in each side band, per user spec
+     "两边中间" — vertically centred on the empty left/right strips. */
   .page.home {
     background-image: url("assets/bg/ui/main-menu.jpg");
   }
-  .home-action-row {
+  .home-left-btn,
+  .home-right-btn {
     position: absolute;
-    left: 28.5%; top: 78%;
-    width: 43%; height: 6.4%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14%;
+    height: 5.5%;
     z-index: 8;
   }
-  .home-action-row .antique-label {
-    width: 47%;
-    height: 100%;
-    min-width: 0;
-    min-height: 0;
-    font-size: 15px;
-  }
+  .home-left-btn  { left:  5%; }
+  .home-right-btn { right: 5%; }
 </style>
 </head>
 <body>
 <div class="stage">
   <main class="page art-bg home">
-    <!-- Title (banner + "Main Menu" + oval portrait) is painted into the
-         artwork. We only overlay the two entry plaques. -->
-    <div class="home-action-row">
-      <button type="button" class="antique-label" onclick="go('select.html')">Enter the Book</button>
-      <button type="button" class="antique-label" onclick="go('chapters.html')">Chapter Index</button>
-    </div>
+    <!-- Two entry plaques in the empty side strips. Painted bg holds
+         the title; we only overlay these plaques. -->
+    <button type="button" class="antique-button home-left-btn" onclick="go('select.html')">
+      <span class="antique-button-corner tl"></span>
+      <span class="antique-button-corner tr"></span>
+      <span class="antique-button-corner bl"></span>
+      <span class="antique-button-corner br"></span>
+      <span class="antique-button-label">Enter</span>
+    </button>
+    <button type="button" class="antique-button home-right-btn" onclick="go('chapters.html')">
+      <span class="antique-button-corner tl"></span>
+      <span class="antique-button-corner tr"></span>
+      <span class="antique-button-corner bl"></span>
+      <span class="antique-button-corner br"></span>
+      <span class="antique-button-label">Chapters</span>
+    </button>
   </main>
 </div>
 <script src="js/app.js"></script>
