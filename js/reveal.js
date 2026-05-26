@@ -86,24 +86,18 @@ const Reveal = (function () {
 
   function playAudio(src, fallbackText) {
     if (currentAudio) { try { currentAudio.pause(); } catch(_){} currentAudio = null; }
-    if (src) {
-      try {
-        const a = new Audio(src);
-        a.addEventListener("error", () => speak(fallbackText));
-        const p = a.play();
-        if (p && typeof p.catch === "function") {
-          p.catch(() => speak(fallbackText));
-        }
-        currentAudio = a;
-        return;
-      } catch (_) { /* fall through to TTS */ }
-    }
+    // We have no real mp3 files yet. iOS Safari requires speech-
+    // Synthesis.speak() to fire INSIDE the user-gesture call stack;
+    // if we wait for an Audio promise to reject we lose that context
+    // and TTS goes silent. So go to TTS directly. When real mp3
+    // files land later, swap in the Audio code path above this
+    // line and the speak() becomes a graceful fallback.
     speak(fallbackText);
   }
 
-  /* TTS fallback / proactive narration. Uses Web Speech API with an
-     English voice if one is available; silent if the API is missing.
-     Cancels any in-flight utterance so successive taps don't pile up. */
+  /* TTS — Web Speech API. Uses an English voice if one's available;
+     silent if the platform has no synth or no voice. Cancels the
+     previous utterance so successive taps don't pile up. */
   function speak(text) {
     if (!text) return;
     try {
@@ -115,12 +109,33 @@ const Reveal = (function () {
       u.rate = 0.96;
       u.pitch = 1.0;
       const voices = synth.getVoices();
-      const en = voices.find(v => /^en[-_]/i.test(v.lang) && /Google|Samantha|Karen|Daniel|Microsoft/i.test(v.name))
-              || voices.find(v => /^en[-_]/i.test(v.lang));
+      const en = voices.find(v => /^en[-_]/i.test(v.lang) && /Google|Samantha|Karen|Daniel|Microsoft|Alex/i.test(v.name))
+              || voices.find(v => /^en[-_]/i.test(v.lang))
+              || voices[0];
       if (en) u.voice = en;
       synth.speak(u);
     } catch (_) { /* swallow */ }
   }
+
+  /* Unlock speechSynthesis on first user gesture (iPad Safari needs
+     a sacrificial utterance before any TTS will play in a session). */
+  (function unlockTTSOnce() {
+    function unlock() {
+      document.removeEventListener("touchstart",  unlock);
+      document.removeEventListener("pointerdown", unlock);
+      document.removeEventListener("click",       unlock);
+      try {
+        const synth = window.speechSynthesis;
+        if (!synth) return;
+        const u = new SpeechSynthesisUtterance(" ");
+        u.volume = 0;
+        synth.speak(u);
+      } catch (_) {}
+    }
+    document.addEventListener("touchstart",  unlock, { once: true });
+    document.addEventListener("pointerdown", unlock, { once: true });
+    document.addEventListener("click",       unlock, { once: true });
+  })();
 
   return { init, revealNext, revealAll, speak };
 })();

@@ -25,62 +25,42 @@
    Helper text classes:
      .ornate-panel-title, .ornate-panel-subtitle
    ============================================================ */
+/* Visual grammar matched to the reading-page marginalia card:
+   transparent panel over the painted parchment (NO white-cream
+   gradient, NO chamfered clip-path), 1px ink-brown border + a
+   slightly lighter inner line via inset shadow. The ✤ flourish
+   stays at top centre via the ::after rule below. */
 .ornate-panel {
   position: relative;
   box-sizing: border-box;
-  background:
-    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.32), transparent 28%),
-    linear-gradient(180deg, rgba(255, 251, 240, 0.72), rgba(238, 226, 202, 0.56)),
-    var(--paper-bg);
+  background: transparent;
   color: var(--paper-text);
-  border: 1px solid rgba(143, 128, 95, 0.62);
+  border: 1px solid rgba(126, 105, 74, 0.58);
   padding: 22px 28px;
-  clip-path: polygon(
-    18px 0,
-    calc(100% - 18px) 0,
-    100% 18px,
-    100% calc(100% - 18px),
-    calc(100% - 18px) 100%,
-    18px 100%,
-    0 calc(100% - 18px),
-    0 18px
-  );
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 248, 226, 0.55),
-    inset 0 0 0 4px rgba(185, 170, 138, 0.10),
-    0 2px 8px rgba(77, 62, 39, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(245, 236, 214, 0.42);
 }
 
-/* Inner thin line — classical double-rule border. */
+/* Inner thin double-rule line — square, no clip-path chamfer. */
 .ornate-panel::before {
   content: "";
   position: absolute;
-  inset: 9px;
+  inset: 6px;
   pointer-events: none;
-  border: 1px solid rgba(185, 170, 138, 0.58);
-  clip-path: polygon(
-    14px 0,
-    calc(100% - 14px) 0,
-    100% 14px,
-    100% calc(100% - 14px),
-    calc(100% - 14px) 100%,
-    14px 100%,
-    0 calc(100% - 14px),
-    0 14px
-  );
+  border: 1px solid rgba(167, 141, 91, 0.32);
 }
 
-/* Top-centre flourish symbol. */
+/* Top-centre flourish symbol — sits ON the top border, not in a
+   coloured pill (so it doesn't make a cream blob over painted bg). */
 .ornate-panel::after {
   content: "✤";
   position: absolute;
-  top: -2px;
+  top: -8px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 0 12px;
-  background: var(--paper-bg-soft);
-  color: var(--paper-gold);
-  font-size: 15px;
+  padding: 0 6px;
+  color: rgba(126, 105, 74, 0.85);
+  background: transparent;
+  font-size: 13px;
   line-height: 1;
   letter-spacing: 0.08em;
 }
@@ -107,31 +87,11 @@
 /* ----- Size variants ----- */
 .ornate-panel.is-small {
   padding: 14px 18px;
-  clip-path: polygon(
-    12px 0,
-    calc(100% - 12px) 0,
-    100% 12px,
-    100% calc(100% - 12px),
-    calc(100% - 12px) 100%,
-    12px 100%,
-    0 calc(100% - 12px),
-    0 12px
-  );
 }
 .ornate-panel.is-small::before {
-  inset: 6px;
-  clip-path: polygon(
-    10px 0,
-    calc(100% - 10px) 0,
-    100% 10px,
-    100% calc(100% - 10px),
-    calc(100% - 10px) 100%,
-    10px 100%,
-    0 calc(100% - 10px),
-    0 10px
-  );
+  inset: 4px;
 }
-.ornate-panel.is-small::after { font-size: 12px; padding: 0 8px; }
+.ornate-panel.is-small::after { font-size: 11px; padding: 0 5px; }
 
 .ornate-panel.is-strip {
   padding: 18px 26px;
@@ -141,74 +101,39 @@
 /* ----- State variants ----- */
 .ornate-panel.is-clickable {
   cursor: pointer;
-  transition:
-    transform 180ms ease,
-    background 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease;
+  transition: border-color 180ms ease;
 }
+/* Per user spec: NEVER fill / colour the panel on hover or click.
+   The painted bg shows through; only the inner content text warms. */
 .ornate-panel.is-clickable:hover {
-  transform: translateY(-1px);
-  border-color: rgba(167, 141, 91, 0.78);
-  background:
-    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.38), transparent 28%),
-    linear-gradient(180deg, rgba(255, 251, 240, 0.82), rgba(240, 228, 204, 0.64)),
-    var(--paper-bg-soft);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 248, 226, 0.62),
-    inset 0 0 0 4px rgba(185, 170, 138, 0.13),
-    0 4px 12px rgba(77, 62, 39, 0.12);
+  border-color: rgba(126, 105, 74, 0.92);
 }
-/* Pressed state — depress + warm ink-stamp tint, no blue / no glow. */
-.ornate-panel.is-clickable:active {
-  transform: translateY(2px);
-  border-color: rgba(143, 128, 95, 0.92);
-  background:
-    radial-gradient(circle at 50% 50%, rgba(167, 141, 91, 0.16), transparent 60%),
-    linear-gradient(180deg, rgba(238, 224, 196, 0.92), rgba(220, 202, 166, 0.82)),
-    var(--paper-bg);
-  box-shadow:
-    inset 0 0 0 1px rgba(167, 141, 91, 0.45),
-    inset 0 2px 5px rgba(120, 95, 55, 0.18),
-    0 0 0 0 rgba(0, 0, 0, 0);
-  transition: transform 60ms ease, background 60ms ease, box-shadow 60ms ease;
+.ornate-panel.is-clickable:hover .ornate-panel-title,
+.ornate-panel.is-clickable:hover .ornate-panel-subtitle {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.55);
 }
-.ornate-panel.is-clickable:focus-visible {
-  outline: none;
-  border-color: rgba(167, 141, 91, 0.95);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 248, 226, 0.65),
-    inset 0 0 0 4px rgba(167, 141, 91, 0.22),
-    0 0 0 2px rgba(167, 141, 91, 0.30);
+.ornate-panel.is-clickable:active     { background: transparent; }
+.ornate-panel.is-clickable:focus      { outline: none; }
+.ornate-panel.is-clickable:focus-visible { outline: none; }
+
+@keyframes ornate-press-glow {
+  0%   { text-shadow: 0 0 8px rgba(201, 174, 103, 0.92); }
+  100% { text-shadow: none; }
 }
-/* JS-driven flourish: brief gold ripple on click. */
-@keyframes ornate-press-flash {
-  0%   { box-shadow: inset 0 0 0 1px rgba(167, 141, 91, 0.85),
-                     inset 0 0 0 4px rgba(167, 141, 91, 0.45),
-                     0 0 0 0  rgba(167, 141, 91, 0.40); }
-  100% { box-shadow: inset 0 0 0 1px rgba(255, 248, 226, 0.55),
-                     inset 0 0 0 4px rgba(185, 170, 138, 0.10),
-                     0 0 14px 0 rgba(167, 141, 91, 0); }
-}
-.ornate-panel.is-pressed {
-  animation: ornate-press-flash 420ms ease-out 1;
+.ornate-panel.is-pressed .ornate-panel-title {
+  animation: ornate-press-glow 420ms ease-out 1;
 }
 .ornate-panel.is-selected {
-  border-color: rgba(167, 141, 91, 0.9);
-  background:
-    linear-gradient(180deg, rgba(255, 248, 230, 0.88), rgba(238, 224, 195, 0.72)),
-    var(--paper-bg);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 248, 226, 0.68),
-    inset 0 0 0 4px rgba(167, 141, 91, 0.16),
-    0 0 0 1px rgba(167, 141, 91, 0.18);
+  border-color: rgba(126, 105, 74, 0.95);
+}
+.ornate-panel.is-selected .ornate-panel-title {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.45);
 }
 .ornate-panel.is-empty {
-  opacity: 0.72;
+  opacity: 0.62;
   border-style: dashed;
-  background:
-    linear-gradient(180deg, rgba(248, 242, 230, 0.50), rgba(231, 219, 196, 0.38)),
-    var(--paper-bg);
 }
 .ornate-panel.is-save {
   --accent-color: #9b5b55;

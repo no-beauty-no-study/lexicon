@@ -380,14 +380,16 @@
   color: #a78d5b;
   font-weight: 700;
 }
-/* Action row — two equal buttons. */
+/* Action row — single FOLD button now (SAVE moved to bottom nav). */
 .marginalia-card-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  display: flex;
+  justify-content: center;
   margin-top: 12px;
   padding-top: 10px;
   border-top: 1px solid rgba(167, 141, 91, 0.30);
+}
+.marginalia-card-actions .marginalia-btn {
+  min-width: 70%;
 }
 .marginalia-btn {
   appearance: none;

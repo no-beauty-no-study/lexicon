@@ -98,7 +98,7 @@ body,
   height: 100dvh;       /* dynamic vh — accounts for iOS toolbars */
   min-height: 100dvh;
   overflow: hidden;
-  background: #e8dfd0;  /* parchment, NEVER black */
+  background: #e3d4be;  /* parchment, NEVER black */
   overscroll-behavior: none;
 }
 
@@ -120,6 +120,33 @@ select,
 textarea {
   font-family: inherit;
   color: inherit;
+}
+
+/* The painted UI is an arch / scroll / banner — ANY default button
+   chrome (UA gray :active fill, focus halo, mobile tap-highlight)
+   blows the disguise. Strip every UA decoration globally; pages
+   re-introduce visible styling only where they want it. */
+button {
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+button::-moz-focus-inner { border: 0; padding: 0; }
+button:focus      { outline: none; }
+button:focus-visible { outline: none; }
+button:active     { background: transparent; }
+a, button, .clickable-word, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
 }
 
 a { color: inherit; text-decoration: none; }

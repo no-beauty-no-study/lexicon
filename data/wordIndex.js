@@ -81,32 +81,71 @@ const HEAD_LOOKUP   = {};   // head_lower -> source entry
   }
 })();
 
-/** Try a surface word and a few simple inflection-stripped variants
-    against WORD_TO_HEADS. Returns the matched key string or null.
-    This widens coverage so 'atoms' matches 'atom', 'cooling' matches
-    'cool', 'dissipated' matches 'dissipate', etc. — without needing
-    every inflected form curated in the data files. */
+/** Try a surface word against WORD_TO_HEADS with the full fallback
+    chain spec'd by the pad UX doc:
+      1. exact match
+      2. simple inflection strip (s/es/ies/ing/ed/er/est/ly)
+      3. common English prefix strip
+         (in/un/non/dis/re/over/under/pre/sub/inter/im/ir/il)
+      4. stem of strip-prefix
+      5. longest 5-9 char substring of the word that is itself a key
+    Returns the matched index key or null. This is what makes
+    'compression' resolvable when only 'compress' is indexed,
+    'unimaginable' resolvable when only 'imagine' is indexed,
+    'inconceivable' resolvable when only 'conceive' is indexed, etc. */
+const PREFIX_RE = /^(inter|under|over|non|pre|sub|dis|mis|re|un|in|im|ir|il)/;
+
+function stem(w) {
+  if (!w) return w;
+  if (w.endsWith("ies") && w.length > 4) return w.slice(0, -3) + "y";
+  if (w.endsWith("ied") && w.length > 4) return w.slice(0, -3) + "y";
+  if (w.endsWith("ying")&& w.length > 5) return w.slice(0, -4) + "ie";
+  if (w.endsWith("es")  && w.length > 3) return w.slice(0, -2);
+  if (w.endsWith("s")   && w.length > 2) return w.slice(0, -1);
+  if (w.endsWith("ing") && w.length > 4) return w.slice(0, -3);
+  if (w.endsWith("ed")  && w.length > 3) return w.slice(0, -2);
+  if (w.endsWith("er")  && w.length > 3) return w.slice(0, -2);
+  if (w.endsWith("est") && w.length > 4) return w.slice(0, -3);
+  if (w.endsWith("ly")  && w.length > 3) return w.slice(0, -2);
+  if (w.endsWith("ion") && w.length > 4) return w.slice(0, -3);
+  if (w.endsWith("ness")&& w.length > 5) return w.slice(0, -4);
+  if (w.endsWith("ity") && w.length > 4) return w.slice(0, -3);
+  if (w.endsWith("ous") && w.length > 4) return w.slice(0, -3);
+  if (w.endsWith("able")&& w.length > 5) return w.slice(0, -4);
+  if (w.endsWith("ible")&& w.length > 5) return w.slice(0, -4);
+  if (w.endsWith("tive")&& w.length > 5) return w.slice(0, -4);
+  if (w.endsWith("ative")&& w.length > 6) return w.slice(0, -5);
+  return w;
+}
+
 function findIndexedSurface(surface) {
   if (!surface) return null;
-  const k = String(surface).toLowerCase().trim();
-  if (!k) return null;
-  if (WORD_TO_HEADS[k]) return k;
-  // Try common English suffix strips.
-  const tries = [];
-  if (k.endsWith("ies") && k.length > 4)  tries.push(k.slice(0, -3) + "y");
-  if (k.endsWith("es")  && k.length > 3)  tries.push(k.slice(0, -2));
-  if (k.endsWith("s")   && k.length > 2)  tries.push(k.slice(0, -1));
-  if (k.endsWith("ing") && k.length > 4)  tries.push(k.slice(0, -3),
-                                                     k.slice(0, -3) + "e");
-  if (k.endsWith("ed")  && k.length > 3)  tries.push(k.slice(0, -2),
-                                                     k.slice(0, -1));
-  if (k.endsWith("er")  && k.length > 3)  tries.push(k.slice(0, -2),
-                                                     k.slice(0, -1));
-  if (k.endsWith("est") && k.length > 4)  tries.push(k.slice(0, -3),
-                                                     k.slice(0, -2));
-  if (k.endsWith("ly")  && k.length > 3)  tries.push(k.slice(0, -2));
-  for (const t of tries) {
-    if (WORD_TO_HEADS[t]) return t;
+  const k0 = String(surface).toLowerCase().trim().replace(/[^a-z'-]/g, "");
+  if (!k0 || k0.length < 3) return null;
+
+  // 1. exact
+  if (WORD_TO_HEADS[k0]) return k0;
+
+  // 2. stemmed
+  const s = stem(k0);
+  if (s !== k0 && WORD_TO_HEADS[s]) return s;
+
+  // 3. strip common prefix
+  const np = k0.replace(PREFIX_RE, "");
+  if (np !== k0 && np.length >= 3 && WORD_TO_HEADS[np]) return np;
+
+  // 4. stem of strip-prefix
+  const nps = stem(np);
+  if (nps !== np && nps.length >= 3 && WORD_TO_HEADS[nps]) return nps;
+
+  // 5. longest 5-9 char substring of k0 that is itself a key
+  if (k0.length >= 6) {
+    for (let len = Math.min(k0.length - 1, 9); len >= 5; len--) {
+      for (let i = 0; i + len <= k0.length; i++) {
+        const sub = k0.slice(i, i + len);
+        if (WORD_TO_HEADS[sub]) return sub;
+      }
+    }
   }
   return null;
 }

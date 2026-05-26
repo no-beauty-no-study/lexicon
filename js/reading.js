@@ -177,15 +177,15 @@
       The most-recently-added card is .is-current and is what FOLD
       bookmarks; it auto-scrolls into view. */
 
+  /** Return ONLY the entry's own meaning. Auto-generated heads
+      have empty meaning — we used to fall back to kin[0].zh, but
+      kin[0] is a DIFFERENT word (e.g. clicking 'condense' showed
+      '冷凝器' which is condenser's gloss). That confused the user.
+      Empty is now empty; the phrases below the card still convey
+      collocation context, and the parent drawer shows the full
+      family if more detail is wanted. */
   function shortMeaning(entry) {
-    if (entry.meaning) return entry.meaning;
-    if (Array.isArray(entry.kin)) {
-      for (const k of entry.kin) {
-        if (k && typeof k === "object" && k.zh) return k.zh;
-        if (typeof k === "string") return k;
-      }
-    }
-    return "";
+    return entry.meaning || "";
   }
 
   /** Up to two phrase pairs {en, zh}. Tries (in order):
@@ -273,15 +273,20 @@
     stack.insertAdjacentHTML("beforeend", html);
 
     const fresh = stack.lastElementChild;
+    // Per pad UX spec: clicking a card in the side panel opens the
+    // drawer with the PARENT'S FULL FAMILY CARD — not the clicked
+    // sub-word again. The parent comes from the resolveClickedWord
+    // result (resolved.headEntry, stashed on the card as data-parent).
+    fresh.dataset.parent = (resolved.headEntry && (resolved.headEntry.id || resolved.headEntry.word)) || id;
     fresh.addEventListener("click", (e) => {
       e.stopPropagation();
       clearCurrent(stack);
       fresh.classList.add("is-current");
       try {
-        const cid = fresh.dataset.id;
-        const ent = (typeof WORDS !== "undefined" && WORDS.find(w => (w.id || w.word) === cid))
-                 || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === cid));
-        if (ent) WordCard.openDrawer(ent);
+        const pid = fresh.dataset.parent;
+        const parent = (typeof WORDS !== "undefined" && WORDS.find(w => (w.id || w.word) === pid))
+                    || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === pid));
+        if (parent) WordCard.openDrawer(parent);
       } catch(_) {}
     });
     fresh.scrollIntoView({ block: "nearest", behavior: "smooth" });
