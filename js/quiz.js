@@ -124,7 +124,19 @@
       ? items.map((q, i) => renderItem(q, i, pool, section.audio_prefix)).join("")
       : `<div class="empty-state">No quiz available yet for this section.</div>`;
 
+    // PROGRESSIVE REVEAL — only Q1 shows initially; subsequent
+    // questions appear only after the previous one is answered
+    // correctly. Wrong answer → speak the wrong word + bounce
+    // back to the reading page (per user spec: '选错播放被点击的
+    // 单词语音 然后直接返回前一章学习 下面的题目不显现').
+    function showThrough(n) {
+      const all = document.querySelectorAll(".quiz-item");
+      all.forEach((it, i) => it.classList.toggle("is-shown", i <= n));
+    }
+    showThrough(0);
+
     let advancing = false;
+    let backingOut = false;
 
     function allCorrect() {
       const itemEls = document.querySelectorAll(".quiz-item");
@@ -166,21 +178,29 @@
       if (correct) {
         opt.classList.add("is-correct", "is-locked");
         item.dataset.solved = "1";
-        // Lock the other options so the user can't trial-and-error
-        // by clicking around after they've found the right one.
         item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
-        maybeChapterComplete();
+        // Reveal the NEXT question, or finish the quiz if this was
+        // the last one.
+        const all = Array.from(document.querySelectorAll(".quiz-item"));
+        const idx = all.indexOf(item);
+        if (idx + 1 < all.length) {
+          showThrough(idx + 1);
+        } else {
+          maybeChapterComplete();
+        }
       } else {
-        // Wrong: strike through this option only, don't reveal the
-        // correct one, don't advance. The user may try another.
+        if (backingOut) return;
+        backingOut = true;
         opt.classList.add("is-wrong", "is-locked");
+        // Speak the wrong word + bounce back to the reading page.
+        try { Reveal.speak(opt.dataset.value || opt.textContent || "", { gender: "male" }); } catch (_) {}
+        const backHref = ChapterNav.prevBeforeQuiz(chapterId, sectionNum);
+        setTimeout(() => window.go(backHref), 1500);
       }
     });
 
-    Reveal.init({
-      container: ".page",
-      overlaySelector: ".tap-overlay",
-    });
+    // No Reveal.init here — quiz progression is gated by correct
+    // answers, not by taps anywhere on the page.
 
     // BACK — return to this chapter's reading page (sectionNum).
     const back = document.querySelector("[data-back]");

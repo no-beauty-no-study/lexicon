@@ -564,6 +564,18 @@ button.ornate-panel {
   margin-bottom: 8px;
 }
 .quiz-item { margin-bottom: 42px; }
+/* Progressive-reveal gating. Initial state = hidden; quiz.js adds
+   .is-shown when a previous question has been answered correctly. */
+.quiz-item:not(.is-shown) {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease-out;
+}
+.quiz-item.is-shown {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 320ms ease-out;
+}
 .quiz-item .quiz-no {
   font-family: var(--font-display);
   font-size: 13px;

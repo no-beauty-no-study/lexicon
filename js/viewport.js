@@ -11,19 +11,11 @@
    tightens it to the actual stage box dimensions at runtime.
    ============================================================ */
 (function () {
-  // CONTAIN with aggressive TOP/BOTTOM bleed crop + tiny SIDE crop.
-  // Per user: '上下出血边要裁（留边框线）' — crop top/bottom right
-  // up to the painted frame line. '左右两边的出血边裁一点' — also
-  // shave a small slice off the sides so the painted outer frame
-  // reads cleanly against the viewport edge. The leftover side
-  // letterbox is body-bg parchment matching the painted bleed so
-  // visually 'transparent'.
-  const BLEED_X = 1448 * 0.005;   // 0.5% per side = 7.24 design px
-  const BLEED_Y = 1086 * 0.015;   // 1.5% per side = 16.29 design px
-  const EFF_W   = 1448 - 2 * BLEED_X;   // 1433.52
-  const EFF_H   = 1086 - 2 * BLEED_Y;   // 1053.42
-  const EFF_ASPECT = EFF_W / EFF_H;     // 1.361
-
+  // NO viewport-side bleed crop — the painted bgs are already
+  // pre-cropped at SOURCE to remove the parchment bleed (~1 % L/R,
+  // ~1.5 % T/B). Doing another crop here would double-trim and
+  // start eating into the hand-drawn frame line. The .page is
+  // scaled to fill the stage exactly.
   function fitStage() {
     const stage = document.querySelector(".stage");
     const page  = document.querySelector(".stage .page");
@@ -33,15 +25,9 @@
       requestAnimationFrame(fitStage);
       return;
     }
-    // Scale so the EFFECTIVE area width fills the stage. Page
-    // overflows by BLEED_X each side horizontally and BLEED_Y each
-    // side vertically; the stage's overflow:hidden clips them.
-    const scale = sw / EFF_W;
-    const offX  = -BLEED_X * scale;
-    const offY  = -BLEED_Y * scale;
+    const scale = sw / 1448;
     page.style.transformOrigin = "top left";
-    page.style.transform =
-      `translate(${offX.toFixed(3)}px, ${offY.toFixed(3)}px) scale(${scale.toFixed(6)})`;
+    page.style.transform = `scale(${scale.toFixed(6)})`;
     page.style.setProperty("--page-scale", scale.toFixed(6));
   }
 

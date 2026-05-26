@@ -21,13 +21,15 @@
    the same parchment shade as the painted bleed, so the seam is
    invisible. */
 .stage {
-  /* Aspect = effective area 1433.52 × 1053.42 (= 1.361).
-     Painted page is scaled by JS so this effective area fills
-     the stage exactly; outer 0.5% L/R + 1.5% T/B bleed overflows
-     and gets clipped by overflow:hidden. */
-  width:  min(100vw, calc(100dvh * 1433.52 / 1053.42));
-  height: min(100dvh, calc(100vw * 1053.42 / 1433.52));
-  aspect-ratio: 1433.52 / 1053.42;
+  /* Sources are pre-cropped at the JPG file level (~1% L/R,
+     ~1.5% T/B trimmed off the painted bleed), so the stage is
+     just the page aspect 1448 / 1086 and the page fills it
+     exactly. No viewport-side crop, no math gymnastics. Side
+     letterbox stays #e3d6c4 — the same parchment shade as the
+     trimmed bleed, so the seam is invisible. */
+  width:  min(100vw, calc(100dvh * 1448 / 1086));
+  height: min(100dvh, calc(100vw * 1086 / 1448));
+  aspect-ratio: 1448 / 1086;
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
