@@ -14,13 +14,10 @@
   <main class="page">
     <div class="page-inner reading-layout">
 
-      <!-- Left: chapter illustration column. JS swaps the background image
-           based on ?chapter= param. -->
       <aside class="reading-illus">
         <div class="illus-placeholder">Chapter<br>Illustration</div>
       </aside>
 
-      <!-- Centre: reading body -->
       <section class="reading-main">
         <header class="reading-head">
           <div class="t-eyebrow" data-chapter-number>Chapter 01</div>
@@ -30,38 +27,20 @@
         </header>
 
         <article class="reading-body">
-          <p>In an epoch so remote that no human concept of time can encompass it,
-             the entirety of the cosmos was condensed into a
-             <span class="clickable-word" data-word="singularity">singularity</span>
-             smaller than an atom, a point of unimaginable density wherein space
-             and time had yet to acquire their familiar properties.</p>
-
-          <p>From this incomprehensible compression, the universe erupted outward
-             with such violence that it underwent a phase of exponential inflation,
-             expanding at a velocity that defies intuition.</p>
-
-          <p>Only after aeons of gradual cooling, as the primordial matter slowly
-             dissipated its inconceivable heat, could the first beams of light
-             finally disentangle themselves from the dense fog of particles and
-             propagate freely across the nascent void. Early figures may only
-             <span class="clickable-word" data-word="approximate">approximate</span>
-             the moment when this transition was complete.</p>
-
-          <p>That ancient radiance, now stretched and attenuated by the relentless
-             expansion of space, still permeates the cosmos in every direction as a
-             faint microwave background; indeed, a small fraction of the static hiss
-             audible between the stations of an old radio is the lingering whisper
-             of that primordial dawn.</p>
+          <!-- Reveal blocks injected by reading.js -->
         </article>
       </section>
 
-      <!-- Right: side pin column (filled in by reading.js) -->
       <aside class="reading-side">
-        <div class="reading-side-title">Pinned</div>
-        <div class="side-pinned">
-          <div class="pin-empty ornate-panel is-small is-empty">Tap a word to pin</div>
-        </div>
+        <div class="reading-side-title">Marginalia</div>
+        <span class="reading-side-rule"></span>
+        <div class="side-pinned"></div>
       </aside>
+    </div>
+
+    <!-- Tap-to-begin overlay; required to bypass browser autoplay block. -->
+    <div class="tap-overlay">
+      <div class="tap-overlay-card">Tap the page to begin</div>
     </div>
 
     <nav class="nav-bar">
@@ -73,12 +52,16 @@
         <span class="glyph">✦</span> Quiz
       </button>
       <span class="nav-sep"></span>
+      <button type="button" class="nav-btn" data-back>
+        <span class="glyph">‹</span> Back
+      </button>
+      <span class="nav-sep"></span>
       <button type="button" class="nav-btn" data-next>
         Next <span class="glyph">›</span>
       </button>
       <span class="nav-sep"></span>
       <button type="button" class="nav-btn" onclick="go('select.html')">
-        <span class="glyph">‹</span> Menu
+        <span class="glyph">✦</span> Menu
       </button>
     </nav>
   </main>
@@ -86,9 +69,13 @@
 
 <script src="data/mockWords.js"></script>
 <script src="data/mockChapters.js"></script>
+<script src="data/readingContent.js"></script>
+<script src="data/wordLibrary.js"></script>
 <script src="js/app.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/wordCard.js"></script>
+<script src="js/reveal.js"></script>
+<script src="js/chapterNav.js"></script>
 <script src="js/reading.js"></script>
 </body>
 </html>
