@@ -352,29 +352,12 @@ button.ornate-panel {
   );
 }
 .word-drawer.is-open { transform: translateX(0); }
-.word-drawer::before {
-  content: "";
-  position: absolute;
-  inset: 18px;
-  pointer-events: none;
-  border: 1px solid rgba(185, 170, 138, 0.58);
-  clip-path: polygon(
-    18px 0, calc(100% - 18px) 0, 100% 18px,
-    100% calc(100% - 18px), calc(100% - 18px) 100%,
-    18px 100%, 0 calc(100% - 18px), 0 18px
-  );
-}
-.word-drawer::after {
-  content: "✤";
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0 14px;
-  background: var(--paper-bg-soft);
-  color: var(--paper-gold);
-  font-size: 15px;
-}
+/* OLD ::before clip-path + ::after ✤ removed — user said
+   'don't want the four-leaf-clover figure and don't crop the
+   four corners'. The painted word-card image is now shown at
+   its natural aspect with no overlays. */
+.word-drawer::before { content: none; }
+.word-drawer::after  { content: none; }
 .word-drawer-close {
   position: absolute;
   top: 28px;
@@ -945,22 +928,30 @@ button.ornate-panel {
    else is positioned over the artwork. */
 .word-drawer {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 724px;
-  height: 100%;
-  transform: translateX(100%);    /* fully off-screen right */
+  top: 50%;
+  right: 1.5%;
+  /* Preserve the painted card's NATIVE aspect ratio (976 × 1492).
+     Was 100% 100% stretch which subtly squashed the image; user
+     spec: '恢复图片原本的长宽比 不要四个角切掉'. */
+  height: 95%;
+  aspect-ratio: 976 / 1492;
+  width: auto;
+  transform: translateY(-50%) translateX(120%);  /* off-screen right */
   transition: transform 360ms cubic-bezier(0.22, 0.61, 0.36, 1);
   background-image: url("../assets/bg/ui/frame-blank.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-color: transparent;
   border: 0;
+  /* No clip-path corner crop, no inset double-line border, no ✤
+     centerpiece — the painted card image already has its own
+     frame and ornament. */
+  clip-path: none;
   box-shadow: -20px 0 60px rgba(0, 0, 0, 0.35);
   z-index: 40;
   pointer-events: auto;
 }
-.word-drawer.is-open { transform: translateX(0); }
+.word-drawer.is-open { transform: translateY(-50%) translateX(0); }
 
 /* User-measured zones on the 1024×1536 painted card (NOT auto). */
 .word-card-title-zone {
@@ -985,7 +976,8 @@ button.ornate-panel {
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-gutter: stable;
-  padding-right: 4px;
+  padding: 8px 10px;
+  text-align: center;        /* user: '词卡的字要居中' */
 }
 .word-card-body-zone::-webkit-scrollbar { width: 5px; }
 .word-card-body-zone::-webkit-scrollbar-thumb {
@@ -1789,7 +1781,7 @@ button.ornate-panel {
 }
 .word-card-title-zone .word-card-word {
   font-family: var(--font-display);
-  font-size: 34px;
+  font-size: 44px;        /* was 34 — user: '字要居中 不要太小了' */
   font-weight: 500;
   letter-spacing: 0.03em;
   color: #2f261d;
@@ -1798,18 +1790,19 @@ button.ornate-panel {
 .word-card-title-zone .word-card-pos {
   font-family: var(--font-body);
   font-style: italic;
-  font-size: 14px;
+  font-size: 18px;        /* was 14 */
   letter-spacing: 0.06em;
   color: #8a7653;
 }
 .word-card-title-zone .word-card-meaning {
-  margin: 4px 0 0;
+  margin: 8px 0 0;
   font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC",
                var(--font-body);
-  font-size: 16px;
+  font-size: 22px;        /* was 16 */
   line-height: 1.35;
   color: #5e5040;
   font-weight: 400;
+  text-align: center;
 }
 
 /* BODY ZONE: 4 sections. No CSS card frames — the painted bg
@@ -1850,15 +1843,16 @@ button.ornate-panel {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;             /* a bit more breathing room */
 }
 .word-card-body-zone .word-entry {
   font-family: var(--font-body);
-  font-size: 13.5px;
+  font-size: 17px;       /* was 13.5 — user: '字要大' */
   line-height: 1.55;
   letter-spacing: 0.01em;
   color: #3f3a31;
-  padding: 0 2px;
+  padding: 0 6px;
+  text-align: center;    /* user: '词卡的字要居中' */
 }
 .word-card-body-zone .word-entry strong {
   font-weight: 600;

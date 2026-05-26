@@ -39,9 +39,11 @@
 
       <!-- Full-arch hotspots cover the entire arch and sit above the
            title plates so the cursor on any part of an arch reads as
-           a click on that arch. -->
+           a click on that arch.  Story is special: per user spec it
+           continues the user's last reading session (resume), not a
+           fresh trip through the chapter index. -->
       <button type="button" class="select-hotspot ui-zone zone-select-story-hit"
-              data-go="chapters.html"     aria-label="Story"></button>
+              data-action="resume"        aria-label="Story"></button>
       <button type="button" class="select-hotspot ui-zone zone-select-notes-hit"
               data-go="notes.html"        aria-label="Notes"></button>
       <button type="button" class="select-hotspot ui-zone zone-select-garden-hit"
@@ -93,6 +95,18 @@
     "zone-select-notes-hit":  ".zone-select-notes-title",
     "zone-select-garden-hit": ".zone-select-garden-title",
   };
+  // Story arch resumes the user's last reading session; Notes /
+  // Garden go to their fixed destinations.
+  function resumeReading() {
+    let last = null;
+    try { last = JSON.parse(localStorage.getItem("tpl.lastRead") || "null"); }
+    catch (_) {}
+    if (last && last.chapter) {
+      return "reading.html?chapter=" + encodeURIComponent(last.chapter)
+           + "&section="  + encodeURIComponent(last.section || "1.1");
+    }
+    return "chapters.html";
+  }
   document.querySelectorAll(".select-hotspot").forEach(el => {
     el.addEventListener("click", () => {
       const titleSel = Object.entries(HOT_TO_TITLE)
@@ -100,11 +114,13 @@
       const titleEl = titleSel && document.querySelector(titleSel);
       if (titleEl) {
         titleEl.classList.remove("is-pressed");
-        void titleEl.offsetWidth;                 // restart animation
+        void titleEl.offsetWidth;
         titleEl.classList.add("is-pressed");
       }
       playSelectChime();
-      const dest = el.dataset.go;
+      const dest = el.dataset.action === "resume"
+                 ? resumeReading()
+                 : el.dataset.go;
       setTimeout(() => window.go(dest), 380);
     });
   });

@@ -35,6 +35,18 @@
     const section        = ChapterNav.findSection(chapterId, sectionNum);
     const page           = document.querySelector(".page");
 
+    // Remember where the reader is — so the menu's left button (and
+    // Select's Story arch) can resume to exactly this page on the
+    // next session. localStorage so it survives a full close.
+    try {
+      localStorage.setItem("tpl.lastRead", JSON.stringify({
+        chapter: chapterId,
+        section: sectionNum,
+        page:    illustrationId,
+        at:      Date.now(),
+      }));
+    } catch (_) {}
+
     // Painted UI background per chapter.
     const bg = getChapterBackground(chapterId, illustrationId);
     if (bg) page.style.backgroundImage = `url("${bg}")`;
