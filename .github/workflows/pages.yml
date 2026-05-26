@@ -1,10 +1,14 @@
 name: Deploy to GitHub Pages
 
 on:
+  # Auto-deploy only from main. PR branches don't have permission to
+  # deploy to the github-pages environment (default protection rule).
+  # To preview a feature branch, run this workflow manually from the
+  # Actions tab via workflow_dispatch, after adding the branch to the
+  # environment's "Deployment branches" list.
   push:
     branches:
       - main
-      - "claude/**"
   workflow_dispatch:
 
 permissions:
