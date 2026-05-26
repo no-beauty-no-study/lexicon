@@ -39,11 +39,18 @@ async def main():
         # 2. Chapter Index — TOC
         await snap(page, f"{BASE}/chapters.html", "02-chapters")
 
-        # 3. Reading — Universe 1.1 fully revealed with "singularity" pinned
-        async def reading_setup(p):
-            # Dismiss tap-overlay (anywhere on the page).
+        # 3a. Reading default state — no selection, no highlights.
+        async def reading_default(p):
             await p.click(".tap-overlay")
-            # Reveal subsequent blocks via taps on empty parchment region.
+            for _ in range(6):
+                await p.mouse.click(900, 600)
+                await p.wait_for_timeout(100)
+        await snap(page, f"{BASE}/reading.html?chapter=universe&section=1.1",
+                   "03a-reading-default", prepare=reading_default, wait_ms=900)
+
+        # 3b. Reading with one word selected — verify only ONE yellow stain.
+        async def reading_selected(p):
+            await p.click(".tap-overlay")
             for _ in range(6):
                 await p.mouse.click(900, 600)
                 await p.wait_for_timeout(100)
@@ -51,7 +58,26 @@ async def main():
             if await cw.count() > 0:
                 await cw.click()
         await snap(page, f"{BASE}/reading.html?chapter=universe&section=1.1",
-                   "03-reading", prepare=reading_setup, wait_ms=1400)
+                   "03b-reading-selected", prepare=reading_selected, wait_ms=900)
+
+        # 3c. Reading sub-word click (a family/kin word) — marginalia should
+        # show parent head + "via X · family/kin".
+        async def reading_subword(p):
+            await p.click(".tap-overlay")
+            for _ in range(6):
+                await p.mouse.click(900, 600)
+                await p.wait_for_timeout(100)
+            # find any word whose data-word resolves via family/kin
+            await p.evaluate("""() => {
+              const cws = [...document.querySelectorAll('.clickable-word')];
+              for (const cw of cws) {
+                const r = (typeof resolveClickedWord==='function')
+                  ? resolveClickedWord(cw.dataset.word) : null;
+                if (r && r.type !== 'head') { cw.click(); window.__sub=cw.dataset.word; return; }
+              }
+            }""")
+        await snap(page, f"{BASE}/reading.html?chapter=universe&section=1.1",
+                   "03c-reading-subword", prepare=reading_subword, wait_ms=600)
 
         # 4. Reading with WordDrawer open
         async def drawer_setup(p):

@@ -82,31 +82,35 @@
   background-color: var(--paper-bg);
 }
 
-/* Centre reading slot. Coordinates from user spec. */
+/* Reading body sized & laid out per user spec. Larger, more readable. */
 .reading-art .reading-content {
   position: absolute;
-  left: 31.5%; top: 13.5%;
-  width: 45.5%; height: 70%;
+  left: 31.6%; top: 10.4%;
+  width: 47.2%; height: 72%;
   overflow: hidden;
+  box-sizing: border-box;
   color: var(--paper-text);
+  text-align: left;
 }
-.reading-art .reading-chapter-kicker {
+.reading-art .reading-kicker {
   text-align: center;
   font-family: var(--font-display);
-  font-size: 13px;
-  letter-spacing: 0.22em;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #7b6f5c;
-  margin: 0 0 14px;
+  color: #7a7467;
+  margin: 0 0 12px;
 }
 .reading-art .reading-title {
   text-align: center;
   font-family: var(--font-display);
-  font-size: 30px;
-  letter-spacing: 0.16em;
+  font-size: 40px;
+  line-height: 1.15;
+  letter-spacing: 0.17em;
   text-transform: uppercase;
   font-weight: 400;
-  color: #3c4854;
+  color: #394754;
   margin: 0 0 14px;
 }
 .reading-art .reading-ornament {
@@ -120,139 +124,181 @@
 .reading-art .reading-subtitle {
   text-align: center;
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 24px;
+  line-height: 1.3;
   letter-spacing: 0.08em;
   color: #8a7653;
   font-weight: 400;
-  margin: 0 0 22px;
   font-style: italic;
+  margin: 0 0 28px;
 }
 .reading-art .reading-body {
+  width: 100%;
   font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.85;
-  letter-spacing: 0.035em;
-  word-spacing: 0.08em;
-  color: var(--color-body);
+  font-size: 18px;
+  line-height: 1.82;
+  letter-spacing: 0.032em;
+  word-spacing: 0.07em;
+  color: #3f3a31;
 }
 .reading-art .reading-body p {
-  margin: 0 0 14px;
+  margin: 0 0 18px;
 }
+
+/* Clickable words — default: NO background, only a soft dotted
+   underline. Hover: very faint warm tint. Selected (clicked): pale
+   gold ink-stain. Exactly one .is-selected at a time, driven by JS. */
 .reading-art .reading-body .clickable-word {
-  /* Even subtler than the default — must not pop off the parchment. */
-  color: #5f513b;
-  background: rgba(168, 143, 93, 0.10);
-  border-bottom: 1px dotted rgba(126, 103, 67, 0.45);
+  color: #4d4436;
+  background: transparent;
+  border-bottom: 1px dotted rgba(126, 103, 67, 0.42);
   padding: 0 2px;
   border-radius: 2px;
   cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
 }
-.reading-art .reading-body .clickable-word:hover,
-.reading-art .reading-body .clickable-word.is-active {
-  background: rgba(168, 143, 93, 0.22);
-  border-bottom-color: rgba(154, 131, 88, 0.85);
+.reading-art .reading-body .clickable-word:hover {
+  background: rgba(168, 143, 93, 0.08);
+  border-bottom-color: rgba(167, 141, 91, 0.62);
+  color: #3f3426;
+}
+.reading-art .reading-body .clickable-word.is-selected {
+  background: rgba(201, 174, 103, 0.24);
+  border-bottom-color: rgba(142, 112, 55, 0.72);
+  color: #33291f;
 }
 
-/* Marginalia — far right edge, no frame; ink only. */
-.reading-art .marginalia-note {
+/* Marginalia — uses the shared .ornate-panel.is-small frame so it
+   matches every other framed box in the codebase. Position only. */
+.reading-marginalia {
   position: absolute;
-  left: 80.8%; top: 19.8%;
-  width: 12.5%; min-height: 12%;
-  padding: 6px 4px;
+  left: 80.2%; top: 20.2%;
+  width: 13.2%;
+  min-height: 15%;
   box-sizing: border-box;
-  color: var(--paper-text);
-  font-family: var(--font-body);
-  background: transparent;
-  border: none;
+  z-index: 9;
 }
-.reading-art .marginalia-title {
+.reading-marginalia.ornate-panel.is-small {
+  padding: 12px 10px;
+  background:
+    linear-gradient(180deg, rgba(252, 247, 232, 0.58), rgba(238, 226, 202, 0.42)),
+    rgba(244, 237, 221, 0.46);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.34),
+    0 2px 6px rgba(77, 62, 39, 0.06);
+}
+.reading-marginalia .marginalia-label {
+  margin: 0 0 8px;
+  text-align: center;
   font-family: var(--font-display);
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--paper-gold);
-  margin: 0 0 8px;
-  text-align: left;
+  color: #9a8358;
+  font-weight: 400;
 }
-.reading-art .marginalia-word {
+.reading-marginalia .marginalia-word {
+  margin: 0 0 6px;
   font-family: var(--font-display);
   font-size: 15px;
-  letter-spacing: 0.04em;
-  color: var(--paper-text);
-  margin: 0 0 6px;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  color: #3f3a31;
+  font-weight: 400;
+  text-align: left;
 }
-.reading-art .marginalia-list {
+.reading-marginalia .marginalia-relation {
+  margin: -2px 0 8px;
+  font-family: var(--font-body);
+  font-size: 9.5px;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: #8a7e6a;
+  text-align: left;
+}
+.reading-marginalia .marginalia-collocations {
   list-style: none;
-  padding: 0;
   margin: 0 0 8px;
+  padding: 0;
 }
-.reading-art .marginalia-list li {
+.reading-marginalia .marginalia-collocations li {
   position: relative;
   padding-left: 9px;
-  font-size: 10.5px;
+  margin-bottom: 4px;
+  font-size: 10px;
   line-height: 1.35;
   letter-spacing: 0.02em;
   color: #6c6254;
-  margin-bottom: 4px;
 }
-.reading-art .marginalia-list li::before {
+.reading-marginalia .marginalia-collocations li::before {
   content: "·";
   position: absolute;
   left: 0;
-  color: var(--paper-gold);
+  color: #a78d5b;
 }
-.reading-art .marginalia-actions {
+.reading-marginalia .marginalia-actions {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  gap: 5px;
+  margin-top: 6px;
 }
-.reading-art .marginalia-actions button {
-  border: 1px solid rgba(143, 128, 95, 0.45);
-  background: rgba(248, 242, 230, 0.30);
+.reading-marginalia .marginalia-actions button {
+  flex: 1;
+  border: 1px solid rgba(143, 128, 95, 0.40);
+  background: rgba(248, 242, 230, 0.28);
+  color: #5a4b35;
   font-family: var(--font-display);
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  color: var(--color-button-ink);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 3px 5px;
+  padding: 4px 4px;
   cursor: pointer;
 }
-.reading-art .marginalia-actions button:hover {
+.reading-marginalia .marginalia-actions button:hover {
   background: rgba(244, 233, 205, 0.55);
   border-color: rgba(167, 141, 91, 0.75);
 }
-.reading-art .marginalia-actions button[disabled] {
+.reading-marginalia .marginalia-actions button[disabled] {
   opacity: 0.55;
   cursor: not-allowed;
 }
 
-/* Bottom NOTES / QUIZ / BACK / NEXT / MENU — text labels only,
-   no frame; they sit on the painted footer ribbon. */
-.reading-art .bottom-bar {
+/* Bottom 5-button nav — SAVE LOAD MENU BACK NEXT — tucked into the
+   painted footer slot. Text only, no extra frames. */
+.reading-bottom-nav {
   position: absolute;
-  left: 25%; bottom: 3%;
-  width: 50%;
+  left: 31.7%; top: 88.25%;
+  width: 48%;
+  height: 5.4%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 22px;
+  gap: 7.2%;
+  z-index: 10;
 }
-.reading-art .bottom-bar .nav-link {
-  background: transparent;
+.reading-bottom-nav button {
   border: 0;
-  padding: 6px 8px;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  color: #6a5b42;
   font-family: var(--font-display);
   font-size: 13px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-button-ink);
+  font-weight: 400;
+  line-height: 1;
   cursor: pointer;
 }
-.reading-art .bottom-bar .nav-link:hover { color: #3f3a31; }
-.reading-art .bottom-bar .nav-link .g { color: var(--paper-gold); margin-right: 4px; }
-.reading-art .bottom-bar .nav-sep {
-  width: 1px; height: 14px;
-  background: rgba(167, 141, 91, 0.45);
+.reading-bottom-nav button::before {
+  content: "✦";
+  margin-right: 0.52em;
+  color: #a78d5b;
+  opacity: 0.62;
+  font-size: 0.72em;
+}
+.reading-bottom-nav button:hover {
+  color: #9a8358;
+  text-shadow: 0 0 7px rgba(167, 141, 91, 0.22);
 }
 
 /* Tap-to-begin overlay — keep painted feel. */
@@ -264,7 +310,14 @@
 .reading-art .reveal-block { color: rgba(63, 58, 49, 0.10); }
 .reading-art .reveal-block.is-revealed { color: var(--color-body); }
 
-/* Quiz body sits in the same slot as reading body. */
+/* Quiz body sits in the same slot as reading body, but with more
+   compact section spacing and a tighter title block so all three
+   questions fit inside the painted parchment area. */
+.reading-art .quiz-content { overflow-y: auto; scrollbar-width: none; }
+.reading-art .quiz-content::-webkit-scrollbar { width: 0; }
+.reading-art .quiz-content .reading-title { font-size: 32px; margin-bottom: 8px; }
+.reading-art .quiz-content .reading-subtitle { font-size: 20px; margin-bottom: 18px; }
+.reading-art .quiz-content .reading-ornament { margin-bottom: 8px; }
 .reading-art .quiz-body {
   font-family: var(--font-body);
 }
@@ -323,134 +376,171 @@
 .reading-art .quiz-option.is-locked { pointer-events: none; }
 
 /* ============================================================
-   WORD DRAWER v3 — frame-blank.jpg painted page as drawer.
-   Text drawn in the empty centre slot of the painted frame.
+   WORD DRAWER — painted word-card page slides in from the right.
+   The bg JPG is a COMPLETE word-card with painted floral borders,
+   title cartouche, and bottom ribbon. CSS text must stay inside
+   two SAFE ZONES that avoid the painted artwork:
+     A) .word-card-title-zone — top cartouche slot
+     B) .word-card-body-zone  — middle empty parchment (scroll here)
+   Footer is pinned ABOVE the painted ribbon, NOT inside body scroll.
    ============================================================ */
-.word-drawer-v2 {
+.word-drawer {
   position: absolute;
-  top: 3.5%; right: 2.5%;
-  width: 36%; height: 93%;
+  top: 3.6%; right: 2.2%;
+  width: 35.5%;
+  height: 92%;
   z-index: 50;
-  transform: translateX(110%);
-  transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform: translateX(112%);
+  transition: transform 260ms cubic-bezier(0.22, 0.61, 0.36, 1);
   background-image: url("../assets/bg/ui/frame-blank.jpg");
   background-size: 100% 100%;
+  background-position: center;
   background-repeat: no-repeat;
-  background-position: center center;
-  box-shadow: -16px 0 28px rgba(48, 38, 24, 0.18);
+  box-shadow: -18px 0 30px rgba(48, 38, 24, 0.22);
   overflow: hidden;
 }
-.word-drawer-v2.is-open { transform: translateX(0); }
-.wd-close-v2 {
+.word-drawer.is-open { transform: translateX(0); }
+
+.word-drawer-close {
   position: absolute;
-  top: 4%; right: 6%;
-  width: 26px; height: 26px;
-  border: 1px solid rgba(143, 128, 95, 0.45);
-  background: rgba(248, 242, 230, 0.55);
-  color: var(--paper-muted);
-  font-size: 15px;
+  top: 3.4%; right: 4.6%;
+  width: 22px; height: 22px;
+  border: none;
+  background: transparent;
+  color: rgba(95, 81, 59, 0.72);
+  font-size: 16px;
+  line-height: 1;
   cursor: pointer;
+  z-index: 4;
+}
+.word-drawer-close:hover { color: #3f3a31; }
+
+/* A. Title safe zone — inside the painted top cartouche. */
+.word-card-title-zone {
+  position: absolute;
+  left: 14%; top: 7.8%;
+  width: 72%; height: 12.5%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: left;
+  color: #3f3a31;
   z-index: 2;
 }
-.wd-content-v2 {
-  position: absolute;
-  left: 12%; top: 11%;
-  width: 76%; height: 78%;
-  overflow-y: auto;
-  color: var(--paper-text);
-  font-family: var(--font-body);
+.word-card-word-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45em;
 }
-.wd-title-v2 {
-  margin: 0 0 6px;
+.word-card-word {
   font-family: var(--font-display);
   font-size: 30px;
-  line-height: 1.08;
-  letter-spacing: 0.055em;
+  line-height: 1.05;
+  letter-spacing: 0.045em;
   font-weight: 400;
-  color: var(--paper-text);
+  color: #3f3a31;
 }
-.wd-meta-v2 {
-  margin-left: 10px;
-  font-size: 15px;
+.word-card-pos {
+  font-size: 14px;
   font-style: italic;
-  letter-spacing: 0.04em;
-  color: #6b5c44;
+  color: #7b6f5c;
 }
-.wd-meaning-v2 {
-  margin: 0 0 18px;
+.word-card-meaning {
+  margin-top: 0.4em;
   font-family: var(--font-cn);
   font-size: 14px;
   line-height: 1.45;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.035em;
   color: #6b5c44;
 }
-.wd-section-v2 { margin-top: 16px; }
-.wd-section-title-v2 {
+
+/* B. Body safe zone — avoids ALL 4 painted floral borders. */
+.word-card-body-zone {
+  position: absolute;
+  left: 13.5%; top: 23.5%;
+  width: 73%; height: 60%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding-right: 3%;
+  color: #3f3a31;
+  z-index: 2;
+  scrollbar-width: none;
+}
+.word-card-body-zone::-webkit-scrollbar { width: 0; height: 0; }
+
+.word-section { margin: 0 0 15px; }
+.word-section-title {
   margin: 0 0 8px;
   font-family: var(--font-display);
-  font-size: 11px;
-  letter-spacing: 0.24em;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   font-weight: 400;
-  color: var(--color-gold);
+  color: #9a8358;
 }
-.wd-section-title-v2::before {
+.word-section-title::before {
   content: "❦";
-  margin-right: 6px;
-  color: var(--paper-gold);
-  font-size: 10px;
+  margin-right: 7px;
+  color: #a78d5b;
+  font-size: 0.9em;
 }
-.wd-list-v2 { margin: 0; padding: 0; list-style: none; }
-.wd-list-v2 li {
+.word-entry-list { list-style: none; margin: 0; padding: 0; }
+.word-entry {
   position: relative;
   margin-bottom: 6px;
   padding-left: 14px;
-  font-size: 13px;
-  line-height: 1.48;
-  letter-spacing: 0.025em;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.46;
+  letter-spacing: 0.02em;
   color: #403a31;
 }
-.wd-list-v2 li::before {
+.word-entry::before {
   content: "•";
   position: absolute;
   left: 0; top: 0;
-  color: var(--paper-gold);
+  color: #a78d5b;
 }
-.wd-list-v2 li strong { font-weight: 600; color: #332e27; }
-.wd-list-v2 li em { font-style: italic; color: #5d5347; }
-.wd-example-box-v2 {
-  margin: 14px 0;
+.word-entry strong { font-weight: 600; color: #332e27; }
+.word-entry em { font-style: italic; color: #5d5347; }
+
+.example-box {
+  margin: 13px 0 15px;
   padding: 10px 12px;
-  border: 1px solid rgba(185, 170, 138, 0.45);
-  background: rgba(246, 238, 218, 0.4);
+  border: 1px solid rgba(185, 170, 138, 0.34);
+  background: rgba(246, 238, 218, 0.34);
 }
-.wd-example-en-v2 {
-  margin: 0 0 4px;
-  font-size: 12.5px;
-  line-height: 1.55;
+.example-en {
+  margin: 0 0 6px;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  line-height: 1.48;
   font-style: italic;
-  letter-spacing: 0.02em;
   color: #514839;
 }
-.wd-example-zh-v2 {
+.example-zh {
   margin: 0;
   font-family: var(--font-cn);
-  font-size: 11.5px;
-  line-height: 1.4;
-  color: var(--paper-muted);
+  font-size: 11px;
+  line-height: 1.42;
+  color: #7b6f5c;
 }
-.wd-footer-v2 {
-  margin-top: 18px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(185, 170, 138, 0.42);
-  font-family: var(--font-display);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-gold);
+
+/* Footer — pinned above the painted ribbon, NOT inside body scroll. */
+.word-drawer-footer {
+  position: absolute;
+  left: 18%; bottom: 11%;
+  width: 64%;
   text-align: center;
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9a8358;
+  z-index: 2;
 }
-.word-drawer-v2-backdrop {
+
+.word-drawer-backdrop {
   position: absolute;
   inset: 0;
   background: rgba(34, 28, 20, 0.18);
@@ -459,7 +549,7 @@
   transition: opacity 220ms ease;
   z-index: 40;
 }
-.word-drawer-v2-backdrop.is-open {
+.word-drawer-backdrop.is-open {
   opacity: 1;
   pointer-events: auto;
 }

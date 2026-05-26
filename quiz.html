@@ -13,29 +13,29 @@
 <div class="stage">
   <main class="page art-bg reading-art" data-page="quiz">
 
-    <div class="reading-content">
-      <div class="reading-chapter-kicker" data-chapter-number>Chapter 01</div>
+    <div class="reading-content quiz-content">
+      <div class="reading-kicker" data-chapter-number>Chapter 01</div>
       <h1 class="reading-title" data-chapter-title>The Universe</h1>
       <span class="reading-ornament">✦ ✦ ✦</span>
       <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
       <div class="reading-body quiz-body"><!-- quiz items injected by quiz.js --></div>
     </div>
 
-    <aside class="marginalia-note">
-      <div class="marginalia-title">Comprehension</div>
-      <div class="marginalia-word" style="opacity:0.55; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; font-family:var(--font-display); color:var(--paper-muted);">three questions</div>
+    <aside class="reading-marginalia ornate-panel is-small">
+      <div class="marginalia-label">Comprehension</div>
+      <div class="marginalia-word" style="font-family:var(--font-display); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#9a8358;">Three Questions</div>
     </aside>
 
     <div class="tap-overlay">
       <div class="tap-overlay-card">Tap to reveal the questions</div>
     </div>
 
-    <nav class="bottom-bar">
-      <button type="button" class="nav-link" data-back><span class="g">‹</span>Back</button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-link" data-next>Next<span class="g">›</span></button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-link" onclick="go('select.html')"><span class="g">✦</span>Menu</button>
+    <nav class="reading-bottom-nav">
+      <button type="button" onclick="go('save.html')">Save</button>
+      <button type="button" onclick="go('load.html')">Load</button>
+      <button type="button" onclick="go('select.html')">Menu</button>
+      <button type="button" data-back>Back</button>
+      <button type="button" data-next>Next</button>
     </nav>
   </main>
 </div>

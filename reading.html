@@ -11,50 +11,45 @@
 </head>
 <body>
 <div class="stage">
-  <!-- The chapter's painted page is the full UI; reading.js sets
-       background-image based on ?chapter= (defaults to universe). -->
   <main class="page art-bg reading-art" data-page="reading">
 
-    <!-- Centre reading slot — text only, no frame. -->
+    <!-- Centre reading slot — text ink on painted parchment. -->
     <div class="reading-content">
-      <div class="reading-chapter-kicker" data-chapter-number>Chapter 01</div>
+      <div class="reading-kicker" data-chapter-number>Chapter 01</div>
       <h1 class="reading-title" data-chapter-title>The Universe</h1>
       <span class="reading-ornament">✦ ✦ ✦</span>
       <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
       <article class="reading-body"><!-- reveal blocks injected by reading.js --></article>
     </div>
 
-    <!-- Right-edge marginalia — no frame; pin host. -->
-    <aside class="marginalia-note">
-      <div class="marginalia-title">Marginalia</div>
+    <!-- Right marginalia — shared .ornate-panel.is-small frame. -->
+    <aside class="reading-marginalia ornate-panel is-small">
+      <div class="marginalia-label">Marginalia</div>
       <div class="side-pinned"></div>
     </aside>
 
-    <!-- Tap-to-begin overlay — required for browser audio unlock. -->
+    <!-- Tap-to-begin overlay -->
     <div class="tap-overlay">
       <div class="tap-overlay-card">Tap the page to begin</div>
     </div>
 
-    <!-- Bottom text-only nav — sits on painted footer slot. -->
-    <nav class="bottom-bar">
-      <button type="button" class="nav-link" onclick="go('notes.html')"><span class="g">✦</span>Notes</button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-link" data-quiz><span class="g">✦</span>Quiz</button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-link" data-back><span class="g">‹</span>Back</button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-link" data-next>Next<span class="g">›</span></button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-link" onclick="go('select.html')"><span class="g">✦</span>Menu</button>
+    <!-- Bottom 5-button nav, tucked into painted footer slot. -->
+    <nav class="reading-bottom-nav">
+      <button type="button" onclick="go('save.html')">Save</button>
+      <button type="button" onclick="go('load.html')">Load</button>
+      <button type="button" onclick="go('select.html')">Menu</button>
+      <button type="button" data-back>Back</button>
+      <button type="button" data-next>Next</button>
     </nav>
   </main>
 </div>
 
 <script src="data/mockWords.js"></script>
+<script src="data/wordLibrary.js"></script>
+<script src="data/wordIndex.js"></script>
 <script src="data/mockChapters.js"></script>
 <script src="data/chapterIllustrations.js"></script>
 <script src="data/readingContent.js"></script>
-<script src="data/wordLibrary.js"></script>
 <script src="js/app.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/wordCard.js"></script>
