@@ -913,6 +913,16 @@
   --nav-width:  30.00%;
   --nav-height:  6.50%;
 }
+/* Save / Load — bottom nav lives in the cleared bottom strip of
+   page-blank.jpg (user erased the painted BACK / MENU plaques). */
+.page[data-page="save"],
+.page[data-page="load"] {
+  --nav-count:  2;
+  --nav-left:   30.00%;
+  --nav-top:    89.00%;
+  --nav-width:  40.00%;
+  --nav-height:  6.50%;
+}
 
 /* ============================================================
    CHAPTERS (Table of Contents) — text + plaque inside each slot

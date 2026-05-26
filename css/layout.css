@@ -38,30 +38,19 @@
 
 .page {
   position: absolute;
-  /* Anchored to the stage's top-left; scaled by JS so the full
-     1448×1086 painted page fits the stage exactly. No master-
-     frame bleed offset — the user's UI sits slightly inside the
-     master container, so a crop at the master edges was eating
-     into it. */
   left: 0;
   top: 0;
   width: 1448px;
   height: 1086px;
   transform-origin: top left;
   transform: scale(1);
-  background-color: var(--paper-warm);
-  background-image:
-    radial-gradient(ellipse at 30% 20%, rgba(255, 245, 220, 0.55) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 80%, rgba(120, 95, 55, 0.10) 0%, transparent 65%),
-    repeating-linear-gradient(
-      135deg,
-      rgba(150, 120, 70, 0.025) 0 2px,
-      transparent 2px 5px
-    );
-  border-radius: var(--page-radius);
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.18),
-    0 0 0 1px rgba(120, 95, 55, 0.30) inset;
+  /* No background — the painted bg is set per-page on .page.art-bg
+     and we DON'T want a 'card' bg color leaking through if the
+     painted image has any partial transparency or anti-aliased
+     edge pixels. No border, no box-shadow either: user wants the
+     painted page to look as if it sits ON the body parchment
+     directly, with zero visible seam at the side letterbox. */
+  background: transparent;
   overflow: hidden;
 }
 
@@ -89,24 +78,12 @@
   pointer-events: none;
 }
 
-/* Decorative double frame inside every page */
+/* The CSS-drawn double frame inside every .page is no longer
+   drawn. The painted bgs themselves carry whatever frame the
+   user wants; an additional thin CSS border was creating a
+   visible 'edge of an image' seam on the side letterbox. */
 .page::before,
-.page::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  border: var(--frame-border);
-}
-.page::before {
-  inset: 22px;
-  border-color: var(--paper-frame);
-  opacity: 0.55;
-}
-.page::after {
-  inset: 30px;
-  border: var(--frame-border-soft);
-  opacity: 0.35;
-}
+.page::after { content: none; }
 
 /* ----- Page-level shells ----- */
 .page-inner {
