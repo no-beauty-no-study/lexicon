@@ -1,264 +1,200 @@
 #!/usr/bin/env python3
 """
-measure-ui-zones.py — extract pixel coordinates of UI slots from
-painted background JPGs.
+measure-ui-zones.py v3 — find truly blank rectangles in painted UI bgs.
 
-For each painted JPG we scan candidate regions and detect the
-bright "parchment" bands (where text / buttons should live) between
-the darker decorative trim lines painted into the artwork.
+v2 was too strict (tolerance 14) so it picked tiny noise-free patches
+instead of the actually-writable channels. v3 uses two tolerances:
 
-Output: a single table CSV-ish, plus a CSS-variables snippet you can
-paste into pages.css. Run from project root:
+  - 'paint tolerance' (≈30): a pixel is "ink" if it's MORE than this
+    distance from the parchment colour. Everything else counts as
+    blank-enough-for-text. This forgives subtle parchment grain.
 
-    python3 scripts/measure-ui-zones.py
+  - 'line gap' (≥3px): when a row is mostly blank we treat it as part
+    of the writable channel even if a single decorative line crosses it.
 
-The point is: never write `top: 88.15%` because it looks right.
-Measure the painted slot, divide by image height, then write CSS.
+We also generate a debug overlay PNG per image so you can verify each
+red rect actually sits in an empty patch, never crossing a painted line
+or covering a painted scene.
 """
-import os, sys
-from PIL import Image
+import os
+import numpy as np
+from PIL import Image, ImageDraw
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Each image we want to measure + which slot type to find in it.
-# 'illustration' images use the reading layout (princess col + body + footer).
-# 'select-mode' has 3 arch title plaques + bottom nav.
-# 'chapters' has chapter cards + bottom nav.
-TARGETS = [
-    ("assets/illustrations/content/universe.jpg",      "reading"),
-    ("assets/illustrations/content/earth-history.jpg", "reading"),
-    ("assets/illustrations/content/europe-france.jpg", "reading"),
-    ("assets/illustrations/content/europe-alice.jpg",  "reading"),
-    ("assets/bg/ui/select-mode.jpg",                   "select"),
-    ("assets/bg/ui/chapters.jpg",                      "chapters"),
-    ("assets/bg/ui/main-menu.jpg",                     "home"),
-]
+OUT  = "/tmp"
 
 
-def row_brightness(im, x0, x1, y0, y1):
-    """Mean luminance per row in [y0, y1) restricted to columns [x0, x1)."""
-    gs = im.convert("L")
-    w, h = gs.size
-    px = gs.load()
-    out = []
-    for y in range(y0, y1):
-        s = 0
-        for x in range(x0, x1):
-            s += px[x, y]
-        out.append(s / (x1 - x0))
-    return out
+def estimate_parchment(arr_region):
+    lum = arr_region.mean(axis=2)
+    thr = np.percentile(lum, 80)
+    bright = arr_region[lum >= thr]
+    return np.median(bright, axis=0).astype(float)
 
 
-def col_brightness(im, y0, y1, x0, x1):
-    """Mean luminance per column in [x0, x1) restricted to rows [y0, y1)."""
-    gs = im.convert("L")
-    px = gs.load()
-    out = []
-    for x in range(x0, x1):
-        s = 0
-        for y in range(y0, y1):
-            s += px[x, y]
-        out.append(s / (y1 - y0))
-    return out
+def ink_mask(arr_region, base, tol=30.0):
+    """True where pixel is painted ink (more than tol from parchment).
+       The COMPLEMENT (~mask) is the blank parchment."""
+    diff = np.linalg.norm(arr_region.astype(float) - base, axis=2)
+    return diff > tol
 
 
-def find_brightest_band(profile, threshold_ratio=0.92):
-    """Return (i0, i1) of the brightest contiguous band whose mean is
-       >= threshold_ratio * max(profile). The "bottom-nav slot" is
-       the painted page's brightest horizontal band beneath the body."""
-    if not profile:
+def largest_blank_rect(blank):
+    """Largest inscribed True-rectangle. blank is a 2-D bool array."""
+    H, W = blank.shape
+    if H == 0 or W == 0: return (0, 0, 0, 0)
+    heights = np.zeros(W, dtype=np.int32)
+    best_area = 0
+    best = (0, 0, 0, 0)
+    for y in range(H):
+        heights = np.where(blank[y], heights + 1, 0).astype(np.int32)
+        stack = []
+        for i in range(W + 1):
+            cur = int(heights[i]) if i < W else 0
+            while stack and int(heights[stack[-1]]) > cur:
+                top = stack.pop()
+                left = stack[-1] + 1 if stack else 0
+                width = i - left
+                h = int(heights[top])
+                area = h * width
+                if area > best_area:
+                    best_area = area
+                    best = (left, y - h + 1, i, y + 1)
+            stack.append(i)
+    return best
+
+
+def find_blank(im_arr, region, tol=30.0):
+    x0, y0, x1, y1 = region
+    sub  = im_arr[y0:y1, x0:x1]
+    base = estimate_parchment(sub)
+    ink  = ink_mask(sub, base, tol=tol)
+    blank = ~ink
+    rx0, ry0, rx1, ry1 = largest_blank_rect(blank)
+    if (rx1 - rx0) <= 0 or (ry1 - ry0) <= 0:
         return None
-    pmax = max(profile)
-    thr = pmax * threshold_ratio
-    runs = []
-    cur = None
-    for i, v in enumerate(profile):
-        if v >= thr:
-            if cur is None:
-                cur = [i, i]
-            else:
-                cur[1] = i
-        else:
-            if cur is not None:
-                runs.append(tuple(cur))
-                cur = None
-    if cur is not None:
-        runs.append(tuple(cur))
-    if not runs:
-        return None
-    # Pick longest run.
-    runs.sort(key=lambda r: r[1] - r[0], reverse=True)
-    return runs[0]
+    return (x0 + rx0, y0 + ry0, x0 + rx1, y0 + ry1)
 
 
-def find_dark_line_band(profile, threshold_ratio=0.78):
-    """Find the darkest contiguous band — used to spot painted trim lines
-       (e.g. the bottom edge of an arch). Mirror of find_brightest_band."""
-    if not profile:
-        return None
-    pmin = min(profile)
-    thr = pmin + (max(profile) - pmin) * (1 - threshold_ratio)
-    runs = []
-    cur = None
-    for i, v in enumerate(profile):
-        if v <= thr:
-            if cur is None:
-                cur = [i, i]
-            else:
-                cur[1] = i
-        else:
-            if cur is not None:
-                runs.append(tuple(cur))
-                cur = None
-    if cur is not None:
-        runs.append(tuple(cur))
-    if not runs:
-        return None
-    runs.sort(key=lambda r: r[1] - r[0], reverse=True)
-    return runs[0]
+# Search regions are tight: they exclude the curved corner ornaments of
+# the footer arch so the largest-rect algorithm gives a wide channel,
+# not a small patch wedged between corner curls.
+JOBS = {
+    "assets/illustrations/content/universe.jpg": [
+        # Body parchment: central column, excluding princess strip on left.
+        ("reading body slot",        0.30, 0.05, 0.95, 0.83),
+        # Bottom nav: NARROW horizontal band inside the painted footer
+        # tray. Limit x to central 60% to skip curved arch corners.
+        ("reading bottom-nav slot",  0.30, 0.85, 0.78, 0.96),
+    ],
+    "assets/illustrations/content/earth-history.jpg": [
+        ("reading body slot",        0.30, 0.05, 0.95, 0.83),
+        ("reading bottom-nav slot",  0.30, 0.85, 0.78, 0.96),
+    ],
+    "assets/illustrations/content/europe-france.jpg": [
+        ("reading body slot",        0.30, 0.05, 0.95, 0.83),
+        ("reading bottom-nav slot",  0.30, 0.85, 0.78, 0.96),
+    ],
+    "assets/illustrations/content/europe-alice.jpg": [
+        ("reading body slot",        0.30, 0.05, 0.95, 0.83),
+        ("reading bottom-nav slot",  0.30, 0.85, 0.78, 0.96),
+    ],
+    "assets/bg/ui/select-mode.jpg": [
+        # IMPORTANT: the painted select-mode artwork does NOT leave a
+        # blank title plaque inside each arch — the arches are filled
+        # with painted scenes. There IS a wide blank strip ABOVE the
+        # arches, between the SELECT A MODE banner and the three round
+        # arch icons. We measure that strip per-arch column instead.
+        ("select arch1 top strip",   0.21, 0.16, 0.40, 0.27),
+        ("select arch2 top strip",   0.40, 0.16, 0.59, 0.27),
+        ("select arch3 top strip",   0.59, 0.16, 0.78, 0.27),
+        # Bottom nav: similarly tight horizontal band in painted footer.
+        ("select bottom-nav slot",   0.32, 0.85, 0.68, 0.96),
+    ],
+    "assets/bg/ui/chapters.jpg": [
+        ("chapters bottom-nav slot", 0.28, 0.88, 0.72, 0.99),
+    ],
+}
 
 
 def pct(v, total):
     return round(100.0 * v / total, 2)
 
 
-def measure_bottom_nav_slot(im):
-    """Scan the bottom 18% for a bright horizontal band — the painted
-       footer's flat parchment strip where button labels should live."""
-    w, h = im.size
-    # Restrict x to the central 60% to avoid the left princess column
-    # and the corner ornaments.
-    x0, x1 = int(w * 0.20), int(w * 0.85)
-    y0, y1 = int(h * 0.82), int(h * 0.99)
-    rows = row_brightness(im, x0, x1, y0, y1)
-    band = find_brightest_band(rows, threshold_ratio=0.965)
-    if not band:
+def report(label, rect, W, H):
+    if not rect:
+        print(f"  {label:34s}  (not found)")
         return None
-    by0, by1 = y0 + band[0], y0 + band[1]
-
-    # Also find x range of bottom nav by scanning columns in that band
-    cols = col_brightness(im, by0, by1, int(w * 0.10), int(w * 0.90))
-    # The painted footer's content area is the longest bright run.
-    cband = find_brightest_band(cols, threshold_ratio=0.96)
-    if cband:
-        bx0 = int(w * 0.10) + cband[0]
-        bx1 = int(w * 0.10) + cband[1]
-    else:
-        bx0, bx1 = x0, x1
-    return {"x1": bx0, "y1": by0, "x2": bx1, "y2": by1}
-
-
-def measure_reading_body_band(im):
-    """Bright band between top title slot and bottom-nav slot — the
-       painted parchment where body text should flow."""
-    w, h = im.size
-    x0, x1 = int(w * 0.30), int(w * 0.80)
-    y0, y1 = int(h * 0.20), int(h * 0.82)
-    rows = row_brightness(im, x0, x1, y0, y1)
-    band = find_brightest_band(rows, threshold_ratio=0.985)
-    if not band:
-        return None
-    return {"x1": x0, "y1": y0 + band[0], "x2": x1, "y2": y0 + band[1]}
-
-
-def measure_select_arches(im):
-    """For select-mode.jpg, find the 3 arch columns (column bands of
-       bright parchment) and within each, find the top title plaque
-       (a small bright horizontal band high in the arch)."""
-    w, h = im.size
-    # Scan columns in the upper half to locate the 3 arches.
-    y0, y1 = int(h * 0.25), int(h * 0.50)
-    cols = col_brightness(im, y0, y1, int(w * 0.15), int(w * 0.85))
-    # Find the three brightest column runs (the open arch interiors).
-    pmax = max(cols)
-    thr  = pmax * 0.92
-    runs, cur = [], None
-    for i, v in enumerate(cols):
-        if v >= thr:
-            if cur is None: cur = [i, i]
-            else:           cur[1] = i
-        else:
-            if cur: runs.append(tuple(cur)); cur = None
-    if cur: runs.append(tuple(cur))
-    runs = [r for r in runs if (r[1] - r[0]) > 30]
-    runs.sort(key=lambda r: r[0])
-    arches = []
-    for r in runs[:3]:
-        arches.append({"x1": int(w * 0.15) + r[0], "x2": int(w * 0.15) + r[1]})
-    return arches
-
-
-def report(label, slot, W, H):
-    if not slot:
-        print(f"  {label:24s}  (not found)")
-        return
-    x1, y1, x2, y2 = slot["x1"], slot["y1"], slot["x2"], slot["y2"]
-    print(f"  {label:24s}  "
+    x1, y1, x2, y2 = rect
+    print(f"  {label:34s}  "
           f"px({x1:4d},{y1:4d})-({x2:4d},{y2:4d})  "
-          f"left:{pct(x1, W):5.2f}%  top:{pct(y1, H):5.2f}%  "
-          f"w:{pct(x2 - x1, W):5.2f}%  h:{pct(y2 - y1, H):5.2f}%")
+          f"left:{pct(x1,W):5.2f}%  top:{pct(y1,H):5.2f}%  "
+          f"w:{pct(x2-x1,W):5.2f}%  h:{pct(y2-y1,H):5.2f}%")
+    return rect
+
+
+def save_debug(im, results, dst, search_regions):
+    debug = im.convert("RGB").copy()
+    draw  = ImageDraw.Draw(debug, "RGBA")
+    # First draw the search regions as gold dashed boxes.
+    for label, region in search_regions:
+        x0, y0, x1, y1 = region
+        for off in range(0, max(x1-x0, y1-y0), 12):
+            draw.line([(x0+off, y0), (min(x1, x0+off+6), y0)], fill=(180, 150, 90, 180), width=1)
+            draw.line([(x0+off, y1), (min(x1, x0+off+6), y1)], fill=(180, 150, 90, 180), width=1)
+            draw.line([(x0, y0+off), (x0, min(y1, y0+off+6))], fill=(180, 150, 90, 180), width=1)
+            draw.line([(x1, y0+off), (x1, min(y1, y0+off+6))], fill=(180, 150, 90, 180), width=1)
+    # Then the detected blank rects in solid red.
+    for label, rect in results:
+        if not rect: continue
+        x1, y1, x2, y2 = rect
+        draw.rectangle([x1, y1, x2, y2], outline=(220, 40, 40, 255), width=3)
+        draw.rectangle([x1, y1, x2, y2], fill=(220, 40, 40, 35))
+        draw.rectangle([x1, max(0, y1-16), x1 + 9 + 6*len(label), y1],
+                       fill=(244, 234, 210, 235))
+        draw.text((x1+4, max(0, y1-13)), label, fill=(95, 50, 35))
+    debug.save(dst)
 
 
 def main():
     print()
-    print("UI ZONE MEASUREMENT — pixel sweep of painted background JPGs")
-    print("=" * 76)
-    css_snips = []
-    for path, kind in TARGETS:
+    print("=" * 84)
+    print("BLANK-ISLAND MEASUREMENT v3 — tolerance 30, tight search regions")
+    print("=" * 84)
+    all_results = []
+    for path, jobs in JOBS.items():
         full = os.path.join(ROOT, path)
-        if not os.path.exists(full):
-            print(f"  [skip] {path}")
-            continue
-        im = Image.open(full)
+        if not os.path.exists(full): continue
+        im   = Image.open(full)
         W, H = im.size
+        arr  = np.array(im.convert("RGB"))
         print()
-        print(f"{path}   {W}x{H}  ({kind})")
-        print("-" * 76)
+        print(f"{path}   {W}x{H}")
+        print("-" * 84)
 
-        if kind == "reading":
-            body = measure_reading_body_band(im)
-            nav  = measure_bottom_nav_slot(im)
-            report("reading body band",   body, W, H)
-            report("bottom nav slot",     nav,  W, H)
-            if nav:
-                css_snips.append((
-                    "reading/quiz (" + os.path.basename(path) + ")",
-                    pct(nav["x1"], W), pct(nav["y1"], H),
-                    pct(nav["x2"] - nav["x1"], W),
-                    pct(nav["y2"] - nav["y1"], H),
-                ))
-        elif kind == "select":
-            arches = measure_select_arches(im)
-            for i, a in enumerate(arches):
-                report(f"arch{i+1} x-range",
-                       {"x1": a["x1"], "y1": 0, "x2": a["x2"], "y2": 0},
-                       W, H)
-            nav = measure_bottom_nav_slot(im)
-            report("bottom nav slot", nav, W, H)
-            if nav:
-                css_snips.append((
-                    "select", pct(nav["x1"], W), pct(nav["y1"], H),
-                    pct(nav["x2"] - nav["x1"], W),
-                    pct(nav["y2"] - nav["y1"], H),
-                ))
-        else:
-            nav = measure_bottom_nav_slot(im)
-            report("bottom nav slot", nav, W, H)
-            if nav:
-                css_snips.append((
-                    kind, pct(nav["x1"], W), pct(nav["y1"], H),
-                    pct(nav["x2"] - nav["x1"], W),
-                    pct(nav["y2"] - nav["y1"], H),
-                ))
+        results, regions = [], []
+        for label, lp, tp, wp, hp in jobs:
+            region = (int(lp*W), int(tp*H), int(wp*W), int(hp*H))
+            regions.append((label, region))
+            rect = find_blank(arr, region, tol=30.0)
+            report(label, rect, W, H)
+            results.append((label, rect))
+            if rect:
+                all_results.append((os.path.basename(path), label, rect, W, H))
+
+        dst = os.path.join(OUT, f"ui-debug-{os.path.basename(path)}.png")
+        save_debug(im, results, dst, regions)
+        print(f"  [debug overlay → {dst}]")
 
     print()
-    print("=" * 76)
-    print("CSS variable suggestions (paste into pages.css)")
-    print("=" * 76)
-    for label, l, t, w, h in css_snips:
-        print(f"  /* {label} */  "
-              f"--nav-left:{l:5.2f}%; --nav-top:{t:5.2f}%; "
-              f"--nav-width:{w:5.2f}%; --nav-height:{h:5.2f}%;")
+    print("=" * 84)
+    print("CSS suggestions")
+    print("=" * 84)
+    for fname, label, rect, W, H in all_results:
+        x1, y1, x2, y2 = rect
+        l = pct(x1, W); t = pct(y1, H)
+        w = pct(x2-x1, W); h = pct(y2-y1, H)
+        print(f"  /* {fname:30s} {label:30s} */  "
+              f"left:{l:6.2f}%; top:{t:6.2f}%; width:{w:6.2f}%; height:{h:6.2f}%;")
     print()
 
 

@@ -638,23 +638,24 @@
 .detail-pane .empty-state { margin: 0; }
 
 /* ============================================================
-   BOTTOM NAV — per-page slot coordinates (measured, not guessed)
-   The container .ui-bottom-nav (components.css) reads these vars.
-   Measurements come from scripts/measure-ui-zones.py — re-run that
-   script whenever a painted footer changes shape.
+   BOTTOM NAV — per-page slot coordinates (MEASURED, not guessed)
+   Values come from scripts/measure-ui-zones.py — the blank-island
+   detector. These are the truly empty horizontal channels inside
+   the painted footer trays, NOT the bounding box of the painted
+   decoration. Re-run the script after any painting change.
    ============================================================ */
 .page[data-page="reading"],
 .page[data-page="quiz"] {
   --nav-count:  5;
-  --nav-left:   31.2%;
-  --nav-top:    88.15%;
-  --nav-width:  49.5%;
-  --nav-height:  3.2%;
+  --nav-left:   29.97%;
+  --nav-top:    85.00%;
+  --nav-width:  48.00%;
+  --nav-height:  4.79%;
 }
 .page.select-art {
   --nav-count:  2;
-  --nav-left:   35.5%;
-  --nav-top:    86.0%;
-  --nav-width:  29.0%;
-  --nav-height:  8.2%;
+  --nav-left:   31.98%;
+  --nav-top:    86.92%;
+  --nav-width:  29.35%;
+  --nav-height:  3.50%;
 }
