@@ -69,10 +69,10 @@ body.debug-ui .ui-zone > :not(.debug-keep) { opacity: 0.18; }
    off. Do NOT add per-element absolute positions to title / body
    / marginalia / buttons; those flow inside the zones.
    ============================================================ */
-.zone-reading-title    { left: 35.0%; top: 10.0%; width: 38.0%; height: 13.0%; }
-.zone-reading-body     { left: 31.5%; top: 25.0%; width: 49.0%; height: 55.0%; }
-.zone-marginalia       { left: 80.2%; top: 18.5%; width: 13.5%; height: 18.0%; }
-.zone-bottom-nav       { left: 31.4%; top: 86.7%; width: 49.0%; height:  7.4%; }
+.zone-reading-title    { left: 35.0%; top:  7.6%; width: 38.0%; height: 15.0%; }
+.zone-reading-body     { left: 31.4%; top: 25.2%; width: 48.2%; height: 51.5%; }
+.zone-marginalia       { left: 80.2%; top: 18.2%; width: 13.5%; height: 22.0%; }
+.zone-bottom-nav       { left: 31.2%; top: 87.65%; width: 49.5%; height: 5.2%; }
 
 /* Zone-local content layout: title stack centred, body left-flow,
    marginalia + nav fill their zones. */
@@ -104,15 +104,20 @@ body.debug-ui .ui-zone > :not(.debug-keep) { opacity: 0.18; }
 /* ============================================================
    ZONE coordinates — Select page (3 arches + bottom nav)
    ============================================================ */
-.zone-select-story-title  { left: 23.1%; top: 34.8%; width: 17.5%; height: 12.0%; }
-.zone-select-notes-title  { left: 41.2%; top: 34.8%; width: 17.5%; height: 12.0%; }
-.zone-select-garden-title { left: 59.2%; top: 34.8%; width: 17.5%; height: 12.0%; }
+/* IMPORTANT: hotspot zone and title zone are NOT the same thing.
+   Hotspot may cover the whole arch (for clicking convenience).
+   Title zone covers ONLY the small title-plaque strip beneath the
+   painted icon at the top of each arch — that's where STORY / NOTES
+   / WORD GARDEN sit, NOT on top of the painted scene. */
+.zone-select-story-title  { left: 22.8%; top: 24.2%; width: 18.6%; height:  8.5%; }
+.zone-select-notes-title  { left: 40.9%; top: 24.2%; width: 18.6%; height:  8.5%; }
+.zone-select-garden-title { left: 58.9%; top: 24.2%; width: 18.6%; height:  8.5%; }
 
-.zone-select-story-hit    { left: 22.5%; top: 28.5%; width: 18.6%; height: 49.0%; }
-.zone-select-notes-hit    { left: 40.6%; top: 28.5%; width: 18.6%; height: 49.0%; }
-.zone-select-garden-hit   { left: 58.6%; top: 28.5%; width: 18.6%; height: 49.0%; }
+.zone-select-story-hit    { left: 22.8%; top: 28.3%; width: 18.6%; height: 49.2%; }
+.zone-select-notes-hit    { left: 40.9%; top: 28.3%; width: 18.6%; height: 49.2%; }
+.zone-select-garden-hit   { left: 58.9%; top: 28.3%; width: 18.6%; height: 49.2%; }
 
-.zone-select-bottom-nav   { left: 36.0%; top: 86.8%; width: 28.0%; height:  7.0%; }
+.zone-select-bottom-nav   { left: 33.0%; top: 86.9%; width: 34.0%; height:  5.5%; }
 
 .zone-select-story-title,
 .zone-select-notes-title,
