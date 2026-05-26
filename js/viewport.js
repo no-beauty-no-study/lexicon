@@ -11,31 +11,31 @@
    tightens it to the actual stage box dimensions at runtime.
    ============================================================ */
 (function () {
-  // COVER fill-max scaling. The .page (1448×1086 design canvas) is
-  // scaled to FILL the stage on whichever axis is the limiting
-  // factor; the other axis overflows and is clipped by the stage's
-  // overflow:hidden. On iPad landscape this means painted edges
-  // flush to viewport left+right (no parchment letterbox bars) and
-  // ~3% top + bottom bleed cropped naturally — exactly the page
-  // continuity the user asked for.
+  // CONTAIN with TOP/BOTTOM-only bleed crop. Stage aspect 1448 /
+  // 1068.62 (= 1.355) carries the page WIDTH intact and trims 0.8%
+  // of bleed off the top and bottom (~8.69 px design each side).
+  // The painted frame line at ~1.1% from each edge stays fully
+  // visible. Side letterbox (when viewport > 1.355 aspect) is the
+  // body's parchment colour and matches the painted bleed.
+  const BLEED_TOP = 8.69;   // 0.8% × 1086, design px
   function fitStage() {
     const stage = document.querySelector(".stage");
     const page  = document.querySelector(".stage .page");
     if (!stage || !page) return;
     const sw = stage.clientWidth;
-    const sh = stage.clientHeight;
-    if (!sw || sw < 200 || !sh || sh < 200) {
+    if (!sw || sw < 200) {
       requestAnimationFrame(fitStage);
       return;
     }
-    const scale = Math.max(sw / 1448, sh / 1086);
-    // Centre the (possibly oversized) page in the stage so the
-    // crop happens equally on both sides of the overflowing axis.
-    const left = (sw - 1448 * scale) / 2;
-    const top  = (sh - 1086 * scale) / 2;
+    const scale = sw / 1448;
+    // Translate the page UP by BLEED_TOP × scale so the cropped
+    // strip is split equally top/bottom. Stage height is
+    // 1068.62 × scale; page height is 1086 × scale, so the extra
+    // 17.38 × scale overflows — 8.69 above the stage, 8.69 below.
+    const offY = -BLEED_TOP * scale;
     page.style.transformOrigin = "top left";
     page.style.transform =
-      `translate(${left.toFixed(3)}px, ${top.toFixed(3)}px) scale(${scale.toFixed(6)})`;
+      `translate(0px, ${offY.toFixed(3)}px) scale(${scale.toFixed(6)})`;
     page.style.setProperty("--page-scale", scale.toFixed(6));
   }
 

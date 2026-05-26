@@ -91,6 +91,9 @@
       document.querySelectorAll(".clickable-word.is-selected")
         .forEach(x => x.classList.remove("is-selected"));
       el.classList.add("is-selected");
+      // Speak the clicked surface word out loud (user spec: '点单词
+      // 或者单词卡 词组 都会自动播放英文语音').
+      try { Reveal.speak(el.textContent); } catch (_) {}
       const resolved = resolveClickedWord(el.dataset.word);
       renderMarginalia(resolved);
       syncMarginaliaButtons(currentEntryFromStack());
@@ -303,6 +306,18 @@
     fresh.dataset.parent = (resolved.headEntry && (resolved.headEntry.id || resolved.headEntry.word)) || id;
     fresh.addEventListener("click", (e) => {
       e.stopPropagation();
+      // Speak the part of the card the user actually tapped:
+      //   - English phrase row → speak the phrase
+      //   - any other area     → speak the headword
+      // Always — even when the gesture also opens the drawer.
+      const phraseEl = e.target.closest(".word-card-phrase");
+      const spoken = phraseEl ? phraseEl.textContent : (entry.word || id);
+      try { Reveal.speak(spoken); } catch (_) {}
+      // The drawer should open only when the user taps the headword
+      // (or anywhere outside a phrase row) — taps on a phrase row
+      // should JUST play audio so the user can drill phrases without
+      // losing the page underneath.
+      if (phraseEl) return;
       clearCurrent(stack);
       fresh.classList.add("is-current");
       try {
