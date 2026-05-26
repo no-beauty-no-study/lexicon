@@ -104,30 +104,32 @@ const Reveal = (function () {
   const FEMALE_RE = /(Ava|Samantha|Karen|Victoria|Allison|Susan|Catherine|Serena|Moira|Tessa|Fiona)/i;
   const MALE_RE   = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
 
-  // Per-gender pick cache, since voice loading is async on iOS.
-  let cache = { female: null, male: null };
-
+  /* Re-pick on every call — NO cache. The user reported 'first
+     sentence = Ava, subsequent = robotic'; root cause is the known
+     iOS Safari bug where speechSynthesis.cancel() followed
+     IMMEDIATELY by speak() drops the requested voice and the next
+     utterance plays in the system default voice. Workaround:
+       (a) re-pick the voice each call so even if iOS forgets, we
+           re-assert.
+       (b) wait one tick after cancel() before calling speak() —
+           gives iOS time to settle.
+       (c) set both voice and voiceURI (iOS sometimes only honours
+           one of them). */
   function pickVoice(prefer) {
-    // prefer = 'female' | 'male' | undefined
     const key = (prefer === "male") ? "male" : "female";
-    if (cache[key]) return cache[key];
     try {
       const synth = window.speechSynthesis;
       if (!synth) return null;
       const voices = synth.getVoices();
       if (!voices.length) return null;
       const re = (key === "male") ? MALE_RE : FEMALE_RE;
-      // 1. English + the gender's name list.
-      let v = voices.find(x => /^en[-_]/i.test(x.lang) && re.test(x.name));
-      if (!v) v = voices.find(x => re.test(x.name));
-      if (!v) v = voices.find(x => /^en[-_]/i.test(x.lang));
-      cache[key] = v || null;
-      return v || null;
+      return voices.find(x => /^en[-_]/i.test(x.lang) && re.test(x.name))
+          || voices.find(x => re.test(x.name))
+          || voices.find(x => /^en[-_]/i.test(x.lang))
+          || voices[0];
     } catch (_) { return null; }
   }
 
-  // Decide the default voice gender for the CURRENT page once at
-  // boot. reading → female (Ava), quiz → male (Daniel), else female.
   let defaultGender = "female";
   function detectDefaultGender() {
     const dp = document.querySelector(".page")?.dataset?.page;
@@ -135,11 +137,9 @@ const Reveal = (function () {
   }
   detectDefaultGender();
 
+  // Prime the voices list early (iOS loads voices async).
   if (window.speechSynthesis && typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
-    window.speechSynthesis.onvoiceschanged = () => {
-      cache = { female: null, male: null };
-      pickVoice(defaultGender);
-    };
+    window.speechSynthesis.onvoiceschanged = () => { pickVoice(defaultGender); };
   }
 
   function speak(text, opts) {
@@ -147,15 +147,28 @@ const Reveal = (function () {
     try {
       const synth = window.speechSynthesis;
       if (!synth) return;
-      synth.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = "en-US";
-      u.rate = 0.96;
-      u.pitch = 1.0;
+      // Cancel any pending utterance, THEN wait a tick before
+      // queueing the new one — iOS Safari drops the voice setting
+      // if cancel() and speak() happen in the same JS call.
+      if (synth.speaking || synth.pending) synth.cancel();
       const gender = (opts && opts.gender) || defaultGender;
-      const v = pickVoice(gender);
-      if (v) u.voice = v;
-      synth.speak(u);
+      const startUtter = () => {
+        try {
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = "en-US";
+          u.rate = 0.96;
+          u.pitch = 1.0;
+          const v = pickVoice(gender);
+          if (v) {
+            u.voice = v;
+            // iOS sometimes honours voiceURI better than .voice.
+            if (v.voiceURI) u.voiceURI = v.voiceURI;
+          }
+          synth.speak(u);
+        } catch (_) {}
+      };
+      // 60 ms is enough on iOS 17/18 to let cancel propagate.
+      setTimeout(startUtter, 60);
     } catch (_) { /* swallow */ }
   }
 
