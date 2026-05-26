@@ -115,16 +115,25 @@
   function init() {
     const track = detectTrack();
     setTrack(track);
+    // Try immediately (in case the browser still has autoplay
+    // permission from a previous tap on a previous page).
     playNow();
-    if (!unlocked) {
-      const wakeUp = () => {
-        if (unlocked) return;
-        unlocked = true;
-        playNow();
-      };
-      ["touchstart","pointerdown","click","keydown"].forEach(ev =>
-        document.addEventListener(ev, wakeUp, { passive: true, once: true }));
-    }
+    // ALSO try on every user click — `once: true` was wrong; iOS
+    // sometimes refuses the first attempt then permits a later one.
+    // We keep retrying until the audio is actually playing, then
+    // the listener becomes a no-op.
+    const wakeUp = () => {
+      if (audio && !audio.paused) return;
+      playNow();
+    };
+    ["touchstart","pointerdown","click","keydown"].forEach(ev =>
+      document.addEventListener(ev, wakeUp, { passive: true }));
+    // Persist 'unlocked' across pages so a fresh page can attempt
+    // autoplay without waiting (Safari respects the autoplay grant
+    // within the session origin once a real gesture happened).
+    if (audio) audio.addEventListener("playing", () => {
+      sessionStorage.setItem("tpl.bgm.unlocked", "1");
+    });
     window.addEventListener("pagehide", persist);
     window.addEventListener("beforeunload", persist);
     document.addEventListener("visibilitychange", () => {

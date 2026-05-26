@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Princess Lexicon · Main Menu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  /* main-menu.jpg is the full painted UI. The two entry plaques use
+     the user-supplied banner PNG (chroma-keyed so the outer
+     parchment is fully transparent) and flank the central princess.
+     Per user spec: 'big, obvious, on both sides of the figure'. */
+  .page.home {
+    background-image: url("assets/bg/ui/main-menu.jpg");
+  }
+  .home-banner-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22%;
+    aspect-ratio: 1012 / 309;       /* preserve banner image ratio */
+    background-image: url("assets/bg/ui/menu-button.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    z-index: 8;
+    /* Label sits inside the banner's parchment plate. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 0.4%;             /* visual centring against the
+                                         banner's plate which has a
+                                         slightly heavier top scroll */
+  }
+  .home-banner-btn.left  { left:  1%; }
+  .home-banner-btn.right { right: 1%; }
+  .home-banner-label {
+    font-family: var(--font-display);
+    font-size: clamp(13px, 1.3vw, 22px);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-frame);
+    pointer-events: none;
+  }
+  /* Tap feedback: label warms + glows. */
+  .home-banner-btn:active .home-banner-label,
+  .home-banner-btn:hover  .home-banner-label {
+    color: #2a1e08;
+    text-shadow: 0 0 6px rgba(201, 174, 103, 0.55);
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <main class="page art-bg home">
+    <!-- Two banner plaques flanking the central princess. -->
+    <button type="button" class="home-banner-btn left" onclick="go('select.html')">
+      <span class="home-banner-label">Enter</span>
+    </button>
+    <button type="button" class="home-banner-btn right" onclick="go('chapters.html')">
+      <span class="home-banner-label">Chapters</span>
+    </button>
+  </main>
+</div>
+<script src="js/app.js"></script>
+<script src="js/bgm.js"></script>
+<script src="js/viewport.js"></script>
+</body>
+</html>

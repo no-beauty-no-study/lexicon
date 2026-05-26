@@ -11,30 +11,35 @@
    tightens it to the actual stage box dimensions at runtime.
    ============================================================ */
 (function () {
-  // Crop a thin 1% bleed ring on each side (= effective area
-  // 1419×1064, aspect still ≈ 4:3). That's tight enough to leave
-  // every painted frame line intact — the closest hand-drawn
-  // frame sits ~1.1% from the page edge — but loud enough to
-  // remove the obviously-blank parchment border that made the
-  // page feel like a thumbnail. The cropped pixels overflow the
-  // stage and overflow:hidden hides them; the body bg matches
-  // the bleed colour (#e2d1bb) so the missing strip reads as
-  // continuation, not as a separate gray bar.
-  const BLEED_PCT = 0.01;                  // 1% per side
-  const BLEED_X   = 1448 * BLEED_PCT;      // 14.48 px
-  const BLEED_Y   = 1086 * BLEED_PCT;      // 10.86 px
-  const EFF_W     = 1448 - 2 * BLEED_X;    // 1419.04
-  // const EFF_H  = 1086 - 2 * BLEED_Y;    // 1064.28
+  // ASYMMETRIC bleed crop per user spec: top/bottom can crop right
+  // up to the painted frame line, but sides must stay safe (some
+  // reading pages have a princess intentionally stepping past the
+  // frame on the side). Programmatic frame-line scan minimum:
+  //   chapters top/bottom: 0.83% — so safe TB crop is ~0.7%.
+  //   chapters right    : 0.69% — so safe LR crop is ~0.2%.
+  const BLEED_X_PCT = 0.002;               // 0.2% per side
+  const BLEED_Y_PCT = 0.008;               // 0.8% per side
+  const BLEED_X = 1448 * BLEED_X_PCT;      //  2.90 px
+  const BLEED_Y = 1086 * BLEED_Y_PCT;      //  8.69 px
+  const EFF_W   = 1448 - 2 * BLEED_X;      // 1442.20
+  // const EFF_H = 1086 - 2 * BLEED_Y;     // 1068.62
 
   function fitStage() {
     const stage = document.querySelector(".stage");
     const page  = document.querySelector(".stage .page");
     if (!stage || !page) return;
     const sw = stage.clientWidth;
-    if (!sw) return;
-    // Scale so the EFFECTIVE area (page minus 1% bleed each side)
-    // fills the stage width. The full page therefore overflows
-    // by 1% on every side, which the stage's overflow:hidden hides.
+    // Defensive: when the browser navigates between pages, the
+    // stage's layout box can briefly read as 0 (or a tiny intrinsic
+    // size) before CSS settles. If that happens we'd scale the
+    // 1448 px page by some bogus factor — usually scaling it WAY
+    // too big — which is the 'select page suddenly looks huge' bug.
+    // Defer and retry on the next frame until the stage measures
+    // sensibly.
+    if (!sw || sw < 200) {
+      requestAnimationFrame(fitStage);
+      return;
+    }
     const scale = sw / EFF_W;
     const offX  = -BLEED_X * scale;
     const offY  = -BLEED_Y * scale;
