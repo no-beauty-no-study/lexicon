@@ -100,7 +100,7 @@
     if (!host) return;
 
     if (!resolved || !resolved.headEntry) {
-      host.innerHTML = `<div class="marginalia-word" style="opacity:0.6; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:#9a8358;">Tap a word</div>`;
+      host.innerHTML = `<div class="marginalia-hint">Tap a word</div>`;
       return;
     }
     const entry = resolved.headEntry;
@@ -130,8 +130,8 @@
         ${collocs.map(c => `<li>${esc(c)}</li>`).join("")}
       </ul>
       <div class="marginalia-actions">
-        <button type="button" class="antique-label is-tiny" data-act="full">Full</button>
-        <button type="button" class="antique-label is-tiny" data-act="save" ${saved ? "disabled" : ""}>${saved ? "Saved" : "Save"}</button>
+        <button type="button" class="antique-mini-button" data-act="full">Full</button>
+        <button type="button" class="antique-mini-button" data-act="save" ${saved ? "disabled" : ""}>${saved ? "Saved" : "Save"}</button>
       </div>
     `;
     host.querySelector('[data-act="full"]').addEventListener("click", (e) => {

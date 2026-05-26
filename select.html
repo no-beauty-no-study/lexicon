@@ -8,66 +8,10 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/debug.css">
 <style>
-  /* select-mode.jpg already paints: "SELECT A MODE" title, "Every story
-     is a path to wisdom" ribbon, 3 arched scenes (princess / glowing
-     book / moonlit garden), and 3 small round icons (book/star/rose)
-     at each arch's top. We overlay STORY / NOTES / WORD GARDEN titles
-     in the painted "title plaque" band beneath each arch icon, plus
-     invisible hotspots that cover each arch. */
   .page.select-art {
     background-image: url("assets/bg/ui/select-mode.jpg");
-  }
-  .select-card-text {
-    position: absolute;
-    width: 16.6%;
-    top: 25.5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 6;
-    pointer-events: none;     /* hotspot below catches the clicks */
-  }
-  .select-card-text.story  { left: 24.2%; }
-  .select-card-text.notes  { left: 41.7%; }
-  .select-card-text.garden { left: 59.2%; }
-  .select-card-text .select-card-title {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: 18px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    font-weight: 400;
-    color: #4d4436;
-    text-align: center;
-  }
-  .select-card-text .select-card-subtitle {
-    margin: 6px 0 0;
-    font-family: var(--font-body);
-    font-size: 11px;
-    line-height: 1.35;
-    letter-spacing: 0.04em;
-    color: #6f6250;
-    font-style: italic;
-    text-align: center;
-  }
-  .select-hotspot {
-    position: absolute;
-    top: 22%;
-    width: 17.5%;
-    height: 56%;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 5;
-    transition: background 220ms ease;
-  }
-  .select-hotspot.story  { left: 23.7%; }
-  .select-hotspot.notes  { left: 41.3%; }
-  .select-hotspot.garden { left: 58.9%; }
-  .select-hotspot:hover {
-    background: rgba(167, 141, 91, 0.06);
   }
 </style>
 </head>
@@ -75,30 +19,36 @@
 <div class="stage">
   <main class="page art-bg select-art">
 
-    <!-- Invisible click areas covering each painted arch. -->
-    <button type="button" class="select-hotspot story"  onclick="go('chapters.html')"      aria-label="Story"></button>
-    <button type="button" class="select-hotspot notes"  onclick="go('notes.html')"         aria-label="Notes"></button>
-    <button type="button" class="select-hotspot garden" onclick="go('word-garden.html')"   aria-label="Word Garden"></button>
-
-    <!-- Title text inked into the painted title plaque of each arch. -->
-    <div class="select-card-text story">
+    <!-- ZONES are positioned absolutely; content flows inside. -->
+    <div class="ui-zone zone-select-story-title is-text" data-zone="story title">
       <h2 class="select-card-title">Story</h2>
       <p class="select-card-subtitle">Read the tale.</p>
     </div>
-    <div class="select-card-text notes">
+    <div class="ui-zone zone-select-notes-title is-text" data-zone="notes title">
       <h2 class="select-card-title">Notes</h2>
       <p class="select-card-subtitle">Keep saved words.</p>
     </div>
-    <div class="select-card-text garden">
+    <div class="ui-zone zone-select-garden-title is-text" data-zone="garden title">
       <h2 class="select-card-title">Word Garden</h2>
       <p class="select-card-subtitle">Search every word.</p>
     </div>
 
-    <!-- Bottom nav: MENU / LOAD only. No SAVE on the Select screen. -->
-    <nav class="page-bottom-nav is-two" style="left: 39.5%; width: 21%;">
-      <button type="button" onclick="go('index.html')">Menu</button>
-      <button type="button" onclick="go('load.html')">Load</button>
-    </nav>
+    <div class="ui-zone zone-select-story-hit is-hit" data-zone="story hotspot">
+      <button type="button" onclick="go('chapters.html')"     aria-label="Story"></button>
+    </div>
+    <div class="ui-zone zone-select-notes-hit is-hit" data-zone="notes hotspot">
+      <button type="button" onclick="go('notes.html')"        aria-label="Notes"></button>
+    </div>
+    <div class="ui-zone zone-select-garden-hit is-hit" data-zone="garden hotspot">
+      <button type="button" onclick="go('word-garden.html')"  aria-label="Word Garden"></button>
+    </div>
+
+    <div class="ui-zone zone-select-bottom-nav is-button" data-zone="menu / load">
+      <nav class="page-bottom-nav is-two">
+        <button type="button" onclick="go('index.html')">Menu</button>
+        <button type="button" onclick="go('load.html')">Load</button>
+      </nav>
+    </div>
   </main>
 </div>
 <script src="js/app.js"></script>

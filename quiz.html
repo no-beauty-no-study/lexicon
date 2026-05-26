@@ -8,37 +8,46 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/debug.css">
 </head>
 <body>
 <div class="stage">
   <main class="page art-bg reading-art" data-page="quiz">
 
-    <div class="reading-content quiz-content">
+    <div class="ui-zone zone-reading-title is-text" data-zone="quiz title">
       <div class="reading-kicker" data-chapter-number>Chapter 01</div>
       <h1 class="reading-title" data-chapter-title>The Universe</h1>
       <span class="reading-ornament">✤ ✤ ✤</span>
       <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
+    </div>
+
+    <div class="ui-zone zone-reading-body is-text" data-zone="quiz body">
       <div class="reading-body quiz-body"><!-- quiz items injected by quiz.js --></div>
     </div>
 
-    <aside class="reading-marginalia ornate-panel is-small">
-      <div class="marginalia-label">Comprehension</div>
-      <div class="marginalia-word" style="font-family:var(--font-display); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#9a8358;">Three Questions</div>
-    </aside>
+    <div class="ui-zone zone-marginalia" data-zone="comprehension">
+      <aside class="reading-marginalia antique-frame is-small is-soft">
+        <div class="marginalia-label">Comprehension</div>
+        <div class="marginalia-hint">Three questions</div>
+      </aside>
+    </div>
 
+    <div class="ui-zone zone-bottom-nav is-button" data-zone="bottom nav">
+      <nav class="page-bottom-nav">
+        <button type="button" onclick="go('save.html')">Save</button>
+        <button type="button" onclick="go('load.html')">Load</button>
+        <button type="button" onclick="go('select.html')">Menu</button>
+        <button type="button" data-back>Back</button>
+        <button type="button" data-next>Next</button>
+      </nav>
+    </div>
+
+    <!-- Tap-to-begin overlay -->
     <div class="tap-overlay">
       <div class="tap-overlay-card">Tap to reveal the questions</div>
     </div>
 
-    <nav class="page-bottom-nav">
-      <button type="button" onclick="go('save.html')">Save</button>
-      <button type="button" onclick="go('load.html')">Load</button>
-      <button type="button" onclick="go('select.html')">Menu</button>
-      <button type="button" data-back>Back</button>
-      <button type="button" data-next>Next</button>
-    </nav>
-
-    <!-- Chapter Complete toast — fades in only when ALL answers correct. -->
+    <!-- Chapter Complete toast — appears only when all answers are correct. -->
     <div class="chapter-complete-toast" aria-hidden="true">
       <div class="chapter-complete-title">Chapter Complete</div>
       <p class="chapter-complete-subtitle">The next page opens.</p>
@@ -54,7 +63,6 @@
 <script src="js/chapterNav.js"></script>
 <script src="js/quiz.js"></script>
 <script>
-  // Set chapter-specific painted background.
   document.addEventListener("DOMContentLoaded", () => {
     const id = qparam("chapter", "universe");
     const bg = getChapterBackground(id, qparam("page", null));

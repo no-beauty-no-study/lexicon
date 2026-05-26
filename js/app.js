@@ -23,6 +23,16 @@
   document.addEventListener("DOMContentLoaded", fitStage);
   window.addEventListener("resize", fitStage);
 
+  // ----- Debug UI toggle (?debug=1) — paints .ui-zone outlines so
+  // we can verify every zone aligns with its painted slot before
+  // pouring text into it. -----
+  document.addEventListener("DOMContentLoaded", () => {
+    const u = new URL(window.location.href);
+    if (u.searchParams.get("debug") === "1") {
+      document.body.classList.add("debug-ui");
+    }
+  });
+
   // ----- Tiny navigation helper -----
   window.go = function (href) { window.location.href = href; };
 

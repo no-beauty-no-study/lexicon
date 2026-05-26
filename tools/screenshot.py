@@ -33,6 +33,14 @@ async def main():
         ctx = await browser.new_context(viewport=VIEWPORT, device_scale_factor=2)
         page = await ctx.new_page()
 
+        # ----- DEBUG ZONE screenshots: dashed outlines + zone labels -----
+        await snap(page, f"{BASE}/reading.html?chapter=universe&section=1.1&debug=1",
+                   "Z1-reading-zones", wait_ms=600)
+        await snap(page, f"{BASE}/quiz.html?chapter=universe&section=1.1&debug=1",
+                   "Z2-quiz-zones", wait_ms=600)
+        await snap(page, f"{BASE}/select.html?debug=1",
+                   "Z3-select-zones", wait_ms=600)
+
         # 1. Home — main menu (antique-label buttons)
         await snap(page, f"{BASE}/index.html", "01-home")
 

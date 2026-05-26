@@ -82,16 +82,9 @@
   background-color: var(--paper-bg);
 }
 
-/* Reading body sized & laid out per user spec. Larger, more readable. */
-.reading-art .reading-content {
-  position: absolute;
-  left: 31.6%; top: 10.4%;
-  width: 47.2%; height: 72%;
-  overflow: hidden;
-  box-sizing: border-box;
-  color: var(--paper-text);
-  text-align: left;
-}
+/* Typography for content INSIDE the title / body zones. Positioning
+   is owned by .ui-zone (see debug.css); these rules only describe
+   how text looks once it's inside its zone. */
 .reading-art .reading-kicker {
   text-align: center;
   font-family: var(--font-display);
@@ -168,24 +161,15 @@
   color: #33291f;
 }
 
-/* Marginalia — uses the shared .ornate-panel.is-small frame so it
-   matches every other framed box in the codebase. Position only. */
+/* Marginalia — positioned by .zone-marginalia, framed by
+   .antique-frame.is-small.is-soft. This block only sets the
+   internal padding so the broken corner ticks have room to breathe. */
 .reading-marginalia {
-  position: absolute;
-  left: 80.2%; top: 20.2%;
-  width: 13.2%;
-  min-height: 15%;
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
-  z-index: 9;
-}
-.reading-marginalia.ornate-panel.is-small {
   padding: 12px 10px;
-  background:
-    linear-gradient(180deg, rgba(252, 247, 232, 0.58), rgba(238, 226, 202, 0.42)),
-    rgba(244, 237, 221, 0.46);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 248, 226, 0.34),
-    0 2px 6px rgba(77, 62, 39, 0.06);
+  z-index: 9;
 }
 .reading-marginalia .marginalia-label {
   margin: 0 0 8px;
@@ -241,8 +225,17 @@
   gap: 5px;
   margin-top: 6px;
 }
-.reading-marginalia .marginalia-actions .antique-label.is-tiny {
+.reading-marginalia .marginalia-actions .antique-mini-button {
   flex: 1;
+}
+.reading-marginalia .marginalia-hint {
+  font-family: var(--font-body);
+  font-size: 10px;
+  line-height: 1.38;
+  color: #6c6254;
+  text-align: center;
+  opacity: 0.78;
+  margin-top: 4px;
 }
 
 /* Bottom 5-button nav is .page-bottom-nav in components.css. No
@@ -257,17 +250,15 @@
 .reading-art .reveal-block { color: rgba(63, 58, 49, 0.10); }
 .reading-art .reveal-block.is-revealed { color: var(--color-body); }
 
-/* Quiz body sits in the same slot as reading body, but with more
-   compact section spacing and a tighter title block so all three
-   questions fit inside the painted parchment area. */
-.reading-art .quiz-content { overflow-y: auto; scrollbar-width: none; }
-.reading-art .quiz-content::-webkit-scrollbar { width: 0; }
-.reading-art .quiz-content .reading-title { font-size: 32px; margin-bottom: 8px; }
-.reading-art .quiz-content .reading-subtitle { font-size: 20px; margin-bottom: 18px; }
-.reading-art .quiz-content .reading-ornament { margin-bottom: 8px; }
+/* Quiz body lives in .zone-reading-body, same slot as reading body. */
 .reading-art .quiz-body {
   font-family: var(--font-body);
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
 }
+.reading-art .quiz-body::-webkit-scrollbar { width: 0; }
 .reading-art .quiz-item { margin: 0 0 22px; padding-left: 18px; }
 .reading-art .quiz-no {
   font-family: var(--font-display);

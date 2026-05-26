@@ -1379,10 +1379,12 @@ button.ornate-panel {
    Five (or two) text-only buttons, no frames, sits INSIDE the
    painted footer arc — its visual center, not the upper edge.
    ============================================================ */
+/* Position is provided by the parent .ui-zone (.zone-bottom-nav or
+   .zone-select-bottom-nav); the bar itself just fills its zone. */
 .page-bottom-nav {
-  position: absolute;
-  left: 31.2%; top: 86.9%;
-  width: 49.2%; height: 7.1%;
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   align-items: center;
@@ -1490,5 +1492,128 @@ button.ornate-panel {
   font-size: 13px;
   letter-spacing: 0.045em;
   color: #7b6f5c;
+  font-style: italic;
+}
+
+/* ============================================================
+   ANTIQUE FRAME — translucent inset double-line frame with broken
+   corner ticks. Lets the painted page texture show through, so the
+   frame looks like a faint printed rule rather than a modern card.
+   Used for: right-side marginalia, future small dialog boxes, any
+   "marginal note that should not look like a CSS panel".
+   Combine with .is-small (tighter inner inset + smaller corner
+   ticks) and .is-soft (barely-there fill).
+   ============================================================ */
+.antique-frame {
+  position: relative;
+  box-sizing: border-box;
+  background:
+    linear-gradient(180deg, rgba(252, 247, 232, 0.34), rgba(238, 226, 202, 0.20));
+  border: 1px solid rgba(143, 128, 95, 0.42);
+  color: var(--paper-text);
+  font-family: var(--font-display);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.25),
+    inset 0 0 18px rgba(155, 132, 84, 0.035);
+}
+/* Inner thin line — sits 7px inside the outer border. */
+.antique-frame::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border: 1px solid rgba(185, 170, 138, 0.36);
+}
+/* Broken corner ticks (8 short line segments, one per corner direction). */
+.antique-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(#9b8454, #9b8454) left 10px top 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 10px top 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px top 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px top 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 10px bottom 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 10px bottom 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px bottom 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px bottom 10px / 1px 18px no-repeat;
+  opacity: 0.34;
+}
+.antique-frame.is-soft {
+  background:
+    linear-gradient(180deg, rgba(252, 247, 232, 0.24), rgba(238, 226, 202, 0.14));
+  border-color: rgba(143, 128, 95, 0.30);
+}
+.antique-frame.is-small::before { inset: 5px; }
+.antique-frame.is-small::after {
+  background:
+    linear-gradient(#9b8454, #9b8454) left 7px top 7px / 13px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 7px top 7px / 1px 13px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 7px top 7px / 13px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 7px top 7px / 1px 13px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 7px bottom 7px / 13px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 7px bottom 7px / 1px 13px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 7px bottom 7px / 13px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 7px bottom 7px / 1px 13px no-repeat;
+}
+
+/* ============================================================
+   ANTIQUE MINI BUTTON — used for marginalia Full / Save and any
+   other low-profile inline action. Replaces .antique-label.is-tiny
+   when the surrounding context already provides a frame. Simple
+   single-line border so it doesn't clash with .antique-frame's
+   double-line look.
+   ============================================================ */
+.antique-mini-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  height: 20px;
+  min-width: 0;
+  border: 1px solid rgba(143, 128, 95, 0.36);
+  background: rgba(248, 242, 230, 0.16);
+  color: #5a4b35;
+  font-family: var(--font-display);
+  font-size: 7.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.antique-mini-button:hover {
+  background: rgba(248, 242, 230, 0.30);
+  color: #8a7653;
+  border-color: rgba(167, 141, 91, 0.55);
+}
+.antique-mini-button[disabled],
+.antique-mini-button.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   SELECT-CARD TITLE (lives inside .zone-select-*-title)
+   ============================================================ */
+.select-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #4d4436;
+  line-height: 1.1;
+}
+.select-card-subtitle {
+  margin: 6px 0 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  color: #6f6250;
   font-style: italic;
 }

@@ -8,39 +8,49 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/debug.css">
 </head>
 <body>
 <div class="stage">
   <main class="page art-bg reading-art" data-page="reading">
 
-    <!-- Centre reading slot — text ink on painted parchment. -->
-    <div class="reading-content">
+    <!-- 1. Title zone — kicker / title / ornament / section subtitle.
+         No per-element absolute positioning; everything flows inside. -->
+    <div class="ui-zone zone-reading-title is-text" data-zone="reading title">
       <div class="reading-kicker" data-chapter-number>Chapter 01</div>
       <h1 class="reading-title" data-chapter-title>The Universe</h1>
       <span class="reading-ornament">✤ ✤ ✤</span>
       <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
+    </div>
+
+    <!-- 2. Body zone — reveal blocks. -->
+    <div class="ui-zone zone-reading-body is-text" data-zone="reading body">
       <article class="reading-body"><!-- reveal blocks injected by reading.js --></article>
     </div>
 
-    <!-- Right marginalia — shared .ornate-panel.is-small frame. -->
-    <aside class="reading-marginalia ornate-panel is-small">
-      <div class="marginalia-label">Marginalia</div>
-      <div class="side-pinned"></div>
-    </aside>
+    <!-- 3. Marginalia zone — uses .antique-frame (no white card). -->
+    <div class="ui-zone zone-marginalia" data-zone="marginalia">
+      <aside class="reading-marginalia antique-frame is-small is-soft">
+        <div class="marginalia-label">Marginalia</div>
+        <div class="side-pinned"></div>
+      </aside>
+    </div>
+
+    <!-- 4. Bottom-nav zone — SAVE / LOAD / MENU / BACK / NEXT. -->
+    <div class="ui-zone zone-bottom-nav is-button" data-zone="bottom nav">
+      <nav class="page-bottom-nav">
+        <button type="button" onclick="go('save.html')">Save</button>
+        <button type="button" onclick="go('load.html')">Load</button>
+        <button type="button" onclick="go('select.html')">Menu</button>
+        <button type="button" data-back>Back</button>
+        <button type="button" data-next>Next</button>
+      </nav>
+    </div>
 
     <!-- Tap-to-begin overlay -->
     <div class="tap-overlay">
       <div class="tap-overlay-card">Tap the page to begin</div>
     </div>
-
-    <!-- Bottom 5-button nav, tucked into painted footer slot. -->
-    <nav class="page-bottom-nav">
-      <button type="button" onclick="go('save.html')">Save</button>
-      <button type="button" onclick="go('load.html')">Load</button>
-      <button type="button" onclick="go('select.html')">Menu</button>
-      <button type="button" data-back>Back</button>
-      <button type="button" data-next>Next</button>
-    </nav>
   </main>
 </div>
 
