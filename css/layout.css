@@ -4,39 +4,45 @@
    "book" stage that scales to viewport.
    ============================================================ */
 
-/* The 1448×1086 design fills the viewport like a real app screen,
-   NOT like a contained image. Cover-style: the stage matches the
-   viewport width (or height in narrow / portrait viewports) at the
-   design's 4:3 ratio; any slight overflow on the cross axis is
-   clipped by overflow:hidden. No letterbox parchment bars, no
-   "small image floating in the middle of a page" feeling. */
+/* Per user insight: every painted bg has a sacrificial bleed ring
+   (the parchment + decorative outer ornament). The MASTER FRAME is
+   the inner box defined by the 4 corner medallions at (1.78%,
+   2.15%) → (98.11%, 97.85%). The stage now mirrors the master
+   frame's aspect (1395.86 × 1041.13 ≈ 4:3 but slightly wider) and
+   js/viewport.js positions the .page so the master frame's
+   top-left lands at the stage's (0, 0) and its right-bottom at
+   the stage's (100%, 100%). The painted bleed gets clipped by
+   overflow:hidden — exactly what the user asked for. */
 .stage {
   width: 100vw;
-  height: calc(100vw * 1086 / 1448);
-  aspect-ratio: 1448 / 1086;
+  height: calc(100vw * 1041.13 / 1395.86);
+  aspect-ratio: 1395.86 / 1041.13;
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
   background: #e3d4be;
 }
-@media (max-aspect-ratio: 1448 / 1086) {
+@media (max-aspect-ratio: 1395 / 1041) {
   .stage {
-    width: calc(100dvh * 1448 / 1086);
+    width: calc(100dvh * 1395.86 / 1041.13);
     height: 100dvh;
   }
 }
 
 .page {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  /* Anchored to the stage's top-left, then translated up + left by
+     the master-frame's outer-bleed offset (1.78%, 2.15%) so its
+     master frame aligns with the stage. js/viewport.js sets the
+     final transform numerically on each resize. */
+  left: 0;
+  top: 0;
   width: 1448px;
   height: 1086px;
-  /* Scale + centring are set by viewport.js. This pre-JS fallback
-     scales by 1 (no-op) so the page still centres correctly before
-     viewport.js runs. JS replaces this on DOMContentLoaded. */
-  transform: translate(-50%, -50%) scale(1);
-  transform-origin: center center;
+  transform-origin: top left;
+  transform: scale(1);
+  /* Pre-JS fallback so the page still renders sensibly before
+     viewport.js runs. */
   background-color: var(--paper-warm);
   background-image:
     radial-gradient(ellipse at 30% 20%, rgba(255, 245, 220, 0.55) 0%, transparent 60%),

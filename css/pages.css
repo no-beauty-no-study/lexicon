@@ -197,27 +197,46 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 14px 14px 14px;
+  padding: 18px 14px 14px;
   background: transparent;
-  border: 2px solid var(--ink-frame);
-  box-shadow: inset 0 0 0 1px rgba(245, 236, 214, 0.42);
+  /* Per user reference image: a clean thin outer line + thinner
+     inner line, no harsh 2 px bar. 1 px outer + 1 px inner faded
+     to ~40 % keeps the engraved-on-parchment feel. */
+  border: 1px solid var(--ink-frame);
+  border-radius: 4px;
   z-index: 9;
 }
-.marginalia-card > .corner-tick {
+/* Inner thin line — pseudo-element so the parchment behind stays
+   visible through both. */
+.marginalia-card::before {
+  content: "";
   position: absolute;
-  width: 10px;
-  height: 10px;
-  border-color: var(--ink-frame);
+  inset: 4px;
+  border: 1px solid var(--ink-frame);
+  border-radius: 3px;
+  opacity: 0.42;
   pointer-events: none;
 }
-.marginalia-card > .corner-tick.tl { left: -2px; top: -2px;
-  border-left: 2px solid; border-top: 2px solid; }
-.marginalia-card > .corner-tick.tr { right: -2px; top: -2px;
-  border-right: 2px solid; border-top: 2px solid; }
-.marginalia-card > .corner-tick.bl { left: -2px; bottom: -2px;
-  border-left: 2px solid; border-bottom: 2px solid; }
-.marginalia-card > .corner-tick.br { right: -2px; bottom: -2px;
-  border-right: 2px solid; border-bottom: 2px solid; }
+/* Top centerpiece — ✤ sits on the outer line, no background pill so
+   the painted parchment shows through behind it. */
+.marginalia-card::after {
+  content: "✤";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 6px;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--ink-frame);
+  pointer-events: none;
+}
+/* The 4-corner-tick spans are no longer needed — the double-line
+   frame + ✤ does the same job at a much smaller visual cost. */
+.marginalia-card > .corner-tick { display: none; }
+/* The old .marginalia-card-rule (separate ✤ row under the card top)
+   is now redundant since the frame ::after provides the same ✤. */
+.marginalia-card-rule { display: none; }
 
 /* Top rule inside the card — same visual grammar as antique-divider. */
 .marginalia-card-rule {
@@ -846,32 +865,38 @@
    master-relative via (p-1.78)/96.33 horizontally and
    (p-2.15)/95.85 vertically.
    ============================================================ */
+/* In cover-style fullscreen the master frame is taller than the
+   visible viewport on landscape iPads (~3 % vertical crop each
+   side). Nav tops were pulled up by ~4-5 % so the buttons stay
+   safely inside the viewport even on the widest landscape ratios.
+   The user-measured original values are kept in the comments for
+   reference. */
 .page[data-page="reading"],
 .page[data-page="quiz"] {
   --nav-count:  5;
   --nav-left:   29.47%;
-  --nav-top:    91.50%;
+  --nav-top:    86.50%;   /* was 91.50% */
   --nav-width:  51.04%;
   --nav-height:  8.19%;
 }
 .page.select-art {
   --nav-count:  2;
   --nav-left:   22.60%;
-  --nav-top:    92.20%;
+  --nav-top:    87.50%;   /* was 92.20% */
   --nav-width:  54.92%;
   --nav-height:  7.58%;
 }
 .page[data-page="chapters"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    93.50%;
+  --nav-top:    89.00%;   /* was 93.50% */
   --nav-width:  30.00%;
   --nav-height:  5.50%;
 }
 .page[data-page="word-garden"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    91.50%;
+  --nav-top:    87.00%;   /* was 91.50% */
   --nav-width:  30.00%;
   --nav-height:  6.50%;
 }
@@ -952,9 +977,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(247, 241, 226, 0.18);
-  border: 2px solid var(--ink-frame);
-  box-shadow: inset 0 0 0 1px rgba(245, 236, 214, 0.42);
+  background: transparent;
+  border: 1px solid var(--ink-frame);
+  border-radius: 3px;
   font-family: var(--font-display);
   font-size: 11px;
   line-height: 1;
@@ -963,39 +988,24 @@
   color: var(--ink-frame);
   font-weight: 500;
   cursor: pointer;
-  transition: border-color 160ms ease, color 160ms ease;
+  transition: color 160ms ease;
 }
-/* Inner top + bottom rules — thicker / darker ink so the plaque
-   reads even at small zoom levels. */
+/* Inner thin top + bottom rules — softer (1 px opacity 0.42). */
 .antique-button::before,
 .antique-button::after {
   content: "";
   position: absolute;
-  left: 8px;
-  right: 8px;
+  left: 6px;
+  right: 6px;
   height: 1px;
   background: var(--ink-frame);
-  opacity: 0.55;
+  opacity: 0.42;
   pointer-events: none;
 }
-.antique-button::before { top: 4px; }
-.antique-button::after  { bottom: 4px; }
-/* Four broken corner ticks — 2px ink for visibility. */
-.antique-button-corner {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-color: var(--ink-frame);
-  pointer-events: none;
-}
-.antique-button-corner.tl { left: -2px; top: -2px;
-  border-left: 2px solid; border-top: 2px solid; }
-.antique-button-corner.tr { right: -2px; top: -2px;
-  border-right: 2px solid; border-top: 2px solid; }
-.antique-button-corner.bl { left: -2px; bottom: -2px;
-  border-left: 2px solid; border-bottom: 2px solid; }
-.antique-button-corner.br { right: -2px; bottom: -2px;
-  border-right: 2px solid; border-bottom: 2px solid; }
+.antique-button::before { top: 3px; }
+.antique-button::after  { bottom: 3px; }
+/* Corner-tick spans no longer needed for the refined look. */
+.antique-button-corner { display: none; }
 .antique-button-label { position: relative; z-index: 1; }
 /* Per user spec: NO modern internal-colour change on hover. The
    plaque stays the same; only the LABEL warms + glows. */
@@ -1126,25 +1136,32 @@
 .wg-col-frame {
   position: relative;
   background: rgba(248, 240, 223, 0.18);
-  border: 2px solid var(--ink-frame);
-  box-shadow: inset 0 0 0 1px rgba(245, 236, 214, 0.42);
+  border: 1px solid var(--ink-frame);
+  border-radius: 4px;
 }
-.wg-col-frame > .corner-tick {
+.wg-col-frame::before {
+  content: "";
   position: absolute;
-  width: 10px;
-  height: 10px;
-  border-color: var(--ink-frame);
+  inset: 4px;
+  border: 1px solid var(--ink-frame);
+  border-radius: 3px;
+  opacity: 0.42;
   pointer-events: none;
-  z-index: 2;
 }
-.wg-col-frame > .corner-tick.tl { left: -2px;  top: -2px;
-  border-left: 2px solid; border-top: 2px solid; }
-.wg-col-frame > .corner-tick.tr { right: -2px; top: -2px;
-  border-right: 2px solid; border-top: 2px solid; }
-.wg-col-frame > .corner-tick.bl { left: -2px;  bottom: -2px;
-  border-left: 2px solid; border-bottom: 2px solid; }
-.wg-col-frame > .corner-tick.br { right: -2px; bottom: -2px;
-  border-right: 2px solid; border-bottom: 2px solid; }
+.wg-col-frame::after {
+  content: "✤";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 6px;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--ink-frame);
+  background: transparent;
+  pointer-events: none;
+}
+.wg-col-frame > .corner-tick { display: none; }
 .wg-col {
   position: relative;
   margin: 0;
