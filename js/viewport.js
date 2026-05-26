@@ -11,34 +11,21 @@
    tightens it to the actual stage box dimensions at runtime.
    ============================================================ */
 (function () {
-  // Master frame geometry on the 1448×1086 design:
-  //   top-left  px: ( 25.78, 23.34)   (1.78% × 1448, 2.15% × 1086)
-  //   width  px: 1395.86  (96.33% × 1448)
-  //   height px: 1041.13  (95.85% × 1086)
-  // We scale the .page so its master frame width fills the .stage,
-  // then translate so the master-frame top-left lands at (0, 0)
-  // of the stage. Effect: the painted bleed ring is pushed off
-  // every edge and overflow:hidden on .stage crops it away.
-  const MF_LEFT   = 25.78;
-  const MF_TOP    = 23.34;
-  const MF_WIDTH  = 1395.86;
-  // const MF_HEIGHT = 1041.13;
-
+  // No bleed crop — the full 1448×1086 page is shown, scaled to
+  // fit the .stage (which has 4:3 aspect matching the page). The
+  // user's hand-drawn painted frame line sits slightly INSIDE the
+  // master-frame medallions, so a previous version that cropped
+  // to those medallions cut into her UI. Show everything; let the
+  // letterbox sides do the visual containment.
   function fitStage() {
     const stage = document.querySelector(".stage");
     const page  = document.querySelector(".stage .page");
     if (!stage || !page) return;
     const sw = stage.clientWidth;
     if (!sw) return;
-    // Scale so the master-frame WIDTH matches the stage width.
-    // Same scale aligns the master-frame height to stage height
-    // (the stage aspect is master-frame's aspect — see layout.css).
-    const scale = sw / MF_WIDTH;
-    const offX  = -MF_LEFT * scale;
-    const offY  = -MF_TOP  * scale;
+    const scale = sw / 1448;
     page.style.transformOrigin = "top left";
-    page.style.transform =
-      `translate(${offX.toFixed(3)}px, ${offY.toFixed(3)}px) scale(${scale.toFixed(6)})`;
+    page.style.transform = `scale(${scale.toFixed(6)})`;
     page.style.setProperty("--page-scale", scale.toFixed(6));
   }
 

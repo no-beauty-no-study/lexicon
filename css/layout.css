@@ -4,18 +4,17 @@
    "book" stage that scales to viewport.
    ============================================================ */
 
-/* CONTAIN-style layout — top/bottom of the painted master-frame
-   stay FULLY VISIBLE, side letterbox is painted bleed colour.
-   The user's correct framing: the painted ~2% bleed ring is cut
-   off all four sides; the master-frame is then displayed at full
-   aspect ratio inside the viewport. If the viewport is wider than
-   the master-frame's 1.341 aspect (iPad landscape 1.439), the
-   leftover horizontal space becomes parchment letterbox that
-   reads as a natural extension of the cropped bleed. */
+/* CONTAIN-style layout — the FULL painted 1448×1086 page stays
+   visible. Previous version cropped at master-frame edges (1.78%
+   / 2.15%) which ate into the user's hand-drawn UI: she'd drawn
+   the painted frame line slightly INSIDE the master container,
+   so cropping AT the master container left no buffer. The stage
+   now uses the original page aspect (1448/1086 = 4:3) — nothing
+   is cropped, parchment letterbox covers any leftover sides. */
 .stage {
-  width:  min(calc(100dvh * 1395.86 / 1041.13), 100vw);
-  height: min(100dvh, calc(100vw * 1041.13 / 1395.86));
-  aspect-ratio: 1395.86 / 1041.13;
+  width:  min(calc(100dvh * 1448 / 1086), 100vw);
+  height: min(100dvh, calc(100vw * 1086 / 1448));
+  aspect-ratio: 1448 / 1086;
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
@@ -24,18 +23,17 @@
 
 .page {
   position: absolute;
-  /* Anchored to the stage's top-left, then translated up + left by
-     the master-frame's outer-bleed offset (1.78%, 2.15%) so its
-     master frame aligns with the stage. js/viewport.js sets the
-     final transform numerically on each resize. */
+  /* Anchored to the stage's top-left; scaled by JS so the full
+     1448×1086 painted page fits the stage exactly. No master-
+     frame bleed offset — the user's UI sits slightly inside the
+     master container, so a crop at the master edges was eating
+     into it. */
   left: 0;
   top: 0;
   width: 1448px;
   height: 1086px;
   transform-origin: top left;
   transform: scale(1);
-  /* Pre-JS fallback so the page still renders sensibly before
-     viewport.js runs. */
   background-color: var(--paper-warm);
   background-image:
     radial-gradient(ellipse at 30% 20%, rgba(255, 245, 220, 0.55) 0%, transparent 60%),
