@@ -8,66 +8,57 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/debug.css">
 <style>
   .page.wg-art {
     background-image: url("assets/bg/ui/word-garden.jpg");
-    background-size: cover;
-    background-position: center;
   }
-  .page.wg-art::before, .page.wg-art::after { display: none; }
-  .wg-layer {
-    position: absolute;
-    inset: 22% 16% 14% 16%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 26px;
-  }
-  .wg-layer > div {
-    background: rgba(244, 236, 218, 0.62);
-    border: 1px solid rgba(184, 158, 111, 0.45);
-    border-radius: 4px;
-    padding: 14px 14px;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-  .wg-list { padding: 12px 12px 10px; }
-  .wg-detail { padding: 18px 22px; overflow-y: auto; }
-  .wg-list-grid { padding-top: 4px; }
 </style>
 </head>
 <body>
 <div class="stage">
-  <main class="page wg-art">
-    <div class="wg-layer">
-      <div class="wg-list">
-        <div class="split-header">
-          <span class="sh-title" style="font-size:18px;">All Words</span>
-          <span class="sh-count" data-wg-count>0 words</span>
-        </div>
-        <input class="search-input" type="search" placeholder="Search word">
-        <ul class="wg-list-grid"></ul>
-      </div>
-      <div class="wg-detail">
-        <div class="detail-pane ornate-panel"></div>
-      </div>
-    </div>
+  <main class="page art-bg wg-art" data-page="word-garden">
 
-    <nav class="nav-bar">
-      <button type="button" class="nav-btn" onclick="go('select.html')">
-        <span class="glyph">‹</span> Back
-      </button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-btn" onclick="go('index.html')">
-        <span class="glyph">✤</span> Menu
-      </button>
-    </nav>
+    <div class="master-frame">
+
+      <!-- Search bar — fixed width, centered under the painted title. -->
+      <div class="ui-zone zone-wg-search is-text" data-zone="search">
+        <form class="wg-searchbar" onsubmit="event.preventDefault();">
+          <input id="wg-search" type="search" autocomplete="off"
+                 placeholder="Search words or meanings…" />
+          <span class="wg-search-icon" aria-hidden="true">⌕</span>
+        </form>
+      </div>
+
+      <!-- A–Z directory: jumps to first word starting with that letter. -->
+      <div class="ui-zone zone-wg-az is-text" data-zone="A-Z nav">
+        <nav class="wg-az" id="wg-az"></nav>
+      </div>
+
+      <!-- Two columns of word rows; each column is a parchment card with
+           thin row separators. Row layout: English word | Chinese gloss. -->
+      <div class="ui-zone zone-wg-table" data-zone="word table">
+        <div class="wg-table">
+          <ol class="wg-col wg-col-left"  id="wg-col-left"></ol>
+          <ol class="wg-col wg-col-right" id="wg-col-right"></ol>
+        </div>
+      </div>
+
+      <nav class="ui-bottom-nav">
+        <button type="button" onclick="go('select.html')">
+          <span class="nav-glyph">‹</span>Back
+        </button>
+        <button type="button" onclick="go('index.html')">
+          <span class="nav-glyph">✤</span>Menu
+        </button>
+      </nav>
+    </div>
   </main>
 </div>
 
 <script src="data/mockWords.js"></script>
+<script src="data/wordLibrary.js"></script>
 <script src="js/app.js"></script>
-<script src="js/storage.js"></script>
 <script src="js/wordCard.js"></script>
 <script src="js/wordGarden.js"></script>
 </body>

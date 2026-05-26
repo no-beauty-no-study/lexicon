@@ -190,6 +190,19 @@ body.debug-ui .ui-bottom-nav::after {
 .zone-toc-09 { left: 65.75%; top: 67.41%; width: 15.34%; height:  8.65%; }
 .zone-toc-10 { left: 65.75%; top: 82.87%; width: 14.91%; height:  9.32%; }
 
+/* ============================================================
+   WORD GARDEN — 4 master-frame-relative zones:
+     wg-search   centred search bar (~44px tall)
+     wg-az       A–Z letter strip below the search
+     wg-table    two parchment columns of word rows
+   The container coords leave ample breathing room on the left
+   (~22% painted illustration) and the right (~22% painted
+   illustration), per the user's spec.
+   ============================================================ */
+.zone-wg-search  { left: 21.00%; top: 23.00%; width: 58.00%; height:  6.00%; }
+.zone-wg-az      { left: 16.00%; top: 30.50%; width: 68.00%; height:  4.50%; }
+.zone-wg-table   { left: 21.00%; top: 36.00%; width: 58.00%; height: 53.00%; }
+
 .zone-select-story-title,
 .zone-select-notes-title,
 .zone-select-garden-title {

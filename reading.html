@@ -34,11 +34,12 @@
         <article class="reading-body"><!-- reveal blocks injected by reading.js --></article>
       </div>
 
-      <!-- BOTTOM-RIGHT quadrant — marginalia card. Header is a
-           thin-line + glyph rule (matches the title divider). The card
-           is transparent over the parchment, with 4 corner ticks and
-           a top ✤ rule. Body shows headword + 1–2 collocations OR a
-           short definition; longer content opens in the drawer. -->
+      <!-- BOTTOM-RIGHT quadrant — marginalia card. The user wants a
+           STACK of mini word-cards: clicking a word in the body adds
+           one card here; clicking another stacks below; once the
+           stack overflows the container, new cards cycle back to the
+           top (replacing the oldest). FOLD / SAVE buttons act on
+           whatever card is currently highlighted. -->
       <div class="ui-zone zone-marginalia" data-zone="marginalia">
         <aside class="marginalia-card">
           <span class="corner-tick tl"></span>
@@ -47,7 +48,9 @@
           <span class="corner-tick br"></span>
           <div class="marginalia-card-rule"><span class="antique-divider-glyph">✤</span></div>
           <div class="marginalia-card-body">
-            <div class="marginalia-card-empty">Tap a word</div>
+            <div class="word-card-stack">
+              <div class="word-card-empty">Tap a word</div>
+            </div>
           </div>
           <div class="marginalia-card-actions">
             <button type="button" class="marginalia-btn" data-action="fold" disabled>
@@ -60,17 +63,23 @@
         </aside>
       </div>
 
-      <!-- Bottom nav — 3 cells with thin vertical rules between them.
-           Each button has its own glyph: ✎ Notes, ✤ Quiz, > Next. -->
+      <!-- Bottom nav — 5 cells with thin vertical rules between them.
+           Notes is reachable via Menu → Select, not from this row. -->
       <nav class="ui-bottom-nav">
-        <button type="button" onclick="go('notes.html')">
-          <span class="nav-glyph">✎</span>Notes
+        <button type="button" onclick="go('save.html')">
+          <span class="nav-glyph">✤</span>Save
+        </button>
+        <button type="button" onclick="go('load.html')">
+          <span class="nav-glyph">✤</span>Load
         </button>
         <button type="button" data-quiz>
           <span class="nav-glyph">✤</span>Quiz
         </button>
         <button type="button" data-next>
           Next<span class="nav-glyph-after">›</span>
+        </button>
+        <button type="button" onclick="go('select.html')">
+          <span class="nav-glyph">✤</span>Menu
         </button>
       </nav>
     </div>

@@ -55,13 +55,12 @@ const Reveal = (function () {
     index += 1;
     const b = blocks[index];
     b.classList.add("is-revealed");
-    // Ensure ripple element exists (purely decorative).
     if (!b.querySelector(".ink-ripple")) {
       const r = document.createElement("span");
       r.className = "ink-ripple";
       b.appendChild(r);
     }
-    playAudio(b.dataset.audio);
+    playAudio(b.dataset.audio, b.textContent);
     if (onReveal) onReveal(b, index);
   }
 
@@ -72,22 +71,43 @@ const Reveal = (function () {
     }
   }
 
-  function playAudio(src) {
-    if (!src) return;
+  function playAudio(src, fallbackText) {
+    if (currentAudio) { try { currentAudio.pause(); } catch(_){} currentAudio = null; }
+    if (src) {
+      try {
+        const a = new Audio(src);
+        a.addEventListener("error", () => speak(fallbackText));
+        const p = a.play();
+        if (p && typeof p.catch === "function") {
+          p.catch(() => speak(fallbackText));
+        }
+        currentAudio = a;
+        return;
+      } catch (_) { /* fall through to TTS */ }
+    }
+    speak(fallbackText);
+  }
+
+  /* TTS fallback / proactive narration. Uses Web Speech API with an
+     English voice if one is available; silent if the API is missing.
+     Cancels any in-flight utterance so successive taps don't pile up. */
+  function speak(text) {
+    if (!text) return;
     try {
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio = null;
-      }
-      const a = new Audio(src);
-      a.addEventListener("error", () => { /* missing file — swallow */ });
-      const p = a.play();
-      if (p && typeof p.catch === "function") {
-        p.catch(() => { /* autoplay block or missing — swallow */ });
-      }
-      currentAudio = a;
+      const synth = window.speechSynthesis;
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = 0.96;
+      u.pitch = 1.0;
+      const voices = synth.getVoices();
+      const en = voices.find(v => /^en[-_]/i.test(v.lang) && /Google|Samantha|Karen|Daniel|Microsoft/i.test(v.name))
+              || voices.find(v => /^en[-_]/i.test(v.lang));
+      if (en) u.voice = en;
+      synth.speak(u);
     } catch (_) { /* swallow */ }
   }
 
-  return { init, revealNext, revealAll };
+  return { init, revealNext, revealAll, speak };
 })();

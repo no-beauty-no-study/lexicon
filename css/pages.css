@@ -230,6 +230,60 @@
     rgba(126, 105, 74, 0.45) 70%,
     transparent 100%);
 }
+
+/* WORD-CARD STACK — vertically stacked mini-cards inside the
+   marginalia body. JS appends one card per clicked word; once the
+   stack reaches MAX_CARDS it cycles, overwriting the oldest. The
+   most-recently-added card is .is-current and is the target of
+   the FOLD button. */
+.marginalia-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  text-align: left;
+}
+.word-card-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+.word-card-empty {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: #8d7f68;
+  font-style: italic;
+  opacity: 0.78;
+  text-align: left;
+}
+.word-card {
+  position: relative;
+  padding: 6px 4px 7px;
+  border-top: 1px solid rgba(126, 105, 74, 0.22);
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.word-card:first-child { border-top: 0; padding-top: 0; }
+.word-card:hover { background: rgba(167, 141, 91, 0.06); }
+.word-card.is-current {
+  background: rgba(201, 174, 103, 0.10);
+}
+.word-card-headword {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: 0.03em;
+  color: #2f261d;
+}
+.word-card-meaning {
+  margin-top: 2px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  line-height: 1.32;
+  color: #5e5040;
+}
 .marginalia-card-body {
   flex: 1;
   min-height: 0;
@@ -745,7 +799,7 @@
    ============================================================ */
 .page[data-page="reading"],
 .page[data-page="quiz"] {
-  --nav-count:  3;
+  --nav-count:  5;
   --nav-left:   29.47%;
   --nav-top:    91.50%;
   --nav-width:  51.04%;
@@ -765,6 +819,13 @@
   --nav-width:  30.00%;
   --nav-height:  5.50%;
 }
+.page[data-page="word-garden"] {
+  --nav-count:  2;
+  --nav-left:   35.00%;
+  --nav-top:    91.50%;
+  --nav-width:  30.00%;
+  --nav-height:  6.50%;
+}
 
 /* ============================================================
    CHAPTERS (Table of Contents) — text + plaque inside each slot
@@ -774,43 +835,61 @@
      (bottom half) .toc-card-action   — centred OPEN CHAPTER plaque
    The text block aligns left; the plaque centres.
    ============================================================ */
+/* Each zone splits top:bottom 50/50. The text sits in the TOP half;
+   the OPEN CHAPTER plaque sits in the BOTTOM half. The plaque's top
+   edge therefore lands on the zone's horizontal midline (per user
+   instruction), and a 4px safety gap keeps it off the painted
+   bottom border. The plaque is fixed-size across all 10 cards so
+   the column reads as one tidy row of identical buttons. */
 .toc-card {
-  display: flex;
-  flex-direction: column;
-  padding: 4px 2px 2px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
   pointer-events: none;
 }
 .toc-card-text {
-  flex: 1;
+  grid-row: 1;
+  align-self: end;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0 4px;
+  justify-content: flex-end;
+  padding: 0 6px 2px;
 }
 .toc-card-title {
   margin: 0;
   font-family: var(--font-display);
   font-size: 13px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 400;
   color: #324154;
   line-height: 1.18;
 }
 .toc-card-tagline {
-  margin: 4px 0 0;
+  margin: 3px 0 0;
   font-family: var(--font-body);
   font-size: 9.5px;
-  line-height: 1.32;
-  letter-spacing: 0.02em;
+  line-height: 1.30;
+  letter-spacing: 0.01em;
   color: #6c6254;
   font-style: italic;
 }
 .toc-card-action {
+  grid-row: 2;
+  align-self: start;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 4px;
+  padding: 2px 0 6px;     /* 6px bottom safety gap */
+}
+/* Force every OPEN CHAPTER plaque to identical dimensions across
+   all 10 cards regardless of zone height differences. */
+.toc-card .antique-button {
+  min-width: 0;
+  width: 132px;
+  height: 22px;
+  padding: 0 14px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
 }
 
 /* ============================================================
@@ -885,3 +964,151 @@
 }
 .antique-button:active { transform: translateY(1px); }
 .antique-button:focus  { outline: none; }
+
+/* ============================================================
+   WORD GARDEN — full A–Z dictionary view.
+   Layout (inside .master-frame, all coords master-relative):
+     zone-wg-search   top strip   search bar
+     zone-wg-az       below       A–Z letter directory
+     zone-wg-table    main area   two parchment columns of rows
+   The 4 zone coordinates live in debug.css. Visuals here.
+   ============================================================ */
+
+/* Search bar */
+.wg-searchbar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wg-searchbar input {
+  width: 100%;
+  max-width: 560px;
+  height: 44px;
+  padding: 0 56px 0 22px;
+  border-radius: 22px;
+  border: 1px solid #B9A57A;
+  background: rgba(248, 240, 223, 0.78);
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1;
+  color: #2f261d;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 1px 0 rgba(255, 250, 233, 0.55);
+  outline: none;
+}
+.wg-searchbar input::placeholder {
+  color: rgba(128, 111, 89, 0.75);
+  font-style: italic;
+}
+.wg-searchbar input:focus {
+  border-color: #9d8052;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 233, 0.55),
+    0 0 0 2px rgba(167, 141, 91, 0.18);
+}
+.wg-search-icon {
+  position: absolute;
+  right: calc(50% - 280px + 18px);
+  top: 50%;
+  transform: translateY(-52%);
+  font-size: 18px;
+  line-height: 1;
+  color: #5B4A36;
+  pointer-events: none;
+}
+
+/* A–Z directory — flex row, NEVER wrap. The 58% container width
+   fits 26 letters at this font-size + spacing combo. */
+.wg-az {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+.wg-az-letter {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 0;
+  padding: 4px 0 8px;
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: #5A4633;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+.wg-az-letter:hover { color: #2f261d; }
+.wg-az-letter.is-disabled {
+  color: rgba(90, 70, 51, 0.48);
+  cursor: not-allowed;
+}
+.wg-az-letter.is-current::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 1px;
+  background: #B99B62;
+}
+
+/* Two-column word table */
+.wg-table {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: stretch;
+}
+.wg-col {
+  margin: 0;
+  padding: 18px 28px;
+  list-style: none;
+  overflow-y: auto;
+  background: rgba(248, 240, 223, 0.72);
+  border: 1px solid #CDBF9E;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 226, 0.55);
+}
+.wg-col::-webkit-scrollbar { width: 6px; }
+.wg-col::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.42); border-radius: 3px;
+}
+.wg-row {
+  display: grid;
+  grid-template-columns: 145px 1fr;
+  align-items: center;
+  gap: 32px;
+  height: 32px;
+  padding: 0 4px;
+  border-bottom: 1px solid rgba(166, 148, 112, 0.35);
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+.wg-row:hover { background: rgba(167, 141, 91, 0.08); }
+.wg-row:last-child { border-bottom: 0; }
+.wg-row-en {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #2F261D;
+}
+.wg-row-zh {
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC",
+               var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  color: #5E5040;
+  line-height: 1.2;
+}

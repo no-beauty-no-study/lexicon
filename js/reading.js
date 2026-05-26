@@ -57,7 +57,18 @@
       body.innerHTML = `<p class="reveal-block">No content available yet for this section.</p>`;
     }
 
-    let currentEntry = null;            // last selected word's head entry
+    // The single source of truth for "which word is the FOLD button
+    // pointing at" is the .word-card.is-current node in the stack.
+    // We resolve back to an entry by looking up its data-id whenever
+    // something needs the live selection.
+    function currentEntryFromStack() {
+      const cur = document.querySelector(".word-card.is-current");
+      if (!cur) return null;
+      const id = cur.dataset.id;
+      return (typeof WORDS !== "undefined" && WORDS.find(w => (w.id || w.word) === id))
+          || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === id))
+          || null;
+    }
     renderMarginalia(null);
     wireMarginaliaButtons(chapterId, sectionNum);
 
@@ -69,9 +80,14 @@
         .forEach(x => x.classList.remove("is-selected"));
       el.classList.add("is-selected");
       const resolved = resolveClickedWord(el.dataset.word);
-      currentEntry = (resolved && resolved.headEntry) || null;
       renderMarginalia(resolved);
-      syncMarginaliaButtons(currentEntry);
+      syncMarginaliaButtons(currentEntryFromStack());
+    });
+    // Refresh the FOLD button whenever a stack card is highlighted.
+    document.addEventListener("click", (e) => {
+      if (e.target.closest(".word-card")) {
+        setTimeout(() => syncMarginaliaButtons(currentEntryFromStack()), 0);
+      }
     });
 
     function wireMarginaliaButtons(chapterId, sectionNum) {
@@ -79,11 +95,12 @@
       const save = document.querySelector('.marginalia-btn[data-action="save"]');
       if (fold) fold.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (!currentEntry) return;
-        const id = currentEntry.id || currentEntry.word;
+        const entry = currentEntryFromStack();
+        if (!entry) return;
+        const id = entry.id || entry.word;
         if (Storage.isSaved(id)) return;
         Storage.saveWord(id);
-        syncMarginaliaButtons(currentEntry);
+        syncMarginaliaButtons(entry);
         toast("Folded into Notes");
       });
       if (save) save.addEventListener("click", (e) => {
@@ -117,9 +134,21 @@
     }
 
     // Reveal — tap on .page reveals next block; interactive children stop it.
+    // Speak the chapter title aloud on first tap (before the first block),
+    // then each tap reveals + auto-speaks the next sentence.
+    let titleSpoken = false;
     Reveal.init({
       container: ".page",
       overlaySelector: ".tap-overlay",
+      onReveal: (block, i) => {
+        if (titleSpoken || i !== 0) return;
+        titleSpoken = true;
+        const t1 = document.querySelector("[data-chapter-title]")?.textContent || "";
+        const t2 = document.querySelector("[data-chapter-section]")?.textContent || "";
+        // Speak title BEFORE the first sentence by queueing a short
+        // utterance ahead of whatever the block's audio is playing.
+        Reveal.speak((t1 + ". " + t2).trim());
+      },
     });
 
     // Bottom nav — stop bubble so reveal doesn't fire.
@@ -140,45 +169,89 @@
     });
   }
 
-  /** Marginalia body. Renders into .marginalia-card-body only —
-      header + buttons are fixed pieces of the card (see reading.html)
-      and never get rewritten. Card spec:
-        - headword (clickable → drawer)
-        - 1-2 short collocations
-      Anything longer goes to the drawer (WordCard.openDrawer). */
-  function renderMarginalia(resolved) {
-    const body = document.querySelector(".marginalia-card-body");
-    if (!body) return;
+  /** Marginalia stack. Click a word → push a mini word-card here.
+      When the stack already holds MAX_CARDS items, the oldest is
+      overwritten in place (circular buffer). The most-recently-
+      added card is .is-current and is what FOLD bookmarks. */
+  const MAX_CARDS = 6;
+  let stackSlot = 0;            // next index to overwrite once full
 
-    if (!resolved || !resolved.headEntry) {
-      body.innerHTML = `<div class="marginalia-card-empty">Tap a word</div>`;
-      return;
-    }
-    const entry = resolved.headEntry;
-
-    let collocs = (entry.collocations || []).slice(0, 2);
-    if (collocs.length < 2 && Array.isArray(entry.kin)) {
+  function shortMeaning(entry) {
+    if (entry.meaning) return entry.meaning;
+    if (Array.isArray(entry.kin)) {
       for (const k of entry.kin) {
-        if (k && typeof k === "object" && Array.isArray(k.phrases)) {
-          for (const p of k.phrases) {
-            if (collocs.length >= 2) break;
-            if (p && p.en && !collocs.includes(p.en)) collocs.push(p.en);
-          }
-        }
+        if (k && typeof k === "object" && k.zh) return k.zh;
+        if (typeof k === "string") return k;
       }
     }
+    if (Array.isArray(entry.collocations) && entry.collocations[0]) {
+      return entry.collocations[0];
+    }
+    return "";
+  }
 
-    body.innerHTML = `
-      <h3 class="marginalia-headword">${esc(entry.word || entry.id)}</h3>
-      <ul class="marginalia-collocations">
-        ${collocs.map(c => `<li>${esc(c)}</li>`).join("")}
-      </ul>
-    `;
-    const hw = body.querySelector(".marginalia-headword");
-    if (hw) hw.addEventListener("click", (e) => {
-      e.stopPropagation();
-      try { WordCard.openDrawer(entry); } catch(_) {}
+  function clearCurrent(stack) {
+    stack.querySelectorAll(".word-card.is-current")
+         .forEach(c => c.classList.remove("is-current"));
+  }
+
+  function renderMarginalia(resolved) {
+    const stack = document.querySelector(".word-card-stack");
+    if (!stack) return;
+    if (!resolved || !resolved.headEntry) return;
+    const entry = resolved.headEntry;
+    const id = entry.id || entry.word;
+
+    // Drop the empty hint the first time a card lands.
+    const empty = stack.querySelector(".word-card-empty");
+    if (empty) empty.remove();
+
+    // If the same word is already in the stack, just highlight it.
+    const existing = stack.querySelector(`.word-card[data-id="${cssEsc(id)}"]`);
+    if (existing) {
+      clearCurrent(stack);
+      existing.classList.add("is-current");
+      return;
+    }
+
+    const html = `
+      <div class="word-card is-current" data-id="${esc(id)}">
+        <div class="word-card-headword">${esc(entry.word || id)}</div>
+        <div class="word-card-meaning">${esc(shortMeaning(entry))}</div>
+      </div>`;
+    clearCurrent(stack);
+    const cards = stack.querySelectorAll(".word-card");
+    if (cards.length < MAX_CARDS) {
+      stack.insertAdjacentHTML("beforeend", html);
+    } else {
+      // Replace the oldest slot and advance the cursor.
+      const tmp = document.createElement("template");
+      tmp.innerHTML = html.trim();
+      const fresh = tmp.content.firstElementChild;
+      cards[stackSlot].replaceWith(fresh);
+      stackSlot = (stackSlot + 1) % MAX_CARDS;
+    }
+    // Each card opens the drawer when clicked.
+    stack.querySelectorAll(".word-card").forEach(card => {
+      if (card.dataset.wired) return;
+      card.dataset.wired = "1";
+      card.addEventListener("click", (e) => {
+        e.stopPropagation();
+        clearCurrent(stack);
+        card.classList.add("is-current");
+        try {
+          const cid = card.dataset.id;
+          const ent = (typeof WORDS !== "undefined" && WORDS.find(w => (w.id || w.word) === cid))
+                   || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === cid));
+          if (ent) WordCard.openDrawer(ent);
+        } catch(_) {}
+      });
     });
+  }
+
+  function cssEsc(s) {
+    return String(s).replace(/["\\\n\r]/g, c =>
+      c === '"' ? '\\"' : c === '\\' ? '\\\\' : '');
   }
 
   function esc(s) {
