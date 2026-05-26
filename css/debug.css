@@ -63,6 +63,48 @@ body.debug-ui .ui-zone.is-hit    {
 body.debug-ui .ui-zone > :not(.debug-keep) { opacity: 0.18; }
 
 /* ============================================================
+   MASTER FRAME — the single legal layout coordinate system for
+   each page. Defined by the 4 painted corner medallions (the blue
+   star / flower icons at each corner of the inner page border).
+   EVERY interactive zone — titles, body, marginalia, hotspots,
+   bottom nav — must stay inside this rectangle. Anything outside
+   it is decorative painting and is not writable.
+
+   Coordinates measured by scripts/measure-master-frame.py.
+   ============================================================ */
+.is-master-frame {
+  pointer-events: none;
+}
+body.debug-ui .is-master-frame {
+  border: 2px solid rgba(190, 150, 60, 0.62);
+  background: transparent;
+}
+body.debug-ui .is-master-frame::after {
+  content: "MASTER FRAME";
+  position: absolute;
+  top: -19px; left: 6px;
+  padding: 2px 7px;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.10em;
+  color: #7a653f;
+  background: rgba(246, 232, 198, 0.92);
+  border: 1px solid rgba(170, 140, 90, 0.55);
+  font-family: Georgia, serif;
+}
+
+/* Reading + Quiz share the chapter illustration frame. */
+.page[data-page="reading"] .zone-master-frame,
+.page[data-page="quiz"] .zone-master-frame {
+  left: 3.59%; top: 4.42%; width: 92.75%; height: 91.53%;
+}
+/* Select page's master frame is slightly tighter (the painted
+   curtains / banner consume more outer space). */
+.page.select-art .zone-master-frame {
+  left: 3.94%; top: 4.79%; width: 92.06%; height: 90.06%;
+}
+
+/* ============================================================
    ZONE coordinates — Reading page
    Each coordinate matches a painted slot in the chapter
    illustration jpg. Tune ONLY these numbers when something looks

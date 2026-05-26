@@ -653,9 +653,11 @@
   --nav-height:  4.79%;
 }
 .page.select-art {
+  /* Master frame bottom is 94.85% (4th medallion). Nav stays
+     inside that and inside the painted curved scroll channel. */
   --nav-count:  2;
   --nav-left:   29.97%;
-  --nav-top:    91.25%;
+  --nav-top:    88.50%;
   --nav-width:  39.99%;
-  --nav-height:  4.70%;
+  --nav-height:  4.50%;
 }

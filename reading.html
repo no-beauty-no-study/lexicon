@@ -14,6 +14,11 @@
 <div class="stage">
   <main class="page art-bg reading-art" data-page="reading">
 
+    <!-- 0. Master frame — the legal layout rectangle, defined by the
+         4 painted corner medallions. Every other zone must sit inside
+         this box; visible only when ?debug=1. -->
+    <div class="ui-zone is-master-frame zone-master-frame" data-zone="master frame"></div>
+
     <!-- 1. Title zone — kicker / title / ornament / section subtitle.
          No per-element absolute positioning; everything flows inside. -->
     <div class="ui-zone zone-reading-title is-text" data-zone="reading title">
