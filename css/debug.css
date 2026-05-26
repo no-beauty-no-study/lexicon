@@ -127,17 +127,17 @@ body.debug-ui .ui-bottom-nav::after {
    ZONE coordinates — Select page (3 arches + bottom nav)
    ============================================================ */
 /* IMPORTANT: hotspot zone and title zone are NOT the same thing.
-   Hotspot may cover the whole arch (for clicking convenience).
-   Title zone covers ONLY the small title-plaque strip beneath the
-   painted icon at the top of each arch — that's where STORY / NOTES
-   / WORD GARDEN sit, NOT on top of the painted scene. */
-.zone-select-story-title  { left: 22.8%; top: 33.6%; width: 18.6%; height: 10.5%; }
-.zone-select-notes-title  { left: 40.9%; top: 33.6%; width: 18.6%; height: 10.5%; }
-.zone-select-garden-title { left: 58.9%; top: 33.6%; width: 18.6%; height: 10.5%; }
+   Hotspot = the full arch button (cover the whole card).
+   Title zone = only the cream-coloured TITLE PLATE inside the upper
+   half of the arch — the lighter-tinted strip painted into each arch
+   button. NEVER use the area outside / above the arch. */
+.zone-select-story-title  { left: 22.9%; top: 35.4%; width: 16.8%; height: 10.6%; }
+.zone-select-notes-title  { left: 41.7%; top: 35.4%; width: 16.8%; height: 10.6%; }
+.zone-select-garden-title { left: 60.4%; top: 35.4%; width: 16.8%; height: 10.6%; }
 
-.zone-select-story-hit    { left: 22.8%; top: 28.3%; width: 18.6%; height: 49.2%; }
-.zone-select-notes-hit    { left: 40.9%; top: 28.3%; width: 18.6%; height: 49.2%; }
-.zone-select-garden-hit   { left: 58.9%; top: 28.3%; width: 18.6%; height: 49.2%; }
+.zone-select-story-hit    { left: 21.6%; top: 28.3%; width: 19.5%; height: 55.5%; }
+.zone-select-notes-hit    { left: 40.4%; top: 28.3%; width: 19.5%; height: 55.5%; }
+.zone-select-garden-hit   { left: 59.1%; top: 28.3%; width: 19.5%; height: 55.5%; }
 
 .zone-select-bottom-nav   { left: 33.0%; top: 86.9%; width: 34.0%; height:  5.5%; }
 

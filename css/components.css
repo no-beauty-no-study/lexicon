@@ -1642,3 +1642,83 @@ button.ornate-panel {
   color: #6f6250;
   font-style: italic;
 }
+
+/* ============================================================
+   SELECT HOTSPOT — each arch button. Click triggers a brief gold
+   pulse on the hotspot, a soft sine arpeggio (JS), and navigation.
+   The painted artwork's arch frame remains the visual button;
+   we only add a transient "press" glow.
+   ============================================================ */
+.select-hotspot {
+  /* Crucial: kill the UA <button> defaults so the painted arch shows
+     through. The visible button is the painted artwork, not CSS. */
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  z-index: 4;
+  transition: background 220ms ease, box-shadow 220ms ease;
+}
+.select-hotspot:hover {
+  background: rgba(167, 141, 91, 0.07);
+}
+.select-hotspot:focus { outline: none; }
+/* Title plates sit ABOVE the hotspot visually but ignore the cursor,
+   so clicks pass through to the hotspot below them. */
+.zone-select-story-title,
+.zone-select-notes-title,
+.zone-select-garden-title {
+  z-index: 5;
+  pointer-events: none;
+}
+.zone-select-story-title *,
+.zone-select-notes-title *,
+.zone-select-garden-title * {
+  pointer-events: none;
+}
+.select-hotspot.is-pressed {
+  animation: select-press-flash 520ms ease-out 1;
+}
+@keyframes select-press-flash {
+  0%   { background: rgba(201, 174, 103, 0.30);
+         box-shadow: inset 0 0 28px rgba(201, 174, 103, 0.45),
+                     0 0 18px rgba(201, 174, 103, 0.35); }
+  100% { background: rgba(167, 141, 91, 0.00);
+         box-shadow: inset 0 0 0 rgba(201, 174, 103, 0),
+                     0 0 0 rgba(201, 174, 103, 0); }
+}
+
+/* The TITLE PLATE inside each arch — the cream-coloured top half.
+   Text inked here is the "button label" the user sees. */
+.select-title-text {
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.select-title-text .select-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 19px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #4d4436;
+  line-height: 1.1;
+}
+.select-title-text .select-card-subtitle {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: #6f6250;
+  font-style: italic;
+}
