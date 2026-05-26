@@ -173,15 +173,17 @@ body.debug-ui .ui-bottom-nav::after {
    Title zone = only the cream-coloured TITLE PLATE inside the upper
    half of the arch — the lighter-tinted strip painted into each arch
    button. NEVER use the area outside / above the arch. */
-.zone-select-story-title  { left: 22.9%; top: 35.4%; width: 16.8%; height: 10.6%; }
-.zone-select-notes-title  { left: 41.7%; top: 35.4%; width: 16.8%; height: 10.6%; }
-.zone-select-garden-title { left: 60.4%; top: 35.4%; width: 16.8%; height: 10.6%; }
+/* Hand-measured by the user (red & blue dots on the painted bg).
+   Do NOT auto-adjust these — they are the ground truth. */
+.zone-select-story-title  { left: 22.72%; top: 37.75%; width: 15.47%; height: 12.06%; }
+.zone-select-notes-title  { left: 43.72%; top: 37.94%; width: 15.75%; height: 11.79%; }
+.zone-select-garden-title { left: 64.92%; top: 37.66%; width: 14.85%; height: 12.25%; }
 
-.zone-select-story-hit    { left: 21.6%; top: 28.3%; width: 19.5%; height: 55.5%; }
-.zone-select-notes-hit    { left: 40.4%; top: 28.3%; width: 19.5%; height: 55.5%; }
-.zone-select-garden-hit   { left: 59.1%; top: 28.3%; width: 19.5%; height: 55.5%; }
+.zone-select-story-hit    { left: 21.06%; top: 29.47%; width: 18.85%; height: 56.45%; }
+.zone-select-notes-hit    { left: 42.27%; top: 29.10%; width: 18.51%; height: 56.45%; }
+.zone-select-garden-hit   { left: 62.98%; top: 29.01%; width: 18.92%; height: 57.27%; }
 
-.zone-select-bottom-nav   { left: 33.0%; top: 86.9%; width: 34.0%; height:  5.5%; }
+.zone-select-bottom-nav   { left: 23.55%; top: 90.52%; width: 52.90%; height:  7.27%; }
 
 .zone-select-story-title,
 .zone-select-notes-title,
