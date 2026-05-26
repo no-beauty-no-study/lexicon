@@ -26,12 +26,14 @@
   --paper-edge:          #dccfae;   /* page edge */
   --paper-frame:         #b89e6f;   /* border / frame lines */
   --paper-frame-soft:    #c8b387;   /* lighter frame */
-  --ink-frame:           #534432;   /* DEEPEST painted ink — sampled from
-                                       the master-frame border of all
-                                       painted bgs. Use for button
-                                       borders, antique plaque borders,
-                                       and anywhere a strong frame
-                                       outline is needed. */
+  --ink-frame:           #6d5a3f;   /* Warm-brown frame ink — sampled
+                                       from the VISIBLE painted decorative
+                                       line on every bg (darkest 2% of
+                                       warm-brown pixels in the bottom
+                                       band, NOT shadow pixels). Use for
+                                       button borders, antique plaque
+                                       borders, and anywhere a strong
+                                       but soft frame outline is needed. */
   --paper-shadow:        rgba(80, 60, 30, 0.10);
   --paper-shadow-2:      rgba(80, 60, 30, 0.18);
 

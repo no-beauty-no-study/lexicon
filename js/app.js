@@ -33,8 +33,79 @@
     }
   });
 
-  // ----- Tiny navigation helper -----
-  window.go = function (href) { window.location.href = href; };
+  // ----- Navigation helper with a 220-380ms transition effect -----
+  // Pages that land on the reading view get a brief book-page-flip
+  // effect (rotateY) + a synthesised paper-flip whisper via Web Audio.
+  // Every other navigation gets a quick fade so the jump never feels
+  // like a hard browser reload.
+  function playFlipSound() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      const ctx = new Ctx();
+      const now = ctx.currentTime;
+      // Brown-noise burst shaped by an exponential decay = paper rustle.
+      const dur = 0.34;
+      const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * dur), ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      let last = 0;
+      for (let i = 0; i < data.length; i++) {
+        const white = Math.random() * 2 - 1;
+        last = (last + 0.018 * white) / 1.018;
+        const env = Math.exp(-i / data.length * 6);
+        data[i] = last * env * 1.6;
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const g = ctx.createGain();
+      g.gain.value = 0.42;
+      const hp = ctx.createBiquadFilter();
+      hp.type = "highpass";
+      hp.frequency.value = 800;
+      src.connect(hp).connect(g).connect(ctx.destination);
+      src.start(now);
+      setTimeout(() => { try { ctx.close(); } catch(_){} }, 800);
+    } catch (_) { /* swallow */ }
+  }
+
+  function fadeOut(cb) {
+    const s = document.querySelector(".stage");
+    if (!s) return cb();
+    s.classList.add("is-leaving");
+    setTimeout(cb, 220);
+  }
+  function pageFlip(cb) {
+    const s = document.querySelector(".stage");
+    if (!s) return cb();
+    s.classList.add("is-flipping");
+    playFlipSound();
+    setTimeout(cb, 380);
+  }
+  window.go = function (href) {
+    if (!href) return;
+    const isReading = /^reading\.html/.test(href);
+    const jump = () => { window.location.href = href; };
+    if (isReading) pageFlip(jump);
+    else           fadeOut(jump);
+  };
+  // Make MENU consistent regardless of which page wires it: a button
+  // whose label or data attribute says 'menu' always lands on
+  // index.html, never on history.back(), never on a previous-page
+  // (which would let the browser X / system back take over).
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("button,a").forEach(el => {
+      const txt = (el.textContent || "").trim().toLowerCase();
+      if (/^.{0,2}\bmenu\b.{0,2}$/.test(txt) && !el.dataset.menuFixed) {
+        el.dataset.menuFixed = "1";
+        el.addEventListener("click", (e) => {
+          // Only override if the existing handler navigates somewhere
+          // we don't want; we always send Menu home.
+          e.preventDefault(); e.stopPropagation();
+          window.go("index.html");
+        });
+      }
+    });
+  });
 
   // ----- URL param helper -----
   window.qparam = function (key, fallback) {
