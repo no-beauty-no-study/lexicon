@@ -26,14 +26,13 @@
   --paper-edge:          #dccfae;   /* page edge */
   --paper-frame:         #b89e6f;   /* border / frame lines */
   --paper-frame-soft:    #c8b387;   /* lighter frame */
-  --ink-frame:           #6d5a3f;   /* Warm-brown frame ink — sampled
-                                       from the VISIBLE painted decorative
-                                       line on every bg (darkest 2% of
-                                       warm-brown pixels in the bottom
-                                       band, NOT shadow pixels). Use for
-                                       button borders, antique plaque
-                                       borders, and anywhere a strong
-                                       but soft frame outline is needed. */
+  --ink-frame:           #8a7250;   /* Warm-brown frame ink — softer
+                                       than the originally sampled
+                                       #6d5a3f (user: '框的颜色可以再
+                                       浅一点'). Still readable at
+                                       1 px against parchment but
+                                       reads as a refined gold rather
+                                       than a heavy ink stroke. */
   --paper-shadow:        rgba(80, 60, 30, 0.10);
   --paper-shadow-2:      rgba(80, 60, 30, 0.18);
 
@@ -106,7 +105,7 @@ body,
   height: 100dvh;       /* dynamic vh — accounts for iOS toolbars */
   min-height: 100dvh;
   overflow: hidden;
-  background: #e3d4be;  /* parchment, NEVER black */
+  background: #d0bea6;  /* parchment, NEVER black */
   overscroll-behavior: none;
 }
 

@@ -145,7 +145,18 @@
         ? `${intro}. ${firstBlock.textContent}`
         : firstBlock.textContent;
     }
-    Reveal.init({ container: ".page" });
+    Reveal.init({
+      container: ".page",
+      onReveal: (block, i) => {
+        // Per user spec: 'reading 的标题也需要先是若隐若现的 然后点击念出来'.
+        // The first tap reveals BOTH the chapter title block AND
+        // the first sentence; subsequent taps only reveal the
+        // next reveal-block.
+        if (i === 0) {
+          document.querySelector(".zone-reading-title")?.classList.add("is-revealed");
+        }
+      },
+    });
 
     // Bottom nav — stop bubble so reveal doesn't fire.
     const next = document.querySelector("[data-next]");

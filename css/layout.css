@@ -4,29 +4,22 @@
    "book" stage that scales to viewport.
    ============================================================ */
 
-/* Per user insight: every painted bg has a sacrificial bleed ring
-   (the parchment + decorative outer ornament). The MASTER FRAME is
-   the inner box defined by the 4 corner medallions at (1.78%,
-   2.15%) → (98.11%, 97.85%). The stage now mirrors the master
-   frame's aspect (1395.86 × 1041.13 ≈ 4:3 but slightly wider) and
-   js/viewport.js positions the .page so the master frame's
-   top-left lands at the stage's (0, 0) and its right-bottom at
-   the stage's (100%, 100%). The painted bleed gets clipped by
-   overflow:hidden — exactly what the user asked for. */
+/* CONTAIN-style layout — top/bottom of the painted master-frame
+   stay FULLY VISIBLE, side letterbox is painted bleed colour.
+   The user's correct framing: the painted ~2% bleed ring is cut
+   off all four sides; the master-frame is then displayed at full
+   aspect ratio inside the viewport. If the viewport is wider than
+   the master-frame's 1.341 aspect (iPad landscape 1.439), the
+   leftover horizontal space becomes parchment letterbox that
+   reads as a natural extension of the cropped bleed. */
 .stage {
-  width: 100vw;
-  height: calc(100vw * 1041.13 / 1395.86);
+  width:  min(calc(100dvh * 1395.86 / 1041.13), 100vw);
+  height: min(100dvh, calc(100vw * 1041.13 / 1395.86));
   aspect-ratio: 1395.86 / 1041.13;
   position: relative;
   flex-shrink: 0;
   overflow: hidden;
-  background: #e3d4be;
-}
-@media (max-aspect-ratio: 1395 / 1041) {
-  .stage {
-    width: calc(100dvh * 1395.86 / 1041.13);
-    height: 100dvh;
-  }
+  background: #d0bea6;
 }
 
 .page {

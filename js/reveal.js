@@ -95,9 +95,42 @@ const Reveal = (function () {
     speak(fallbackText);
   }
 
-  /* TTS — Web Speech API. Uses an English voice if one's available;
-     silent if the platform has no synth or no voice. Cancels the
-     previous utterance so successive taps don't pile up. */
+  /* TTS — Web Speech API. PIN TO A MALE VOICE: the user's iPad
+     was alternating between a robotic female voice and a smoother
+     male one. Web Speech API has no gender field, so we match
+     known male voice names (Daniel/Alex/Tom/Aaron/Fred/Oliver/
+     Microsoft David etc.) before falling back to any English
+     voice. Cancels the previous utterance so successive taps
+     don't pile up. */
+  const MALE_VOICE_RE  = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
+  let pickedVoice = null;
+
+  function pickVoice() {
+    if (pickedVoice) return pickedVoice;
+    try {
+      const synth = window.speechSynthesis;
+      if (!synth) return null;
+      const voices = synth.getVoices();
+      if (!voices.length) return null;
+      // 1. English + male name + premium-ish (en-US/en-GB/en-AU).
+      pickedVoice = voices.find(v =>
+        /^en[-_]/i.test(v.lang) && MALE_VOICE_RE.test(v.name)
+      );
+      if (pickedVoice) return pickedVoice;
+      // 2. Any voice whose name suggests it's male.
+      pickedVoice = voices.find(v => MALE_VOICE_RE.test(v.name));
+      if (pickedVoice) return pickedVoice;
+      // 3. Any English voice.
+      pickedVoice = voices.find(v => /^en[-_]/i.test(v.lang));
+      return pickedVoice;
+    } catch (_) { return null; }
+  }
+  // Voices may be loaded asynchronously on iPad / Chrome. Re-pick
+  // when the voiceschanged event fires.
+  if (window.speechSynthesis && typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
+    window.speechSynthesis.onvoiceschanged = () => { pickedVoice = null; pickVoice(); };
+  }
+
   function speak(text) {
     if (!text) return;
     try {
@@ -108,11 +141,8 @@ const Reveal = (function () {
       u.lang = "en-US";
       u.rate = 0.96;
       u.pitch = 1.0;
-      const voices = synth.getVoices();
-      const en = voices.find(v => /^en[-_]/i.test(v.lang) && /Google|Samantha|Karen|Daniel|Microsoft|Alex/i.test(v.name))
-              || voices.find(v => /^en[-_]/i.test(v.lang))
-              || voices[0];
-      if (en) u.voice = en;
+      const v = pickVoice();
+      if (v) u.voice = v;
       synth.speak(u);
     } catch (_) { /* swallow */ }
   }

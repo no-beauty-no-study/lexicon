@@ -11,47 +11,46 @@
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
 <style>
-  /* main-menu.jpg is the full painted UI. Two buttons flank the
-     central portrait, one in each side band, per user spec
-     "两边中间" — vertically centred on the empty left/right strips. */
+  /* main-menu.jpg is the full painted UI. Per user feedback the
+     two buttons were too far apart ('感觉好像那个 眼睛外斜的唐氏脸')
+     — moved to the middle-lower band of the artwork, centred and
+     closer together. */
   .page.home {
     background-image: url("assets/bg/ui/main-menu.jpg");
   }
-  .home-left-btn,
-  .home-right-btn {
+  .home-btn-row {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14%;
-    height: 5.5%;
+    left: 50%;
+    bottom: 6%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4%;
     z-index: 8;
   }
-  .home-left-btn  { left:  5%; }
-  .home-right-btn { right: 5%; }
+  .home-btn-row .antique-button {
+    min-width: 0;
+    width: 150px;
+    height: 30px;
+  }
 </style>
 </head>
 <body>
 <div class="stage">
   <main class="page art-bg home">
-    <!-- Two entry plaques in the empty side strips. Painted bg holds
-         the title; we only overlay these plaques. -->
-    <button type="button" class="antique-button home-left-btn" onclick="go('select.html')">
-      <span class="antique-button-corner tl"></span>
-      <span class="antique-button-corner tr"></span>
-      <span class="antique-button-corner bl"></span>
-      <span class="antique-button-corner br"></span>
-      <span class="antique-button-label">Enter</span>
-    </button>
-    <button type="button" class="antique-button home-right-btn" onclick="go('chapters.html')">
-      <span class="antique-button-corner tl"></span>
-      <span class="antique-button-corner tr"></span>
-      <span class="antique-button-corner bl"></span>
-      <span class="antique-button-corner br"></span>
-      <span class="antique-button-label">Chapters</span>
-    </button>
+    <!-- Two entry plaques. Painted bg holds the title; we only
+         overlay these plaques (centred low, close together). -->
+    <div class="home-btn-row">
+      <button type="button" class="antique-button" onclick="go('select.html')">
+        <span class="antique-button-label">Enter</span>
+      </button>
+      <button type="button" class="antique-button" onclick="go('chapters.html')">
+        <span class="antique-button-label">Chapters</span>
+      </button>
+    </div>
   </main>
 </div>
 <script src="js/app.js"></script>
+<script src="js/bgm.js"></script>
 <script src="js/viewport.js"></script>
 </body>
 </html>

@@ -101,6 +101,8 @@ body.debug-ui .master-frame::after {
 .zone-reading-title    { left: 30.75%; top:  5.69%; width: 50.04%; height: 16.00%; }
 .zone-reading-body     { left: 30.75%; top: 24.05%; width: 50.04%; height: 53.73%; }
 .zone-marginalia       { left: 81.41%; top: 24.05%; width: 14.01%; height: 53.73%; }
+/* Quiz body uses the full available width (no marginalia column). */
+.zone-quiz-body        { left: 30.75%; top: 24.05%; width: 65.00%; height: 53.73%; }
 
 /* In CSS-var nav mode (.ui-bottom-nav reads --nav-* directly), it has
    no .ui-zone wrapper, so we outline it ourselves in debug mode. */

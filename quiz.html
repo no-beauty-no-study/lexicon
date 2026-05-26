@@ -21,21 +21,14 @@
       <div class="ui-zone zone-reading-title is-text" data-zone="quiz title">
         <div class="reading-kicker" data-chapter-number>Chapter 01</div>
         <h1 class="reading-title" data-chapter-title>The Universe</h1>
-        <span class="reading-ornament">✤ ✤ ✤</span>
+        <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
         <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
       </div>
 
-      <div class="ui-zone zone-reading-body is-text" data-zone="quiz body">
+      <!-- Quiz uses the FULL body width — no marginalia card on the
+           right side. Per user: '选择题界面不要那个右边的框'. -->
+      <div class="ui-zone zone-quiz-body is-text" data-zone="quiz body">
         <div class="reading-body quiz-body"><!-- quiz items injected by quiz.js --></div>
-      </div>
-
-      <div class="ui-zone zone-marginalia" data-zone="comprehension">
-        <aside class="marginalia-card">
-          <div class="marginalia-card-header">COMPREHENSION</div>
-          <div class="marginalia-card-body">
-            <div class="marginalia-card-empty">Three questions</div>
-          </div>
-        </aside>
       </div>
 
       <nav class="ui-bottom-nav">
@@ -45,11 +38,6 @@
         <button type="button" data-back>Back</button>
         <button type="button" data-next>Next</button>
       </nav>
-    </div>
-
-    <!-- Tap-to-begin overlay -->
-    <div class="tap-overlay">
-      <div class="tap-overlay-card">Tap to reveal the questions</div>
     </div>
 
     <!-- Chapter Complete toast — appears only when all answers are correct.
@@ -77,6 +65,7 @@
     if (bg) document.querySelector(".page").style.backgroundImage = `url("${bg}")`;
   });
 </script>
+<script src="js/bgm.js"></script>
 <script src="js/viewport.js"></script>
 </body>
 </html>

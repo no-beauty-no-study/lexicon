@@ -468,6 +468,21 @@
 .reading-art .reveal-block { color: rgba(63, 58, 49, 0.10); }
 .reading-art .reveal-block.is-revealed { color: var(--color-body); }
 
+/* Reading title is also reveal-eligible — initially faint (the user
+   wants 若隐若现) and on first tap fades in to full ink as the TTS
+   speaks 'The Universe. 1.1 · The First Light'. Quiz title stays
+   normal-coloured (user: '选择题页面的标题不需要'). */
+.reading-art [data-page="reading"] .zone-reading-title,
+.reading-art:not([data-page="quiz"]) .zone-reading-title {
+  transition: opacity 280ms ease-out, color 280ms ease-out;
+}
+.reading-art:not([data-page="quiz"]) .zone-reading-title:not(.is-revealed) {
+  opacity: 0.18;
+}
+.reading-art:not([data-page="quiz"]) .zone-reading-title.is-revealed {
+  opacity: 1;
+}
+
 /* Quiz body lives in .zone-reading-body, same slot as reading body. */
 .reading-art .quiz-body {
   font-family: var(--font-body);
@@ -865,38 +880,36 @@
    master-relative via (p-1.78)/96.33 horizontally and
    (p-2.15)/95.85 vertically.
    ============================================================ */
-/* In cover-style fullscreen the master frame is taller than the
-   visible viewport on landscape iPads (~3 % vertical crop each
-   side). Nav tops were pulled up by ~4-5 % so the buttons stay
-   safely inside the viewport even on the widest landscape ratios.
-   The user-measured original values are kept in the comments for
-   reference. */
+/* CONTAIN-style layout means master frame fits FULLY inside the
+   viewport (top + bottom visible), so we can use the user's
+   original hand-measured nav coordinates without compensating
+   for a vertical crop. */
 .page[data-page="reading"],
 .page[data-page="quiz"] {
   --nav-count:  5;
   --nav-left:   29.47%;
-  --nav-top:    86.50%;   /* was 91.50% */
+  --nav-top:    91.50%;
   --nav-width:  51.04%;
   --nav-height:  8.19%;
 }
 .page.select-art {
   --nav-count:  2;
   --nav-left:   22.60%;
-  --nav-top:    87.50%;   /* was 92.20% */
+  --nav-top:    92.20%;
   --nav-width:  54.92%;
   --nav-height:  7.58%;
 }
 .page[data-page="chapters"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    89.00%;   /* was 93.50% */
+  --nav-top:    93.50%;
   --nav-width:  30.00%;
   --nav-height:  5.50%;
 }
 .page[data-page="word-garden"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    87.00%;   /* was 91.50% */
+  --nav-top:    91.50%;
   --nav-width:  30.00%;
   --nav-height:  6.50%;
 }
