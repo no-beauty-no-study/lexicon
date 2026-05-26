@@ -1413,40 +1413,70 @@ button.ornate-panel {
   position: relative;
   width: 100%;
   height: 100%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
   border: 0;
   background: transparent;
   padding: 0;
   margin: 0;
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 400;
-  color: rgba(91, 78, 57, 0.92);
+  color: rgba(75, 62, 42, 0.92);
   cursor: pointer;
 }
-.ui-bottom-nav button::before,
-.page-bottom-nav button::before {
-  /* Decorative flourish — does NOT shift the label off-centre.
-     The ::before is absolutely positioned so place-items:center
-     still centres the actual text node, not the glyph. */
-  content: "✤";
-  position: absolute;
-  left: 18%;
-  top: 50%;
-  transform: translateY(-52%);
-  color: rgba(167, 141, 91, 0.58);
-  font-size: 0.62em;
+/* Inline glyph slot. Override per-button via data-glyph or by
+   inserting a .nav-glyph span. The default is a small star ✤
+   sitting just left of the label, in the same line so place-items
+   keeps the (glyph + label) pair centred together. */
+.ui-bottom-nav button .nav-glyph,
+.page-bottom-nav button .nav-glyph {
+  display: inline-block;
+  margin-right: 0.55em;
+  color: rgba(126, 105, 74, 0.78);
+  font-size: 0.82em;
   line-height: 1;
+  vertical-align: -0.04em;
+}
+.ui-bottom-nav button .nav-glyph-after,
+.page-bottom-nav button .nav-glyph-after {
+  display: inline-block;
+  margin-left: 0.55em;
+  color: rgba(126, 105, 74, 0.78);
+  font-size: 0.82em;
+  line-height: 1;
+}
+/* Vertical separators between cells — thin gold rule, inset top/bottom. */
+.ui-bottom-nav button + button::before,
+.page-bottom-nav button + button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.45) 18%,
+    rgba(126, 105, 74, 0.45) 82%,
+    transparent 100%);
+  pointer-events: none;
 }
 .ui-bottom-nav button:hover,
 .page-bottom-nav button:hover {
-  color: #8a7653;
-  text-shadow: 0 0 5px rgba(167, 141, 91, 0.18);
+  color: #4a3a1f;
+  text-shadow: 0 0 6px rgba(167, 141, 91, 0.24);
 }
+.ui-bottom-nav button:hover .nav-glyph,
+.ui-bottom-nav button:hover .nav-glyph-after,
+.page-bottom-nav button:hover .nav-glyph,
+.page-bottom-nav button:hover .nav-glyph-after { color: rgba(124, 95, 50, 0.95); }
 .ui-bottom-nav button:focus,
 .page-bottom-nav button:focus { outline: none; }
 .ui-bottom-nav button[disabled],

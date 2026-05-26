@@ -133,6 +133,11 @@
       e.stopPropagation();
       window.go(ChapterNav.prevBeforeReading(chapterId, sectionNum));
     });
+    const quiz = document.querySelector("[data-quiz]");
+    if (quiz) quiz.addEventListener("click", (e) => {
+      e.stopPropagation();
+      window.go(`quiz.html?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}`);
+    });
   }
 
   /** Marginalia body. Renders into .marginalia-card-body only —

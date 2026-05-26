@@ -43,35 +43,13 @@
 
 /* ============================================================
    CHAPTERS / TOC PAGE — chapters.jpg is the full UI.
-   Each painted OPEN CHAPTER plaque has an invisible hit zone.
-   No CSS-drawn cards.
+   The 10 chapter zones are positioned by master-frame-relative
+   percentages defined in debug.css (.zone-toc-NN). Each zone
+   renders a .toc-card via chapters.html's inline script. The
+   visual style for the card body + OPEN CHAPTER plaque lives
+   at the bottom of this file under "CHAPTERS (Table of Contents)
+   text + plaque". The shared bottom nav handles BACK / MENU.
    ============================================================ */
-.chapters-art .toc-open {
-  width: 13%;
-  height: 3.2%;
-  font-family: var(--font-display);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-.chapters-art .toc-open-1  { left: 29.5%; top: 25.8%; }
-.chapters-art .toc-open-2  { left: 29.5%; top: 36.2%; }
-.chapters-art .toc-open-3  { left: 29.5%; top: 46.6%; }
-.chapters-art .toc-open-4  { left: 29.5%; top: 57.0%; }
-.chapters-art .toc-open-5  { left: 29.5%; top: 67.4%; }
-.chapters-art .toc-open-6  { left: 73.2%; top: 25.8%; }
-.chapters-art .toc-open-7  { left: 73.2%; top: 36.2%; }
-.chapters-art .toc-open-8  { left: 73.2%; top: 46.6%; }
-.chapters-art .toc-open-9  { left: 73.2%; top: 57.0%; }
-.chapters-art .toc-open-10 { left: 73.2%; top: 67.4%; }
-
-/* Bottom-of-page BACK / MENU hit-zones (chapters.jpg footer). */
-.chapters-art .toc-foot-back {
-  left: 35%; top: 94%; width: 12%; height: 4%;
-}
-.chapters-art .toc-foot-menu {
-  left: 53%; top: 94%; width: 12%; height: 4%;
-}
 
 /* ============================================================
    READING PAGE — chapter illustration is the full UI background.
@@ -98,32 +76,30 @@
 .reading-art .reading-title {
   text-align: center;
   font-family: var(--font-display);
-  font-size: 40px;
-  line-height: 1.15;
-  letter-spacing: 0.17em;
+  font-size: 36px;
+  line-height: 1.12;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 400;
-  color: #394754;
-  margin: 0 0 14px;
+  color: #2b3b51;
+  margin: 0 0 6px;
 }
-.reading-art .reading-ornament {
-  display: block;
-  text-align: center;
-  font-size: 14px;
-  letter-spacing: 0.6em;
-  color: var(--paper-gold);
-  margin: 0 0 14px;
+/* Reading title divider — same visual grammar as .antique-divider
+   but slightly wider in the middle so it matches the painted UI. */
+.reading-art .antique-divider {
+  width: 58%;
+  margin: 6px auto 10px;
 }
 .reading-art .reading-subtitle {
   text-align: center;
   font-family: var(--font-display);
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1.3;
-  letter-spacing: 0.08em;
-  color: #8a7653;
+  letter-spacing: 0.04em;
+  color: #9a7b3f;
   font-weight: 400;
   font-style: italic;
-  margin: 0 0 28px;
+  margin: 4px 0 18px;
 }
 .reading-art .reading-body {
   width: 100%;
@@ -162,44 +138,97 @@
 }
 
 /* ============================================================
-   MARGINALIA CARD — the fixed right-side word card. Per the user
-   spec: a stable card with HEADER / headword / 1-2 collocations
-   / FOLD button / SAVE button — NOTHING else. Longer entries
-   open in the drawer.
-     FOLD = save this word to Notes (per-word bookmark)
-     SAVE = save the current chapter to Storage (chapter bookmark)
-   The card is left-aligned to form one continuous text spine
-   that never reflows.
+   ANTIQUE DIVIDER — the universal "── ✤ ──" rule.
+   Two thin fading line-segments flank a single small glyph. Used
+   below every chapter title and at the top edge of every small
+   antique card. Lines fade out at both ends so the rule reads as
+   engraved into the parchment, not stamped on top of it.
+   ============================================================ */
+.antique-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin: 6px auto 8px;
+  pointer-events: none;
+}
+.antique-divider::before,
+.antique-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.55) 25%,
+    rgba(126, 105, 74, 0.55) 75%,
+    transparent 100%);
+}
+.antique-divider-glyph {
+  font-family: Georgia, serif;
+  font-size: 12px;
+  line-height: 1;
+  color: rgba(126, 105, 74, 0.85);
+}
+
+/* ============================================================
+   MARGINALIA CARD — fixed right-side card. Per the user spec:
+   no white/yellow gradient (the user dislikes that look). A
+   transparent panel over the parchment with 4 corner ticks and
+   a top "── ✤ ──" rule; below that the body is left-aligned and
+   the FOLD / SAVE buttons share the bottom.
+     FOLD = bookmark this word into Notes
+     SAVE = bookmark this chapter into Storage.saveChapter
    ============================================================ */
 .marginalia-card {
+  position: relative;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 16px 12px 14px;
-  background:
-    linear-gradient(180deg,
-      rgba(252, 245, 226, 0.72) 0%,
-      rgba(241, 230, 204, 0.62) 100%);
-  border: 1px solid rgba(167, 141, 91, 0.42);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 248, 226, 0.55),
-    inset 0 0 0 3px rgba(185, 170, 138, 0.08),
-    0 2px 6px rgba(77, 62, 39, 0.05);
+  padding: 14px 14px 14px;
+  background: transparent;
+  border: 1px solid rgba(126, 105, 74, 0.58);
+  box-shadow: inset 0 0 0 1px rgba(245, 236, 214, 0.42);
   z-index: 9;
 }
-.marginalia-card-header {
-  margin: 0 0 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(167, 141, 91, 0.30);
-  font-family: var(--font-display);
-  font-size: 10px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: #9a8358;
-  font-weight: 400;
-  text-align: center;
+.marginalia-card > .corner-tick {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: rgba(126, 105, 74, 0.78);
+  pointer-events: none;
+}
+.marginalia-card > .corner-tick.tl { left: -1px; top: -1px;
+  border-left: 1px solid; border-top: 1px solid; }
+.marginalia-card > .corner-tick.tr { right: -1px; top: -1px;
+  border-right: 1px solid; border-top: 1px solid; }
+.marginalia-card > .corner-tick.bl { left: -1px; bottom: -1px;
+  border-left: 1px solid; border-bottom: 1px solid; }
+.marginalia-card > .corner-tick.br { right: -1px; bottom: -1px;
+  border-right: 1px solid; border-bottom: 1px solid; }
+
+/* Top rule inside the card — same visual grammar as antique-divider. */
+.marginalia-card-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0 0 10px;
+  pointer-events: none;
+}
+.marginalia-card-rule::before,
+.marginalia-card-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.45) 30%,
+    rgba(126, 105, 74, 0.45) 70%,
+    transparent 100%);
 }
 .marginalia-card-body {
   flex: 1;
@@ -716,7 +745,7 @@
    ============================================================ */
 .page[data-page="reading"],
 .page[data-page="quiz"] {
-  --nav-count:  5;
+  --nav-count:  3;
   --nav-left:   29.47%;
   --nav-top:    91.50%;
   --nav-width:  51.04%;
@@ -729,3 +758,130 @@
   --nav-width:  54.92%;
   --nav-height:  7.58%;
 }
+.page[data-page="chapters"] {
+  --nav-count:  2;
+  --nav-left:   35.00%;
+  --nav-top:    93.50%;
+  --nav-width:  30.00%;
+  --nav-height:  5.50%;
+}
+
+/* ============================================================
+   CHAPTERS (Table of Contents) — text + plaque inside each slot
+   The user's hand-measured zones cover only the EMPTY right side
+   of each painted chapter card. Inside the slot we stack:
+     (top half)    .toc-card-text     — title + tagline
+     (bottom half) .toc-card-action   — centred OPEN CHAPTER plaque
+   The text block aligns left; the plaque centres.
+   ============================================================ */
+.toc-card {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 2px 2px;
+  pointer-events: none;
+}
+.toc-card-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 4px;
+}
+.toc-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #324154;
+  line-height: 1.18;
+}
+.toc-card-tagline {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 9.5px;
+  line-height: 1.32;
+  letter-spacing: 0.02em;
+  color: #6c6254;
+  font-style: italic;
+}
+.toc-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   ANTIQUE BUTTON — the OPEN CHAPTER plaque style. Per the user
+   spec: outer thin border, inner thin rule (top + bottom), four
+   broken corner ticks, near-transparent paper fill. Hover warms
+   the gold without recolouring (no modern button look). Reused
+   anywhere a small parchment plaque is needed.
+   ============================================================ */
+.antique-button {
+  position: relative;
+  pointer-events: auto;
+  min-width: 130px;
+  height: 26px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(247, 241, 226, 0.18);
+  border: 1px solid rgba(126, 105, 74, 0.62);
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 236, 214, 0.62),
+    0 1px 0 rgba(255, 255, 255, 0.28);
+  font-family: var(--font-display);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(65, 55, 42, 0.92);
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease,
+              color 160ms ease, box-shadow 160ms ease;
+}
+/* Inner top + bottom thin lines — make the plaque read as engraved. */
+.antique-button::before,
+.antique-button::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 1px;
+  background: rgba(150, 124, 84, 0.45);
+  pointer-events: none;
+}
+.antique-button::before { top: 4px; }
+.antique-button::after  { bottom: 4px; }
+/* Four broken corner ticks — small L-shapes sitting on the corner. */
+.antique-button-corner {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-color: rgba(126, 105, 74, 0.62);
+  pointer-events: none;
+}
+.antique-button-corner.tl { left: -1px; top: -1px;
+  border-left: 1px solid; border-top: 1px solid; }
+.antique-button-corner.tr { right: -1px; top: -1px;
+  border-right: 1px solid; border-top: 1px solid; }
+.antique-button-corner.bl { left: -1px; bottom: -1px;
+  border-left: 1px solid; border-bottom: 1px solid; }
+.antique-button-corner.br { right: -1px; bottom: -1px;
+  border-right: 1px solid; border-bottom: 1px solid; }
+.antique-button-label { position: relative; z-index: 1; }
+.antique-button:hover {
+  color: rgba(72, 54, 30, 0.98);
+  border-color: rgba(157, 128, 78, 0.78);
+  background: rgba(250, 242, 221, 0.32);
+  text-shadow: 0 0 6px rgba(177, 146, 84, 0.28);
+  box-shadow:
+    inset 0 0 0 1px rgba(248, 238, 210, 0.78),
+    0 0 8px rgba(166, 134, 82, 0.14);
+}
+.antique-button:active { transform: translateY(1px); }
+.antique-button:focus  { outline: none; }

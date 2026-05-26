@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/debug.css">
 <style>
   .page.chapters-art {
     background-image: url("assets/bg/ui/chapters.jpg");
@@ -16,25 +17,75 @@
 </head>
 <body>
 <div class="stage">
-  <main class="page art-bg chapters-art">
-    <!-- All visuals (title, 10 cards, descriptions, OPEN CHAPTER plaques,
-         footer) are painted into chapters.jpg. We only overlay
-         invisible click zones at the painted button positions. -->
-    <a class="hit-zone toc-open toc-open-1"  href="reading.html?chapter=universe&section=1.1"          aria-label="Open chapter 1 — The Universe"></a>
-    <a class="hit-zone toc-open toc-open-2"  href="reading.html?chapter=earth-history&section=2.1"      aria-label="Open chapter 2 — Earth History"></a>
-    <a class="hit-zone toc-open toc-open-3"  href="reading.html?chapter=africa&section=3.1"             aria-label="Open chapter 3 — Africa"></a>
-    <a class="hit-zone toc-open toc-open-4"  href="reading.html?chapter=antarctica&section=4.1"         aria-label="Open chapter 4 — Antarctica"></a>
-    <a class="hit-zone toc-open toc-open-5"  href="reading.html?chapter=australia-pacific&section=5.1"  aria-label="Open chapter 5 — Australia & Pacific"></a>
-    <a class="hit-zone toc-open toc-open-6"  href="reading.html?chapter=south-america&section=6.1"      aria-label="Open chapter 6 — South America"></a>
-    <a class="hit-zone toc-open toc-open-7"  href="reading.html?chapter=asia&section=7.1"               aria-label="Open chapter 7 — Asia"></a>
-    <a class="hit-zone toc-open toc-open-8"  href="reading.html?chapter=oceans&section=8.1"             aria-label="Open chapter 8 — Oceans"></a>
-    <a class="hit-zone toc-open toc-open-9"  href="reading.html?chapter=europe&section=9.1"             aria-label="Open chapter 9 — Europe"></a>
-    <a class="hit-zone toc-open toc-open-10" href="reading.html?chapter=north-america&section=10.1"     aria-label="Open chapter 10 — North America"></a>
+  <main class="page art-bg chapters-art" data-page="chapters">
 
-    <a class="hit-zone toc-foot-back" href="select.html"  aria-label="Back"></a>
-    <a class="hit-zone toc-foot-menu" href="index.html"   aria-label="Menu"></a>
+    <!-- All UI lives inside the master frame so the 10 chapter cards
+         line up with the painted slots. The 10 zone coordinates are
+         the user's hand-measured page-relative values converted to
+         master-frame-relative; see debug.css. -->
+    <div class="master-frame">
+
+      <!-- Each .zone-toc-NN holds: a TEXT block (number + title +
+           tagline) above an OPEN CHAPTER plaque (antique-button).
+           Both sit inside the painted card on the right side of each
+           chapter row. The painted card on the LEFT holds the
+           illustration — we don't touch that. -->
+      <div class="ui-zone zone-toc-01 toc-card" data-zone="ch 01"></div>
+      <div class="ui-zone zone-toc-02 toc-card" data-zone="ch 02"></div>
+      <div class="ui-zone zone-toc-03 toc-card" data-zone="ch 03"></div>
+      <div class="ui-zone zone-toc-04 toc-card" data-zone="ch 04"></div>
+      <div class="ui-zone zone-toc-05 toc-card" data-zone="ch 05"></div>
+      <div class="ui-zone zone-toc-06 toc-card" data-zone="ch 06"></div>
+      <div class="ui-zone zone-toc-07 toc-card" data-zone="ch 07"></div>
+      <div class="ui-zone zone-toc-08 toc-card" data-zone="ch 08"></div>
+      <div class="ui-zone zone-toc-09 toc-card" data-zone="ch 09"></div>
+      <div class="ui-zone zone-toc-10 toc-card" data-zone="ch 10"></div>
+
+      <!-- Bottom nav — Back + Menu. Uses the shared --nav-* vars below. -->
+      <nav class="ui-bottom-nav">
+        <button type="button" onclick="go('select.html')">
+          <span class="nav-glyph">‹</span>Back
+        </button>
+        <button type="button" onclick="go('index.html')">
+          <span class="nav-glyph">✤</span>Menu
+        </button>
+      </nav>
+    </div>
   </main>
 </div>
+
+<script src="data/mockChapters.js"></script>
 <script src="js/app.js"></script>
+<script>
+  // Render the text + OPEN CHAPTER plaque into each .zone-toc-NN.
+  // The number on each card matches the painted "01"–"10" plate
+  // on the left side of the same row, so the user always sees the
+  // same number twice (painted on the illustration, inked on our card).
+  document.addEventListener("DOMContentLoaded", () => {
+    CHAPTERS.forEach((c, i) => {
+      const slot = document.querySelector(".zone-toc-" + c.number);
+      if (!slot) return;
+      slot.innerHTML = `
+        <div class="toc-card-text">
+          <h3 class="toc-card-title">${c.title}</h3>
+          <p  class="toc-card-tagline">${c.tagline || ""}</p>
+        </div>
+        <div class="toc-card-action">
+          <button type="button" class="antique-button toc-open-btn"
+                  data-go="reading.html?chapter=${encodeURIComponent(c.id)}&section=${encodeURIComponent(c.firstSection || "1.1")}">
+            <span class="antique-button-corner tl"></span>
+            <span class="antique-button-corner tr"></span>
+            <span class="antique-button-corner bl"></span>
+            <span class="antique-button-corner br"></span>
+            <span class="antique-button-label">Open Chapter</span>
+          </button>
+        </div>
+      `;
+    });
+    document.querySelectorAll(".toc-open-btn").forEach(btn => {
+      btn.addEventListener("click", () => window.go(btn.dataset.go));
+    });
+  });
+</script>
 </body>
 </html>

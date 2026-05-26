@@ -20,35 +20,34 @@
          page-relative ones. -->
     <div class="master-frame">
 
-      <!-- ZONE 1 — title strip. Right-aligned, ends at the same right
-           edge as the body and the marginalia card so the page has a
-           single vertical right edge. -->
+      <!-- TOP-LEFT quadrant — title strip. Title + ✤ rule + subtitle. -->
       <div class="ui-zone zone-reading-title is-text" data-zone="reading title">
         <div class="reading-kicker" data-chapter-number>Chapter 01</div>
         <h1 class="reading-title" data-chapter-title>The Universe</h1>
-        <span class="reading-ornament">✤ ✤ ✤</span>
+        <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
         <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
       </div>
 
-      <!-- ZONE 2 — body parchment. Reveal blocks flow inside; right edge
-           leaves a stable gutter for the marginalia card; body never
-           overlaps the card. -->
+      <!-- BOTTOM-LEFT quadrant — body. Same top/bottom as the
+           marginalia card so the two columns sit on the same baseline. -->
       <div class="ui-zone zone-reading-body is-text" data-zone="reading body">
         <article class="reading-body"><!-- reveal blocks injected by reading.js --></article>
       </div>
 
-      <!-- ZONE 3 — marginalia. Fixed card with header / headword /
-           collocations / FOLD / SAVE. Longer entry text opens in a
-           drawer; this card stays compact and left-aligned. -->
+      <!-- BOTTOM-RIGHT quadrant — marginalia card. Header is a
+           thin-line + glyph rule (matches the title divider). The card
+           is transparent over the parchment, with 4 corner ticks and
+           a top ✤ rule. Body shows headword + 1–2 collocations OR a
+           short definition; longer content opens in the drawer. -->
       <div class="ui-zone zone-marginalia" data-zone="marginalia">
         <aside class="marginalia-card">
-          <div class="marginalia-card-header">MARGINALIA</div>
+          <span class="corner-tick tl"></span>
+          <span class="corner-tick tr"></span>
+          <span class="corner-tick bl"></span>
+          <span class="corner-tick br"></span>
+          <div class="marginalia-card-rule"><span class="antique-divider-glyph">✤</span></div>
           <div class="marginalia-card-body">
             <div class="marginalia-card-empty">Tap a word</div>
-            <div class="marginalia-card-content" hidden>
-              <h3 class="marginalia-headword"></h3>
-              <ul class="marginalia-collocations"></ul>
-            </div>
           </div>
           <div class="marginalia-card-actions">
             <button type="button" class="marginalia-btn" data-action="fold" disabled>
@@ -61,14 +60,18 @@
         </aside>
       </div>
 
-      <!-- Bottom nav — positions via --nav-* CSS vars (see pages.css),
-           which are now MASTER-FRAME-RELATIVE. Container IS the zone. -->
+      <!-- Bottom nav — 3 cells with thin vertical rules between them.
+           Each button has its own glyph: ✎ Notes, ✤ Quiz, > Next. -->
       <nav class="ui-bottom-nav">
-        <button type="button" onclick="go('save.html')">Save</button>
-        <button type="button" onclick="go('load.html')">Load</button>
-        <button type="button" onclick="go('select.html')">Menu</button>
-        <button type="button" data-back>Back</button>
-        <button type="button" data-next>Next</button>
+        <button type="button" onclick="go('notes.html')">
+          <span class="nav-glyph">✎</span>Notes
+        </button>
+        <button type="button" data-quiz>
+          <span class="nav-glyph">✤</span>Quiz
+        </button>
+        <button type="button" data-next>
+          Next<span class="nav-glyph-after">›</span>
+        </button>
       </nav>
     </div>
 

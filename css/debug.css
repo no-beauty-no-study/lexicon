@@ -94,9 +94,13 @@ body.debug-ui .master-frame::after {
    .ui-zone is a child of .master-frame. Do NOT convert to
    page-relative.
    ============================================================ */
-.zone-reading-title    { left: 34.49%; top:  5.69%; width: 39.45%; height: 15.65%; }
+/* User's 4-quadrant grid: a horizontal rule at ~22% splits the page
+   into a title row (top) and a content row (bottom-left body +
+   bottom-right marginalia). Body and marginalia share the SAME top
+   AND bottom edges so the two columns are visually height-aligned. */
+.zone-reading-title    { left: 30.75%; top:  5.69%; width: 50.04%; height: 16.00%; }
 .zone-reading-body     { left: 30.75%; top: 24.05%; width: 50.04%; height: 53.73%; }
-.zone-marginalia       { left: 81.41%; top: 16.74%; width: 14.01%; height: 35.00%; }
+.zone-marginalia       { left: 81.41%; top: 24.05%; width: 14.01%; height: 53.73%; }
 
 /* In CSS-var nav mode (.ui-bottom-nav reads --nav-* directly), it has
    no .ui-zone wrapper, so we outline it ourselves in debug mode. */
@@ -166,6 +170,25 @@ body.debug-ui .ui-bottom-nav::after {
 .zone-select-story-hit    { left: 20.01%; top: 28.50%; width: 19.57%; height: 58.89%; }
 .zone-select-notes-hit    { left: 42.03%; top: 28.12%; width: 19.22%; height: 58.89%; }
 .zone-select-garden-hit   { left: 63.53%; top: 28.02%; width: 19.64%; height: 59.75%; }
+
+/* ============================================================
+   CHAPTERS (Table of Contents) — hand-measured 10 zones, then
+   converted page-relative → master-frame-relative. Each zone is
+   the empty area on the RIGHT side of a chapter row, big enough
+   to hold the chapter number + title + tagline + OPEN CHAPTER
+   plaque. The painted illustration on the LEFT side of the same
+   row is not a zone — it isn't writable.
+   ============================================================ */
+.zone-toc-01 { left: 34.64%; top: 20.52%; width: 15.34%; height:  9.13%; }
+.zone-toc-02 { left: 34.42%; top: 36.57%; width: 15.56%; height:  8.74%; }
+.zone-toc-03 { left: 34.42%; top: 51.94%; width: 15.49%; height:  8.84%; }
+.zone-toc-04 { left: 34.79%; top: 67.41%; width: 15.49%; height:  8.74%; }
+.zone-toc-05 { left: 34.50%; top: 82.97%; width: 15.56%; height:  9.41%; }
+.zone-toc-06 { left: 65.75%; top: 21.59%; width: 15.42%; height:  8.26%; }
+.zone-toc-07 { left: 65.97%; top: 36.57%; width: 15.20%; height:  8.65%; }
+.zone-toc-08 { left: 65.83%; top: 52.23%; width: 14.91%; height:  8.65%; }
+.zone-toc-09 { left: 65.75%; top: 67.41%; width: 15.34%; height:  8.65%; }
+.zone-toc-10 { left: 65.75%; top: 82.87%; width: 14.91%; height:  9.32%; }
 
 .zone-select-story-title,
 .zone-select-notes-title,
