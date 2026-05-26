@@ -32,23 +32,24 @@
       </aside>
     </div>
 
-    <div class="ui-zone zone-bottom-nav is-button" data-zone="bottom nav">
-      <nav class="page-bottom-nav">
-        <button type="button" onclick="go('save.html')">Save</button>
-        <button type="button" onclick="go('load.html')">Load</button>
-        <button type="button" onclick="go('select.html')">Menu</button>
-        <button type="button" data-back>Back</button>
-        <button type="button" data-next>Next</button>
-      </nav>
-    </div>
+    <nav class="ui-bottom-nav">
+      <button type="button" onclick="go('save.html')">Save</button>
+      <button type="button" onclick="go('load.html')">Load</button>
+      <button type="button" onclick="go('select.html')">Menu</button>
+      <button type="button" data-back>Back</button>
+      <button type="button" data-next>Next</button>
+    </nav>
 
     <!-- Tap-to-begin overlay -->
     <div class="tap-overlay">
       <div class="tap-overlay-card">Tap to reveal the questions</div>
     </div>
 
-    <!-- Chapter Complete toast — appears only when all answers are correct. -->
+    <!-- Chapter Complete toast — appears only when all answers are correct.
+         ✤ lives in a real element so the inner thin-line ::before and
+         broken-corner-tick ::after pseudos can both render. -->
     <div class="chapter-complete-toast" aria-hidden="true">
+      <div class="chapter-complete-mark">✤</div>
       <div class="chapter-complete-title">Chapter Complete</div>
       <p class="chapter-complete-subtitle">The next page opens.</p>
     </div>

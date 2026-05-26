@@ -43,12 +43,12 @@
       <button type="button" onclick="go('word-garden.html')"  aria-label="Word Garden"></button>
     </div>
 
-    <div class="ui-zone zone-select-bottom-nav is-button" data-zone="menu / load">
-      <nav class="page-bottom-nav is-two">
-        <button type="button" onclick="go('index.html')">Menu</button>
-        <button type="button" onclick="go('load.html')">Load</button>
-      </nav>
-    </div>
+    <!-- Select page nav: 2 buttons (no SAVE), positioned via --nav-*
+         vars on .page.select-art in pages.css. -->
+    <nav class="ui-bottom-nav is-two">
+      <button type="button" onclick="go('index.html')">Menu</button>
+      <button type="button" onclick="go('load.html')">Load</button>
+    </nav>
   </main>
 </div>
 <script src="js/app.js"></script>

@@ -1366,30 +1366,55 @@ button.ornate-panel {
 }
 
 /* ============================================================
-   PAGE BOTTOM NAV — Reading / Quiz / Select share this row.
-   Five (or two) text-only buttons, no frames, sits INSIDE the
-   painted footer arc — its visual center, not the upper edge.
+   UI BOTTOM NAV — single source of truth for bottom button rows.
+   The container is positioned via four per-page CSS variables:
+     --nav-left   percentage X of the painted footer slot
+     --nav-top    percentage Y
+     --nav-width  percentage width of the slot
+     --nav-height percentage height of the slot
+     --nav-count  number of buttons (2 / 5)
+   Each page sets these variables once on its .page element after
+   measuring its painted footer. The buttons themselves NEVER carry
+   absolute coordinates; they're grid-divided inside the container.
+
+   Old class name .page-bottom-nav is preserved as an alias so
+   existing markup keeps working until it migrates.
    ============================================================ */
-/* Position is provided by the parent .ui-zone (.zone-bottom-nav or
-   .zone-select-bottom-nav); the bar itself just fills its zone. */
+.ui-bottom-nav,
 .page-bottom-nav {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  left:   var(--nav-left,   31.2%);
+  top:    var(--nav-top,    88.15%);
+  width:  var(--nav-width,  49.5%);
+  height: var(--nav-height, 3.2%);
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(var(--nav-count, 5), 1fr);
   align-items: center;
   justify-items: center;
-  z-index: 20;
+  z-index: 50;
+  box-sizing: border-box;
 }
-.page-bottom-nav.is-two { grid-template-columns: repeat(2, 1fr); }
+.ui-bottom-nav.is-two,
+.page-bottom-nav.is-two { --nav-count: 2; }
+
+/* If the container is the child of a .ui-zone wrapper, we let the
+   parent's coordinates win (the zone has already been measured). */
+.ui-zone > .ui-bottom-nav,
+.ui-zone > .page-bottom-nav {
+  position: relative;
+  left:    0;
+  top:     0;
+  width:   100%;
+  height:  100%;
+}
+
+.ui-bottom-nav button,
 .page-bottom-nav button {
   position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   border: 0;
   background: transparent;
   padding: 0;
@@ -1403,7 +1428,11 @@ button.ornate-panel {
   color: rgba(91, 78, 57, 0.92);
   cursor: pointer;
 }
+.ui-bottom-nav button::before,
 .page-bottom-nav button::before {
+  /* Decorative flourish — does NOT shift the label off-centre.
+     The ::before is absolutely positioned so place-items:center
+     still centres the actual text node, not the glyph. */
   content: "✤";
   position: absolute;
   left: 18%;
@@ -1413,17 +1442,20 @@ button.ornate-panel {
   font-size: 0.62em;
   line-height: 1;
 }
+.ui-bottom-nav button:hover,
 .page-bottom-nav button:hover {
   color: #8a7653;
   text-shadow: 0 0 5px rgba(167, 141, 91, 0.18);
 }
+.ui-bottom-nav button:focus,
 .page-bottom-nav button:focus { outline: none; }
+.ui-bottom-nav button[disabled],
+.ui-bottom-nav button.is-disabled,
 .page-bottom-nav button[disabled],
 .page-bottom-nav button.is-disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 /* ============================================================
    CHAPTER COMPLETE TOAST
    Shown only when all comprehension answers are correct.
@@ -1432,47 +1464,63 @@ button.ornate-panel {
 .chapter-complete-toast {
   position: absolute;
   left: 50%; top: 48%;
-  transform: translate(-50%, -50%) scale(0.96);
-  width: 28%;
-  min-height: 15%;
+  transform: translate(-50%, -50%) scale(0.98);
+  width: 30%;
+  min-height: 13%;
   box-sizing: border-box;
-  padding: 24px 26px 22px;
+  padding: 1.7% 2.1%;
   z-index: 80;
   opacity: 0;
   pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(252, 247, 232, 0.84), rgba(238, 226, 202, 0.66)),
-    rgba(244, 237, 221, 0.72);
-  border: 1px solid rgba(155, 132, 84, 0.52);
-  color: var(--paper-text);
+  background: rgba(246, 238, 218, 0.48);    /* FLAT translucent paper */
+  border: 1px solid rgba(143, 128, 95, 0.42);
+  color: #3f3a31;
   text-align: center;
   font-family: var(--font-display);
-  clip-path: polygon(
-    14px 0, calc(100% - 14px) 0, 100% 14px,
-    100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%,
-    0 calc(100% - 14px), 0 14px
-  );
   box-shadow:
-    inset 0 0 0 1px rgba(255, 248, 226, 0.38),
-    0 8px 24px rgba(55, 43, 28, 0.18);
-  transition: opacity 260ms ease, transform 260ms ease;
+    inset 0 0 0 1px rgba(255, 248, 226, 0.24),
+    0 4px 14px rgba(55, 43, 28, 0.10);
+  transition: opacity 220ms ease, transform 220ms ease;
 }
 .chapter-complete-toast.is-visible {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
+/* Inner thin rule, parallel to the outer border. */
 .chapter-complete-toast::before {
-  content: "✤";
-  display: block;
-  margin-bottom: 10px;
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border: 1px solid rgba(185, 170, 138, 0.34);
+}
+/* Broken corner ticks — 8 short gold strokes, no gradient fill. */
+.chapter-complete-toast::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(#9b8454, #9b8454) left 10px top 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 10px top 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px top 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px top 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 10px bottom 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 10px bottom 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px bottom 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px bottom 10px / 1px 18px no-repeat;
+  opacity: 0.45;
+}
+.chapter-complete-toast .chapter-complete-mark {
+  margin: 0 0 0.65em;
   color: #a78d5b;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1;
 }
 .chapter-complete-toast .chapter-complete-title {
-  margin: 0 0 8px;
-  font-size: 22px;
-  letter-spacing: 0.16em;
+  margin: 0 0 0.45em;
+  font-size: 20px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 400;
   color: #4d4436;
@@ -1480,10 +1528,10 @@ button.ornate-panel {
 .chapter-complete-toast .chapter-complete-subtitle {
   margin: 0;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.045em;
-  color: #7b6f5c;
   font-style: italic;
+  color: #7b6f5c;
 }
 
 /* ============================================================

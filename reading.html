@@ -36,16 +36,16 @@
       </aside>
     </div>
 
-    <!-- 4. Bottom-nav zone — SAVE / LOAD / MENU / BACK / NEXT. -->
-    <div class="ui-zone zone-bottom-nav is-button" data-zone="bottom nav">
-      <nav class="page-bottom-nav">
-        <button type="button" onclick="go('save.html')">Save</button>
-        <button type="button" onclick="go('load.html')">Load</button>
-        <button type="button" onclick="go('select.html')">Menu</button>
-        <button type="button" data-back>Back</button>
-        <button type="button" data-next>Next</button>
-      </nav>
-    </div>
+    <!-- 4. Bottom nav — positions itself via per-page --nav-* CSS vars
+         (see pages.css). No .ui-zone wrapper needed: container IS the
+         zone, buttons are grid-divided automatically. -->
+    <nav class="ui-bottom-nav">
+      <button type="button" onclick="go('save.html')">Save</button>
+      <button type="button" onclick="go('load.html')">Load</button>
+      <button type="button" onclick="go('select.html')">Menu</button>
+      <button type="button" data-back>Back</button>
+      <button type="button" data-next>Next</button>
+    </nav>
 
     <!-- Tap-to-begin overlay -->
     <div class="tap-overlay">

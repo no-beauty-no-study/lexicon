@@ -259,22 +259,24 @@
   scrollbar-width: none;
 }
 .reading-art .quiz-body::-webkit-scrollbar { width: 0; }
-.reading-art .quiz-item { margin: 0 0 22px; padding-left: 18px; }
+/* Compressed inter-question + inter-option spacing so all 3 questions
+   × 4 options fit inside the painted body slot without scrolling. */
+.reading-art .quiz-item { margin: 0 0 12px; padding-left: 18px; }
 .reading-art .quiz-no {
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 10.5px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-subtitle);
-  margin: 0 0 4px -18px;
+  margin: 0 0 3px -18px;
 }
 .reading-art .quiz-question {
   font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.4;
   letter-spacing: 0.03em;
   color: var(--color-body);
-  margin: 0 0 12px -18px;
+  margin: 0 0 6px -18px;
 }
 .reading-art .quiz-options {
   margin: 0;
@@ -291,14 +293,14 @@
   position: relative;
   display: flex;
   align-items: baseline;
-  gap: 1.15em;
+  gap: 0.95em;
   width: fit-content;
   max-width: 100%;
-  margin: 0 0 0.72em;
-  padding: 0.1em 0.35em 0.1em 0.2em;
+  margin: 0 0 0.30em;            /* was 0.72em — tighter row spacing */
+  padding: 0.04em 0.32em 0.04em 0.2em;
   font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.42;
+  font-size: 14px;
+  line-height: 1.32;             /* was 1.42 — tighter */
   letter-spacing: 0.035em;
   color: #3f3a31;
   cursor: pointer;
@@ -634,3 +636,25 @@
   padding: 26px 32px 36px;
 }
 .detail-pane .empty-state { margin: 0; }
+
+/* ============================================================
+   BOTTOM NAV — per-page slot coordinates (measured, not guessed)
+   The container .ui-bottom-nav (components.css) reads these vars.
+   Measurements come from scripts/measure-ui-zones.py — re-run that
+   script whenever a painted footer changes shape.
+   ============================================================ */
+.page[data-page="reading"],
+.page[data-page="quiz"] {
+  --nav-count:  5;
+  --nav-left:   31.2%;
+  --nav-top:    88.15%;
+  --nav-width:  49.5%;
+  --nav-height:  3.2%;
+}
+.page.select-art {
+  --nav-count:  2;
+  --nav-left:   35.5%;
+  --nav-top:    86.0%;
+  --nav-width:  29.0%;
+  --nav-height:  8.2%;
+}
