@@ -103,12 +103,22 @@
 }
 .reading-art .reading-body {
   width: 100%;
+  height: 100%;
   font-family: var(--font-body);
   font-size: 18px;
   line-height: 1.82;
   letter-spacing: 0.032em;
   word-spacing: 0.07em;
   color: #3f3a31;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  /* Stay tappable inside reveal.js's container click handler. */
+  -webkit-overflow-scrolling: touch;
+}
+.reading-art .reading-body::-webkit-scrollbar { width: 6px; }
+.reading-art .reading-body::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.32); border-radius: 3px;
 }
 .reading-art .reading-body p {
   margin: 0 0 18px;
@@ -231,21 +241,27 @@
     transparent 100%);
 }
 
-/* WORD-CARD STACK — vertically stacked mini-cards inside the
-   marginalia body. JS appends one card per clicked word; once the
-   stack reaches MAX_CARDS it cycles, overwriting the oldest. The
-   most-recently-added card is .is-current and is the target of
-   the FOLD button. */
+/* WORD-CARD STACK — scrollable column of mini-cards. Cards are
+   appended on click and never recycled; the container scrolls
+   when the stack outgrows the marginalia. Each card renders 6
+   rows: word / translation / phrase / phrase-zh / phrase / phrase-zh.
+   Cards are separated by a thin fading rule (matches antique-
+   divider grammar — wider in the middle, fading at the ends). */
 .marginalia-card-body {
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
   text-align: left;
+}
+.marginalia-card-body::-webkit-scrollbar { width: 5px; }
+.marginalia-card-body::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.38); border-radius: 3px;
 }
 .word-card-stack {
   display: flex;
   flex-direction: column;
-  gap: 6px;
   width: 100%;
 }
 .word-card-empty {
@@ -256,22 +272,38 @@
   font-style: italic;
   opacity: 0.78;
   text-align: left;
+  padding: 4px 0;
 }
+/* Card separator — fading rule, thinner at ends, denser in middle. */
 .word-card {
   position: relative;
-  padding: 6px 4px 7px;
-  border-top: 1px solid rgba(126, 105, 74, 0.22);
+  padding: 9px 4px 10px;
   cursor: pointer;
   transition: background 160ms ease;
 }
-.word-card:first-child { border-top: 0; padding-top: 0; }
-.word-card:hover { background: rgba(167, 141, 91, 0.06); }
+.word-card + .word-card {
+  border-top: 0;
+}
+.word-card + .word-card::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.42) 22%,
+    rgba(126, 105, 74, 0.42) 78%,
+    transparent 100%);
+}
+.word-card:hover { background: rgba(167, 141, 91, 0.05); }
 .word-card.is-current {
-  background: rgba(201, 174, 103, 0.10);
+  background: rgba(201, 174, 103, 0.08);
 }
 .word-card-headword {
   font-family: var(--font-display);
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.18;
   letter-spacing: 0.03em;
@@ -279,10 +311,24 @@
 }
 .word-card-meaning {
   margin-top: 2px;
-  font-family: var(--font-body);
-  font-size: 10px;
-  line-height: 1.32;
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
+  font-size: 11px;
+  line-height: 1.35;
   color: #5e5040;
+}
+.word-card-phrase {
+  margin-top: 5px;
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  line-height: 1.3;
+  color: #5a4e3a;
+  font-style: italic;
+}
+.word-card-phrase-zh {
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
+  font-size: 9.5px;
+  line-height: 1.3;
+  color: #7a6c54;
 }
 .marginalia-card-body {
   flex: 1;
@@ -835,24 +881,18 @@
      (bottom half) .toc-card-action   — centred OPEN CHAPTER plaque
    The text block aligns left; the plaque centres.
    ============================================================ */
-/* Each zone splits top:bottom 50/50. The text sits in the TOP half;
-   the OPEN CHAPTER plaque sits in the BOTTOM half. The plaque's top
-   edge therefore lands on the zone's horizontal midline (per user
-   instruction), and a 4px safety gap keeps it off the painted
-   bottom border. The plaque is fixed-size across all 10 cards so
-   the column reads as one tidy row of identical buttons. */
+/* TEXT zone — title + italic tagline. No button inside. */
 .toc-card {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 6px;
   pointer-events: none;
 }
 .toc-card-text {
-  grid-row: 1;
-  align-self: end;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 0 6px 2px;
+  justify-content: flex-start;
 }
 .toc-card-title {
   margin: 0;
@@ -865,29 +905,30 @@
   line-height: 1.18;
 }
 .toc-card-tagline {
-  margin: 3px 0 0;
+  margin: 4px 0 0;
   font-family: var(--font-body);
-  font-size: 9.5px;
-  line-height: 1.30;
+  font-size: 10px;
+  line-height: 1.32;
   letter-spacing: 0.01em;
   color: #6c6254;
   font-style: italic;
 }
-.toc-card-action {
-  grid-row: 2;
-  align-self: start;
+
+/* BUTTON zone — its position IS the button. The .toc-btn-zone fills
+   its zone exactly (no width:132px override) so all 10 plaques sit
+   between the user's measured red lines. */
+.toc-btn-zone {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2px 0 6px;     /* 6px bottom safety gap */
+  pointer-events: none;
 }
-/* Force every OPEN CHAPTER plaque to identical dimensions across
-   all 10 cards regardless of zone height differences. */
-.toc-card .antique-button {
+.toc-btn-zone .antique-button {
+  pointer-events: auto;
   min-width: 0;
-  width: 132px;
-  height: 22px;
-  padding: 0 14px;
+  width: 100%;
+  height: 100%;
+  padding: 0 6px;
   font-size: 10px;
   letter-spacing: 0.16em;
 }
@@ -1060,43 +1101,91 @@
   background: #B99B62;
 }
 
-/* Two-column word table */
+/* Two-column word table — same visual grammar as the marginalia
+   card: transparent bg, 4 broken corner ticks, top ✤ rule, row
+   separators that fade at the ends. Each column scrolls. */
 .wg-table {
   position: relative;
   width: 100%;
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 22px;
+  gap: 26px;
   align-items: stretch;
 }
+.wg-table > .wg-col-frame {
+  min-height: 0;          /* let grid item shrink so inner can scroll */
+  display: flex;
+  flex-direction: column;
+}
+/* Column FRAME — wraps the scrollable list and holds the 4 corner
+   ticks so they stay pinned while the list scrolls inside. */
+.wg-col-frame {
+  position: relative;
+  background: rgba(248, 240, 223, 0.18);   /* thin paper wash, not white */
+  border: 1px solid rgba(126, 105, 74, 0.58);
+  box-shadow: inset 0 0 0 1px rgba(245, 236, 214, 0.42);
+}
+.wg-col-frame > .corner-tick {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: rgba(126, 105, 74, 0.78);
+  pointer-events: none;
+  z-index: 2;
+}
+.wg-col-frame > .corner-tick.tl { left: -1px;  top: -1px;
+  border-left: 1px solid; border-top: 1px solid; }
+.wg-col-frame > .corner-tick.tr { right: -1px; top: -1px;
+  border-right: 1px solid; border-top: 1px solid; }
+.wg-col-frame > .corner-tick.bl { left: -1px;  bottom: -1px;
+  border-left: 1px solid; border-bottom: 1px solid; }
+.wg-col-frame > .corner-tick.br { right: -1px; bottom: -1px;
+  border-right: 1px solid; border-bottom: 1px solid; }
 .wg-col {
+  position: relative;
   margin: 0;
-  padding: 18px 28px;
+  padding: 18px 22px 16px;
   list-style: none;
   overflow-y: auto;
-  background: rgba(248, 240, 223, 0.72);
-  border: 1px solid #CDBF9E;
-  border-radius: 5px;
-  box-shadow: inset 0 0 0 1px rgba(255, 248, 226, 0.55);
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: transparent;
 }
-.wg-col::-webkit-scrollbar { width: 6px; }
+.wg-col::-webkit-scrollbar { width: 5px; }
 .wg-col::-webkit-scrollbar-thumb {
-  background: rgba(167, 141, 91, 0.42); border-radius: 3px;
+  background: rgba(167, 141, 91, 0.38); border-radius: 3px;
 }
+
+/* Row — English left / Chinese right. Thin fading rule below each
+   row (matches antique-divider: thinner at ends, denser middle). */
 .wg-row {
+  position: relative;
   display: grid;
-  grid-template-columns: 145px 1fr;
+  grid-template-columns: 138px 1fr;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
   height: 32px;
   padding: 0 4px;
-  border-bottom: 1px solid rgba(166, 148, 112, 0.35);
   cursor: pointer;
   transition: background 140ms ease;
 }
-.wg-row:hover { background: rgba(167, 141, 91, 0.08); }
-.wg-row:last-child { border-bottom: 0; }
+.wg-row:hover { background: rgba(167, 141, 91, 0.06); }
+.wg-row + .wg-row::before {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(166, 148, 112, 0.55) 18%,
+    rgba(166, 148, 112, 0.55) 82%,
+    transparent 100%);
+}
 .wg-row-en {
   font-family: var(--font-display);
   font-size: 18px;

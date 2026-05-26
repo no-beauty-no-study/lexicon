@@ -169,12 +169,17 @@
     });
   }
 
-  /** Marginalia stack. Click a word → push a mini word-card here.
-      When the stack already holds MAX_CARDS items, the oldest is
-      overwritten in place (circular buffer). The most-recently-
-      added card is .is-current and is what FOLD bookmarks. */
-  const MAX_CARDS = 6;
-  let stackSlot = 0;            // next index to overwrite once full
+  /** Marginalia stack. Click a word → append a mini word-card here.
+      Cards are NOT recycled — the container scrolls. Each card has
+      6 rows per user spec:
+        word
+        translation
+        phrase 1
+        phrase 1 translation
+        phrase 2
+        phrase 2 translation
+      The most-recently-added card is .is-current and is what FOLD
+      bookmarks; it auto-scrolls into view. */
 
   function shortMeaning(entry) {
     if (entry.meaning) return entry.meaning;
@@ -184,10 +189,42 @@
         if (typeof k === "string") return k;
       }
     }
-    if (Array.isArray(entry.collocations) && entry.collocations[0]) {
-      return entry.collocations[0];
-    }
     return "";
+  }
+
+  /** Up to two phrase pairs {en, zh}. Tries kin[].phrases[] first
+      (structured), then falls back to splitting friend[] strings
+      of the shape "en phrase 中文". */
+  function getPhrasePairs(entry) {
+    const out = [];
+    if (Array.isArray(entry.kin)) {
+      for (const k of entry.kin) {
+        if (out.length >= 2) break;
+        if (k && typeof k === "object" && Array.isArray(k.phrases)) {
+          for (const p of k.phrases) {
+            if (out.length >= 2) break;
+            if (p && p.en && p.zh) out.push({ en: p.en, zh: p.zh });
+          }
+        }
+      }
+    }
+    if (out.length < 2 && Array.isArray(entry.friend)) {
+      for (const f of entry.friend) {
+        if (out.length >= 2) break;
+        if (typeof f === "string") {
+          const m = f.match(/^(.+?)\s+([一-鿿].*)$/);
+          if (m) out.push({ en: m[1].trim(), zh: m[2].trim() });
+        }
+      }
+    }
+    // Last resort: collocations[] without zh.
+    if (out.length < 2 && Array.isArray(entry.collocations)) {
+      for (const c of entry.collocations) {
+        if (out.length >= 2) break;
+        if (typeof c === "string") out.push({ en: c, zh: "" });
+      }
+    }
+    return out;
   }
 
   function clearCurrent(stack) {
@@ -202,51 +239,45 @@
     const entry = resolved.headEntry;
     const id = entry.id || entry.word;
 
-    // Drop the empty hint the first time a card lands.
     const empty = stack.querySelector(".word-card-empty");
     if (empty) empty.remove();
 
-    // If the same word is already in the stack, just highlight it.
     const existing = stack.querySelector(`.word-card[data-id="${cssEsc(id)}"]`);
     if (existing) {
       clearCurrent(stack);
       existing.classList.add("is-current");
+      existing.scrollIntoView({ block: "nearest", behavior: "smooth" });
       return;
     }
+
+    const phrases = getPhrasePairs(entry);
+    const phraseRows = phrases.map(p => `
+      <div class="word-card-phrase">${esc(p.en)}</div>
+      <div class="word-card-phrase-zh">${esc(p.zh)}</div>
+    `).join("");
 
     const html = `
       <div class="word-card is-current" data-id="${esc(id)}">
         <div class="word-card-headword">${esc(entry.word || id)}</div>
         <div class="word-card-meaning">${esc(shortMeaning(entry))}</div>
+        ${phraseRows}
       </div>`;
     clearCurrent(stack);
-    const cards = stack.querySelectorAll(".word-card");
-    if (cards.length < MAX_CARDS) {
-      stack.insertAdjacentHTML("beforeend", html);
-    } else {
-      // Replace the oldest slot and advance the cursor.
-      const tmp = document.createElement("template");
-      tmp.innerHTML = html.trim();
-      const fresh = tmp.content.firstElementChild;
-      cards[stackSlot].replaceWith(fresh);
-      stackSlot = (stackSlot + 1) % MAX_CARDS;
-    }
-    // Each card opens the drawer when clicked.
-    stack.querySelectorAll(".word-card").forEach(card => {
-      if (card.dataset.wired) return;
-      card.dataset.wired = "1";
-      card.addEventListener("click", (e) => {
-        e.stopPropagation();
-        clearCurrent(stack);
-        card.classList.add("is-current");
-        try {
-          const cid = card.dataset.id;
-          const ent = (typeof WORDS !== "undefined" && WORDS.find(w => (w.id || w.word) === cid))
-                   || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === cid));
-          if (ent) WordCard.openDrawer(ent);
-        } catch(_) {}
-      });
+    stack.insertAdjacentHTML("beforeend", html);
+
+    const fresh = stack.lastElementChild;
+    fresh.addEventListener("click", (e) => {
+      e.stopPropagation();
+      clearCurrent(stack);
+      fresh.classList.add("is-current");
+      try {
+        const cid = fresh.dataset.id;
+        const ent = (typeof WORDS !== "undefined" && WORDS.find(w => (w.id || w.word) === cid))
+                 || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === cid));
+        if (ent) WordCard.openDrawer(ent);
+      } catch(_) {}
     });
+    fresh.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
 
   function cssEsc(s) {

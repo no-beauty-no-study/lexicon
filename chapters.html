@@ -25,11 +25,8 @@
          master-frame-relative; see debug.css. -->
     <div class="master-frame">
 
-      <!-- Each .zone-toc-NN holds: a TEXT block (number + title +
-           tagline) above an OPEN CHAPTER plaque (antique-button).
-           Both sit inside the painted card on the right side of each
-           chapter row. The painted card on the LEFT holds the
-           illustration — we don't touch that. -->
+      <!-- TEXT zones — one per chapter. Each just holds the chapter
+           title + italic tagline; the button is a SEPARATE zone below. -->
       <div class="ui-zone zone-toc-01 toc-card" data-zone="ch 01"></div>
       <div class="ui-zone zone-toc-02 toc-card" data-zone="ch 02"></div>
       <div class="ui-zone zone-toc-03 toc-card" data-zone="ch 03"></div>
@@ -41,7 +38,21 @@
       <div class="ui-zone zone-toc-09 toc-card" data-zone="ch 09"></div>
       <div class="ui-zone zone-toc-10 toc-card" data-zone="ch 10"></div>
 
-      <!-- Bottom nav — Back + Menu. Uses the shared --nav-* vars below. -->
+      <!-- OPEN CHAPTER BUTTON zones. Coords come straight from the
+           user's hand-measured red lines; all 10 buttons share the
+           same column width + height so the page reads as one tidy
+           grid of identical plaques. -->
+      <div class="ui-zone zone-toc-btn-01 toc-btn-zone" data-zone="btn 01"></div>
+      <div class="ui-zone zone-toc-btn-02 toc-btn-zone" data-zone="btn 02"></div>
+      <div class="ui-zone zone-toc-btn-03 toc-btn-zone" data-zone="btn 03"></div>
+      <div class="ui-zone zone-toc-btn-04 toc-btn-zone" data-zone="btn 04"></div>
+      <div class="ui-zone zone-toc-btn-05 toc-btn-zone" data-zone="btn 05"></div>
+      <div class="ui-zone zone-toc-btn-06 toc-btn-zone" data-zone="btn 06"></div>
+      <div class="ui-zone zone-toc-btn-07 toc-btn-zone" data-zone="btn 07"></div>
+      <div class="ui-zone zone-toc-btn-08 toc-btn-zone" data-zone="btn 08"></div>
+      <div class="ui-zone zone-toc-btn-09 toc-btn-zone" data-zone="btn 09"></div>
+      <div class="ui-zone zone-toc-btn-10 toc-btn-zone" data-zone="btn 10"></div>
+
       <nav class="ui-bottom-nav">
         <button type="button" onclick="go('select.html')">
           <span class="nav-glyph">‹</span>Back
@@ -57,30 +68,27 @@
 <script src="data/mockChapters.js"></script>
 <script src="js/app.js"></script>
 <script>
-  // Render the text + OPEN CHAPTER plaque into each .zone-toc-NN.
-  // The number on each card matches the painted "01"–"10" plate
-  // on the left side of the same row, so the user always sees the
-  // same number twice (painted on the illustration, inked on our card).
+  // Render text into each .zone-toc-NN; render the plaque into each
+  // .zone-toc-btn-NN. Two zones per chapter so the button's exact
+  // pixel position can never be pushed by a longer tagline.
   document.addEventListener("DOMContentLoaded", () => {
-    CHAPTERS.forEach((c, i) => {
-      const slot = document.querySelector(".zone-toc-" + c.number);
-      if (!slot) return;
-      slot.innerHTML = `
+    CHAPTERS.forEach((c) => {
+      const text = document.querySelector(".zone-toc-" + c.number);
+      const btn  = document.querySelector(".zone-toc-btn-" + c.number);
+      if (text) text.innerHTML = `
         <div class="toc-card-text">
           <h3 class="toc-card-title">${c.title}</h3>
           <p  class="toc-card-tagline">${c.tagline || ""}</p>
-        </div>
-        <div class="toc-card-action">
-          <button type="button" class="antique-button toc-open-btn"
-                  data-go="reading.html?chapter=${encodeURIComponent(c.id)}&section=${encodeURIComponent(c.firstSection || "1.1")}">
-            <span class="antique-button-corner tl"></span>
-            <span class="antique-button-corner tr"></span>
-            <span class="antique-button-corner bl"></span>
-            <span class="antique-button-corner br"></span>
-            <span class="antique-button-label">Open Chapter</span>
-          </button>
-        </div>
-      `;
+        </div>`;
+      if (btn) btn.innerHTML = `
+        <button type="button" class="antique-button toc-open-btn"
+                data-go="reading.html?chapter=${encodeURIComponent(c.id)}&section=${encodeURIComponent(c.firstSection || "1.1")}">
+          <span class="antique-button-corner tl"></span>
+          <span class="antique-button-corner tr"></span>
+          <span class="antique-button-corner bl"></span>
+          <span class="antique-button-corner br"></span>
+          <span class="antique-button-label">Open Chapter</span>
+        </button>`;
     });
     document.querySelectorAll(".toc-open-btn").forEach(btn => {
       btn.addEventListener("click", () => window.go(btn.dataset.go));

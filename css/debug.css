@@ -172,23 +172,41 @@ body.debug-ui .ui-bottom-nav::after {
 .zone-select-garden-hit   { left: 63.53%; top: 28.02%; width: 19.64%; height: 59.75%; }
 
 /* ============================================================
-   CHAPTERS (Table of Contents) — hand-measured 10 zones, then
-   converted page-relative → master-frame-relative. Each zone is
-   the empty area on the RIGHT side of a chapter row, big enough
-   to hold the chapter number + title + tagline + OPEN CHAPTER
-   plaque. The painted illustration on the LEFT side of the same
-   row is not a zone — it isn't writable.
+   CHAPTERS (Table of Contents) — TEXT zones only (chapter title +
+   tagline). Heights were shortened from the user's earlier 8-9%
+   to ~5% so each text block sits cleanly ABOVE the button without
+   overlap. The OPEN CHAPTER buttons live in separate zones below.
    ============================================================ */
-.zone-toc-01 { left: 34.64%; top: 20.52%; width: 15.34%; height:  9.13%; }
-.zone-toc-02 { left: 34.42%; top: 36.57%; width: 15.56%; height:  8.74%; }
-.zone-toc-03 { left: 34.42%; top: 51.94%; width: 15.49%; height:  8.84%; }
-.zone-toc-04 { left: 34.79%; top: 67.41%; width: 15.49%; height:  8.74%; }
-.zone-toc-05 { left: 34.50%; top: 82.97%; width: 15.56%; height:  9.41%; }
-.zone-toc-06 { left: 65.75%; top: 21.59%; width: 15.42%; height:  8.26%; }
-.zone-toc-07 { left: 65.97%; top: 36.57%; width: 15.20%; height:  8.65%; }
-.zone-toc-08 { left: 65.83%; top: 52.23%; width: 14.91%; height:  8.65%; }
-.zone-toc-09 { left: 65.75%; top: 67.41%; width: 15.34%; height:  8.65%; }
-.zone-toc-10 { left: 65.75%; top: 82.87%; width: 14.91%; height:  9.32%; }
+.zone-toc-01 { left: 34.64%; top: 20.52%; width: 15.34%; height: 5.52%; }
+.zone-toc-02 { left: 34.42%; top: 36.57%; width: 15.56%; height: 5.16%; }
+.zone-toc-03 { left: 34.42%; top: 51.94%; width: 15.49%; height: 5.25%; }
+.zone-toc-04 { left: 34.79%; top: 67.41%; width: 15.49%; height: 5.31%; }
+.zone-toc-05 { left: 34.50%; top: 82.97%; width: 15.56%; height: 5.75%; }
+.zone-toc-06 { left: 65.75%; top: 21.59%; width: 15.42%; height: 4.45%; }
+.zone-toc-07 { left: 65.97%; top: 36.57%; width: 15.20%; height: 5.16%; }
+.zone-toc-08 { left: 65.83%; top: 52.23%; width: 14.91%; height: 4.96%; }
+.zone-toc-09 { left: 65.75%; top: 67.41%; width: 15.34%; height: 5.31%; }
+.zone-toc-10 { left: 65.75%; top: 82.87%; width: 14.91%; height: 5.85%; }
+
+/* OPEN CHAPTER BUTTON zones — hand-measured by the user (red
+   vertical + horizontal lines on chapters.jpg). All 10 buttons
+   share the same column width and an identical height; only the
+   top changes per row. Master-frame-relative.
+     Left  col : x 681–852 px  → left 37.42%  width 9.86%
+     Right col : x 1219–1391 px → left 68.45%  width 9.92%
+     Button h  : 32 px        → 2.47% master-rel
+     Row tops  : 26.04 / 41.73 / 57.18 / 72.72 / 88.72 % master-rel
+   ============================================================ */
+.zone-toc-btn-01 { left: 37.42%; top: 26.04%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-02 { left: 37.42%; top: 41.73%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-03 { left: 37.42%; top: 57.18%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-04 { left: 37.42%; top: 72.72%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-05 { left: 37.42%; top: 88.72%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-06 { left: 68.45%; top: 26.04%; width: 9.92%; height: 2.47%; }
+.zone-toc-btn-07 { left: 68.45%; top: 41.73%; width: 9.92%; height: 2.47%; }
+.zone-toc-btn-08 { left: 68.45%; top: 57.18%; width: 9.92%; height: 2.47%; }
+.zone-toc-btn-09 { left: 68.45%; top: 72.72%; width: 9.92%; height: 2.47%; }
+.zone-toc-btn-10 { left: 68.45%; top: 88.72%; width: 9.92%; height: 2.47%; }
 
 /* ============================================================
    WORD GARDEN — 4 master-frame-relative zones:
@@ -199,9 +217,9 @@ body.debug-ui .ui-bottom-nav::after {
    (~22% painted illustration) and the right (~22% painted
    illustration), per the user's spec.
    ============================================================ */
-.zone-wg-search  { left: 21.00%; top: 23.00%; width: 58.00%; height:  6.00%; }
-.zone-wg-az      { left: 16.00%; top: 30.50%; width: 68.00%; height:  4.50%; }
-.zone-wg-table   { left: 21.00%; top: 36.00%; width: 58.00%; height: 53.00%; }
+.zone-wg-search  { left: 21.00%; top: 24.00%; width: 58.00%; height:  5.00%; }
+.zone-wg-az      { left: 16.00%; top: 30.00%; width: 68.00%; height:  3.50%; }
+.zone-wg-table   { left: 21.00%; top: 34.50%; width: 58.00%; height: 53.50%; }
 
 .zone-select-story-title,
 .zone-select-notes-title,

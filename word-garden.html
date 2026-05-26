@@ -35,12 +35,25 @@
         <nav class="wg-az" id="wg-az"></nav>
       </div>
 
-      <!-- Two columns of word rows; each column is a parchment card with
-           thin row separators. Row layout: English word | Chinese gloss. -->
+      <!-- Two columns of word rows. Each column is a transparent
+           parchment frame with 4 broken corner ticks (same grammar
+           as the reading marginalia card) wrapping a scrollable list. -->
       <div class="ui-zone zone-wg-table" data-zone="word table">
         <div class="wg-table">
-          <ol class="wg-col wg-col-left"  id="wg-col-left"></ol>
-          <ol class="wg-col wg-col-right" id="wg-col-right"></ol>
+          <div class="wg-col-frame">
+            <span class="corner-tick tl"></span>
+            <span class="corner-tick tr"></span>
+            <span class="corner-tick bl"></span>
+            <span class="corner-tick br"></span>
+            <ol class="wg-col" id="wg-col-left"></ol>
+          </div>
+          <div class="wg-col-frame">
+            <span class="corner-tick tl"></span>
+            <span class="corner-tick tr"></span>
+            <span class="corner-tick bl"></span>
+            <span class="corner-tick br"></span>
+            <ol class="wg-col" id="wg-col-right"></ol>
+          </div>
         </div>
       </div>
 
