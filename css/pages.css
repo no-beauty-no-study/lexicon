@@ -3,9 +3,468 @@
    Page-specific overrides only. Keep small; reuse layout / components.
    ============================================================ */
 
-/* ----- Stage scaling for non-iPad viewports -----
-   Designed canvas is 1448 x 1086. Scale to fit any viewport while
-   keeping aspect ratio. Done with CSS variable + JS in app.js. */
+/* ============================================================
+   PAINTED-UI PAGES
+   When a page uses a painted artwork as its full UI background,
+   add .art-bg to .page. The page-level frame ::before/::after
+   are then hidden, and elements are positioned absolutely as a
+   percentage of the 1448x1086 stage so they line up with the
+   painted slots.
+   ============================================================ */
+.page.art-bg {
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: var(--paper-bg);
+}
+.page.art-bg::before,
+.page.art-bg::after { display: none !important; }
+
+/* Invisible click zone overlaid on a painted button / element.
+   Default fully transparent; a faint warm tint appears on hover. */
+.hit-zone {
+  position: absolute;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: background 180ms ease, border-color 180ms ease;
+  appearance: none;
+  font: inherit;
+  color: transparent;       /* hide accidental text content */
+}
+.hit-zone:hover {
+  background: rgba(167, 141, 91, 0.12);
+  border-color: rgba(167, 141, 91, 0.55);
+}
+.hit-zone:active {
+  background: rgba(167, 141, 91, 0.22);
+}
+
+/* ============================================================
+   CHAPTERS / TOC PAGE — chapters.jpg is the full UI.
+   Each painted OPEN CHAPTER plaque has an invisible hit zone.
+   No CSS-drawn cards.
+   ============================================================ */
+.chapters-art .toc-open {
+  width: 13%;
+  height: 3.2%;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.chapters-art .toc-open-1  { left: 29.5%; top: 25.8%; }
+.chapters-art .toc-open-2  { left: 29.5%; top: 36.2%; }
+.chapters-art .toc-open-3  { left: 29.5%; top: 46.6%; }
+.chapters-art .toc-open-4  { left: 29.5%; top: 57.0%; }
+.chapters-art .toc-open-5  { left: 29.5%; top: 67.4%; }
+.chapters-art .toc-open-6  { left: 73.2%; top: 25.8%; }
+.chapters-art .toc-open-7  { left: 73.2%; top: 36.2%; }
+.chapters-art .toc-open-8  { left: 73.2%; top: 46.6%; }
+.chapters-art .toc-open-9  { left: 73.2%; top: 57.0%; }
+.chapters-art .toc-open-10 { left: 73.2%; top: 67.4%; }
+
+/* Bottom-of-page BACK / MENU hit-zones (chapters.jpg footer). */
+.chapters-art .toc-foot-back {
+  left: 35%; top: 94%; width: 12%; height: 4%;
+}
+.chapters-art .toc-foot-menu {
+  left: 53%; top: 94%; width: 12%; height: 4%;
+}
+
+/* ============================================================
+   READING PAGE — chapter illustration is the full UI background.
+   Text and marginalia overlay the painted parchment slots; the
+   painted left princess column doubles as the chapter illustration.
+   ============================================================ */
+.reading-art {
+  background-color: var(--paper-bg);
+}
+
+/* Centre reading slot. Coordinates from user spec. */
+.reading-art .reading-content {
+  position: absolute;
+  left: 31.5%; top: 13.5%;
+  width: 45.5%; height: 70%;
+  overflow: hidden;
+  color: var(--paper-text);
+}
+.reading-art .reading-chapter-kicker {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #7b6f5c;
+  margin: 0 0 14px;
+}
+.reading-art .reading-title {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 30px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #3c4854;
+  margin: 0 0 14px;
+}
+.reading-art .reading-ornament {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.6em;
+  color: var(--paper-gold);
+  margin: 0 0 14px;
+}
+.reading-art .reading-subtitle {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  color: #8a7653;
+  font-weight: 400;
+  margin: 0 0 22px;
+  font-style: italic;
+}
+.reading-art .reading-body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.85;
+  letter-spacing: 0.035em;
+  word-spacing: 0.08em;
+  color: var(--color-body);
+}
+.reading-art .reading-body p {
+  margin: 0 0 14px;
+}
+.reading-art .reading-body .clickable-word {
+  /* Even subtler than the default — must not pop off the parchment. */
+  color: #5f513b;
+  background: rgba(168, 143, 93, 0.10);
+  border-bottom: 1px dotted rgba(126, 103, 67, 0.45);
+  padding: 0 2px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.reading-art .reading-body .clickable-word:hover,
+.reading-art .reading-body .clickable-word.is-active {
+  background: rgba(168, 143, 93, 0.22);
+  border-bottom-color: rgba(154, 131, 88, 0.85);
+}
+
+/* Marginalia — far right edge, no frame; ink only. */
+.reading-art .marginalia-note {
+  position: absolute;
+  left: 80.8%; top: 19.8%;
+  width: 12.5%; min-height: 12%;
+  padding: 6px 4px;
+  box-sizing: border-box;
+  color: var(--paper-text);
+  font-family: var(--font-body);
+  background: transparent;
+  border: none;
+}
+.reading-art .marginalia-title {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-gold);
+  margin: 0 0 8px;
+  text-align: left;
+}
+.reading-art .marginalia-word {
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: var(--paper-text);
+  margin: 0 0 6px;
+}
+.reading-art .marginalia-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+}
+.reading-art .marginalia-list li {
+  position: relative;
+  padding-left: 9px;
+  font-size: 10.5px;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: #6c6254;
+  margin-bottom: 4px;
+}
+.reading-art .marginalia-list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--paper-gold);
+}
+.reading-art .marginalia-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.reading-art .marginalia-actions button {
+  border: 1px solid rgba(143, 128, 95, 0.45);
+  background: rgba(248, 242, 230, 0.30);
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--color-button-ink);
+  text-transform: uppercase;
+  padding: 3px 5px;
+  cursor: pointer;
+}
+.reading-art .marginalia-actions button:hover {
+  background: rgba(244, 233, 205, 0.55);
+  border-color: rgba(167, 141, 91, 0.75);
+}
+.reading-art .marginalia-actions button[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Bottom NOTES / QUIZ / BACK / NEXT / MENU — text labels only,
+   no frame; they sit on the painted footer ribbon. */
+.reading-art .bottom-bar {
+  position: absolute;
+  left: 25%; bottom: 3%;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+}
+.reading-art .bottom-bar .nav-link {
+  background: transparent;
+  border: 0;
+  padding: 6px 8px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-button-ink);
+  cursor: pointer;
+}
+.reading-art .bottom-bar .nav-link:hover { color: #3f3a31; }
+.reading-art .bottom-bar .nav-link .g { color: var(--paper-gold); margin-right: 4px; }
+.reading-art .bottom-bar .nav-sep {
+  width: 1px; height: 14px;
+  background: rgba(167, 141, 91, 0.45);
+}
+
+/* Tap-to-begin overlay — keep painted feel. */
+.reading-art .tap-overlay {
+  background: rgba(244, 237, 221, 0.40);
+}
+
+/* Reveal block ink color tuned for the parchment bg. */
+.reading-art .reveal-block { color: rgba(63, 58, 49, 0.10); }
+.reading-art .reveal-block.is-revealed { color: var(--color-body); }
+
+/* Quiz body sits in the same slot as reading body. */
+.reading-art .quiz-body {
+  font-family: var(--font-body);
+}
+.reading-art .quiz-item { margin-bottom: 22px; }
+.reading-art .quiz-no {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-subtitle);
+  margin-bottom: 4px;
+}
+.reading-art .quiz-question {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: 0.03em;
+  color: var(--color-body);
+  margin: 0 0 14px;
+}
+.reading-art .quiz-options { margin: 0 0 18px 14px; padding: 0; list-style: none; }
+.reading-art .quiz-option {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 4px 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+  color: var(--color-body);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+}
+.reading-art .quiz-option:hover {
+  background: rgba(168, 143, 93, 0.08);
+  border-left-color: rgba(167, 141, 91, 0.45);
+}
+.reading-art .quiz-option-letter {
+  width: 18px;
+  color: var(--color-subtitle);
+  letter-spacing: 0.12em;
+  flex-shrink: 0;
+}
+.reading-art .quiz-option.is-correct {
+  color: #5d4d2f;
+  text-shadow: 0 0 8px rgba(167, 141, 91, 0.25);
+  border-left-color: var(--color-gold-soft);
+  background: rgba(167, 141, 91, 0.10);
+}
+.reading-art .quiz-option.is-wrong {
+  color: #7a5048;
+  opacity: 0.78;
+  border-left-color: rgba(155, 91, 85, 0.45);
+}
+.reading-art .quiz-option.is-locked { pointer-events: none; }
+
+/* ============================================================
+   WORD DRAWER v3 — frame-blank.jpg painted page as drawer.
+   Text drawn in the empty centre slot of the painted frame.
+   ============================================================ */
+.word-drawer-v2 {
+  position: absolute;
+  top: 3.5%; right: 2.5%;
+  width: 36%; height: 93%;
+  z-index: 50;
+  transform: translateX(110%);
+  transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  background-image: url("../assets/bg/ui/frame-blank.jpg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  box-shadow: -16px 0 28px rgba(48, 38, 24, 0.18);
+  overflow: hidden;
+}
+.word-drawer-v2.is-open { transform: translateX(0); }
+.wd-close-v2 {
+  position: absolute;
+  top: 4%; right: 6%;
+  width: 26px; height: 26px;
+  border: 1px solid rgba(143, 128, 95, 0.45);
+  background: rgba(248, 242, 230, 0.55);
+  color: var(--paper-muted);
+  font-size: 15px;
+  cursor: pointer;
+  z-index: 2;
+}
+.wd-content-v2 {
+  position: absolute;
+  left: 12%; top: 11%;
+  width: 76%; height: 78%;
+  overflow-y: auto;
+  color: var(--paper-text);
+  font-family: var(--font-body);
+}
+.wd-title-v2 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: 0.055em;
+  font-weight: 400;
+  color: var(--paper-text);
+}
+.wd-meta-v2 {
+  margin-left: 10px;
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: #6b5c44;
+}
+.wd-meaning-v2 {
+  margin: 0 0 18px;
+  font-family: var(--font-cn);
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  color: #6b5c44;
+}
+.wd-section-v2 { margin-top: 16px; }
+.wd-section-title-v2 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--color-gold);
+}
+.wd-section-title-v2::before {
+  content: "❦";
+  margin-right: 6px;
+  color: var(--paper-gold);
+  font-size: 10px;
+}
+.wd-list-v2 { margin: 0; padding: 0; list-style: none; }
+.wd-list-v2 li {
+  position: relative;
+  margin-bottom: 6px;
+  padding-left: 14px;
+  font-size: 13px;
+  line-height: 1.48;
+  letter-spacing: 0.025em;
+  color: #403a31;
+}
+.wd-list-v2 li::before {
+  content: "•";
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--paper-gold);
+}
+.wd-list-v2 li strong { font-weight: 600; color: #332e27; }
+.wd-list-v2 li em { font-style: italic; color: #5d5347; }
+.wd-example-box-v2 {
+  margin: 14px 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(185, 170, 138, 0.45);
+  background: rgba(246, 238, 218, 0.4);
+}
+.wd-example-en-v2 {
+  margin: 0 0 4px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: #514839;
+}
+.wd-example-zh-v2 {
+  margin: 0;
+  font-family: var(--font-cn);
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--paper-muted);
+}
+.wd-footer-v2 {
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(185, 170, 138, 0.42);
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  text-align: center;
+}
+.word-drawer-v2-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 28, 20, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  z-index: 40;
+}
+.word-drawer-v2-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ----- Stage scaling for non-iPad viewports ----- */
 .stage[data-scale] .page {
   transform: scale(var(--page-scale, 1));
 }

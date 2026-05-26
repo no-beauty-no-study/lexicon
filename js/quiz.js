@@ -82,6 +82,7 @@
     body.addEventListener("click", e => {
       const opt = e.target.closest(".quiz-option");
       if (!opt || opt.classList.contains("is-locked")) return;
+      e.stopPropagation();   // don't trigger Reveal next
       const item = opt.closest(".quiz-item");
       const answer = item.dataset.answer.toLowerCase().trim();
       const chosen = (opt.dataset.value || "").toLowerCase().trim();
@@ -95,17 +96,21 @@
     });
 
     Reveal.init({
-      container: ".reading-main",
+      container: ".page",
       overlaySelector: ".tap-overlay",
     });
 
-    // Bottom nav
+    // Bottom nav (stop bubble so they don't trigger reveal-next).
     const next = document.querySelector("[data-next]");
-    if (next) next.addEventListener("click", () =>
-      window.go(ChapterNav.nextAfterQuiz(chapterId, sectionNum)));
+    if (next) next.addEventListener("click", e => {
+      e.stopPropagation();
+      window.go(ChapterNav.nextAfterQuiz(chapterId, sectionNum));
+    });
     const back = document.querySelector("[data-back]");
-    if (back) back.addEventListener("click", () =>
-      window.go(ChapterNav.prevBeforeQuiz(chapterId, sectionNum)));
+    if (back) back.addEventListener("click", e => {
+      e.stopPropagation();
+      window.go(ChapterNav.prevBeforeQuiz(chapterId, sectionNum));
+    });
   }
 
   function renderItem(q, idx, pool, audioPrefix) {

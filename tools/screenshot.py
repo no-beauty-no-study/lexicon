@@ -39,41 +39,52 @@ async def main():
         # 2. Chapter Index — TOC
         await snap(page, f"{BASE}/chapters.html", "02-chapters")
 
-        # 3. Reading content — Universe 1.1 with all blocks revealed and a word pinned
+        # 3. Reading — Universe 1.1 fully revealed with "singularity" pinned
         async def reading_setup(p):
-            # Dismiss tap-overlay
+            # Dismiss tap-overlay (anywhere on the page).
             await p.click(".tap-overlay")
-            # Reveal all remaining blocks by clicking the body 5 times.
-            for _ in range(5):
-                await p.click(".reading-body", position={"x": 600, "y": 100})
-                await p.wait_for_timeout(120)
-            # Click the "singularity" word (first .clickable-word) to populate side-note.
+            # Reveal subsequent blocks via taps on empty parchment region.
+            for _ in range(6):
+                await p.mouse.click(900, 600)
+                await p.wait_for_timeout(100)
             cw = p.locator('.clickable-word[data-word="singularity"]').first
             if await cw.count() > 0:
                 await cw.click()
         await snap(page, f"{BASE}/reading.html?chapter=universe&section=1.1",
                    "03-reading", prepare=reading_setup, wait_ms=1400)
 
-        # 4. Reading with Word Drawer open
+        # 4. Reading with WordDrawer open
         async def drawer_setup(p):
             await p.click(".tap-overlay")
-            for _ in range(5):
-                await p.click(".reading-body", position={"x": 600, "y": 100})
-                await p.wait_for_timeout(120)
+            for _ in range(6):
+                await p.mouse.click(900, 600)
+                await p.wait_for_timeout(100)
             cw = p.locator('.clickable-word[data-word="singularity"]').first
-            await cw.click()
+            if await cw.count() > 0:
+                await cw.click()
             await p.wait_for_timeout(250)
-            await p.click('.side-note-button[data-act="full"]')
-            await p.wait_for_timeout(400)
+            await p.click('.marginalia-actions button[data-act="full"]')
+            await p.wait_for_timeout(450)
         await snap(page, f"{BASE}/reading.html?chapter=universe&section=1.1",
-                   "04-word-drawer", prepare=drawer_setup, wait_ms=600)
+                   "04-word-drawer", prepare=drawer_setup, wait_ms=700)
 
-        # 5. Quiz page
+        # 5. Quiz page — Universe 1.1, all questions revealed
         async def quiz_setup(p):
             await p.click(".tap-overlay")
-            await p.wait_for_timeout(400)
+            for _ in range(4):
+                await p.mouse.click(900, 700)
+                await p.wait_for_timeout(100)
         await snap(page, f"{BASE}/quiz.html?chapter=universe&section=1.1",
                    "05-quiz", prepare=quiz_setup, wait_ms=800)
+
+        # 6. Reading — Europe / Alice sub-chapter (different painted bg)
+        async def alice_setup(p):
+            await p.click(".tap-overlay")
+            for _ in range(4):
+                await p.mouse.click(900, 600)
+                await p.wait_for_timeout(100)
+        await snap(page, f"{BASE}/reading.html?chapter=europe&section=9.1&page=europe-alice",
+                   "06-reading-alice", prepare=alice_setup, wait_ms=1000)
 
         await ctx.close()
         await browser.close()
