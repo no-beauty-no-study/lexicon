@@ -88,14 +88,21 @@
 
   // Smooth volume ramp from current to target over `ms` (user
   // request: '记得渐隐'). Used to fade IN at page load and across
-  // navigations so the BGM doesn't pop.
+  // navigations so the BGM doesn't pop. Volume is clamped to [0, 1]
+  // because concurrent fadeVolume + BGM.fadeOut ramps can race and
+  // produce values like -0.003 (floating point), which HTMLMediaElement
+  // throws on — that thrown error breaks the RAF chain and leaves
+  // audio stuck at a tiny inaudible volume ('BGM is gone').
+  function clampVol(v) {
+    return v < 0 ? 0 : v > 1 ? 1 : v;
+  }
   function fadeVolume(target, ms) {
     if (!audio) return;
     const start = audio.volume;
     const t0 = performance.now();
     function step(now) {
       const p = Math.min(1, (now - t0) / ms);
-      audio.volume = start + (target - start) * p;
+      audio.volume = clampVol(start + (target - start) * p);
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -194,7 +201,7 @@
       const t0 = performance.now();
       function step(now) {
         const p = Math.min(1, (now - t0) / ms);
-        audio.volume = start * (1 - p);
+        audio.volume = clampVol(start * (1 - p));
         if (p < 1) requestAnimationFrame(step);
         else { try { audio.pause(); } catch(_){} }
       }

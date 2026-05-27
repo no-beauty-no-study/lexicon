@@ -140,11 +140,19 @@ const Reveal = (function () {
       if (!synth) return;
       synth.cancel();
       const u = new SpeechSynthesisUtterance(text);
-      u.lang  = "en-US";
       u.rate  = 0.96;
       u.pitch = 1.0;
       const v = pickVoice();
-      if (v) u.voice = v;
+      if (v) {
+        u.voice = v;
+        // Lang MUST match the picked voice — Daniel is en-GB, and
+        // hard-coding u.lang = 'en-US' makes newer iOS Safari override
+        // the requested voice with the en-US default (robotic
+        // Samantha). Following the voice's lang keeps Daniel.
+        u.lang = v.lang || "en-US";
+      } else {
+        u.lang = "en-US";
+      }
       synth.speak(u);
     } catch (_) { /* swallow */ }
   }
