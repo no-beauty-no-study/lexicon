@@ -143,37 +143,35 @@ const Reveal = (function () {
       const synth = window.speechSynthesis;
       if (!synth) return;
       synth.cancel();
-      const myToken = ++speakToken;
+      ++speakToken;
 
-      // Split text into per-sentence utterances. Each utterance gets
-      // voice=Ava set, but iOS drops the voice on ANYTHING that's
-      // queued up at the same time as the currently-speaking
-      // utterance — only the 'currently first / fresh' utterance
-      // gets to honour u.voice. So we chain via onend: queue the
-      // next sentence ONLY after the previous one has actually
-      // ended, making every sentence feel like 'utterance #1' to
-      // iOS. No setTimeout gap, no watchdog, no idle-poll — those
-      // were what made earlier chunking attempts sound choppy.
-      const sentences = (String(text).match(/[^.!?。！？]+[.!?。！？]?\s*/g) || [text])
-        .map(s => s.trim())
-        .filter(Boolean);
+      // Why the punctuation rewrite:
+      //   - 1128fb9 (single utterance, no chunking): first sentence
+      //     Ava ✓, then iOS switched to Daniel at the period.
+      //   - 7c2946f (chunked, queued same-tick): first sentence Ava ✓,
+      //     rest fell back to default because iOS drops voice on
+      //     queued utterances after the first.
+      //   - ce8fa64 (chunked, chained via onend): EVEN the first
+      //     sentence went male — setting u.onend before synth.speak
+      //     seems to flip iOS into 'this is part of a series' mode,
+      //     and voice on the first utterance is dropped too.
+      // The only configuration that reliably plays in Ava is: ONE
+      // utterance, no onend handler, voice set inline. So we keep
+      // it single-utterance and prevent the mid-utterance voice
+      // switch by demoting sentence punctuation to commas — iOS
+      // doesn't see a sentence boundary and doesn't switch voices.
+      // Intonation becomes mildly run-on but stays in Ava throughout.
+      const massaged = String(text)
+        .replace(/([.!?])(?=\s|$)/g, ",")
+        .replace(/,+\s*$/, "");
 
-      let i = 0;
-      function speakNext() {
-        if (myToken !== speakToken) return;      // superseded
-        if (i >= sentences.length) return;
-        const s = sentences[i++];
-        const u = new SpeechSynthesisUtterance(s);
-        u.lang  = "en-US";
-        u.rate  = 0.96;
-        u.pitch = 1.0;
-        const v = pickVoice();
-        if (v) u.voice = v;
-        u.onend   = speakNext;
-        u.onerror = speakNext;
-        synth.speak(u);
-      }
-      speakNext();
+      const u = new SpeechSynthesisUtterance(massaged);
+      u.lang  = "en-US";
+      u.rate  = 0.96;
+      u.pitch = 1.0;
+      const v = pickVoice();
+      if (v) u.voice = v;
+      synth.speak(u);
     } catch (_) { /* swallow */ }
   }
 
