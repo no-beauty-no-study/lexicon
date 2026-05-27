@@ -153,17 +153,19 @@ const Reveal = (function () {
     window.speechSynthesis.onvoiceschanged = () => { pickVoice(defaultGender); };
   }
 
-  /* The complete iOS TTS workaround needs BOTH halves:
+  /* The complete iOS TTS workaround needs three things at once —
        (A) Each utterance must be ONE sentence — iOS drops to the
-           system default voice mid-utterance once the text exceeds
-           a sentence boundary, which is what the user kept hearing
-           as 'first sentence Ava, then robot'.
-       (B) The next utterance must be queued ONLY after the previous
-           one's 'end' event, plus a 60 ms breathing-room timeout.
-           Queueing multiple utterances up-front also drops voice on
-           every utterance after the first.
-     So we chunk the text into sentences and walk through them via
-     onend, never having more than one utterance in flight. */
+           system default voice mid-utterance once the text crosses a
+           sentence boundary ('first sentence Ava, then robot').
+       (B) The NEXT utterance must be queued ONLY after the previous
+           one's 'end' event AND only when the synth is actually idle.
+           Queueing multiple utterances up-front, or queuing while the
+           synth is still draining, ALSO drops the voice.
+       (C) cancel() leaves iOS Safari in a stuck 'paused' state; we
+           must call resume() after every cancel or the next speak
+           is silently dropped.
+     So we chunk the text into sentences, walk through them via
+     onend + an idle-poll, and resume() before/after each step. */
   let speakToken = 0;     // bumped on every new speak() call so a
                           // stale onend chain can be aborted.
 
@@ -174,8 +176,8 @@ const Reveal = (function () {
     const gender = (opts && opts.gender) || defaultGender;
     const myToken = ++speakToken;
 
-    try { if (synth.speaking || synth.pending) synth.cancel(); }
-    catch (_) {}
+    try { synth.cancel(); } catch (_) {}
+    try { synth.resume(); } catch (_) {}   // (C) wake from paused
 
     const chunks = (String(text).match(/[^.!?。！？]+[.!?。！？]?\s*/g) || [text])
                    .map(s => s.trim())
@@ -184,31 +186,54 @@ const Reveal = (function () {
 
     let i = 0;
     function speakOne() {
-      if (myToken !== speakToken) return;     // superseded
+      if (myToken !== speakToken) return;             // superseded
       if (i >= chunks.length) return;
+      // (B) Wait until synth is actually idle — onend can fire while
+      //     the audio backend is still draining the previous chunk.
+      if (synth.speaking || synth.pending) {
+        setTimeout(speakOne, 80);
+        return;
+      }
       const chunk = chunks[i++];
+      // Watchdog: onend doesn't always fire on iOS Safari (esp. for
+      // enhanced voices). If it hasn't fired by the time the chunk
+      // 'should' be done speaking, force-advance — but guard with a
+      // flag so onend + watchdog can't double-advance.
+      let advanced = false;
+      const advance = () => {
+        if (advanced || myToken !== speakToken) return;
+        advanced = true;
+        setTimeout(speakOne, 220);
+      };
       try {
         const u = new SpeechSynthesisUtterance(chunk);
-        u.lang  = "en-US";
-        u.rate  = 0.96;
-        u.pitch = 1.0;
+        u.lang   = "en-US";
+        u.rate   = 0.96;
+        u.pitch  = 1.0;
+        u.volume = 1.0;
         // Re-pick the voice for EVERY chunk — even if iOS forgot
-        // between utterances, we re-assert.
+        // between utterances, we re-assert. Set both .voice and
+        // .voiceURI (iOS honours one or the other unpredictably).
         const v = pickVoice(gender);
         if (v) {
           u.voice = v;
           if (v.voiceURI) u.voiceURI = v.voiceURI;
         }
-        u.onend   = () => setTimeout(speakOne, 60);
-        u.onerror = () => setTimeout(speakOne, 60);
+        u.onend   = advance;
+        u.onerror = advance;
+        try { synth.resume(); } catch (_) {}
         synth.speak(u);
+        // ~350ms/word at rate 0.96, plus 1s safety + 1s tail.
+        const wordCount = chunk.split(/\s+/).length || 1;
+        setTimeout(advance, Math.min(15000, 1000 + wordCount * 360) + 1000);
       } catch (_) {
-        setTimeout(speakOne, 60);
+        advance();
       }
     }
 
-    // First chunk also waits 60 ms so the cancel() above has settled.
-    setTimeout(speakOne, 60);
+    // 200 ms initial delay so the cancel above has fully settled
+    // before the first new utterance is queued.
+    setTimeout(speakOne, 200);
   }
 
   /* Unlock + warm-up on the first user gesture. iOS Safari needs a
