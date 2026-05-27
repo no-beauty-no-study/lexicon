@@ -848,12 +848,31 @@ button.ornate-panel {
   padding: 0 3px;
   border-radius: 3px;
   cursor: pointer;
-  transition: background 160ms ease, border-color 160ms ease;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    text-shadow 220ms ease;
 }
 .clickable-word:hover,
 .clickable-word.is-active {
   background: var(--highlight-bg-hover);
   border-bottom-color: var(--highlight-border-hover);
+}
+/* User spec: '点击 reading 里的单词文章中单词背景变黄'. The yellow
+   marker stays until another word is clicked — clears via JS. */
+.clickable-word.is-selected {
+  background: rgba(247, 213, 96, 0.55);
+  border-bottom-color: rgba(167, 119, 24, 0.78);
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(247, 213, 96, 0.55);
+  animation: clickable-word-press 520ms ease-out 1;
+}
+@keyframes clickable-word-press {
+  0%   { background: rgba(247, 213, 96, 0.95);
+         text-shadow: 0 0 12px rgba(247, 213, 96, 0.85); }
+  100% { background: rgba(247, 213, 96, 0.55);
+         text-shadow: 0 0 6px  rgba(247, 213, 96, 0.55); }
 }
 
 /* ----- Side pinned-word panel ----- */

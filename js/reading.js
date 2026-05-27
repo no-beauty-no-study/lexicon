@@ -98,12 +98,19 @@
       document.querySelectorAll(".clickable-word.is-selected")
         .forEach(x => x.classList.remove("is-selected"));
       el.classList.add("is-selected");
-      // Speak the clicked surface word out loud (user spec: '点单词
-      // 或者单词卡 词组 都会自动播放英文语音').
-      try { Reveal.speak(el.textContent); } catch (_) {}
       const resolved = resolveClickedWord(el.dataset.word);
       renderMarginalia(resolved);
       syncMarginaliaButtons(currentEntryFromStack());
+      // User spec: '点击 reading 里的单词：播放右列单词 + 2 词组的语音 +
+      // 文章中单词背景变黄'. The yellow highlight is .is-selected
+      // above; the audio sequence is the surface word followed by the
+      // (up to 2) collocations rendered into the side card.
+      try {
+        const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
+        const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
+        const parts = [el.textContent, ...phrases.map(p => p.en)].filter(Boolean);
+        Reveal.speak(parts.join(". "));
+      } catch (_) {}
     });
     // Refresh the FOLD button whenever a stack card is highlighted.
     document.addEventListener("click", (e) => {
@@ -291,9 +298,13 @@
     }
 
     const phrases = getPhrasePairs(entry);
-    const phraseRows = phrases.map(p => `
+    // Per user: side card now shows just 'word / zh / phrase1 /
+    // phrase2' — 4 rows. No phrase translations, no internal
+    // sub-section separators, no yellow highlight on individual
+    // phrases. The WHOLE card is one clickable unit that opens
+    // the parent's family drawer.
+    const phraseRows = phrases.slice(0, 2).map(p => `
       <div class="word-card-phrase">${esc(p.en)}</div>
-      <div class="word-card-phrase-zh">${esc(p.zh)}</div>
     `).join("");
 
     const html = `
@@ -306,32 +317,18 @@
     stack.insertAdjacentHTML("beforeend", html);
 
     const fresh = stack.lastElementChild;
-    // Per pad UX spec: clicking a card in the side panel opens the
-    // drawer with the PARENT'S FULL FAMILY CARD — not the clicked
-    // sub-word again. The parent comes from the resolveClickedWord
-    // result (resolved.headEntry, stashed on the card as data-parent).
     fresh.dataset.parent = (resolved.headEntry && (resolved.headEntry.id || resolved.headEntry.word)) || id;
     fresh.addEventListener("click", (e) => {
       e.stopPropagation();
-      // Speak the part of the card the user actually tapped:
-      //   - English phrase row → speak the phrase
-      //   - any other area     → speak the headword
-      // Always — even when the gesture also opens the drawer.
-      const phraseEl = e.target.closest(".word-card-phrase");
-      const spoken = phraseEl ? phraseEl.textContent : (entry.word || id);
-      try { Reveal.speak(spoken); } catch (_) {}
-      // The drawer should open only when the user taps the headword
-      // (or anywhere outside a phrase row) — taps on a phrase row
-      // should JUST play audio so the user can drill phrases without
-      // losing the page underneath.
-      if (phraseEl) return;
       clearCurrent(stack);
       fresh.classList.add("is-current");
+      // Whole card click — no internal targets, no special-casing
+      // phrases. Always open the parent word's family drawer.
       try {
         const pid = fresh.dataset.parent;
         const parent = (typeof WORDS !== "undefined" && WORDS.find(w => (w.id || w.word) === pid))
                     || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === pid));
-        if (parent) WordCard.openDrawer(parent);
+        if (parent && typeof WordCard !== "undefined") WordCard.openDrawer(parent);
       } catch(_) {}
     });
     fresh.scrollIntoView({ block: "nearest", behavior: "smooth" });
