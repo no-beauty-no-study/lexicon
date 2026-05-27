@@ -95,19 +95,17 @@ const Reveal = (function () {
     speak(fallbackText);
   }
 
-  /* TTS — Web Speech API. AVA ONLY.
+  /* TTS — Web Speech API. Follow the user's OS system voice.
 
-     User testing on iPad Safari nailed it down: whatever male voice
-     we try to set, iOS plays the FIRST utterance in Ava (the system
-     default) anyway because of the cancel-then-speak voice-drop bug,
-     then SUBSEQUENT utterances use Daniel Compact (mechanical). The
-     pattern is unfixable from JS — iOS just refuses to use our
-     requested male voice cleanly.
-
-     Ava IS natural on this device (the user confirmed 'Ava仿人音'),
-     so the simplest working fix is: stop fighting, use Ava.
-     pickVoice prefers 'Ava (Enhanced)' > 'Ava (Premium)' > 'Ava' >
-     any English voice. Daniel + the male fallback list are gone.
+     v.default is the only flag the API gives us that mirrors the
+     user's Spoken-Content choice in OS settings (Ava, Samantha, …);
+     prefer it first. After that, match any voice whose name contains
+     "Ava" (Apple ships variants like "Ava", "Ava (Enhanced)",
+     "Ava (Premium)", "Ava Multilingual" — exact strings differ by OS
+     version, so substring-match instead of equality). The remaining
+     fallbacks explicitly exclude Daniel: the previous "first en-*
+     voice" fallback landed on Daniel (en-GB) on iPad whenever the
+     Ava match missed, which is exactly the bug we're fixing.
 
      Property order on the utterance still matters: u.lang FIRST,
      u.voice LAST (reversing it silently clears voice on iOS). */
@@ -121,10 +119,11 @@ const Reveal = (function () {
       const voices = synth.getVoices();
       if (!voices.length) return null;
       pickedVoice =
-            voices.find(v => v.name === "Ava (Enhanced)")
-         || voices.find(v => v.name === "Ava (Premium)")
-         || voices.find(v => v.name === "Ava")
-         || voices.find(v => /^en[-_]/i.test(v.lang))
+            voices.find(v => v.default && /^en/i.test(v.lang))
+         || voices.find(v => /ava/i.test(v.name))
+         || voices.find(v => v.default)
+         || voices.find(v => /^en-us/i.test(v.lang) && !/daniel/i.test(v.name))
+         || voices.find(v => /^en/i.test(v.lang)    && !/daniel/i.test(v.name))
          || null;
       return pickedVoice;
     } catch (_) { return null; }
@@ -166,10 +165,13 @@ const Reveal = (function () {
         .replace(/,+\s*$/, "");
 
       const u = new SpeechSynthesisUtterance(massaged);
-      u.lang  = "en-US";
+      const v = pickVoice();
+      // Set lang to follow the picked voice — forcing en-US while
+      // the chosen voice is en-GB makes iOS substitute a different
+      // (often mechanical) voice mid-utterance.
+      u.lang  = (v && v.lang) || "en-US";
       u.rate  = 0.96;
       u.pitch = 1.0;
-      const v = pickVoice();
       if (v) u.voice = v;
       synth.speak(u);
     } catch (_) { /* swallow */ }
