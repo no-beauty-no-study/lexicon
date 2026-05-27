@@ -135,30 +135,45 @@ const Reveal = (function () {
     window.speechSynthesis.onvoiceschanged = () => { pickedVoice = null; pickVoice(); };
   }
 
+  let speakToken = 0;
+
   function speak(text) {
     if (!text) return;
     try {
       const synth = window.speechSynthesis;
       if (!synth) return;
       synth.cancel();
-      const v = pickVoice();
-      // ONE UTTERANCE PER SENTENCE, all queued same-tick. iOS Safari
-      // switches voice across sentence boundaries inside ONE utterance
-      // (Ava → Daniel after the first period). Splitting on sentence
-      // punctuation and re-asserting voice=Ava on every chunk forces
-      // iOS to honour Ava end-to-end. No onend chaining, no delay
-      // gaps — those made earlier attempts sound choppy / ghost-like.
+      const myToken = ++speakToken;
+
+      // Split text into per-sentence utterances. Each utterance gets
+      // voice=Ava set, but iOS drops the voice on ANYTHING that's
+      // queued up at the same time as the currently-speaking
+      // utterance — only the 'currently first / fresh' utterance
+      // gets to honour u.voice. So we chain via onend: queue the
+      // next sentence ONLY after the previous one has actually
+      // ended, making every sentence feel like 'utterance #1' to
+      // iOS. No setTimeout gap, no watchdog, no idle-poll — those
+      // were what made earlier chunking attempts sound choppy.
       const sentences = (String(text).match(/[^.!?。！？]+[.!?。！？]?\s*/g) || [text])
         .map(s => s.trim())
         .filter(Boolean);
-      for (const s of sentences) {
+
+      let i = 0;
+      function speakNext() {
+        if (myToken !== speakToken) return;      // superseded
+        if (i >= sentences.length) return;
+        const s = sentences[i++];
         const u = new SpeechSynthesisUtterance(s);
         u.lang  = "en-US";
         u.rate  = 0.96;
         u.pitch = 1.0;
+        const v = pickVoice();
         if (v) u.voice = v;
+        u.onend   = speakNext;
+        u.onerror = speakNext;
         synth.speak(u);
       }
+      speakNext();
     } catch (_) { /* swallow */ }
   }
 
