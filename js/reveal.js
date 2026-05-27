@@ -95,75 +95,62 @@ const Reveal = (function () {
     speak(fallbackText);
   }
 
-  /* TTS — Web Speech API. PER USER SPEC:
-       reading page  → MALE voice 'Daniel'
-       quiz page     → male voice 'Daniel'
-     User confirmed Daniel reads a whole paragraph in one utterance
-     fine on iOS Safari, no chunking needed. Keep this simple: ONE
-     utterance per speak() call, cancel + tiny delay before each.
-     Chunking + serialization made it sound choppy / robotic. */
-  const FEMALE_RE = /(Ava|Samantha|Karen|Victoria|Allison|Susan|Catherine|Serena|Moira|Tessa|Fiona|Zoe)/i;
-  const MALE_RE   = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
-  const BAD_RE    = /(Eloquence|Compact|Trinoids|Bahh|Hysterical|Whisper|Cellos|Boing|Bubbles|Deranged|Bells|Bad News|Good News|Pipe Organ|Albert|Junior|Kathy|Princess|Ralph|Vicki|Zarvox)/i;
+  /* TTS — Web Speech API. PIN TO A MALE VOICE: the user's iPad
+     was alternating between a robotic female voice and a smoother
+     male one. Web Speech API has no gender field, so we match
+     known male voice names (Daniel/Alex/Tom/Aaron/Fred/Oliver/
+     Microsoft David etc.) before falling back to any English
+     voice. Cancels the previous utterance so successive taps
+     don't pile up.
 
-  function pickVoice(prefer) {
-    const key = (prefer === "female") ? "female" : "male";
+     This is intentionally the SIMPLEST possible implementation —
+     identical to commit 66b5eb8 which the user confirmed reads
+     entire paragraphs in Daniel with full natural intonation.
+     Every 'iOS workaround' I layered on top (voiceURI, setTimeout
+     delay, BAD_RE filter, per-call re-pick, chunking) made it
+     sound robotic. Leave well enough alone. */
+  const MALE_VOICE_RE = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
+  let pickedVoice = null;
+
+  function pickVoice() {
+    if (pickedVoice) return pickedVoice;
     try {
       const synth = window.speechSynthesis;
       if (!synth) return null;
       const voices = synth.getVoices();
       if (!voices.length) return null;
-      const re = (key === "male") ? MALE_RE : FEMALE_RE;
-      const isEn   = v => /^en[-_]/i.test(v.lang);
-      const isGood = v => !BAD_RE.test(v.name);
-      return voices.find(v => isEn(v) && re.test(v.name) && isGood(v))
-          || voices.find(v =>          re.test(v.name) && isGood(v))
-          || voices.find(v => isEn(v) && isGood(v))
-          || voices.find(isEn)
-          || voices[0];
+      pickedVoice =
+            voices.find(v => /^en[-_]/i.test(v.lang) && MALE_VOICE_RE.test(v.name))
+         || voices.find(v => MALE_VOICE_RE.test(v.name))
+         || voices.find(v => /^en[-_]/i.test(v.lang))
+         || null;
+      return pickedVoice;
     } catch (_) { return null; }
   }
-
-  // Default to male (Daniel) on every page — user confirmed Daniel
-  // reads an entire paragraph cleanly with full intonation, where
-  // Ava + the chunking workaround sounded like a ghost.
-  const defaultGender = "male";
-
-  // Prime the voices list early (iOS loads voices async).
+  // Voices may be loaded asynchronously on iPad / Chrome. Re-pick
+  // when the voiceschanged event fires.
   if (window.speechSynthesis && typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
-    window.speechSynthesis.onvoiceschanged = () => { pickVoice(defaultGender); };
+    window.speechSynthesis.onvoiceschanged = () => { pickedVoice = null; pickVoice(); };
   }
 
-  function speak(text, opts) {
+  function speak(text) {
     if (!text) return;
-    const synth = window.speechSynthesis;
-    if (!synth) return;
-    const gender = (opts && opts.gender) || defaultGender;
-    try { synth.cancel(); } catch (_) {}
-    // iOS Safari drops the voice setting if cancel() and speak()
-    // happen in the same JS tick. 60 ms is enough on iOS 17/18 to
-    // let cancel settle.
-    setTimeout(() => {
-      try {
-        const u = new SpeechSynthesisUtterance(String(text));
-        u.lang  = "en-US";
-        u.rate  = 0.96;
-        u.pitch = 1.0;
-        const v = pickVoice(gender);
-        if (v) {
-          u.voice = v;
-          if (v.voiceURI) u.voiceURI = v.voiceURI;
-        }
-        synth.speak(u);
-      } catch (_) {}
-    }, 60);
+    try {
+      const synth = window.speechSynthesis;
+      if (!synth) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang  = "en-US";
+      u.rate  = 0.96;
+      u.pitch = 1.0;
+      const v = pickVoice();
+      if (v) u.voice = v;
+      synth.speak(u);
+    } catch (_) { /* swallow */ }
   }
 
-  /* Unlock + warm-up on the first user gesture. iOS Safari needs a
-     real gesture to allow any TTS; piggy-back on that to also burn
-     the voice-loading race by speaking a silent utterance WITH the
-     intended voice. Without this, the first real speak() can race
-     against voice loading and end up using the system default. */
+  /* Unlock speechSynthesis on first user gesture (iPad Safari needs
+     a sacrificial utterance before any TTS will play in a session). */
   (function unlockTTSOnce() {
     function unlock() {
       document.removeEventListener("touchstart",  unlock);
@@ -172,14 +159,8 @@ const Reveal = (function () {
       try {
         const synth = window.speechSynthesis;
         if (!synth) return;
-        const v = pickVoice(defaultGender);
         const u = new SpeechSynthesisUtterance(" ");
         u.volume = 0;
-        u.rate = 1;
-        if (v) {
-          u.voice = v;
-          if (v.voiceURI) u.voiceURI = v.voiceURI;
-        }
         synth.speak(u);
       } catch (_) {}
     }
