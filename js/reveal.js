@@ -141,13 +141,24 @@ const Reveal = (function () {
       const synth = window.speechSynthesis;
       if (!synth) return;
       synth.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang  = "en-US";
-      u.rate  = 0.96;
-      u.pitch = 1.0;
       const v = pickVoice();
-      if (v) u.voice = v;
-      synth.speak(u);
+      // ONE UTTERANCE PER SENTENCE, all queued same-tick. iOS Safari
+      // switches voice across sentence boundaries inside ONE utterance
+      // (Ava → Daniel after the first period). Splitting on sentence
+      // punctuation and re-asserting voice=Ava on every chunk forces
+      // iOS to honour Ava end-to-end. No onend chaining, no delay
+      // gaps — those made earlier attempts sound choppy / ghost-like.
+      const sentences = (String(text).match(/[^.!?。！？]+[.!?。！？]?\s*/g) || [text])
+        .map(s => s.trim())
+        .filter(Boolean);
+      for (const s of sentences) {
+        const u = new SpeechSynthesisUtterance(s);
+        u.lang  = "en-US";
+        u.rate  = 0.96;
+        u.pitch = 1.0;
+        if (v) u.voice = v;
+        synth.speak(u);
+      }
     } catch (_) { /* swallow */ }
   }
 
