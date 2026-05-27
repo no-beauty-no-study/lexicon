@@ -96,35 +96,18 @@ const Reveal = (function () {
   }
 
   /* TTS — Web Speech API. PER USER SPEC:
-       reading page  → female voice (prefer Ava / Samantha)
-       quiz page     → male voice  (prefer Daniel / Alex)
-
-     ROOT CAUSE OF THE OLD 'first sentence Ava, second sentence robot'
-     BUG, finally pinned: iOS Safari has TWO interacting issues —
-
-       (1) speechSynthesis.cancel() followed by speak() in the same
-           JS tick silently drops the voice setting on the new
-           utterance (it plays in system default).
-       (2) Queueing multiple utterances back-to-back ALSO drops the
-           voice on every utterance after the first — even when the
-           voice is explicitly set on each one.
-
-     The previous fix tried to dodge (1) by removing cancel() and
-     chunking by sentence; that triggered (2) on every reading-block
-     and ALSO on every word click ('word + 2 phrases'). The clean fix
-     is: NO chunking, ONE utterance per speak() call, AND a 60 ms
-     setTimeout after cancel() so iOS settles before the new
-     utterance is constructed. Long paragraphs are fine in a single
-     utterance — iOS does its own sentence break internally. */
+       reading page  → MALE voice 'Daniel'
+       quiz page     → male voice 'Daniel'
+     User confirmed Daniel reads a whole paragraph in one utterance
+     fine on iOS Safari, no chunking needed. Keep this simple: ONE
+     utterance per speak() call, cancel + tiny delay before each.
+     Chunking + serialization made it sound choppy / robotic. */
   const FEMALE_RE = /(Ava|Samantha|Karen|Victoria|Allison|Susan|Catherine|Serena|Moira|Tessa|Fiona|Zoe)/i;
   const MALE_RE   = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
-  /* Voices to AVOID — iOS bundles some 'novelty' / compact voices
-     that sound robotic. If the regex above lands on one of these,
-     we'd rather fall back to any other en-US voice. */
   const BAD_RE    = /(Eloquence|Compact|Trinoids|Bahh|Hysterical|Whisper|Cellos|Boing|Bubbles|Deranged|Bells|Bad News|Good News|Pipe Organ|Albert|Junior|Kathy|Princess|Ralph|Vicki|Zarvox)/i;
 
   function pickVoice(prefer) {
-    const key = (prefer === "male") ? "male" : "female";
+    const key = (prefer === "female") ? "female" : "male";
     try {
       const synth = window.speechSynthesis;
       if (!synth) return null;
@@ -141,99 +124,39 @@ const Reveal = (function () {
     } catch (_) { return null; }
   }
 
-  let defaultGender = "female";
-  function detectDefaultGender() {
-    const dp = document.querySelector(".page")?.dataset?.page;
-    defaultGender = (dp === "quiz") ? "male" : "female";
-  }
-  detectDefaultGender();
+  // Default to male (Daniel) on every page — user confirmed Daniel
+  // reads an entire paragraph cleanly with full intonation, where
+  // Ava + the chunking workaround sounded like a ghost.
+  const defaultGender = "male";
 
   // Prime the voices list early (iOS loads voices async).
   if (window.speechSynthesis && typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
     window.speechSynthesis.onvoiceschanged = () => { pickVoice(defaultGender); };
   }
 
-  /* The complete iOS TTS workaround needs three things at once —
-       (A) Each utterance must be ONE sentence — iOS drops to the
-           system default voice mid-utterance once the text crosses a
-           sentence boundary ('first sentence Ava, then robot').
-       (B) The NEXT utterance must be queued ONLY after the previous
-           one's 'end' event AND only when the synth is actually idle.
-           Queueing multiple utterances up-front, or queuing while the
-           synth is still draining, ALSO drops the voice.
-       (C) cancel() leaves iOS Safari in a stuck 'paused' state; we
-           must call resume() after every cancel or the next speak
-           is silently dropped.
-     So we chunk the text into sentences, walk through them via
-     onend + an idle-poll, and resume() before/after each step. */
-  let speakToken = 0;     // bumped on every new speak() call so a
-                          // stale onend chain can be aborted.
-
   function speak(text, opts) {
     if (!text) return;
     const synth = window.speechSynthesis;
     if (!synth) return;
     const gender = (opts && opts.gender) || defaultGender;
-    const myToken = ++speakToken;
-
     try { synth.cancel(); } catch (_) {}
-    try { synth.resume(); } catch (_) {}   // (C) wake from paused
-
-    const chunks = (String(text).match(/[^.!?。！？]+[.!?。！？]?\s*/g) || [text])
-                   .map(s => s.trim())
-                   .filter(Boolean);
-    if (!chunks.length) return;
-
-    let i = 0;
-    function speakOne() {
-      if (myToken !== speakToken) return;             // superseded
-      if (i >= chunks.length) return;
-      // (B) Wait until synth is actually idle — onend can fire while
-      //     the audio backend is still draining the previous chunk.
-      if (synth.speaking || synth.pending) {
-        setTimeout(speakOne, 80);
-        return;
-      }
-      const chunk = chunks[i++];
-      // Watchdog: onend doesn't always fire on iOS Safari (esp. for
-      // enhanced voices). If it hasn't fired by the time the chunk
-      // 'should' be done speaking, force-advance — but guard with a
-      // flag so onend + watchdog can't double-advance.
-      let advanced = false;
-      const advance = () => {
-        if (advanced || myToken !== speakToken) return;
-        advanced = true;
-        setTimeout(speakOne, 220);
-      };
+    // iOS Safari drops the voice setting if cancel() and speak()
+    // happen in the same JS tick. 60 ms is enough on iOS 17/18 to
+    // let cancel settle.
+    setTimeout(() => {
       try {
-        const u = new SpeechSynthesisUtterance(chunk);
-        u.lang   = "en-US";
-        u.rate   = 0.96;
-        u.pitch  = 1.0;
-        u.volume = 1.0;
-        // Re-pick the voice for EVERY chunk — even if iOS forgot
-        // between utterances, we re-assert. Set both .voice and
-        // .voiceURI (iOS honours one or the other unpredictably).
+        const u = new SpeechSynthesisUtterance(String(text));
+        u.lang  = "en-US";
+        u.rate  = 0.96;
+        u.pitch = 1.0;
         const v = pickVoice(gender);
         if (v) {
           u.voice = v;
           if (v.voiceURI) u.voiceURI = v.voiceURI;
         }
-        u.onend   = advance;
-        u.onerror = advance;
-        try { synth.resume(); } catch (_) {}
         synth.speak(u);
-        // ~350ms/word at rate 0.96, plus 1s safety + 1s tail.
-        const wordCount = chunk.split(/\s+/).length || 1;
-        setTimeout(advance, Math.min(15000, 1000 + wordCount * 360) + 1000);
-      } catch (_) {
-        advance();
-      }
-    }
-
-    // 200 ms initial delay so the cancel above has fully settled
-    // before the first new utterance is queued.
-    setTimeout(speakOne, 200);
+      } catch (_) {}
+    }, 60);
   }
 
   /* Unlock + warm-up on the first user gesture. iOS Safari needs a
