@@ -95,21 +95,22 @@ const Reveal = (function () {
     speak(fallbackText);
   }
 
-  /* TTS — Web Speech API. PIN TO A MALE VOICE: the user's iPad
-     was alternating between a robotic female voice and a smoother
-     male one. Web Speech API has no gender field, so we match
-     known male voice names (Daniel/Alex/Tom/Aaron/Fred/Oliver/
-     Microsoft David etc.) before falling back to any English
-     voice. Cancels the previous utterance so successive taps
-     don't pile up.
+  /* TTS — Web Speech API. AVA ONLY.
 
-     This is intentionally the SIMPLEST possible implementation —
-     identical to commit 66b5eb8 which the user confirmed reads
-     entire paragraphs in Daniel with full natural intonation.
-     Every 'iOS workaround' I layered on top (voiceURI, setTimeout
-     delay, BAD_RE filter, per-call re-pick, chunking) made it
-     sound robotic. Leave well enough alone. */
-  const MALE_VOICE_RE = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
+     User testing on iPad Safari nailed it down: whatever male voice
+     we try to set, iOS plays the FIRST utterance in Ava (the system
+     default) anyway because of the cancel-then-speak voice-drop bug,
+     then SUBSEQUENT utterances use Daniel Compact (mechanical). The
+     pattern is unfixable from JS — iOS just refuses to use our
+     requested male voice cleanly.
+
+     Ava IS natural on this device (the user confirmed 'Ava仿人音'),
+     so the simplest working fix is: stop fighting, use Ava.
+     pickVoice prefers 'Ava (Enhanced)' > 'Ava (Premium)' > 'Ava' >
+     any English voice. Daniel + the male fallback list are gone.
+
+     Property order on the utterance still matters: u.lang FIRST,
+     u.voice LAST (reversing it silently clears voice on iOS). */
   let pickedVoice = null;
 
   function pickVoice() {
@@ -119,26 +120,10 @@ const Reveal = (function () {
       if (!synth) return null;
       const voices = synth.getVoices();
       if (!voices.length) return null;
-      // Explicit priority + ENHANCED preference. On iOS, a voice name
-      // may exist as both 'Daniel' (compact, mechanical) AND
-      // 'Daniel (Enhanced)' / 'Daniel (Premium)' (downloaded, natural).
-      // If we pick the compact one, the user hears 'male mechanical'.
-      // Walk the priority list and try the Enhanced/Premium variant
-      // for each name before falling back to the bare name.
-      const preferred = ["Daniel", "Alex", "Tom", "Aaron", "Oliver", "Fred", "David"];
-      for (const name of preferred) {
-        const enhanced = voices.find(v =>
-          v.name === name + " (Enhanced)" ||
-          v.name === name + " (Premium)"
-        );
-        if (enhanced) { pickedVoice = enhanced; return enhanced; }
-        const exact = voices.find(v => v.name === name);
-        if (exact)    { pickedVoice = exact; return exact; }
-      }
-      // Last resort: any male-named English voice, then any English.
       pickedVoice =
-            voices.find(v => /^en[-_]/i.test(v.lang) && MALE_VOICE_RE.test(v.name))
-         || voices.find(v => MALE_VOICE_RE.test(v.name))
+            voices.find(v => v.name === "Ava (Enhanced)")
+         || voices.find(v => v.name === "Ava (Premium)")
+         || voices.find(v => v.name === "Ava")
          || voices.find(v => /^en[-_]/i.test(v.lang))
          || null;
       return pickedVoice;
@@ -156,11 +141,6 @@ const Reveal = (function () {
       const synth = window.speechSynthesis;
       if (!synth) return;
       synth.cancel();
-      // PROPERTY ORDER MATTERS on iOS Safari: setting u.lang AFTER
-      // u.voice can silently clear the voice (we observed 'first
-      // sentence Ava, then male mechanical'). lang FIRST, voice LAST.
-      // Keep lang at 'en-US' even if the voice is en-GB — what the
-      // user actually had working originally (commit 66b5eb8).
       const u = new SpeechSynthesisUtterance(text);
       u.lang  = "en-US";
       u.rate  = 0.96;
@@ -170,20 +150,6 @@ const Reveal = (function () {
       synth.speak(u);
     } catch (_) { /* swallow */ }
   }
-
-  /* NO sacrificial-unlock utterance. We used to queue a silent " "
-     utterance on the first touchstart to 'unlock' iOS Safari TTS,
-     but touchstart fires BEFORE the container click that triggers
-     the real speak() — so the sequence became:
-       (1) touchstart → unlock queues silent " " (no voice = Ava).
-       (2) click → speak(text, voice=Daniel) calls synth.cancel()
-           then synth.speak(daniel).
-       (3) iOS cancel-then-speak bug drops the voice on Daniel; it
-           plays in the system default (Ava natural).
-       (4) Subsequent speaks find Daniel Compact (mechanical).
-     That's exactly the 'first sentence Ava, then male mechanical'
-     the user reported. Removing the unlock lets the real speak()
-     own the gesture context cleanly. */
 
   return { init, revealNext, revealAll, speak };
 })();
