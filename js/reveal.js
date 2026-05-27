@@ -119,6 +119,23 @@ const Reveal = (function () {
       if (!synth) return null;
       const voices = synth.getVoices();
       if (!voices.length) return null;
+      // Explicit priority + ENHANCED preference. On iOS, a voice name
+      // may exist as both 'Daniel' (compact, mechanical) AND
+      // 'Daniel (Enhanced)' / 'Daniel (Premium)' (downloaded, natural).
+      // If we pick the compact one, the user hears 'male mechanical'.
+      // Walk the priority list and try the Enhanced/Premium variant
+      // for each name before falling back to the bare name.
+      const preferred = ["Daniel", "Alex", "Tom", "Aaron", "Oliver", "Fred", "David"];
+      for (const name of preferred) {
+        const enhanced = voices.find(v =>
+          v.name === name + " (Enhanced)" ||
+          v.name === name + " (Premium)"
+        );
+        if (enhanced) { pickedVoice = enhanced; return enhanced; }
+        const exact = voices.find(v => v.name === name);
+        if (exact)    { pickedVoice = exact; return exact; }
+      }
+      // Last resort: any male-named English voice, then any English.
       pickedVoice =
             voices.find(v => /^en[-_]/i.test(v.lang) && MALE_VOICE_RE.test(v.name))
          || voices.find(v => MALE_VOICE_RE.test(v.name))
@@ -139,43 +156,34 @@ const Reveal = (function () {
       const synth = window.speechSynthesis;
       if (!synth) return;
       synth.cancel();
+      // PROPERTY ORDER MATTERS on iOS Safari: setting u.lang AFTER
+      // u.voice can silently clear the voice (we observed 'first
+      // sentence Ava, then male mechanical'). lang FIRST, voice LAST.
+      // Keep lang at 'en-US' even if the voice is en-GB — what the
+      // user actually had working originally (commit 66b5eb8).
       const u = new SpeechSynthesisUtterance(text);
+      u.lang  = "en-US";
       u.rate  = 0.96;
       u.pitch = 1.0;
       const v = pickVoice();
-      if (v) {
-        u.voice = v;
-        // Lang MUST match the picked voice — Daniel is en-GB, and
-        // hard-coding u.lang = 'en-US' makes newer iOS Safari override
-        // the requested voice with the en-US default (robotic
-        // Samantha). Following the voice's lang keeps Daniel.
-        u.lang = v.lang || "en-US";
-      } else {
-        u.lang = "en-US";
-      }
+      if (v) u.voice = v;
       synth.speak(u);
     } catch (_) { /* swallow */ }
   }
 
-  /* Unlock speechSynthesis on first user gesture (iPad Safari needs
-     a sacrificial utterance before any TTS will play in a session). */
-  (function unlockTTSOnce() {
-    function unlock() {
-      document.removeEventListener("touchstart",  unlock);
-      document.removeEventListener("pointerdown", unlock);
-      document.removeEventListener("click",       unlock);
-      try {
-        const synth = window.speechSynthesis;
-        if (!synth) return;
-        const u = new SpeechSynthesisUtterance(" ");
-        u.volume = 0;
-        synth.speak(u);
-      } catch (_) {}
-    }
-    document.addEventListener("touchstart",  unlock, { once: true });
-    document.addEventListener("pointerdown", unlock, { once: true });
-    document.addEventListener("click",       unlock, { once: true });
-  })();
+  /* NO sacrificial-unlock utterance. We used to queue a silent " "
+     utterance on the first touchstart to 'unlock' iOS Safari TTS,
+     but touchstart fires BEFORE the container click that triggers
+     the real speak() — so the sequence became:
+       (1) touchstart → unlock queues silent " " (no voice = Ava).
+       (2) click → speak(text, voice=Daniel) calls synth.cancel()
+           then synth.speak(daniel).
+       (3) iOS cancel-then-speak bug drops the voice on Daniel; it
+           plays in the system default (Ava natural).
+       (4) Subsequent speaks find Daniel Compact (mechanical).
+     That's exactly the 'first sentence Ava, then male mechanical'
+     the user reported. Removing the unlock lets the real speak()
+     own the gesture context cleanly. */
 
   return { init, revealNext, revealAll, speak };
 })();
