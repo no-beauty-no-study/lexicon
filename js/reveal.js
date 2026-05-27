@@ -96,25 +96,33 @@ const Reveal = (function () {
   }
 
   /* TTS — Web Speech API. PER USER SPEC:
-       reading page  → female voice 'Ava' (iOS Voices > English)
-       quiz page     → male voice 'Daniel' (kept around for quiz)
-     We expose Reveal.speak(text, opts) so callers can override the
-     voice family explicitly, but auto-detection uses the data-page
-     attribute on .page to pick a sensible default. */
-  const FEMALE_RE = /(Ava|Samantha|Karen|Victoria|Allison|Susan|Catherine|Serena|Moira|Tessa|Fiona)/i;
-  const MALE_RE   = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
+       reading page  → female voice (prefer Ava / Samantha)
+       quiz page     → male voice  (prefer Daniel / Alex)
 
-  /* Re-pick on every call — NO cache. The user reported 'first
-     sentence = Ava, subsequent = robotic'; root cause is the known
-     iOS Safari bug where speechSynthesis.cancel() followed
-     IMMEDIATELY by speak() drops the requested voice and the next
-     utterance plays in the system default voice. Workaround:
-       (a) re-pick the voice each call so even if iOS forgets, we
-           re-assert.
-       (b) wait one tick after cancel() before calling speak() —
-           gives iOS time to settle.
-       (c) set both voice and voiceURI (iOS sometimes only honours
-           one of them). */
+     ROOT CAUSE OF THE OLD 'first sentence Ava, second sentence robot'
+     BUG, finally pinned: iOS Safari has TWO interacting issues —
+
+       (1) speechSynthesis.cancel() followed by speak() in the same
+           JS tick silently drops the voice setting on the new
+           utterance (it plays in system default).
+       (2) Queueing multiple utterances back-to-back ALSO drops the
+           voice on every utterance after the first — even when the
+           voice is explicitly set on each one.
+
+     The previous fix tried to dodge (1) by removing cancel() and
+     chunking by sentence; that triggered (2) on every reading-block
+     and ALSO on every word click ('word + 2 phrases'). The clean fix
+     is: NO chunking, ONE utterance per speak() call, AND a 60 ms
+     setTimeout after cancel() so iOS settles before the new
+     utterance is constructed. Long paragraphs are fine in a single
+     utterance — iOS does its own sentence break internally. */
+  const FEMALE_RE = /(Ava|Samantha|Karen|Victoria|Allison|Susan|Catherine|Serena|Moira|Tessa|Fiona|Zoe)/i;
+  const MALE_RE   = /(Daniel|Alex|Tom|Aaron|Fred|Oliver|Reed|Rocko|Eddy|Grandpa|David|Mark|Lee|James|George|Ryan)/i;
+  /* Voices to AVOID — iOS bundles some 'novelty' / compact voices
+     that sound robotic. If the regex above lands on one of these,
+     we'd rather fall back to any other en-US voice. */
+  const BAD_RE    = /(Eloquence|Compact|Trinoids|Bahh|Hysterical|Whisper|Cellos|Boing|Bubbles|Deranged|Bells|Bad News|Good News|Pipe Organ|Albert|Junior|Kathy|Princess|Ralph|Vicki|Zarvox)/i;
+
   function pickVoice(prefer) {
     const key = (prefer === "male") ? "male" : "female";
     try {
@@ -123,9 +131,12 @@ const Reveal = (function () {
       const voices = synth.getVoices();
       if (!voices.length) return null;
       const re = (key === "male") ? MALE_RE : FEMALE_RE;
-      return voices.find(x => /^en[-_]/i.test(x.lang) && re.test(x.name))
-          || voices.find(x => re.test(x.name))
-          || voices.find(x => /^en[-_]/i.test(x.lang))
+      const isEn   = v => /^en[-_]/i.test(v.lang);
+      const isGood = v => !BAD_RE.test(v.name);
+      return voices.find(v => isEn(v) && re.test(v.name) && isGood(v))
+          || voices.find(v =>          re.test(v.name) && isGood(v))
+          || voices.find(v => isEn(v) && isGood(v))
+          || voices.find(isEn)
           || voices[0];
     } catch (_) { return null; }
   }
@@ -144,63 +155,36 @@ const Reveal = (function () {
 
   function speak(text, opts) {
     if (!text) return;
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    const gender = (opts && opts.gender) || defaultGender;
     try {
-      const synth = window.speechSynthesis;
-      if (!synth) return;
-      // STRATEGY: chunk text into sentences and queue ONE utterance
-      // per sentence, each with the voice EXPLICITLY set. iOS Safari
-      // sometimes loses the voice setting after the first utterance
-      // in a long single-utterance call — chunking sidesteps that
-      // by re-asserting the voice for every sentence. Don't call
-      // synth.cancel() (it also drops the voice setting).
-      if (synth.paused) synth.resume();
-      const gender = (opts && opts.gender) || defaultGender;
-      const v = pickVoice(gender);
-      // Split on sentence boundaries; keep punctuation with the
-      // chunk for natural cadence. Fallback to whole string if
-      // splitting yielded nothing.
-      const chunks = (text.match(/[^.!?。！？]+[.!?。！？]?\s*/g) || [text])
-                     .map(s => s.trim())
-                     .filter(Boolean);
-      for (const chunk of chunks) {
-        const u = new SpeechSynthesisUtterance(chunk);
+      // Always clear anything in flight, then wait one tick before
+      // the new utterance — that's the iOS settlement window.
+      if (synth.speaking || synth.pending) synth.cancel();
+    } catch (_) {}
+    setTimeout(() => {
+      try {
+        const u = new SpeechSynthesisUtterance(text);
         u.lang  = "en-US";
         u.rate  = 0.96;
         u.pitch = 1.0;
+        const v = pickVoice(gender);
         if (v) {
           u.voice = v;
+          // iOS sometimes honours voiceURI better than .voice.
           if (v.voiceURI) u.voiceURI = v.voiceURI;
         }
         synth.speak(u);
-      }
-    } catch (_) { /* swallow */ }
+      } catch (_) {}
+    }, 60);
   }
 
-  /* Pre-warm the voice with a silent utterance once voices load.
-     On iOS Safari the first real utterance triggers voice loading;
-     during that load the second utterance can fall back to system
-     default. Burning the load on a 0-volume utterance eliminates
-     the race. */
-  function warmUpVoice() {
-    try {
-      const synth = window.speechSynthesis;
-      if (!synth) return;
-      const v = pickVoice(defaultGender);
-      if (!v) return;
-      const u = new SpeechSynthesisUtterance(" ");
-      u.volume = 0;
-      u.rate = 1;
-      u.voice = v;
-      if (v.voiceURI) u.voiceURI = v.voiceURI;
-      synth.speak(u);
-    } catch (_) {}
-  }
-  // Run on the first user gesture (iOS needs that).
-  ["touchstart","pointerdown","click"].forEach(ev =>
-    document.addEventListener(ev, warmUpVoice, { passive: true, once: true }));
-
-  /* Unlock speechSynthesis on first user gesture (iPad Safari needs
-     a sacrificial utterance before any TTS will play in a session). */
+  /* Unlock + warm-up on the first user gesture. iOS Safari needs a
+     real gesture to allow any TTS; piggy-back on that to also burn
+     the voice-loading race by speaking a silent utterance WITH the
+     intended voice. Without this, the first real speak() can race
+     against voice loading and end up using the system default. */
   (function unlockTTSOnce() {
     function unlock() {
       document.removeEventListener("touchstart",  unlock);
@@ -209,8 +193,14 @@ const Reveal = (function () {
       try {
         const synth = window.speechSynthesis;
         if (!synth) return;
+        const v = pickVoice(defaultGender);
         const u = new SpeechSynthesisUtterance(" ");
         u.volume = 0;
+        u.rate = 1;
+        if (v) {
+          u.voice = v;
+          if (v.voiceURI) u.voiceURI = v.voiceURI;
+        }
         synth.speak(u);
       } catch (_) {}
     }
