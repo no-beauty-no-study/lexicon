@@ -317,19 +317,19 @@
     stack.insertAdjacentHTML("beforeend", html);
 
     const fresh = stack.lastElementChild;
-    fresh.dataset.parent = (resolved.headEntry && (resolved.headEntry.id || resolved.headEntry.word)) || id;
+    // Capture the head entry IN THE CLOSURE so the side-card click
+    // doesn't have to look it up in WORDS / WORD_LIBRARY (those
+    // lookups silently returned undefined for entries that lived in
+    // only one of the two arrays — the drawer never opened).
+    const drawerEntry = resolved.headEntry || entry;
     fresh.addEventListener("click", (e) => {
       e.stopPropagation();
       clearCurrent(stack);
       fresh.classList.add("is-current");
-      // Whole card click — no internal targets, no special-casing
-      // phrases. Always open the parent word's family drawer.
-      try {
-        const pid = fresh.dataset.parent;
-        const parent = (typeof WORDS !== "undefined" && WORDS.find(w => (w.id || w.word) === pid))
-                    || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === pid));
-        if (parent && typeof WordCard !== "undefined") WordCard.openDrawer(parent);
-      } catch(_) {}
+      // User: '点击右列小词卡只是一个唤出抽屉的功能' — no audio here.
+      if (typeof WordCard !== "undefined" && drawerEntry) {
+        WordCard.openDrawer(drawerEntry);
+      }
     });
     fresh.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }

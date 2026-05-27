@@ -153,31 +153,62 @@ const Reveal = (function () {
     window.speechSynthesis.onvoiceschanged = () => { pickVoice(defaultGender); };
   }
 
+  /* The complete iOS TTS workaround needs BOTH halves:
+       (A) Each utterance must be ONE sentence — iOS drops to the
+           system default voice mid-utterance once the text exceeds
+           a sentence boundary, which is what the user kept hearing
+           as 'first sentence Ava, then robot'.
+       (B) The next utterance must be queued ONLY after the previous
+           one's 'end' event, plus a 60 ms breathing-room timeout.
+           Queueing multiple utterances up-front also drops voice on
+           every utterance after the first.
+     So we chunk the text into sentences and walk through them via
+     onend, never having more than one utterance in flight. */
+  let speakToken = 0;     // bumped on every new speak() call so a
+                          // stale onend chain can be aborted.
+
   function speak(text, opts) {
     if (!text) return;
     const synth = window.speechSynthesis;
     if (!synth) return;
     const gender = (opts && opts.gender) || defaultGender;
-    try {
-      // Always clear anything in flight, then wait one tick before
-      // the new utterance — that's the iOS settlement window.
-      if (synth.speaking || synth.pending) synth.cancel();
-    } catch (_) {}
-    setTimeout(() => {
+    const myToken = ++speakToken;
+
+    try { if (synth.speaking || synth.pending) synth.cancel(); }
+    catch (_) {}
+
+    const chunks = (String(text).match(/[^.!?。！？]+[.!?。！？]?\s*/g) || [text])
+                   .map(s => s.trim())
+                   .filter(Boolean);
+    if (!chunks.length) return;
+
+    let i = 0;
+    function speakOne() {
+      if (myToken !== speakToken) return;     // superseded
+      if (i >= chunks.length) return;
+      const chunk = chunks[i++];
       try {
-        const u = new SpeechSynthesisUtterance(text);
+        const u = new SpeechSynthesisUtterance(chunk);
         u.lang  = "en-US";
         u.rate  = 0.96;
         u.pitch = 1.0;
+        // Re-pick the voice for EVERY chunk — even if iOS forgot
+        // between utterances, we re-assert.
         const v = pickVoice(gender);
         if (v) {
           u.voice = v;
-          // iOS sometimes honours voiceURI better than .voice.
           if (v.voiceURI) u.voiceURI = v.voiceURI;
         }
+        u.onend   = () => setTimeout(speakOne, 60);
+        u.onerror = () => setTimeout(speakOne, 60);
         synth.speak(u);
-      } catch (_) {}
-    }, 60);
+      } catch (_) {
+        setTimeout(speakOne, 60);
+      }
+    }
+
+    // First chunk also waits 60 ms so the cancel() above has settled.
+    setTimeout(speakOne, 60);
   }
 
   /* Unlock + warm-up on the first user gesture. iOS Safari needs a
