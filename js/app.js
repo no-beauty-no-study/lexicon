@@ -61,9 +61,20 @@
     const stage = document.getElementById("stage");
     if (!tpl || !stage) return;
 
+    // Re-trigger the candle-glow + sparkle CSS animations on .stage
+    // by toggling .is-transitioning off-then-on across a reflow.
+    stage.classList.remove("is-transitioning");
+    void stage.offsetWidth;
+    stage.classList.add("is-transitioning");
+
     stage.innerHTML = "";
     const node = tpl.content.firstElementChild.cloneNode(true);
     stage.appendChild(node);
+
+    // Drop the transitioning class after the animation finishes so
+    // the sheen and sparkles tear down cleanly. Slightly longer than
+    // the longest sub-animation (520 ms) to be safe.
+    setTimeout(() => stage.classList.remove("is-transitioning"), 580);
 
     const view = Views[name];
     try {
