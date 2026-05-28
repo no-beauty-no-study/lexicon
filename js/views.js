@@ -37,7 +37,10 @@ const Views = (function () {
       host.querySelectorAll(".menu-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const a = btn.dataset.action;
-          if (a === "resume") window.go(resumeHash());
+          // Resume → Select (the three-arch screen) so the user can
+          // still pick Story / Notes / Word Garden. The actual
+          // "continue from last read" hop lives on the Story arch.
+          if (a === "resume") window.go("#select");
           else                window.go("#chapters?browse=1");
         });
       });
