@@ -10,26 +10,321 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/debug.css">
 <style>
-  .page.splash {
-    background-image: url("assets/bg/ui/splash.jpg");
-    background-size: cover;
-    background-position: center;
-    cursor: pointer;
-  }
+  .page.splash    { background-image: url("assets/bg/ui/splash.jpg");
+                    background-size: cover; background-position: center;
+                    cursor: pointer; }
   .page.splash::before, .page.splash::after { display: none; }
-  /* "Tap to begin" hint is baked into the artwork; whole page is clickable. */
-  .splash-hit { position: absolute; inset: 0; }
+  .splash-hit     { position: absolute; inset: 0; }
+
+  .page.home         { background-image: url("assets/bg/ui/main-menu.jpg"); }
+  .page.select-art   { background-image: url("assets/bg/ui/select-mode.jpg"); }
+  .page.chapters-art { background-image: url("assets/bg/ui/chapters.jpg"); }
+  .page.wg-art       { background-image: url("assets/bg/ui/word-garden.jpg"); }
+  .page.save-art     { background-image: url("assets/bg/ui/page-blank.jpg"); }
+  .page.load-art     { background-image: url("assets/bg/ui/page-blank.jpg"); }
+  .page.notes-art    { background-image: url("assets/bg/ui/notes.jpg");
+                       background-size: cover; background-position: center; }
+  .page.notes-art::before, .page.notes-art::after { display: none; }
+
+  .menu-btn {
+    position: absolute; top: 50%; width: 21%;
+    aspect-ratio: 601 / 645;
+    transform: translateY(-50%);
+    background: transparent; border: 0; padding: 0;
+    cursor: pointer; z-index: 8;
+  }
+  .menu-btn:focus { outline: none; }
+  .menu-btn.left  { left: 10.5%; }
+  .menu-btn.right { right: 10.5%; }
+  .menu-btn-inner {
+    display: block; width: 100%; height: 100%;
+    background-size: 100% 100%; background-repeat: no-repeat;
+    background-color: transparent; transform-origin: center;
+    transition: transform 180ms cubic-bezier(0.2,0.8,0.4,1.2),
+                filter    180ms ease-out;
+  }
+  .menu-btn:active .menu-btn-inner { transform: scale(0.93); filter: brightness(1.06); }
+  .menu-btn.left  .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-start.png"); }
+  .menu-btn.right .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-enter.png"); }
+
+  .notes-layer {
+    position: absolute; inset: 18% 18% 14% 18%;
+    display: grid; grid-template-columns: 300px 1fr; gap: 24px;
+  }
+  .notes-layer .split-left,
+  .notes-layer .split-right {
+    background: rgba(244,236,218,0.62);
+    border: 1px solid rgba(184,158,111,0.45);
+    border-radius: 4px; padding: 14px 14px 10px;
+    min-height: 0; display: flex; flex-direction: column;
+  }
+  .notes-layer .split-right { padding: 18px 22px; overflow-y: auto; }
+  .notes-layer .word-list   { flex: 1; overflow-y: auto; }
+
+  .save-banner-title {
+    position: absolute; left: 28%; top: 5.5%;
+    width: 44%; height: 6%;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+    font-family: var(--font-display);
+    font-size: 28px; letter-spacing: 0.20em;
+    text-transform: uppercase;
+    z-index: 5;
+  }
+  .theme-save .save-banner-title { color: var(--accent-wine); }
+  .theme-load .save-banner-title { color: var(--accent-blue); }
+  .save-slot-grid {
+    position: absolute; left: 16%; top: 18%;
+    width: 68%; height: 67%;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr; gap: 18px 28px; z-index: 4;
+  }
 </style>
 </head>
 <body>
-<div class="stage">
-  <main class="page splash" onclick="go('menu.html')">
-    <div class="splash-hit" aria-label="Tap to begin"></div>
+
+<div class="stage" id="stage"></div>
+
+
+<template id="view-splash">
+  <main class="page splash">
+    <div class="splash-hit" data-go="#menu" aria-label="Tap to begin"></div>
   </main>
-</div>
-<script src="js/app.js"></script>
+</template>
+
+<template id="view-menu">
+  <main class="page art-bg home" data-page="menu">
+    <button type="button" class="menu-btn left"  data-action="resume">
+      <span class="menu-btn-inner"></span>
+    </button>
+    <button type="button" class="menu-btn right" data-action="enter-chapters">
+      <span class="menu-btn-inner"></span>
+    </button>
+  </main>
+</template>
+
+<template id="view-select">
+  <main class="page art-bg select-art" data-page="select">
+    <div class="master-frame">
+      <div class="ui-zone zone-select-story-title is-text select-title-text" data-zone="story title">
+        <h2 class="select-card-title">Story</h2>
+        <p class="select-card-subtitle">Read the tale.</p>
+      </div>
+      <div class="ui-zone zone-select-notes-title is-text select-title-text" data-zone="notes title">
+        <h2 class="select-card-title">Notes</h2>
+        <p class="select-card-subtitle">Keep saved words.</p>
+      </div>
+      <div class="ui-zone zone-select-garden-title is-text select-title-text" data-zone="garden title">
+        <h2 class="select-card-title">Word Garden</h2>
+        <p class="select-card-subtitle">Search every word.</p>
+      </div>
+      <button type="button" class="select-hotspot ui-zone zone-select-story-hit"
+              data-action="resume" aria-label="Story"></button>
+      <button type="button" class="select-hotspot ui-zone zone-select-notes-hit"
+              data-go="#notes" aria-label="Notes"></button>
+      <button type="button" class="select-hotspot ui-zone zone-select-garden-hit"
+              data-go="#word-garden" aria-label="Word Garden"></button>
+      <nav class="ui-bottom-nav is-two">
+        <button type="button" data-go="#menu">Menu</button>
+        <button type="button" data-go="#load">Load</button>
+      </nav>
+    </div>
+  </main>
+</template>
+
+<template id="view-chapters">
+  <main class="page art-bg chapters-art" data-page="chapters">
+    <div class="master-frame">
+      <div class="ui-zone zone-toc-01 toc-card" data-zone="ch 01"></div>
+      <div class="ui-zone zone-toc-02 toc-card" data-zone="ch 02"></div>
+      <div class="ui-zone zone-toc-03 toc-card" data-zone="ch 03"></div>
+      <div class="ui-zone zone-toc-04 toc-card" data-zone="ch 04"></div>
+      <div class="ui-zone zone-toc-05 toc-card" data-zone="ch 05"></div>
+      <div class="ui-zone zone-toc-06 toc-card" data-zone="ch 06"></div>
+      <div class="ui-zone zone-toc-07 toc-card" data-zone="ch 07"></div>
+      <div class="ui-zone zone-toc-08 toc-card" data-zone="ch 08"></div>
+      <div class="ui-zone zone-toc-09 toc-card" data-zone="ch 09"></div>
+      <div class="ui-zone zone-toc-10 toc-card" data-zone="ch 10"></div>
+      <div class="ui-zone zone-toc-btn-01 toc-btn-zone" data-zone="btn 01"></div>
+      <div class="ui-zone zone-toc-btn-02 toc-btn-zone" data-zone="btn 02"></div>
+      <div class="ui-zone zone-toc-btn-03 toc-btn-zone" data-zone="btn 03"></div>
+      <div class="ui-zone zone-toc-btn-04 toc-btn-zone" data-zone="btn 04"></div>
+      <div class="ui-zone zone-toc-btn-05 toc-btn-zone" data-zone="btn 05"></div>
+      <div class="ui-zone zone-toc-btn-06 toc-btn-zone" data-zone="btn 06"></div>
+      <div class="ui-zone zone-toc-btn-07 toc-btn-zone" data-zone="btn 07"></div>
+      <div class="ui-zone zone-toc-btn-08 toc-btn-zone" data-zone="btn 08"></div>
+      <div class="ui-zone zone-toc-btn-09 toc-btn-zone" data-zone="btn 09"></div>
+      <div class="ui-zone zone-toc-btn-10 toc-btn-zone" data-zone="btn 10"></div>
+      <nav class="ui-bottom-nav">
+        <button type="button" data-go="#select"><span class="nav-glyph">‹</span>Back</button>
+        <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+      </nav>
+    </div>
+  </main>
+</template>
+
+<template id="view-reading">
+  <main class="page art-bg reading-art" data-page="reading">
+    <div class="master-frame">
+      <div class="ui-zone zone-reading-title is-text" data-zone="reading title">
+        <div class="reading-kicker" data-chapter-number>Chapter 01</div>
+        <h1 class="reading-title" data-chapter-title>The Universe</h1>
+        <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
+        <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
+      </div>
+      <div class="ui-zone zone-reading-body is-text" data-zone="reading body">
+        <article class="reading-body"></article>
+      </div>
+      <div class="ui-zone zone-marginalia" data-zone="marginalia">
+        <aside class="marginalia-card">
+          <div class="marginalia-card-body">
+            <div class="word-card-stack">
+              <div class="word-card-empty">Tap a word</div>
+            </div>
+          </div>
+          <div class="marginalia-card-actions">
+            <button type="button" class="marginalia-btn" data-action="fold" disabled>
+              <span class="marginalia-btn-glyph">✤</span>FOLD
+            </button>
+          </div>
+        </aside>
+      </div>
+      <nav class="ui-bottom-nav">
+        <button type="button" data-go="#save"><span class="nav-glyph">✤</span>Save</button>
+        <button type="button" data-go="#load"><span class="nav-glyph">✤</span>Load</button>
+        <button type="button" data-quiz><span class="nav-glyph">✤</span>Quiz</button>
+        <button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>
+        <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+      </nav>
+    </div>
+  </main>
+</template>
+
+<template id="view-quiz">
+  <main class="page art-bg reading-art" data-page="quiz">
+    <div class="master-frame">
+      <div class="ui-zone zone-reading-title is-text" data-zone="quiz title">
+        <div class="reading-kicker" data-chapter-number>Chapter 01</div>
+        <h1 class="reading-title" data-chapter-title>The Universe</h1>
+        <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
+        <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
+      </div>
+      <div class="ui-zone zone-quiz-body is-text" data-zone="quiz body">
+        <div class="reading-body quiz-body"></div>
+      </div>
+      <nav class="ui-bottom-nav">
+        <button type="button" data-go="#save">Save</button>
+        <button type="button" data-go="#load">Load</button>
+        <button type="button" data-go="#menu">Menu</button>
+        <button type="button" data-back>Back</button>
+        <button type="button" data-next>Next</button>
+      </nav>
+    </div>
+    <div class="chapter-complete-toast" aria-hidden="true">
+      <div class="chapter-complete-mark">✤</div>
+      <div class="chapter-complete-title">Chapter Complete</div>
+      <p class="chapter-complete-subtitle">The next page opens.</p>
+    </div>
+  </main>
+</template>
+
+<template id="view-notes">
+  <main class="page notes-art" data-page="notes">
+    <div class="notes-layer">
+      <div class="split-left">
+        <div class="split-header">
+          <span class="sh-title" style="font-size:18px;">Saved Words</span>
+          <span class="sh-count" data-notes-count>0 saved</span>
+        </div>
+        <ul class="word-list"></ul>
+      </div>
+      <div class="split-right">
+        <div class="detail-pane ornate-panel"></div>
+      </div>
+    </div>
+    <nav class="nav-bar">
+      <button type="button" class="nav-btn" data-go="#select"><span class="glyph">‹</span> Back</button>
+      <span class="nav-sep"></span>
+      <button type="button" class="nav-btn" data-go="#menu"><span class="glyph">✤</span> Menu</button>
+    </nav>
+  </main>
+</template>
+
+<template id="view-word-garden">
+  <main class="page art-bg wg-art" data-page="word-garden">
+    <div class="master-frame">
+      <div class="ui-zone zone-wg-search is-text" data-zone="search">
+        <form class="wg-searchbar" onsubmit="event.preventDefault();">
+          <input id="wg-search" type="search" autocomplete="off"
+                 placeholder="Search words or meanings…" />
+          <span class="wg-search-icon" aria-hidden="true">⌕</span>
+        </form>
+      </div>
+      <div class="ui-zone zone-wg-az is-text" data-zone="A-Z nav">
+        <nav class="wg-az" id="wg-az"></nav>
+      </div>
+      <div class="ui-zone zone-wg-table" data-zone="word table">
+        <div class="wg-table">
+          <div class="wg-col-frame">
+            <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
+            <span class="corner-tick bl"></span><span class="corner-tick br"></span>
+            <ol class="wg-col" id="wg-col-left"></ol>
+          </div>
+          <div class="wg-col-frame">
+            <span class="corner-tick tl"></span><span class="corner-tick tr"></span>
+            <span class="corner-tick bl"></span><span class="corner-tick br"></span>
+            <ol class="wg-col" id="wg-col-right"></ol>
+          </div>
+        </div>
+      </div>
+      <nav class="ui-bottom-nav">
+        <button type="button" data-go="#select"><span class="nav-glyph">‹</span>Back</button>
+        <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+      </nav>
+    </div>
+  </main>
+</template>
+
+<template id="view-save">
+  <main class="page art-bg save-art theme-save" data-page="save">
+    <h1 class="save-banner-title">Save</h1>
+    <div class="save-slot-grid slot-grid" data-mode="save"></div>
+    <nav class="ui-bottom-nav is-two">
+      <button type="button" data-go="#select"><span class="nav-glyph">‹</span>Back</button>
+      <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+    </nav>
+  </main>
+</template>
+
+<template id="view-load">
+  <main class="page art-bg load-art theme-load" data-page="load">
+    <h1 class="save-banner-title">Load</h1>
+    <div class="save-slot-grid slot-grid" data-mode="load"></div>
+    <nav class="ui-bottom-nav is-two">
+      <button type="button" data-go="#select"><span class="nav-glyph">‹</span>Back</button>
+      <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+    </nav>
+  </main>
+</template>
+
+
+<script src="data/mockChapters.js"></script>
+<script src="data/chapterIllustrations.js"></script>
+<script src="data/readingContent.js"></script>
+<script src="data/mockWords.js"></script>
+<script src="data/wordLibrary.js"></script>
+<script src="data/wordIndex.js"></script>
+
+<script src="js/storage.js"></script>
+<script src="js/chapterNav.js"></script>
+<script src="js/tts.js"></script>
+<script src="js/wordCard.js"></script>
+
 <script src="js/bgm.js"></script>
-<script src="js/viewport.js"></script>
+<script src="js/views.js"></script>
+<script src="js/app.js"></script>
+
 </body>
 </html>

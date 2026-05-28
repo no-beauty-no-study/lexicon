@@ -1,100 +1,162 @@
-/* ============================================================
-   The Princess Lexicon — app.js
-   Tiny shared utilities: page scaling, nav helpers, URL params.
-   ============================================================ */
-
+/* The Princess Lexicon — app.js
+   SPA shell: hash router, viewport scaling, gesture locks, global
+   nav helpers. The router clones <template id="view-X"> into #stage
+   then calls Views.X.init(hostMain, params) for that view to wire
+   up its own behaviour. */
 (function () {
-  const STAGE_W = 1448;
-  const STAGE_H = 1086;
 
-  // Scale the .page stage to fit the viewport while keeping aspect ratio.
+  /* ---------- viewport scaling (1448×1086 design fits the screen) ---------- */
   function fitStage() {
-    const stage = document.querySelector(".stage");
-    const page  = document.querySelector(".stage .page");
+    const stage = document.getElementById("stage");
+    const page  = stage && stage.firstElementChild;
     if (!stage || !page) return;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const scale = Math.min(vw / STAGE_W, vh / STAGE_H);
-    page.style.setProperty("--page-scale", scale.toFixed(4));
-    stage.setAttribute("data-scale", "1");
+    const sw = stage.clientWidth;
+    if (!sw || sw < 200) { requestAnimationFrame(fitStage); return; }
+    const scale = sw / 1448;
+    page.style.transformOrigin = "top left";
+    page.style.transform = `scale(${scale.toFixed(6)})`;
+    page.style.setProperty("--page-scale", scale.toFixed(6));
+  }
+  window.addEventListener("resize",            fitStage, { passive: true });
+  window.addEventListener("orientationchange", fitStage, { passive: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", fitStage, { passive: true });
   }
 
-  // Run after DOM is parsed, no need to wait for full load.
-  document.addEventListener("DOMContentLoaded", fitStage);
-  window.addEventListener("resize", fitStage);
+  /* ---------- iOS gesture / double-tap zoom blocks ----------
+     The viewport meta alone isn't enough on iPad Safari, so we kill
+     pinch / spread + double-tap zoom from JS too. */
+  ["gesturestart", "gesturechange", "gestureend"].forEach(ev =>
+    document.addEventListener(ev, e => e.preventDefault()));
+  document.addEventListener("touchmove", (e) => {
+    if (e.scale && e.scale !== 1) e.preventDefault();
+  }, { passive: false });
+  let lastTap = 0;
+  document.addEventListener("touchend", (e) => {
+    const now = Date.now();
+    if (now - lastTap < 350) e.preventDefault();
+    lastTap = now;
+  }, { passive: false });
 
-  // ----- Debug UI toggle (?debug=1) — paints .ui-zone outlines so
-  // we can verify every zone aligns with its painted slot before
-  // pouring text into it. -----
-  document.addEventListener("DOMContentLoaded", () => {
-    const u = new URL(window.location.href);
-    if (u.searchParams.get("debug") === "1") {
-      document.body.classList.add("debug-ui");
+
+  /* ---------- hash router ----------
+     Hash form: #view?key=val&key2=val2
+     Examples:  #menu | #reading?chapter=universe&section=1.1 */
+  function parseHash() {
+    const h = (location.hash || "").replace(/^#/, "");
+    if (!h) return { name: "splash", params: {} };
+    const qi = h.indexOf("?");
+    const name = (qi < 0 ? h : h.slice(0, qi)) || "splash";
+    const params = {};
+    if (qi >= 0) {
+      const sp = new URLSearchParams(h.slice(qi + 1));
+      for (const [k, v] of sp.entries()) params[k] = v;
     }
+    return { name, params };
+  }
+
+  function render() {
+    const { name, params } = parseHash();
+    const tpl = document.getElementById("view-" + name);
+    const stage = document.getElementById("stage");
+    if (!tpl || !stage) return;
+
+    stage.innerHTML = "";
+    const node = tpl.content.firstElementChild.cloneNode(true);
+    stage.appendChild(node);
+
+    const view = Views[name];
+    try {
+      if (view && typeof view.init === "function") view.init(node, params);
+    } catch (err) {
+      try { console.error("[Views." + name + "] init failed:", err); } catch (_) {}
+    }
+
+    fitStage();
+    requestAnimationFrame(fitStage);
+
+    if (window.BGM && BGM.applyForView) BGM.applyForView(name, params);
+
+    if (params.debug === "1") document.body.classList.add("debug-ui");
+    else                      document.body.classList.remove("debug-ui");
+  }
+
+  window.addEventListener("hashchange", render);
+  document.addEventListener("DOMContentLoaded", () => {
+    // Setting the hash from "" to "#splash" fires hashchange, which
+    // calls render() for us. If a hash is already present (e.g. the
+    // user landed on #reading?chapter=X), call render directly.
+    if (!location.hash) location.hash = "#splash";
+    else                render();
   });
 
-  // ----- Navigation: page fade + BGM cross-fade -----
-  // User wants the music to feel continuous across the menu →
-  // select → save / load arc. We crossfade by fading the current
-  // page's audio to zero in lockstep with the visual fade-out;
-  // the next page's bgm.js will fade audio IN from 0 → target.
-  function fadeOut(cb) {
-    const s = document.querySelector(".stage");
-    if (s) s.classList.add("is-leaving");
-    if (window.BGM && typeof window.BGM.fadeOut === "function") {
-      window.BGM.fadeOut(220);
-    }
-    setTimeout(cb || (() => {}), 230);
+
+  /* ---------- nav helpers ---------- */
+
+  // Accepts:
+  //   "#menu"                       → set hash directly
+  //   "menu.html"                   → "#menu"
+  //   "reading.html?chapter=X&..."  → "#reading?chapter=X&..."
+  // Legacy *.html callers (any third-party link, old localStorage state)
+  // route through this so we never actually navigate the document.
+  function toHash(href) {
+    if (!href) return null;
+    if (href.startsWith("#")) return href;
+    if (/^https?:/i.test(href) || href.startsWith("/")) return null;
+    const m = href.match(/^([a-zA-Z0-9_\-]+)\.html(\?.*)?$/);
+    if (!m) return null;
+    const name = m[1] === "index" ? "splash" : m[1];
+    return "#" + name + (m[2] || "");
   }
   window.go = function (href) {
-    if (!href) return;
-    fadeOut(() => { window.location.href = href; });
+    const target = toHash(href);
+    if (target == null) { location.href = href; return; }
+    if (location.hash === target) render();
+    else                          location.hash = target;
   };
-  // Make MENU consistent regardless of which page wires it: a button
-  // whose label or data attribute says 'menu' always lands on
-  // index.html, never on history.back(), never on a previous-page
-  // (which would let the browser X / system back take over).
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("button,a").forEach(el => {
-      const txt = (el.textContent || "").trim().toLowerCase();
-      if (/^.{0,2}\bmenu\b.{0,2}$/.test(txt) && !el.dataset.menuFixed) {
-        el.dataset.menuFixed = "1";
-        el.addEventListener("click", (e) => {
-          e.preventDefault(); e.stopPropagation();
-          window.go("menu.html");
-        });
-      }
-    });
+
+  // Delegate clicks on any element with data-go="…" to window.go.
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest("[data-go]");
+    if (!el) return;
+    const target = el.dataset.go;
+    if (!target) return;
+    e.preventDefault();
+    e.stopPropagation();
+    window.go(target);
   });
 
-  // ----- URL param helper -----
+
+  /* ---------- URL param helper (legacy) ---------- */
   window.qparam = function (key, fallback) {
-    const u = new URL(window.location.href);
-    return u.searchParams.get(key) ?? fallback;
+    const { params } = parseHash();
+    return params[key] ?? fallback;
   };
 
-  // ----- Press-flash effect on any clickable ornate-panel -----
-  document.addEventListener("click", e => {
+  /* ---------- ornate panel press flash ---------- */
+  document.addEventListener("click", (e) => {
     const el = e.target.closest(".ornate-panel.is-clickable");
     if (!el) return;
     el.classList.remove("is-pressed");
-    // restart animation
     void el.offsetWidth;
     el.classList.add("is-pressed");
     setTimeout(() => el.classList.remove("is-pressed"), 460);
   });
 
-  // ----- Toast helper (requires <div class="toast"> in page) -----
+  /* ---------- toast helper ---------- */
   window.toast = function (msg) {
-    let el = document.querySelector(".toast");
+    const page = document.querySelector(".stage .page");
+    if (!page) return;
+    let el = page.querySelector(".toast");
     if (!el) {
       el = document.createElement("div");
       el.className = "toast";
-      document.querySelector(".page").appendChild(el);
+      page.appendChild(el);
     }
     el.textContent = msg;
     el.classList.add("is-show");
     clearTimeout(el._t);
     el._t = setTimeout(() => el.classList.remove("is-show"), 1600);
   };
+
 })();

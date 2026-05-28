@@ -1,16 +1,9 @@
-/* ============================================================
-   The Princess Lexicon — wordCard.js
-   Right-slide word drawer. The drawer's bg is a painted word-card
-   page (frame-blank.jpg). Text lives in TWO SAFE ZONES that avoid
-   the painted floral borders, top cartouche, and bottom ribbon:
-     .word-card-title-zone  — word / pos / meaning (top)
-     .word-card-body-zone   — sections (middle, scrolls)
-     .word-drawer-footer    — signature (pinned above ribbon)
+/* The Princess Lexicon — wordCard.js
+   Right-slide word drawer + inline body renderer.
    Public API:
      WordCard.openDrawer(wordObj)
      WordCard.closeDrawer()
-     WordCard.renderFullBody(wordObj)  // inline (no drawer chrome)
-   ============================================================ */
+     WordCard.renderFullBody(wordObj) */
 const WordCard = (function () {
 
   function renderTitleZone(w) {
@@ -33,15 +26,12 @@ const WordCard = (function () {
       renderSection("Her Kin",    w.kin,    renderKinItem),
     ].join("");
   }
-
-  function renderSection(title, items, itemRenderer) {
-    if (!items || items.length === 0) return "";
-    return `
-      <section class="word-section">
-        <h3 class="word-section-title">${title}</h3>
-        <ul class="word-entry-list">${items.map(itemRenderer).join("")}</ul>
-      </section>
-    `;
+  function renderSection(title, items, item) {
+    if (!items || !items.length) return "";
+    return `<section class="word-section">
+      <h3 class="word-section-title">${title}</h3>
+      <ul class="word-entry-list">${items.map(item).join("")}</ul>
+    </section>`;
   }
   function renderFamilyItem(it) {
     return `<li class="word-entry"><strong>${esc(it.word)}</strong> ${esc(it.text)}</li>`;
@@ -66,34 +56,35 @@ const WordCard = (function () {
   }
   function renderExampleBox(w) {
     if (!w.example) return "";
-    return `
-      <div class="example-box">
-        <p class="example-en">${esc(w.example)}</p>
-        ${w.exampleZh ? `<p class="example-zh">${esc(w.exampleZh)}</p>` : ""}
-      </div>
-    `;
+    return `<div class="example-box">
+      <p class="example-en">${esc(w.example)}</p>
+      ${w.exampleZh ? `<p class="example-zh">${esc(w.exampleZh)}</p>` : ""}
+    </div>`;
   }
   function esc(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;")
       .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
+  function renderFullBody(w) { return renderTitleZone(w) + renderBodyZone(w); }
 
-  // Inline render for Notes / Word Garden detail panes — same content,
-  // no drawer chrome, no absolute positioning.
-  function renderFullBody(w) {
-    return renderTitleZone(w) + renderBodyZone(w);
-  }
-
-  /* ---- Drawer controller -------------------------------------- */
+  // Drawer DOM is rebuilt against whichever .page is currently mounted,
+  // since the SPA router swaps the stage on every view change.
   let drawerEl  = null;
   let scrimEl   = null;
   let titleZone = null;
   let bodyZone  = null;
+  let hostPage  = null;
 
   function ensureDrawer() {
-    if (drawerEl) return;
-    const page = document.querySelector(".page");
+    const page = document.querySelector(".stage .page");
+    if (drawerEl && hostPage === page) return;
+    if (drawerEl && hostPage !== page) {
+      try { drawerEl.remove(); scrimEl.remove(); } catch (_) {}
+      drawerEl = scrimEl = null;
+    }
+    if (!page) return;
+    hostPage = page;
 
     scrimEl = document.createElement("div");
     scrimEl.className = "word-drawer-backdrop";
@@ -110,8 +101,7 @@ const WordCard = (function () {
     `;
     drawerEl.addEventListener("click", (e) => e.stopPropagation());
     drawerEl.querySelector(".word-drawer-close").addEventListener("click", (e) => {
-      e.stopPropagation();
-      closeDrawer();
+      e.stopPropagation(); closeDrawer();
     });
     titleZone = drawerEl.querySelector(".word-card-title-zone");
     bodyZone  = drawerEl.querySelector(".word-card-body-zone");
@@ -122,6 +112,7 @@ const WordCard = (function () {
 
   function openDrawer(word) {
     ensureDrawer();
+    if (!drawerEl) return;
     titleZone.innerHTML = renderTitleZone(word);
     bodyZone.innerHTML  = renderBodyZone(word);
     bodyZone.scrollTop  = 0;
