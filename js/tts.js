@@ -44,13 +44,27 @@ const TTS = (function () {
       if (forced) { pickedVoice = forced; logPicked(voices); return pickedVoice; }
     }
 
-    // Order: explicit-Ava-match BEFORE v.default, because on en-GB
-    // iPads v.default is Daniel even when the user's system voice
-    // (Settings → Accessibility → Spoken Content → Voices) is Ava.
+    // User report: first utterance speaks in "Ava (Enhanced)", every
+    // subsequent one falls back to the compact / robotic "Ava". On
+    // iOS, "Ava" the basename matches BOTH the enhanced/premium
+    // download AND the system compact variant; if the picker
+    // happens to grab the compact one (which is more reliably
+    // "active" across utterances), every call sounds mechanical.
+    // Explicit Enhanced/Premium preference fixes this.
+    //
+    // Order: Premium/Enhanced Ava BEFORE plain Ava BEFORE v.default,
+    // because on en-GB iPads v.default is Daniel even when the OS
+    // system voice (Settings → Accessibility → Spoken Content →
+    // Voices) is Ava.
     pickedVoice =
-         voices.find(v => /^Ava\b/i.test(v.name))
+         voices.find(v => /ava/i.test(v.name)     && /premium/i.test(v.name))
+      || voices.find(v => /ava/i.test(v.name)     && /enhanced/i.test(v.name))
+      || voices.find(v => /^Ava\b/i.test(v.name)  && !/compact/i.test(v.name))
+      || voices.find(v => /^Ava\b/i.test(v.name))
+      || voices.find(v => /ava/i.test(v.name)     && !/compact/i.test(v.name))
       || voices.find(v => /ava/i.test(v.name))
       || voices.find(v => v.default && /^en/i.test(v.lang) && !/daniel/i.test(v.name))
+      || voices.find(v => /samantha/i.test(v.name) && /premium|enhanced/i.test(v.name))
       || voices.find(v => /samantha/i.test(v.name))
       || voices.find(v => /^en-us/i.test(v.lang) && !/daniel/i.test(v.name))
       || voices.find(v => /^en/i.test(v.lang)    && !/daniel/i.test(v.name))
@@ -60,14 +74,21 @@ const TTS = (function () {
     return pickedVoice;
   }
 
+  let lastLoggedName = null;
   function logPicked(voices) {
-    if (logged || !pickedVoice) return;
-    logged = true;
+    if (!pickedVoice) return;
+    // Re-log on every CHANGE so a fall-back to the compact Ava
+    // is visible in the console — otherwise the mechanical-voice
+    // regression is invisible to debugging.
+    if (pickedVoice.name === lastLoggedName) return;
+    lastLoggedName = pickedVoice.name;
     try {
       console.log("[TTS] picked:", pickedVoice.name, pickedVoice.lang,
+                  "(uri=" + (pickedVoice.voiceURI || "?") + ")",
                   "| available:",
                   voices.map(v => `${v.name} (${v.lang})${v.default ? " *default" : ""}`).join(", "));
     } catch (_) {}
+    logged = true;
   }
 
   if (window.speechSynthesis && "onvoiceschanged" in window.speechSynthesis) {

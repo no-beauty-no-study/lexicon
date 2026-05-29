@@ -309,6 +309,16 @@ const Views = (function () {
                          ? resolveClickedWord(el.dataset.word) : null;
         renderMarginalia(resolved);
         syncMarginaliaButtons(currentEntryFromStack());
+        // First tap on a word also slides the full word-card drawer in.
+        // Earlier the drawer only opened on a second tap of the small
+        // marginalia card; the user wants the drawer to be the primary
+        // surface for the word definition, not an extra-step popup.
+        try {
+          const drawerEntry = resolved && (resolved.headEntry || resolved.clickEntry);
+          if (drawerEntry && typeof WordCard !== "undefined") {
+            WordCard.openDrawer(drawerEntry);
+          }
+        } catch (_) {}
         try {
           const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
           const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
@@ -428,8 +438,12 @@ const Views = (function () {
       }
       function renderItem(q, idx, pool, audioPrefix) {
         const opts = buildOptions(q.a, pool);
+        // No .reveal-block here on purpose — earlier the class made
+        // the question text 10%-opacity warm-grey by default ("invisible
+        // ink"), so a player who hadn't tapped the page first couldn't
+        // see anything. Quiz prompts need to be readable on entry.
         return `
-          <article class="quiz-item reveal-block" data-answer="${esc(q.a)}"
+          <article class="quiz-item" data-answer="${esc(q.a)}"
                    data-solved="0"
                    data-audio="${esc(audioPrefix)}-q${idx + 1}.mp3">
             <div class="quiz-no">Question ${idx + 1}</div>
@@ -485,9 +499,29 @@ const Views = (function () {
         ? items.map((q, i) => renderItem(q, i, pool, section.audio_prefix)).join("")
         : `<div class="empty-state">No quiz available yet for this section.</div>`;
 
+      function speakItem(item) {
+        if (!item) return;
+        const q = (item.querySelector(".quiz-question")?.textContent || "").trim();
+        const opts = Array.from(item.querySelectorAll(".quiz-option-text"))
+                       .map(el => el.textContent.trim()).filter(Boolean);
+        const parts = [q];
+        opts.forEach((o, i) => parts.push(`${LETTER[i]}. ${o}`));
+        try { TTS.speak(parts.join(". ")); } catch (_) {}
+      }
+      let lastSpokenIdx = -1;
       function showThrough(n) {
         const all = host.querySelectorAll(".quiz-item");
         all.forEach((it, i) => it.classList.toggle("is-shown", i <= n));
+        // Auto-read the newly-revealed question (and its options) so the
+        // player can start without tapping. Only re-speak if we've
+        // actually advanced past the last one we read.
+        if (n > lastSpokenIdx) {
+          lastSpokenIdx = n;
+          const item = all[n];
+          // Tiny delay so the fade-in starts before the voice kicks in
+          // — feels more like the page is reading itself to you.
+          setTimeout(() => speakItem(item), 220);
+        }
       }
       showThrough(0);
 

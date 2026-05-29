@@ -197,40 +197,21 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 18px 14px 14px;
-  background: transparent;
-  /* Per user reference image: a clean thin outer line + thinner
-     inner line, no harsh 2 px bar. 1 px outer + 1 px inner faded
-     to ~40 % keeps the engraved-on-parchment feel. */
-  border: 1px solid var(--ink-frame);
-  border-radius: 4px;
   z-index: 9;
+  /* v3: drop the hand-drawn double-line border and let the painted
+     rose/lily/ribbon frame-blank do all of the framing. Stretch-fit
+     to the card so the cartouche always sits at the top centre even
+     when the marginalia zone re-flows. The inside content is padded
+     in clear of the painted vines on every side. */
+  background-image: url("assets/bg/ui/frame-blank.jpg");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+  padding: 17% 11% 9%;
 }
-/* Inner thin line — pseudo-element so the parchment behind stays
-   visible through both. */
-.marginalia-card::before {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border: 1px solid var(--ink-frame);
-  border-radius: 3px;
-  opacity: 0.42;
-  pointer-events: none;
-}
-/* Top centerpiece — ✤ sits on the outer line, no background pill so
-   the painted parchment shows through behind it. */
-.marginalia-card::after {
-  content: "✤";
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0 6px;
-  font-size: 14px;
-  line-height: 1;
-  color: var(--ink-frame);
-  pointer-events: none;
-}
+.marginalia-card::before,
+.marginalia-card::after { content: none; }
 /* The 4-corner-tick spans are no longer needed — the double-line
    frame + ✤ does the same job at a much smaller visual cost. */
 .marginalia-card > .corner-tick { display: none; }
@@ -854,7 +835,7 @@
 }
 .split-header .sh-title {
   font-family: var(--font-display);
-  font-size: 28px;
+  font-size: 18px;
   letter-spacing: 0.10em;
   text-transform: uppercase;
   color: var(--color-title);
@@ -865,6 +846,52 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-muted);
+}
+
+/* Notes saved-words list container — painted rose/lily/ribbon frame
+   (frame-blank.jpg) sits behind the list. The header label "Saved
+   Words" lands inside the cartouche at the top of the painted frame;
+   the scrollable list sits in the central blank area. */
+.split-left.notes-list-frame {
+  position: relative;
+  border-right: 0;
+  padding: 0;
+  background-image: url("assets/bg/ui/frame-blank.jpg");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.split-left.notes-list-frame .split-header {
+  position: absolute;
+  top: 5.5%;
+  left: 18%;
+  right: 18%;
+  height: 8%;
+  margin: 0;
+  padding: 0;
+  border-bottom: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  z-index: 2;
+}
+.split-left.notes-list-frame .split-header .sh-title {
+  font-size: 15px;
+  letter-spacing: 0.18em;
+}
+.split-left.notes-list-frame .split-header .sh-count {
+  font-size: 11px;
+}
+.split-left.notes-list-frame .word-list {
+  position: absolute;
+  top: 18%;
+  bottom: 9%;
+  left: 13%;
+  right: 13%;
+  overflow-y: auto;
+  margin: 0;
+  padding: 4px 6px 4px 0;
+  list-style: none;
 }
 
 /* Visual frame comes from .ornate-panel; .detail-pane only sets fill rules. */
@@ -927,6 +954,13 @@
   --nav-top:    90.50%;   /* was 89.00% */
   --nav-width:  40.00%;
   --nav-height:  5.50%;   /* was 6.50% */
+}
+.page[data-page="notes"] {
+  --nav-count:  2;
+  --nav-left:   30.00%;
+  --nav-top:    93.50%;
+  --nav-width:  40.00%;
+  --nav-height:  5.00%;
 }
 
 /* ============================================================

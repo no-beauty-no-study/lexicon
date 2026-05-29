@@ -72,9 +72,9 @@
     stage.appendChild(node);
 
     // Drop the transitioning class after the animation finishes so
-    // the sheen and sparkles tear down cleanly. Slightly longer than
-    // the longest sub-animation (520 ms) to be safe.
-    setTimeout(() => stage.classList.remove("is-transitioning"), 580);
+    // the sheen, sparkles and sigil tear down cleanly. Slightly longer
+    // than the longest sub-animation (720 ms) to be safe.
+    setTimeout(() => stage.classList.remove("is-transitioning"), 780);
 
     const view = Views[name];
     try {

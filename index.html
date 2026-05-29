@@ -12,7 +12,11 @@
 <link rel="stylesheet" href="css/pages.css">
 <link rel="stylesheet" href="css/debug.css">
 <style>
-  .page.splash    { background-image: url("assets/bg/ui/splash.jpg");
+  /* Splash uses the user-supplied PNG original directly so any future
+     re-upload of the same UUID-named file flows through with no
+     re-encode step. (The earlier splash.jpg is a transcode of the
+     same image; either works visually.) */
+  .page.splash    { background-image: url("assets/bg/ui/C1F92DD5-F950-4011-81E4-DFD527CC8FBD.png");
                     background-size: cover; background-position: center;
                     cursor: pointer; }
   .page.splash::before, .page.splash::after { display: none; }
@@ -233,9 +237,9 @@
 <template id="view-notes">
   <main class="page notes-art" data-page="notes">
     <div class="notes-layer">
-      <div class="split-left">
+      <div class="split-left notes-list-frame">
         <div class="split-header">
-          <span class="sh-title" style="font-size:18px;">Saved Words</span>
+          <span class="sh-title">Saved Words</span>
           <span class="sh-count" data-notes-count>0 saved</span>
         </div>
         <ul class="word-list"></ul>
@@ -244,10 +248,9 @@
         <div class="detail-pane ornate-panel"></div>
       </div>
     </div>
-    <nav class="nav-bar">
-      <button type="button" class="nav-btn" data-go="#select"><span class="glyph">‹</span> Back</button>
-      <span class="nav-sep"></span>
-      <button type="button" class="nav-btn" data-go="#menu"><span class="glyph">✤</span> Menu</button>
+    <nav class="ui-bottom-nav is-two">
+      <button type="button" data-go="#select"><span class="nav-glyph">‹</span>Back</button>
+      <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
     </nav>
   </main>
 </template>

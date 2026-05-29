@@ -25,69 +25,78 @@
    Helper text classes:
      .ornate-panel-title, .ornate-panel-subtitle
    ============================================================ */
-/* Visual grammar matched to the reading-page marginalia card:
-   transparent panel over the painted parchment (NO white-cream
-   gradient, NO chamfered clip-path), 1px ink-brown border + a
-   slightly lighter inner line via inset shadow. The ✤ flourish
-   stays at top centre via the ::after rule below. */
+/* Visual grammar v2 (user spec): the ✤ flourish does NOT float ABOVE
+   the outer border anymore; it sits ON the inner thin line at top
+   centre, with the line tapering to transparent as it approaches
+   the glyph — same grammar as the reading-page .antique-divider
+   (── ✤ ──). The outer 1px ink-brown border stays; the inner thin
+   line is reconstructed from three box-shadow insets on ::before
+   (left/right/bottom only) plus a gradient strip on ::after that
+   acts as the engraved top rule with the glyph embedded in it. */
 .ornate-panel {
   position: relative;
   box-sizing: border-box;
   background: transparent;
   color: var(--paper-text);
-  /* 1 px outer line — refined, not heavy. Inner line is a pseudo
-     at 4 px inset with ~42 % opacity for the engraved double-rule
-     look (matches the user's reference frame image). */
   border: 1px solid var(--ink-frame);
   border-radius: 5px;
-  padding: 22px 28px;
+  padding: 26px 28px 22px;
 }
 
-/* Inner thin line — softer, half-opacity, 4 px inset. */
+/* Inner thin line — left, right, bottom only. The top is intentionally
+   open so ::after can fill it with the antique-divider style strip. */
 .ornate-panel::before {
   content: "";
   position: absolute;
   inset: 4px;
   pointer-events: none;
-  border: 1px solid var(--ink-frame);
   border-radius: 3px;
-  opacity: 0.42;
+  box-shadow:
+    inset 1px 0 0 rgba(126, 105, 74, 0.42),
+    inset -1px 0 0 rgba(126, 105, 74, 0.42),
+    inset 0 -1px 0 rgba(126, 105, 74, 0.42);
 }
 
-/* Top-centre ✤ — no coloured pill background, just the glyph
-   sitting on the outer line; the painted parchment shows through. */
+/* Top "── ✤ ──" rule. Single pseudo: the line is the background
+   gradient (tapered to transparent in the centre); the ✤ glyph is
+   the content, centred over the gap. Positioned so its vertical
+   midline aligns with the inner-frame top edge at inset:4px. */
 .ornate-panel::after {
   content: "✤";
   position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0 6px;
-  color: var(--ink-frame);
-  background: transparent;
-  font-size: 14px;
+  top: -3px;          /* glyph midline ≈ inner-rect top edge */
+  left: 16px;
+  right: 16px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, serif;
+  font-size: 13px;
   line-height: 1;
   letter-spacing: 0.08em;
+  color: rgba(126, 105, 74, 0.85);
+  background-image: linear-gradient(
+    90deg,
+    rgba(126, 105, 74, 0.50) 0%,
+    rgba(126, 105, 74, 0.50) 30%,
+    rgba(126, 105, 74, 0.18) 42%,
+    transparent              48%,
+    transparent              52%,
+    rgba(126, 105, 74, 0.18) 58%,
+    rgba(126, 105, 74, 0.50) 70%,
+    rgba(126, 105, 74, 0.50) 100%
+  );
+  background-size: 100% 1px;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
 }
 
-/* Top horizontal flourish lines flanking the centre symbol. */
-.ornate-panel-header-line {
-  position: absolute;
-  top: 10px;
-  left: 26px;
-  right: 26px;
-  height: 1px;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(143, 128, 95, 0.45) 18%,
-    transparent 44%,
-    transparent 56%,
-    rgba(143, 128, 95, 0.45) 82%,
-    transparent 100%
-  );
-}
+/* Deprecated — kept as a no-op so existing markup that still adds
+   <span class="ornate-panel-header-line"> doesn't blow up. The top
+   rule is now provided by the panel itself via ::after. */
+.ornate-panel-header-line { display: none; }
 
 /* ----- Size variants ----- */
 .ornate-panel.is-small {
@@ -96,7 +105,13 @@
 .ornate-panel.is-small::before {
   inset: 4px;
 }
-.ornate-panel.is-small::after { font-size: 11px; padding: 0 5px; }
+.ornate-panel.is-small::after {
+  font-size: 11px;
+  height: 12px;
+  top: -2px;
+  left: 12px;
+  right: 12px;
+}
 
 .ornate-panel.is-strip {
   padding: 18px 26px;
