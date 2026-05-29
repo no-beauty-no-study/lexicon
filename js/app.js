@@ -106,11 +106,20 @@
 
   window.addEventListener("hashchange", render);
   document.addEventListener("DOMContentLoaded", () => {
-    // Setting the hash from "" to "#splash" fires hashchange, which
-    // calls render() for us. If a hash is already present (e.g. the
-    // user landed on #reading?chapter=X), call render directly.
-    if (!location.hash) location.hash = "#splash";
-    else                render();
+    // Always land on the splash on a fresh app launch, even if the URL
+    // already had a hash from a previous session (PWA + Safari preserve
+    // location.hash, so the user was getting kicked straight to #menu
+    // and never saw the painted TAP TO BEGIN cover). Deep-links into
+    // a specific chapter / quiz still respect the URL so a bookmarked
+    // #reading?chapter=X resumes directly. Everything else → splash.
+    const h = (location.hash || "").replace(/^#/, "").split("?")[0];
+    const allowResume = (h === "reading" || h === "quiz");
+    if (!allowResume) {
+      if (location.hash === "#splash") render();
+      else                             location.hash = "#splash";
+    } else {
+      render();
+    }
   });
 
 
