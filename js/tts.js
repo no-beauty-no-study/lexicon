@@ -148,24 +148,34 @@ const TTS = (function () {
   function speak(text) {
     if (!text) return;
     if (!window.speechSynthesis) return;
-    try {
-      window.speechSynthesis.cancel();
-    } catch (_) {}
 
-    // Defer the new utterance by a tick. iOS Safari clears
-    // speechSynthesis state asynchronously after cancel(); calling
-    // speak() synchronously after cancel() in the same task ends up
-    // racing with that clear, which is exactly when the voice drops
-    // to Daniel.
-    setTimeout(() => {
-      // Re-resolve from the live voices list on every call. iOS
-      // reorders this list after each utterance and a cached
-      // reference can stop being treated as "active" even though
-      // the object still exists.
-      const v = pickVoice(true);
-      const u = buildUtterance(text, v);
-      try { window.speechSynthesis.speak(u); } catch (_) {}
-    }, 30);
+    // EVERYTHING below must run synchronously inside whatever click /
+    // touch handler called speak(). iOS 17+ silently drops u.voice
+    // on any utterance not initiated within the user-gesture window,
+    // and falls back to the locale default voice (en-GB Daniel on
+    // most iPads — the "mechanical old man" the user is hearing on
+    // every-other paragraph). The previous setTimeout(30) wrapper
+    // pushed speak() into a fresh task, OUTSIDE the gesture, which
+    // is exactly what triggered the regression.
+    const v = pickVoice(true);
+    try { window.speechSynthesis.cancel(); } catch (_) {}
+    const u = buildUtterance(text, v);
+
+    // Optional debug aid: when localStorage.tpl.voiceDebug === "1",
+    // toast the picked voice's name + tier on every utterance, so
+    // the user can see whether pickVoice() chose the wrong voice or
+    // iOS substituted one after the fact. Toggle from #voices view.
+    let dbg = false;
+    try { dbg = localStorage.getItem("tpl.voiceDebug") === "1"; } catch (_) {}
+    if (dbg && window.toast) {
+      const tag = v
+        ? (v.name || "?") + " · " + (((v.voiceURI || "")
+            .match(/(siri|premium|enhanced|compact|neural)/i) || ["std"])[0])
+        : "no voice";
+      try { window.toast(tag); } catch (_) {}
+    }
+
+    try { window.speechSynthesis.speak(u); } catch (_) {}
   }
 
   return { speak, pickVoice };

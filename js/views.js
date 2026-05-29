@@ -969,6 +969,21 @@ const Views = (function () {
       });
       const rescanBtn = host.querySelector('[data-action="rescan"]');
       if (rescanBtn) rescanBtn.addEventListener("click", () => render());
+      const dbgBtn = host.querySelector('[data-action="toggle-debug"]');
+      function syncDbgLabel() {
+        if (!dbgBtn) return;
+        let on = false;
+        try { on = localStorage.getItem("tpl.voiceDebug") === "1"; } catch (_) {}
+        dbgBtn.textContent = on ? "Debug ✓" : "Debug";
+      }
+      syncDbgLabel();
+      if (dbgBtn) dbgBtn.addEventListener("click", () => {
+        let on = false;
+        try { on = localStorage.getItem("tpl.voiceDebug") === "1"; } catch (_) {}
+        try { localStorage.setItem("tpl.voiceDebug", on ? "0" : "1"); } catch (_) {}
+        syncDbgLabel();
+        window.toast && window.toast(on ? "Debug toasts off" : "Debug toasts on");
+      });
     },
   };
 
