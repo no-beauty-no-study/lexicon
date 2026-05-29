@@ -313,6 +313,61 @@
   transform: scale(0.965);
   background: rgba(201, 174, 103, 0.16);
 }
+
+/* Entry: new word-cards unfurl up + fade in instead of popping. */
+.word-card.is-entering {
+  animation: word-card-unfurl 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes word-card-unfurl {
+  0%   { opacity: 0; transform: translateY(12px) scale(0.94); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Folded into Notes: brief golden flash on the current card + a
+   persistent ❦ ribbon-glyph in the top-right corner that stays so
+   the reader can see at a glance which cards were folded. */
+.word-card.just-folded {
+  animation: word-card-fold-flash 740ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes word-card-fold-flash {
+  0%   { background: rgba(255,225,170,0.10); transform: scale(1);     box-shadow: 0 0 0 0 rgba(255,210,140,0); }
+  30%  { background: rgba(255,225,170,0.34); transform: scale(1.030); box-shadow: 0 0 22px 6px rgba(255,210,140,0.55); }
+  100% { background: rgba(255,225,170,0.10); transform: scale(1);     box-shadow: 0 0 0 0 rgba(255,210,140,0); }
+}
+.word-card.is-saved::after {
+  content: "❦";
+  position: absolute;
+  top: 6px; right: 7px;
+  font-size: 13px;
+  color: rgba(168, 122, 58, 0.78);
+  pointer-events: none;
+}
+
+/* Word-tap sparkle puff: warm-gold particles that radiate outward
+   from the tap point and fade. Coordinates set inline; --ang and
+   --dist randomised per particle so the burst never reads twice
+   the same. */
+.word-tap-sparkle {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255,243,200,1)   0%,
+    rgba(255,220,160,0.6) 50%,
+    transparent 80%);
+  box-shadow: 0 0 8px 2px rgba(255,225,170,0.6);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+  will-change: transform, opacity;
+  animation: word-tap-sparkle-fly 720ms ease-out forwards;
+}
+@keyframes word-tap-sparkle-fly {
+  0%   { transform: translate(-50%, -50%) rotate(var(--ang, 0deg)) translateX(0)                 scale(0);   opacity: 0; }
+  20%  { transform: translate(-50%, -50%) rotate(var(--ang, 0deg)) translateX(0)                 scale(1.4); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(var(--ang, 0deg)) translateX(var(--dist, 28px)) scale(0.2); opacity: 0; }
+}
 /* English in the word-card now matches reading-body type exactly:
      font-family: var(--font-body)
      font-size:   18px

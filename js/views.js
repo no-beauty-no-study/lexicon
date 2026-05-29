@@ -35,9 +35,59 @@ const Views = (function () {
 
 
   /* ---------- splash ----------
-     The .splash-hit element has data-go="#menu" so the global delegate
-     in app.js handles the tap; no view-local wiring required. */
-  const splash = { init() {} };
+     The cover used to call window.go("#menu") the instant the tap
+     bubbled to the global [data-go] delegate — no feedback, no
+     ceremony, PowerPoint cut to the menu. The cover is now hand-
+     wired here so we can:
+       1. drift a layer of randomised "stardust" up the page on a
+          loop (the wallpaper-engine-style pseudo-animation the
+          user asked for);
+       2. emit a 3-ring + central-burst water-ripple from the
+          actual tap point on press;
+       3. fade the cover out under the ripple before navigating. */
+  const splash = {
+    init(host) {
+      // ----- Idle layer: drifting stardust ---------------------------
+      for (let i = 0; i < 14; i++) {
+        const s = document.createElement("div");
+        s.className = "splash-sparkle";
+        s.style.setProperty("--x",     (Math.random() * 96 + 2) + "%");
+        s.style.setProperty("--d",     (11 + Math.random() * 11) + "s");
+        s.style.setProperty("--delay", (-Math.random() * 12) + "s");
+        s.style.setProperty("--sz",    (3 + Math.random() * 5) + "px");
+        s.style.setProperty("--drift", ((Math.random() - 0.5) * 50) + "px");
+        host.appendChild(s);
+      }
+
+      // ----- Tap-to-begin water ripple --------------------------------
+      const hit = host.querySelector(".splash-hit");
+      if (!hit) return;
+      let fired = false;
+      hit.addEventListener("click", (e) => {
+        if (fired) return;
+        fired = true;
+        e.preventDefault();
+        e.stopPropagation();
+        const rect = hit.getBoundingClientRect();
+        const fx = ((e.clientX - rect.left) / rect.width)  * 100;
+        const fy = ((e.clientY - rect.top)  / rect.height) * 100;
+        function ring(cls, delay) {
+          const r = document.createElement("div");
+          r.className = cls;
+          r.style.left = fx + "%";
+          r.style.top  = fy + "%";
+          r.style.animationDelay = delay + "ms";
+          host.appendChild(r);
+        }
+        ring("splash-ripple-center", 0);
+        ring("splash-ripple-ring",   60);
+        ring("splash-ripple-ring",   220);
+        ring("splash-ripple-ring",   380);
+        setTimeout(() => host.classList.add("is-leaving"), 240);
+        setTimeout(() => window.go("#menu"), 820);
+      });
+    },
+  };
 
 
   /* ---------- menu ---------- */
@@ -272,8 +322,9 @@ const Views = (function () {
             ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
           </div>` : "";
 
+        const savedAlready = Storage.isSaved(id);
         const html = `
-          <div class="word-card is-current" data-id="${esc(id)}">
+          <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}" data-id="${esc(id)}">
             <div class="word-card-headword">${esc(entry.word || id)}</div>
             <div class="word-card-meaning">${esc(shortMeaning(entry))}</div>
             ${phraseRows}
@@ -283,6 +334,9 @@ const Views = (function () {
         stack.insertAdjacentHTML("beforeend", html);
 
         const fresh = stack.lastElementChild;
+        // Strip the entry-animation class once the keyframe completes
+        // so re-tapping the same card later doesn't replay it.
+        setTimeout(() => fresh.classList.remove("is-entering"), 620);
         const drawerEntry = resolved.headEntry || entry;
         fresh.addEventListener("click", (e) => {
           e.stopPropagation();
@@ -318,12 +372,44 @@ const Views = (function () {
         Storage.saveWord(id);
         syncMarginaliaButtons(entry);
         window.toast && window.toast("Folded into Notes");
+        // Golden flash on the current card + persistent ❦ saved
+        // indicator. Tactile feedback that the press actually did
+        // something — without this, FOLD felt PowerPoint-y.
+        const card = host.querySelector(".word-card.is-current");
+        if (card) {
+          card.classList.add("is-saved", "just-folded");
+          setTimeout(() => card.classList.remove("just-folded"), 740);
+        }
       });
+
+      // Spawn a small burst of warm-gold particles at (clientX, clientY).
+      // Coordinates are resolved into PERCENT of host's bounding rect so
+      // they survive the .stage scale transform. Each sparkle is added
+      // directly to host (the .page) and removed when its animation
+      // completes — no global cleanup loop, no leak.
+      function spawnWordSparkles(clientX, clientY) {
+        const rect = host.getBoundingClientRect();
+        if (!rect.width) return;
+        const fx = ((clientX - rect.left) / rect.width)  * 100;
+        const fy = ((clientY - rect.top)  / rect.height) * 100;
+        for (let i = 0; i < 5; i++) {
+          const s = document.createElement("div");
+          s.className = "word-tap-sparkle";
+          s.style.left = fx + "%";
+          s.style.top  = fy + "%";
+          s.style.setProperty("--ang",   (Math.random() * 360) + "deg");
+          s.style.setProperty("--dist",  (24 + Math.random() * 38) + "px");
+          s.style.animationDelay = (i * 24) + "ms";
+          host.appendChild(s);
+          setTimeout(() => { try { s.remove(); } catch (_) {} }, 880);
+        }
+      }
 
       body.addEventListener("click", (e) => {
         const el = e.target.closest(".clickable-word");
         if (!el) return;
         e.stopPropagation();
+        spawnWordSparkles(e.clientX, e.clientY);
         host.querySelectorAll(".clickable-word.is-selected")
             .forEach(x => x.classList.remove("is-selected"));
         el.classList.add("is-selected");

@@ -17,10 +17,93 @@
      re-encode step. (The earlier splash.jpg is a transcode of the
      same image; either works visually.) */
   .page.splash    { background-image: url("assets/bg/ui/C1F92DD5-F950-4011-81E4-DFD527CC8FBD.png");
-                    background-size: cover; background-position: center;
-                    cursor: pointer; }
+                    background-size: 108% 108%;       /* room for Ken-Burns drift */
+                    background-position: 50% 50%;
+                    cursor: pointer;
+                    animation: splash-breathe 22s ease-in-out infinite alternate; }
   .page.splash::before, .page.splash::after { display: none; }
+  .page.splash.is-leaving {
+    transition: opacity 580ms ease-out, filter 580ms ease-out;
+    opacity: 0; filter: brightness(1.18);
+  }
   .splash-hit     { position: absolute; inset: 0; }
+  /* Subtle Ken-Burns / parallax-style background drift — pure
+     background-position so it doesn't fight the stage scale. */
+  @keyframes splash-breathe {
+    0%   { background-position: 49% 51%; }
+    100% { background-position: 51% 49%; }
+  }
+
+  /* Drifting "stardust" — each particle is randomised at create
+     time (size / drift / speed / delay) so the layer never reads
+     as identical loops. Set in JS via CSS variables. */
+  .splash-sparkle {
+    position: absolute;
+    left: var(--x);
+    bottom: -6%;
+    width:  var(--sz);
+    height: var(--sz);
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(255,245,215,0.95) 0%,
+      rgba(255,225,170,0.45) 45%,
+      transparent 75%);
+    box-shadow: 0 0 10px 2px rgba(255,230,180,0.5);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 6;
+    will-change: transform, opacity;
+    animation: splash-sparkle-rise var(--d) linear infinite;
+    animation-delay: var(--delay);
+  }
+  @keyframes splash-sparkle-rise {
+    0%   { transform: translate(0, 0)                              scale(0.45); opacity: 0; }
+    8%   { opacity: 0.85; }
+    50%  { transform: translate(calc(var(--drift) * 0.5), -55vh)   scale(1.1);  opacity: 0.95; }
+    92%  { opacity: 0.65; }
+    100% { transform: translate(var(--drift), -118vh)              scale(0.4);  opacity: 0; }
+  }
+
+  /* Tap-to-begin water ripple — warm-gold central burst plus
+     three thin gold rings expanding outward from the actual tap
+     coordinates. JS sets left/top per element and staggers the
+     ring delays via animation-delay. */
+  .splash-ripple-center,
+  .splash-ripple-ring {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 50;
+    will-change: transform, opacity;
+  }
+  .splash-ripple-center {
+    width: 14px; height: 14px;
+    background: radial-gradient(circle,
+      rgba(255,250,225,1)   0%,
+      rgba(255,230,180,0.7) 35%,
+      rgba(255,210,140,0.2) 60%,
+      transparent 80%);
+    box-shadow: 0 0 36px 12px rgba(255,228,178,0.7);
+    animation: splash-ripple-center-burst 760ms cubic-bezier(0.22,0.61,0.36,1) forwards;
+  }
+  @keyframes splash-ripple-center-burst {
+    0%   { transform: translate(-50%, -50%) scale(0);   opacity: 0; }
+    18%  { transform: translate(-50%, -50%) scale(3);   opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(60);  opacity: 0; }
+  }
+  .splash-ripple-ring {
+    width: 22px; height: 22px;
+    border: 2px solid rgba(255,232,184,0.85);
+    background: transparent;
+    box-shadow: 0 0 14px 1px rgba(255,225,170,0.4);
+    animation: splash-ripple-ring-expand 900ms cubic-bezier(0.22,0.61,0.36,1) forwards;
+  }
+  @keyframes splash-ripple-ring-expand {
+    0%   { transform: translate(-50%, -50%) scale(0);   opacity: 0; }
+    10%  { opacity: 0.9; }
+    100% { transform: translate(-50%, -50%) scale(120); opacity: 0; }
+  }
 
   .page.home         { background-image: url("assets/bg/ui/main-menu.jpg"); }
   .page.select-art   { background-image: url("assets/bg/ui/select-mode.jpg"); }
@@ -48,8 +131,19 @@
     background-color: transparent; transform-origin: center;
     transition: transform 180ms cubic-bezier(0.2,0.8,0.4,1.2),
                 filter    180ms ease-out;
+    /* Gentle, alternating float so the cover doesn't feel static.
+       Pauses on :active so the press scale doesn't fight the keyframe. */
+    animation: menu-hero-breathe 4.6s ease-in-out infinite alternate;
   }
-  .menu-btn:active .menu-btn-inner { transform: scale(0.93); filter: brightness(1.06); }
+  .menu-btn.right .menu-btn-inner { animation-delay: -2.3s; }
+  @keyframes menu-hero-breathe {
+    0%   { transform: translateY(0)    scale(1);     filter: brightness(1); }
+    100% { transform: translateY(-7px) scale(1.012); filter: brightness(1.05); }
+  }
+  .menu-btn:active .menu-btn-inner {
+    animation-play-state: paused;
+    transform: scale(0.93); filter: brightness(1.06);
+  }
   .menu-btn.left  .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-start.png"); }
   .menu-btn.right .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-enter.png"); }
 
@@ -193,7 +287,7 @@
 
 <template id="view-splash">
   <main class="page splash">
-    <div class="splash-hit" data-go="#menu" aria-label="Tap to begin"></div>
+    <div class="splash-hit" aria-label="Tap to begin"></div>
   </main>
 </template>
 

@@ -325,6 +325,22 @@
   to   { background-position:   0%   0%; opacity: 0;   }
 }
 
+/* The new page COMPOSES rather than pops: after the geometric turn
+   sweeps in, the bottom-nav and marginalia panel fade-up into place
+   with a small stagger. Without this, even with the page-turn
+   animation, the panels felt like PowerPoint cuts — appearing at
+   their final state the instant the leaf finished turning. */
+.page-turning-in .ui-bottom-nav {
+  animation: panel-fade-in 420ms ease-out 280ms both;
+}
+.page-turning-in .marginalia-card {
+  animation: panel-fade-in 460ms ease-out 320ms both;
+}
+@keyframes panel-fade-in {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 /* Respect reduced-motion: skip the geometric turn, just cross-fade. */
 @media (prefers-reduced-motion: reduce) {
   .page-turning-in {
@@ -333,4 +349,6 @@
   }
   @keyframes page-fade-in { from { opacity: 0; } to { opacity: 1; } }
   .page-turn-edge { display: none; }
+  .page-turning-in .ui-bottom-nav,
+  .page-turning-in .marginalia-card { animation: none; }
 }
