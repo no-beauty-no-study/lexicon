@@ -939,12 +939,13 @@ const Views = (function () {
         const vs = (window.speechSynthesis && window.speechSynthesis.getVoices()) || [];
         const v  = vs.find(x => x.voiceURI === uri) || vs.find(x => x.name === name);
         if (e.target.closest(".voice-test")) {
+          // SAME bug as the main TTS.speak: speak() must run inside
+          // the click handler's user-gesture window or iOS drops
+          // u.voice and substitutes the locale default. Sync.
           try { window.speechSynthesis.cancel(); } catch (_) {}
-          setTimeout(() => {
-            const u = new SpeechSynthesisUtterance("Hello, this is a sample of my voice.");
-            if (v) { u.lang = v.lang || "en-US"; u.voice = v; u.voice = v; }
-            try { window.speechSynthesis.speak(u); } catch (_) {}
-          }, 30);
+          const u = new SpeechSynthesisUtterance("Hello, this is a sample of my voice.");
+          if (v) { u.lang = v.lang || "en-US"; u.voice = v; u.voice = v; }
+          try { window.speechSynthesis.speak(u); } catch (_) {}
           return;
         }
         if (e.target.closest(".voice-use")) {

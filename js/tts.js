@@ -86,10 +86,25 @@ const TTS = (function () {
       if (chosen) { pickedVoice = chosen; logPicked(voices); return pickedVoice; }
     }
 
-    // No override (or no match). Reject compact-tier voices in the
-    // first pass; only fall back to them if NO non-compact English
-    // voice exists on the device at all.
-    const enVoices   = voices.filter(v => /^en/i.test(v.lang) && !/daniel/i.test(v.name));
+    // No override (or no match). The user's diagnostic toasts proved
+    // the *real* iOS-PWA bug: getVoices() in standalone PWA mode is
+    // stripped — Ava / Samantha / Allison / etc. are NOT exposed
+    // (even though they're installed and used by Spoken Content).
+    // What IS exposed: a male voice (Albert on the user's iPad) plus
+    // a handful of compact-tier voices. Setting u.voice = Albert
+    // produces the "demon old man" voice the user heard on every
+    // utterance after the first.
+    //
+    // The FIRST utterance sounded right because pickVoice returned
+    // null (getVoices was still empty), and iOS substituted the
+    // user's system Spoken-Content default (Ava 高音质). That is
+    // exactly what we want for every utterance — so when no
+    // high-tier female English voice is available from getVoices,
+    // we deliberately RETURN NULL and let iOS pick.
+    const isMale = (v) => /^(albert|aaron|alex|bruce|daniel|fred|junior|ralph|reed|rocko|tom|eddy|otis|martin|thomas|jacques|yannick|whisper)/i.test(v.name || "");
+    const enVoices   = voices.filter(v =>
+      /^en/i.test(v.lang) && !isMale(v)
+    );
     const nonCompact = enVoices.filter(v => tier(v) > 0);
     const pool       = nonCompact.length ? nonCompact : enVoices;
 
@@ -97,12 +112,17 @@ const TTS = (function () {
          bestOf(pool.filter(v => /siri/i.test(v.voiceURI || "")))
       || bestOf(pool.filter(v => /ava/i.test(v.name)))
       || bestOf(pool.filter(v => /samantha/i.test(v.name)))
-      || bestOf(pool.filter(v => /^(allison|susan|karen|victoria|moira|fiona|tessa|kate|serena|nora)$/i.test(v.name)))
-      || bestOf(pool.filter(v => /^en-us/i.test(v.lang)))
-      || bestOf(pool)
-      || voices.find(v => v.default && /^en/i.test(v.lang))
-      || voices.find(v => v.default)
+      || bestOf(pool.filter(v => /^(allison|susan|karen|victoria|moira|fiona|tessa|kate|serena|nora|joelle)$/i.test(v.name)))
       || null;
+
+    // Belt + braces: if for some reason the pool yielded a male
+    // voice (regex miss, locale variant), drop it. Better to set no
+    // voice and let iOS pick the Spoken-Content system default than
+    // to ship Albert into your ear at midnight. Returning null here
+    // does NOT cache null — next call will re-attempt — that's fine
+    // because getVoices() can refill the list after voiceschanged.
+    if (pickedVoice && isMale(pickedVoice)) pickedVoice = null;
+
     logPicked(voices);
     return pickedVoice;
   }
