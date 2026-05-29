@@ -53,6 +53,79 @@
   .menu-btn.left  .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-start.png"); }
   .menu-btn.right .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-enter.png"); }
 
+  /* Top-right "voice" link — small text, low chroma so it sits on
+     the painted menu background without competing with the two
+     hero buttons. Big tap target via padding. */
+  .menu-corner-link {
+    position: absolute; top: 2.4%; right: 2.6%;
+    padding: 10px 14px;
+    background: transparent; border: 0;
+    font-family: var(--font-display);
+    font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(240, 220, 180, 0.78);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+    cursor: pointer; z-index: 10;
+  }
+  .menu-corner-link:active { color: rgba(255, 240, 200, 1); }
+
+  /* Voices view — a simple scrollable list of installed system
+     voices, each row testable + selectable. Painted on the same
+     blank-page parchment background as save/load for cohesion. */
+  .page.voices-art   { background-image: url("assets/bg/ui/page-blank.jpg"); }
+  .voices-title {
+    position: absolute; left: 28%; top: 5.5%;
+    width: 44%; height: 6%;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+    font-family: var(--font-display);
+    font-size: 28px; letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: var(--accent-wine, #6e2a2a);
+    z-index: 5;
+  }
+  .voices-help {
+    position: absolute; left: 16%; top: 12%;
+    width: 68%;
+    font-family: var(--font-text, serif);
+    font-size: 13px; line-height: 1.5;
+    color: rgba(75, 62, 42, 0.86);
+    z-index: 5;
+  }
+  .voices-help em { font-style: italic; color: rgba(75, 62, 42, 1); }
+  .voices-list {
+    position: absolute; left: 16%; top: 22%;
+    width: 68%; height: 63%;
+    margin: 0; padding: 0 6px;
+    list-style: none; overflow-y: auto; z-index: 4;
+  }
+  .voice-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(184,158,111,0.35);
+    font-family: var(--font-text, serif);
+    color: rgba(75, 62, 42, 0.92);
+  }
+  .voice-row.is-current { background: rgba(244, 222, 170, 0.45); }
+  .voice-name { font-size: 15px; }
+  .voice-meta {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(126, 105, 74, 0.85);
+  }
+  .voice-row button {
+    border: 1px solid rgba(126, 105, 74, 0.55);
+    background: transparent;
+    padding: 6px 12px;
+    font-family: var(--font-display); font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(75, 62, 42, 0.92);
+    cursor: pointer;
+  }
+  .voice-row button:active { background: rgba(126, 105, 74, 0.18); }
+
   .notes-layer {
     position: absolute; inset: 18% 18% 14% 18%;
     display: grid; grid-template-columns: 300px 1fr; gap: 24px;
@@ -106,6 +179,11 @@
     <button type="button" class="menu-btn right" data-action="enter-chapters">
       <span class="menu-btn-inner"></span>
     </button>
+    <!-- Tiny "voice" link top-right: opens the in-app voice picker
+         so the user can switch off the mechanical compact-tier voice
+         iOS sometimes defaults to when no enhanced voice is installed. -->
+    <button type="button" class="menu-corner-link" data-go="#voices"
+            aria-label="Choose voice">voice</button>
   </main>
 </template>
 
@@ -309,6 +387,21 @@
       <button type="button" data-go="#select"><span class="nav-glyph">‹</span>Back</button>
       <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
     </nav>
+  </main>
+</template>
+
+<template id="view-voices">
+  <main class="page art-bg voices-art" data-page="voices">
+    <div class="master-frame">
+      <h1 class="voices-title">Voice</h1>
+      <p class="voices-help">Tap <em>Test</em> to preview, <em>Use</em> to keep. Voices marked <em>Compact</em> sound robotic — download an Enhanced or Premium voice in iOS Settings → Accessibility → Spoken Content → Voices.</p>
+      <ul class="voices-list" aria-label="Available voices"></ul>
+      <nav class="ui-bottom-nav">
+        <button type="button" data-go="#menu"><span class="nav-glyph">‹</span>Back</button>
+        <button type="button" data-action="clear-voice">Auto-pick</button>
+        <button type="button" data-action="rescan">Rescan</button>
+      </nav>
+    </div>
   </main>
 </template>
 

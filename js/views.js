@@ -13,7 +13,12 @@ const Views = (function () {
     return String(s).replace(/["\\\n\r]/g, c =>
       c === '"' ? '\\"' : c === '\\' ? '\\\\' : '');
   }
-  function resumeHash() {
+  // Story entry hash. Story is LINEAR: tapping Story drops the
+  // reader straight into the reading view — never into the chapter
+  // index (which is for previewing, see browse=1 below). If progress
+  // exists in tpl.lastRead, resume from there; otherwise start at the
+  // first section of the first chapter.
+  function storyEntryHash() {
     let last = null;
     try { last = JSON.parse(localStorage.getItem("tpl.lastRead") || "null"); }
     catch (_) {}
@@ -21,7 +26,11 @@ const Views = (function () {
       return `#reading?chapter=${encodeURIComponent(last.chapter)}`
            + `&section=${encodeURIComponent(last.section || "1.1")}`;
     }
-    return "#chapters";
+    const first = (typeof CHAPTERS !== "undefined" && CHAPTERS[0]) || null;
+    const chId  = first ? first.id : "universe";
+    const sec   = first ? (first.firstSection || "1.1") : "1.1";
+    return `#reading?chapter=${encodeURIComponent(chId)}`
+         + `&section=${encodeURIComponent(sec)}`;
   }
 
 
@@ -92,7 +101,7 @@ const Views = (function () {
           }
           playSelectChime();
           const dest = el.dataset.action === "resume"
-                     ? resumeHash()
+                     ? storyEntryHash()
                      : el.dataset.go;
           setTimeout(() => window.go(dest), 380);
         });
@@ -374,9 +383,41 @@ const Views = (function () {
         revealNext();
       });
 
+      // Browse / preview mode (entered from the chapter index): no
+      // Save, no Load, no Quiz (anti-cheat), and Next advances to the
+      // NEXT CHAPTER instead of into the section's quiz. The index is
+      // for browsing previews of chapters, not graded reading.
+      if (isBrowse) {
+        const nav = host.querySelector(".ui-bottom-nav");
+        if (nav) {
+          nav.querySelectorAll(
+            '[data-go="#save"], [data-go="#load"], [data-quiz]'
+          ).forEach(b => b.remove());
+          // Drop from 5-cell to 3-cell grid so the remaining buttons
+          // (Next / Menu / etc.) space evenly under the page.
+          nav.style.setProperty("--nav-count", "3");
+        }
+      }
+
       const next = host.querySelector("[data-next]");
       if (next) next.addEventListener("click", (e) => {
         e.stopPropagation();
+        if (isBrowse) {
+          if (typeof CHAPTERS !== "undefined") {
+            const i = CHAPTERS.findIndex(c => c.id === chapterId);
+            if (i >= 0 && i + 1 < CHAPTERS.length) {
+              const nb = CHAPTERS[i + 1];
+              window.go(
+                `#reading?chapter=${encodeURIComponent(nb.id)}`
+                + `&section=${encodeURIComponent(nb.firstSection || "1.1")}`
+                + `&browse=1`
+              );
+              return;
+            }
+          }
+          window.go("#chapters?browse=1");
+          return;
+        }
         window.go(ChapterNav.nextAfterReading(chapterId, sectionNum));
       });
       const quizBtn = host.querySelector("[data-quiz]");
@@ -823,10 +864,114 @@ const Views = (function () {
   const load = { init(host) { renderSlots(host, "load"); } };
 
 
+  /* ---------- voices ----------
+     Lists every speechSynthesis voice the device has installed,
+     surfaces the quality tier (Siri / Premium / Enhanced / Standard
+     / Compact), and lets the user TEST + USE one. The chosen voice
+     name is stored as `tpl.voice` and read back by TTS.pickVoice as
+     a hard override. Necessary because iOS will silently fall back
+     to the compact (robotic) tier of Ava/Samantha when no enhanced
+     voice is downloaded, and the user has no other way to tell
+     which voices are even present on their device. */
+  function voiceTierLabel(v) {
+    const s = ((v.voiceURI || "") + " " + (v.name || "")).toLowerCase();
+    if (/siri/.test(s))     return "Siri";
+    if (/neural/.test(s))   return "Neural";
+    if (/premium/.test(s))  return "Premium";
+    if (/enhanced/.test(s)) return "Enhanced";
+    if (/compact/.test(s))  return "Compact";
+    return "Standard";
+  }
+  const voices = {
+    init(host) {
+      const list = host.querySelector(".voices-list");
+
+      function render() {
+        // Page-turned away from the voices view — the chained
+        // onvoiceschanged callback would otherwise paint into a
+        // detached list. Bail silently.
+        if (!list.isConnected) return;
+        const vs = (window.speechSynthesis && window.speechSynthesis.getVoices()) || [];
+        let current = "";
+        try { current = localStorage.getItem("tpl.voice") || ""; } catch (_) {}
+        const sorted = vs.slice().sort((a, b) => {
+          const ae = /^en/i.test(a.lang), be = /^en/i.test(b.lang);
+          if (ae !== be) return ae ? -1 : 1;
+          return (a.name || "").localeCompare(b.name || "");
+        });
+        if (!sorted.length) {
+          list.innerHTML = `<li class="voice-row"><span class="voice-name">No voices reported yet. Tap Rescan after a moment.</span></li>`;
+          return;
+        }
+        list.innerHTML = sorted.map(v => {
+          const isCurrent = current && (v.name === current || v.voiceURI === current);
+          return `
+            <li class="voice-row${isCurrent ? " is-current" : ""}"
+                data-name="${esc(v.name || "")}"
+                data-uri="${esc(v.voiceURI || "")}">
+              <span class="voice-name">${esc(v.name || v.voiceURI || "?")}</span>
+              <span class="voice-meta">${esc(v.lang || "")} · ${esc(voiceTierLabel(v))}</span>
+              <button type="button" class="voice-test">Test</button>
+              <button type="button" class="voice-use">${isCurrent ? "In Use" : "Use"}</button>
+            </li>`;
+        }).join("");
+      }
+      render();
+
+      // If the engine hasn't filled getVoices() yet (common on iOS
+      // first paint), retry once when it does. Chain rather than
+      // replace, since tts.js also wires onvoiceschanged to bust its
+      // pickVoice cache; overwriting it here would silently break
+      // the auto-picker for the rest of the session.
+      if (window.speechSynthesis && "onvoiceschanged" in window.speechSynthesis) {
+        const prev = window.speechSynthesis.onvoiceschanged;
+        window.speechSynthesis.onvoiceschanged = () => {
+          try { if (typeof prev === "function") prev(); } catch (_) {}
+          render();
+        };
+      }
+
+      list.addEventListener("click", (e) => {
+        const row = e.target.closest(".voice-row");
+        if (!row) return;
+        const name = row.dataset.name;
+        const uri  = row.dataset.uri;
+        const vs = (window.speechSynthesis && window.speechSynthesis.getVoices()) || [];
+        const v  = vs.find(x => x.voiceURI === uri) || vs.find(x => x.name === name);
+        if (e.target.closest(".voice-test")) {
+          try { window.speechSynthesis.cancel(); } catch (_) {}
+          setTimeout(() => {
+            const u = new SpeechSynthesisUtterance("Hello, this is a sample of my voice.");
+            if (v) { u.lang = v.lang || "en-US"; u.voice = v; u.voice = v; }
+            try { window.speechSynthesis.speak(u); } catch (_) {}
+          }, 30);
+          return;
+        }
+        if (e.target.closest(".voice-use")) {
+          try { localStorage.setItem("tpl.voice", name || uri); } catch (_) {}
+          if (TTS && TTS.pickVoice) TTS.pickVoice(true);
+          render();
+          window.toast && window.toast("Voice set: " + (name || uri));
+        }
+      });
+
+      const clearBtn = host.querySelector('[data-action="clear-voice"]');
+      if (clearBtn) clearBtn.addEventListener("click", () => {
+        try { localStorage.removeItem("tpl.voice"); } catch (_) {}
+        if (TTS && TTS.pickVoice) TTS.pickVoice(true);
+        render();
+        window.toast && window.toast("Voice reset to auto-pick");
+      });
+      const rescanBtn = host.querySelector('[data-action="rescan"]');
+      if (rescanBtn) rescanBtn.addEventListener("click", () => render());
+    },
+  };
+
+
   return {
     splash, menu, select, chapters,
     reading, quiz, notes,
     "word-garden": wordGarden,
-    save, load,
+    save, load, voices,
   };
 })();

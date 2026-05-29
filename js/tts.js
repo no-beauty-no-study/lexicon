@@ -43,35 +43,46 @@ const TTS = (function () {
       if (forced) { pickedVoice = forced; logPicked(voices); return pickedVoice; }
     }
 
-    // ROOT CAUSE of the "first sentence good, rest mechanical" bug:
-    // iOS exposes SEVERAL voices that all report .name === "Ava" but
-    // differ only by .voiceURI quality tier, e.g.
-    //   com.apple.voice.compact.en-US.Ava   (robotic, tiny)
-    //   com.apple.voice.enhanced.en-US.Ava  (good)
-    //   com.apple.voice.premium.en-US.Ava   (best)
-    // Matching by NAME alone (find → first match) is non-deterministic
-    // because iOS reorders getVoices() between utterances, so one call
-    // grabs premium and the next grabs compact → the voice "downgrades"
-    // mid-session. Fix: never use first-match; score every candidate by
-    // voiceURI tier and take the MAX. That's stable across reorderings.
+    // iOS exposes SEVERAL voices that share a .name but differ in
+    // .voiceURI quality tier:
+    //   com.apple.voice.compact.en-US.Ava       robotic, tiny
+    //   com.apple.voice.enhanced.en-US.Ava      good
+    //   com.apple.voice.premium.en-US.Ava       best
+    //   com.apple.ttsbundle.siri_<Name>_en-US   neural (iOS 16+)
+    // Two bugs we have to dodge:
+    //   1. getVoices() reorders between utterances — first-match is
+    //      non-deterministic → mid-session "downgrade" to compact.
+    //   2. The compact tier is the "mechanical female" voice the
+    //      user is hearing; if a non-compact en voice exists we MUST
+    //      pick that even if its name doesn't match Ava/Samantha.
+    // Strategy: tier every voice, hard-reject compact in pass 1, and
+    // only fall back to compact if no enhanced/premium/siri en voice
+    // is installed on the device at all.
     function tier(v) {
       const s = ((v.voiceURI || "") + " " + (v.name || "")).toLowerCase();
+      if (/siri/.test(s))     return 6;
+      if (/neural/.test(s))   return 5;
       if (/premium/.test(s))  return 4;
       if (/enhanced/.test(s)) return 3;
-      if (/compact/.test(s))  return 1;
-      return 2; // unlabelled = standard quality
+      if (/compact/.test(s))  return 0;
+      return 2;
     }
     function bestOf(list) {
       if (!list.length) return null;
       return list.slice().sort((a, b) => tier(b) - tier(a))[0];
     }
+    const enVoices   = voices.filter(v => /^en/i.test(v.lang) && !/daniel/i.test(v.name));
+    const nonCompact = enVoices.filter(v => tier(v) > 0);
+    const pool       = nonCompact.length ? nonCompact : enVoices;
 
     pickedVoice =
-         bestOf(voices.filter(v => /ava/i.test(v.name)))
-      || bestOf(voices.filter(v => /samantha/i.test(v.name)))
-      || voices.find(v => v.default && /^en/i.test(v.lang) && !/daniel/i.test(v.name))
-      || bestOf(voices.filter(v => /^en-us/i.test(v.lang) && !/daniel/i.test(v.name)))
-      || bestOf(voices.filter(v => /^en/i.test(v.lang)    && !/daniel/i.test(v.name)))
+         bestOf(pool.filter(v => /siri/i.test(v.voiceURI || "")))
+      || bestOf(pool.filter(v => /ava/i.test(v.name)))
+      || bestOf(pool.filter(v => /samantha/i.test(v.name)))
+      || bestOf(pool.filter(v => /^(allison|susan|karen|victoria|moira|fiona|tessa|kate|serena|nora)$/i.test(v.name)))
+      || bestOf(pool.filter(v => /^en-us/i.test(v.lang)))
+      || bestOf(pool)
+      || voices.find(v => v.default && /^en/i.test(v.lang))
       || voices.find(v => v.default)
       || null;
     logPicked(voices);
