@@ -165,7 +165,6 @@ const TTS = (function () {
     return u;
   }
 
-  let utterIdx = 0;
   function speak(text) {
     if (!text) return;
     if (!window.speechSynthesis) return;
@@ -199,20 +198,17 @@ const TTS = (function () {
     }
 
     const u = buildUtterance(text, v);
-    utterIdx++;
 
-    // Diagnostic toast — auto-on for the first 5 utterances of a
-    // fresh session so the user can immediately see WHICH voice we
-    // asked iOS to use. Also toggleable for all utterances via
-    // localStorage.tpl.voiceDebug from the #voices page. The toast
-    // fires on u.onstart so it lines up with the audio rather than
-    // with the request.
-    let dbg = utterIdx <= 5;
-    try { dbg = dbg || localStorage.getItem("tpl.voiceDebug") === "1"; } catch (_) {}
+    // (The auto-on diagnostic toast for the first N utterances has
+    // been removed now that the no-voice / system-default path is
+    // confirmed working. Manual toggle via localStorage.tpl.voiceDebug
+    // from the #voices page still works if needed for diagnosis.)
+    let dbg = false;
+    try { dbg = localStorage.getItem("tpl.voiceDebug") === "1"; } catch (_) {}
     if (dbg) {
       const tier = ((v && v.voiceURI || "")
         .match(/(siri|premium|enhanced|compact|neural)/i) || ["std"])[0];
-      const tag  = v ? `#${utterIdx} ${v.name || "?"}·${tier}` : `#${utterIdx} no voice`;
+      const tag  = v ? `${v.name || "?"}·${tier}` : "no voice";
       u.onstart = () => { try { window.toast && window.toast(tag); } catch (_) {} };
     }
 

@@ -1459,7 +1459,11 @@ button.ornate-panel {
   box-sizing: border-box;
 }
 .ui-bottom-nav.is-two,
-.page-bottom-nav.is-two { --nav-count: 2; }
+.page-bottom-nav.is-two   { --nav-count: 2; }
+.ui-bottom-nav.is-three,
+.page-bottom-nav.is-three { --nav-count: 3; }
+.ui-bottom-nav.is-four,
+.page-bottom-nav.is-four  { --nav-count: 4; }
 
 /* If the container is the child of a .ui-zone wrapper, we let the
    parent's coordinates win (the zone has already been measured). */

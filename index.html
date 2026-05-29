@@ -229,9 +229,10 @@
               data-go="#notes" aria-label="Notes"></button>
       <button type="button" class="select-hotspot ui-zone zone-select-garden-hit"
               data-go="#word-garden" aria-label="Word Garden"></button>
-      <nav class="ui-bottom-nav is-two">
-        <button type="button" data-go="#menu">Menu</button>
-        <button type="button" data-go="#load">Load</button>
+      <nav class="ui-bottom-nav is-three">
+        <button type="button" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
+        <button type="button" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
+        <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
       </nav>
     </div>
   </main>
@@ -295,9 +296,9 @@
         </aside>
       </div>
       <nav class="ui-bottom-nav">
-        <button type="button" data-go="#save"><span class="nav-glyph">✤</span>Save</button>
-        <button type="button" data-go="#load"><span class="nav-glyph">✤</span>Load</button>
-        <button type="button" data-quiz><span class="nav-glyph">✤</span>Quiz</button>
+        <button type="button" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
+        <button type="button" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
+        <button type="button" data-quiz><span class="nav-glyph">✦</span>Quiz</button>
         <button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>
         <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
       </nav>
@@ -318,11 +319,11 @@
         <div class="reading-body quiz-body"></div>
       </div>
       <nav class="ui-bottom-nav">
-        <button type="button" data-go="#save">Save</button>
-        <button type="button" data-go="#load">Load</button>
-        <button type="button" data-go="#menu">Menu</button>
-        <button type="button" data-back>Back</button>
-        <button type="button" data-next>Next</button>
+        <button type="button" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
+        <button type="button" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
+        <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+        <button type="button" data-back><span class="nav-glyph">‹</span>Back</button>
+        <button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>
       </nav>
     </div>
     <div class="chapter-complete-toast" aria-hidden="true">
@@ -417,7 +418,7 @@
       <h1 class="voices-title">Voice</h1>
       <p class="voices-help">Tap <em>Test</em> to preview, <em>Use</em> to keep. PWA mode hides some voices (e.g. Ava) — if you don't see the one you want, leave <em>Auto-pick</em> selected so iOS uses your system Spoken Content default.</p>
       <ul class="voices-list" aria-label="Available voices"></ul>
-      <nav class="ui-bottom-nav">
+      <nav class="ui-bottom-nav is-four">
         <button type="button" data-go="#menu"><span class="nav-glyph">‹</span>Back</button>
         <button type="button" data-action="clear-voice">Auto-pick</button>
         <button type="button" data-action="rescan">Rescan</button>

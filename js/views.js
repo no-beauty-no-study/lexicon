@@ -393,9 +393,11 @@ const Views = (function () {
           nav.querySelectorAll(
             '[data-go="#save"], [data-go="#load"], [data-quiz]'
           ).forEach(b => b.remove());
-          // Drop from 5-cell to 3-cell grid so the remaining buttons
-          // (Next / Menu / etc.) space evenly under the page.
-          nav.style.setProperty("--nav-count", "3");
+          // After removing Save/Load/Quiz from the 5-cell reading
+          // nav, only Next + Menu remain → 2 cells, evenly split.
+          // (Previously had --nav-count: 3, which left an empty
+          // 3rd cell and shoved Next/Menu off-centre.)
+          nav.style.setProperty("--nav-count", "2");
         }
       }
 

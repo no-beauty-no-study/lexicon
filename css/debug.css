@@ -177,9 +177,16 @@ body.debug-ui .ui-bottom-nav::after {
    strips between adjacent pillars where taps registered nowhere.
    New zones nearly meet (≤1% gap) and stretch top/bottom so the
    whole carved-arch column is tappable. */
-.zone-select-story-hit    { left: 17.5%; top: 17%; width: 24%; height: 76%; }
-.zone-select-notes-hit    { left: 42.5%; top: 17%; width: 19%; height: 76%; }
-.zone-select-garden-hit   { left: 62.5%; top: 17%; width: 24%; height: 76%; }
+/* Hotspots are the three big vertical strips of the painted
+   select screen. Was too easy to miss-tap (the original 24% /
+   19% / 24% wide zones left ~10% dead-space gaps and only spanned
+   76% of the page height). Widened to span the FULL height (12–94%)
+   and edge-to-edge with no gaps. The .select-title-text zones
+   above each arch have pointer-events: none, so overlapping
+   them is safe — taps still fall through to the hotspots. */
+.zone-select-story-hit    { left:  4%; top: 12%; width: 31%; height: 82%; }
+.zone-select-notes-hit    { left: 35%; top: 12%; width: 30%; height: 82%; }
+.zone-select-garden-hit   { left: 65%; top: 12%; width: 31%; height: 82%; }
 
 /* ============================================================
    CHAPTERS (Table of Contents) — TEXT zones only (chapter title +
