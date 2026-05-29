@@ -276,123 +276,61 @@
 }
 
 /* ============================================================
-   PAGE TRANSITIONS  (v2 — game-grade, fairytale-book grand)
-   Every router swap triggers a three-layer flourish:
+   PAGE TURN  (v3 — quiet e-book leaf, no game flash)
+   The user found the gold-sigil flourish too "video-game" for a
+   book. This is a calm page-turn instead: the OUTGOING page stays
+   put underneath while the INCOMING page unfurls over it from the
+   bottom-right corner — a clip-path diagonal reveal — with a single
+   soft light-edge sweeping along the fold from bottom-right to
+   top-left. No 3D mirror flip (which CSS does badly), no sparkles.
 
-   1. .page itself fades from a heavy sepia blur into focus
-      (opacity 0 + blur 6px + sepia 0.22 + brightness 0.78), a
-      "turning the page" feel that lasts ~720 ms.
-
-   2. .stage::after washes the whole frame with warm candlelight
-      gold — two radial gradients, soft-light blended on top of the
-      painted artwork — fades up fast, lingers, fades out.
-
-   3. .stage::before drops a giant gold ✤ sigil dead-centre that
-      blooms from nothing, spreads its letter-spacing wide, and
-      vanishes outward. Same glyph the book itself uses as a
-      flourish, so it reads as a story-book turning to a new page.
-
-   The router (js/app.js) toggles .is-transitioning off-then-on
-   across a forced reflow so the keyframes re-trigger on every nav.
+   js/app.js keeps both pages in the DOM for ~660 ms: the new page is
+   inserted first (so .stage .page resolves to it) but painted on top
+   via z-index; the old page sits beneath and is removed when done.
    ============================================================ */
-.page {
-  animation: page-turn 720ms cubic-bezier(0.22, 0.7, 0.32, 1) both;
+.page-beneath    { z-index: 1; }
+.page-turning-in {
+  z-index: 2;
+  animation: page-turn-in 600ms cubic-bezier(0.33, 0.02, 0.20, 1) both;
 }
-@keyframes page-turn {
-  0%   { opacity: 0;    filter: blur(6px) brightness(0.78) sepia(0.22) saturate(0.85); }
-  40%  { opacity: 0.75; filter: blur(2px) brightness(0.90) sepia(0.10) saturate(0.92); }
-  100% { opacity: 1;    filter: blur(0)   brightness(1)    sepia(0)    saturate(1);    }
-}
-
-/* Warm candle-gold wash + sparkle field across the parchment during
-   the swap. Two radial highlights + a dense scatter of gold pin-points
-   all packed into a single background-image stack. */
-.stage.is-transitioning::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 11% 18%, rgba(255,238,182,0.95) 0 1.6px, transparent 2.4px),
-    radial-gradient(circle at 86% 16%, rgba(255,238,182,0.92) 0 1.8px, transparent 2.6px),
-    radial-gradient(circle at 22% 78%, rgba(255,238,182,0.90) 0 1.6px, transparent 2.4px),
-    radial-gradient(circle at 78% 84%, rgba(255,238,182,0.95) 0 1.9px, transparent 2.7px),
-    radial-gradient(circle at 50% 12%, rgba(255,238,182,0.80) 0 1.3px, transparent 2.0px),
-    radial-gradient(circle at 50% 90%, rgba(255,238,182,0.85) 0 1.5px, transparent 2.2px),
-    radial-gradient(circle at 34% 48%, rgba(255,238,182,0.70) 0 1.1px, transparent 1.8px),
-    radial-gradient(circle at 66% 52%, rgba(255,238,182,0.70) 0 1.1px, transparent 1.8px),
-    radial-gradient(circle at 16% 60%, rgba(255,238,182,0.72) 0 1.3px, transparent 2.0px),
-    radial-gradient(circle at 90% 56%, rgba(255,238,182,0.72) 0 1.3px, transparent 2.0px),
-    radial-gradient(circle at 44% 28%, rgba(255,238,182,0.65) 0 1.0px, transparent 1.7px),
-    radial-gradient(circle at 60% 72%, rgba(255,238,182,0.65) 0 1.0px, transparent 1.7px),
-    radial-gradient(ellipse 75% 65% at 28% 42%,
-        rgba(252, 218, 152, 0.55) 0%,
-        rgba(214, 174, 116, 0.22) 38%,
-        transparent 78%),
-    radial-gradient(ellipse 70% 60% at 75% 58%,
-        rgba(246, 210, 142, 0.42) 0%,
-        rgba(214, 174, 116, 0.16) 45%,
-        transparent 80%);
-  pointer-events: none;
-  z-index: 99;
-  mix-blend-mode: soft-light;
-  animation: stage-glow 720ms cubic-bezier(0.22, 0.7, 0.32, 1) both;
-}
-@keyframes stage-glow {
-  0%   { opacity: 0;    transform: scale(0.94); filter: blur(1.5px); }
-  18%  { opacity: 0.95; transform: scale(1.00); filter: blur(0);     }
-  55%  { opacity: 0.85; transform: scale(1.02); filter: blur(0);     }
-  100% { opacity: 0;    transform: scale(1.06); filter: blur(0.6px); }
+@keyframes page-turn-in {
+  /* Collapsed triangle pinned at the bottom-right corner … */
+  from { clip-path: polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%); }
+  /* … grows past the top and left edges so the whole leaf is shown.
+     The hypotenuse stays at ~45°, so the reveal reads as a corner
+     being turned down toward the top-left. */
+  to   { clip-path: polygon(100% -120%, 100% 100%, -120% 100%, -120% 100%); }
 }
 
-/* The grand gold sigil — a giant ✤ that blooms centre-stage and
-   dissolves outward, rotating slightly. Soft-light blend so it
-   gilds the painted artwork instead of plastering over it. */
-.stage.is-transitioning::before {
-  content: "✤";
+/* The travelling light-edge — a thin bright/shadow band on a 135°
+   axis whose position sweeps from the bottom-right corner to the
+   top-left, tracking the clip fold. Pure background-position move. */
+.page-turn-edge {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: 3;
   pointer-events: none;
-  z-index: 100;
-  font-family: Georgia, serif;
-  font-weight: 400;
-  color: rgba(232, 188, 108, 0.92);
-  text-shadow:
-    0 0 20px rgba(255, 224, 148, 0.85),
-    0 0 48px rgba(255, 196, 96, 0.65),
-    0 0 96px rgba(255, 175, 80, 0.32);
-  mix-blend-mode: soft-light;
-  animation: sigil-bloom 720ms cubic-bezier(0.18, 0.78, 0.30, 1) both;
+  background-image: linear-gradient(135deg,
+    transparent          43%,
+    rgba(120, 96, 60, 0.16) 47.5%,
+    rgba(255, 250, 235, 0.55) 50%,
+    rgba(120, 96, 60, 0.12) 52.5%,
+    transparent          57%);
+  background-size: 300% 300%;
+  background-repeat: no-repeat;
+  animation: page-edge-sweep 600ms cubic-bezier(0.33, 0.02, 0.20, 1) both;
 }
-@keyframes sigil-bloom {
-  0%   {
-    font-size: 0;
-    opacity: 0;
-    letter-spacing: 0;
-    transform: rotate(-22deg) scale(0.6);
-    filter: blur(6px);
+@keyframes page-edge-sweep {
+  from { background-position: 100% 100%; opacity: 0.9; }
+  to   { background-position:   0%   0%; opacity: 0;   }
+}
+
+/* Respect reduced-motion: skip the geometric turn, just cross-fade. */
+@media (prefers-reduced-motion: reduce) {
+  .page-turning-in {
+    animation: page-fade-in 260ms ease-out both;
+    clip-path: none;
   }
-  28%  {
-    font-size: 140px;
-    opacity: 1;
-    letter-spacing: 0.18em;
-    transform: rotate(0deg) scale(1);
-    filter: blur(0);
-  }
-  60%  {
-    font-size: 170px;
-    opacity: 0.85;
-    letter-spacing: 0.30em;
-    transform: rotate(8deg) scale(1.04);
-    filter: blur(0);
-  }
-  100% {
-    font-size: 240px;
-    opacity: 0;
-    letter-spacing: 0.55em;
-    transform: rotate(18deg) scale(1.18);
-    filter: blur(3px);
-  }
+  @keyframes page-fade-in { from { opacity: 0; } to { opacity: 1; } }
+  .page-turn-edge { display: none; }
 }

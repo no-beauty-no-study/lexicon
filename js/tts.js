@@ -27,7 +27,6 @@
 const TTS = (function () {
 
   let pickedVoice = null;
-  let logged      = false;
 
   function pickVoice(refresh) {
     if (pickedVoice && !refresh) return pickedVoice;
@@ -44,51 +43,54 @@ const TTS = (function () {
       if (forced) { pickedVoice = forced; logPicked(voices); return pickedVoice; }
     }
 
-    // User report: first utterance speaks in "Ava (Enhanced)", every
-    // subsequent one falls back to the compact / robotic "Ava". On
-    // iOS, "Ava" the basename matches BOTH the enhanced/premium
-    // download AND the system compact variant; if the picker
-    // happens to grab the compact one (which is more reliably
-    // "active" across utterances), every call sounds mechanical.
-    // Explicit Enhanced/Premium preference fixes this.
-    //
-    // Order: Premium/Enhanced Ava BEFORE plain Ava BEFORE v.default,
-    // because on en-GB iPads v.default is Daniel even when the OS
-    // system voice (Settings → Accessibility → Spoken Content →
-    // Voices) is Ava.
+    // ROOT CAUSE of the "first sentence good, rest mechanical" bug:
+    // iOS exposes SEVERAL voices that all report .name === "Ava" but
+    // differ only by .voiceURI quality tier, e.g.
+    //   com.apple.voice.compact.en-US.Ava   (robotic, tiny)
+    //   com.apple.voice.enhanced.en-US.Ava  (good)
+    //   com.apple.voice.premium.en-US.Ava   (best)
+    // Matching by NAME alone (find → first match) is non-deterministic
+    // because iOS reorders getVoices() between utterances, so one call
+    // grabs premium and the next grabs compact → the voice "downgrades"
+    // mid-session. Fix: never use first-match; score every candidate by
+    // voiceURI tier and take the MAX. That's stable across reorderings.
+    function tier(v) {
+      const s = ((v.voiceURI || "") + " " + (v.name || "")).toLowerCase();
+      if (/premium/.test(s))  return 4;
+      if (/enhanced/.test(s)) return 3;
+      if (/compact/.test(s))  return 1;
+      return 2; // unlabelled = standard quality
+    }
+    function bestOf(list) {
+      if (!list.length) return null;
+      return list.slice().sort((a, b) => tier(b) - tier(a))[0];
+    }
+
     pickedVoice =
-         voices.find(v => /ava/i.test(v.name)     && /premium/i.test(v.name))
-      || voices.find(v => /ava/i.test(v.name)     && /enhanced/i.test(v.name))
-      || voices.find(v => /^Ava\b/i.test(v.name)  && !/compact/i.test(v.name))
-      || voices.find(v => /^Ava\b/i.test(v.name))
-      || voices.find(v => /ava/i.test(v.name)     && !/compact/i.test(v.name))
-      || voices.find(v => /ava/i.test(v.name))
+         bestOf(voices.filter(v => /ava/i.test(v.name)))
+      || bestOf(voices.filter(v => /samantha/i.test(v.name)))
       || voices.find(v => v.default && /^en/i.test(v.lang) && !/daniel/i.test(v.name))
-      || voices.find(v => /samantha/i.test(v.name) && /premium|enhanced/i.test(v.name))
-      || voices.find(v => /samantha/i.test(v.name))
-      || voices.find(v => /^en-us/i.test(v.lang) && !/daniel/i.test(v.name))
-      || voices.find(v => /^en/i.test(v.lang)    && !/daniel/i.test(v.name))
+      || bestOf(voices.filter(v => /^en-us/i.test(v.lang) && !/daniel/i.test(v.name)))
+      || bestOf(voices.filter(v => /^en/i.test(v.lang)    && !/daniel/i.test(v.name)))
       || voices.find(v => v.default)
       || null;
     logPicked(voices);
     return pickedVoice;
   }
 
-  let lastLoggedName = null;
+  let lastLoggedUri = null;
   function logPicked(voices) {
     if (!pickedVoice) return;
-    // Re-log on every CHANGE so a fall-back to the compact Ava
-    // is visible in the console — otherwise the mechanical-voice
-    // regression is invisible to debugging.
-    if (pickedVoice.name === lastLoggedName) return;
-    lastLoggedName = pickedVoice.name;
+    // Re-log on every voiceURI CHANGE so a silent downgrade to the
+    // compact Ava is visible in the console.
+    if (pickedVoice.voiceURI === lastLoggedUri) return;
+    lastLoggedUri = pickedVoice.voiceURI;
     try {
       console.log("[TTS] picked:", pickedVoice.name, pickedVoice.lang,
                   "(uri=" + (pickedVoice.voiceURI || "?") + ")",
                   "| available:",
-                  voices.map(v => `${v.name} (${v.lang})${v.default ? " *default" : ""}`).join(", "));
+                  voices.map(v => `${v.name} [${v.voiceURI}]${v.default ? " *default" : ""}`).join(", "));
     } catch (_) {}
-    logged = true;
   }
 
   if (window.speechSynthesis && "onvoiceschanged" in window.speechSynthesis) {

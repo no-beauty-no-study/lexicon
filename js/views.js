@@ -246,16 +246,29 @@ const Views = (function () {
           return;
         }
 
+        // Right-column block layout (user spec):
+        //   单词 / 翻译 / 词组 翻译 / 词组 翻译 / (例句 if present)
         const phrases = getPhrasePairs(entry);
         const phraseRows = phrases.slice(0, 2).map(p => `
-          <div class="word-card-phrase">${esc(p.en)}</div>
+          <div class="word-card-phrase">
+            <span class="wcp-en">${esc(p.en)}</span>
+            ${p.zh ? `<span class="wcp-zh">${esc(p.zh)}</span>` : ""}
+          </div>
         `).join("");
+        const exEn = entry.example || "";
+        const exZh = entry.exampleZh || entry.example_zh || "";
+        const exampleRow = exEn ? `
+          <div class="word-card-example">
+            <span class="wce-en">${esc(exEn)}</span>
+            ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
+          </div>` : "";
 
         const html = `
           <div class="word-card is-current" data-id="${esc(id)}">
             <div class="word-card-headword">${esc(entry.word || id)}</div>
             <div class="word-card-meaning">${esc(shortMeaning(entry))}</div>
             ${phraseRows}
+            ${exampleRow}
           </div>`;
         clearCurrent(stack);
         stack.insertAdjacentHTML("beforeend", html);
@@ -307,18 +320,13 @@ const Views = (function () {
         el.classList.add("is-selected");
         const resolved = (typeof resolveClickedWord === "function")
                          ? resolveClickedWord(el.dataset.word) : null;
+        // Tapping a word in the text only fills the right-column card
+        // (word / 翻译 / 词组 / 翻译 / 例句). The full word-card DRAWER
+        // is opened by a SECOND tap on that right-column block — wired
+        // up per-card inside renderMarginalia(). Do NOT auto-open the
+        // drawer here.
         renderMarginalia(resolved);
         syncMarginaliaButtons(currentEntryFromStack());
-        // First tap on a word also slides the full word-card drawer in.
-        // Earlier the drawer only opened on a second tap of the small
-        // marginalia card; the user wants the drawer to be the primary
-        // surface for the word definition, not an extra-step popup.
-        try {
-          const drawerEntry = resolved && (resolved.headEntry || resolved.clickEntry);
-          if (drawerEntry && typeof WordCard !== "undefined") {
-            WordCard.openDrawer(drawerEntry);
-          }
-        } catch (_) {}
         try {
           const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
           const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
@@ -479,6 +487,29 @@ const Views = (function () {
           setTimeout(() => { try { ctx.close(); } catch (_) {} }, 2400);
         } catch (_) {}
       }
+      // Short, bright two-note "ding" played on EACH correct answer
+      // (the 4-note chord is reserved for whole-chapter completion).
+      function playCorrectDing() {
+        try {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (!Ctx) return;
+          const ctx = new Ctx();
+          const notes = [783.99, 1174.66]; // G5 → D6, a happy rising 5th
+          const now = ctx.currentTime;
+          notes.forEach((f, i) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = "triangle"; o.frequency.value = f;
+            const t0 = now + i * 0.10;
+            g.gain.setValueAtTime(0, t0);
+            g.gain.linearRampToValueAtTime(0.22, t0 + 0.015);
+            g.gain.exponentialRampToValueAtTime(0.0008, t0 + 0.42);
+            o.connect(g).connect(ctx.destination);
+            o.start(t0); o.stop(t0 + 0.5);
+          });
+          setTimeout(() => { try { ctx.close(); } catch (_) {} }, 1000);
+        } catch (_) {}
+      }
       function showToast({ title, subtitle, ms = 1400 }) {
         const t = host.querySelector(".chapter-complete-toast");
         if (!t) return;
@@ -557,9 +588,16 @@ const Views = (function () {
           opt.classList.add("is-correct", "is-locked");
           item.dataset.solved = "1";
           item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
+          // Happy feedback: a bright ding + a little gold sparkle on the
+          // chosen option, then read the word the player got right.
+          playCorrectDing();
+          opt.classList.remove("is-pop"); void opt.offsetWidth; opt.classList.add("is-pop");
+          try { TTS.speak(opt.dataset.value || opt.textContent || ""); } catch (_) {}
           const all = Array.from(host.querySelectorAll(".quiz-item"));
           const idx = all.indexOf(item);
-          if (idx + 1 < all.length) showThrough(idx + 1);
+          // Give the spoken word a beat before sliding the next question
+          // in (which would otherwise cancel() the utterance mid-word).
+          if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 900);
           else maybeChapterComplete();
         } else {
           if (backingOut) return;

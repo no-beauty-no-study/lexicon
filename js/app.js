@@ -8,14 +8,15 @@
   /* ---------- viewport scaling (1448×1086 design fits the screen) ---------- */
   function fitStage() {
     const stage = document.getElementById("stage");
-    const page  = stage && stage.firstElementChild;
-    if (!stage || !page) return;
+    if (!stage || !stage.querySelector(".page")) return;
     const sw = stage.clientWidth;
     if (!sw || sw < 200) { requestAnimationFrame(fitStage); return; }
     const scale = sw / 1448;
-    page.style.transformOrigin = "top left";
-    page.style.transform = `scale(${scale.toFixed(6)})`;
-    page.style.setProperty("--page-scale", scale.toFixed(6));
+    // Scale via a CSS var on the STAGE (not an inline transform on one
+    // page) so that during a page-turn BOTH the outgoing and incoming
+    // .page children scale identically — see `.stage[data-scale] .page`.
+    stage.dataset.scale = "1";
+    stage.style.setProperty("--page-scale", scale.toFixed(6));
   }
   window.addEventListener("resize",            fitStage, { passive: true });
   window.addEventListener("orientationchange", fitStage, { passive: true });
@@ -61,20 +62,31 @@
     const stage = document.getElementById("stage");
     if (!tpl || !stage) return;
 
-    // Re-trigger the candle-glow + sparkle CSS animations on .stage
-    // by toggling .is-transitioning off-then-on across a reflow.
-    stage.classList.remove("is-transitioning");
-    void stage.offsetWidth;
-    stage.classList.add("is-transitioning");
-
-    stage.innerHTML = "";
     const node = tpl.content.firstElementChild.cloneNode(true);
-    stage.appendChild(node);
+    const prev = stage.querySelector(".page");
 
-    // Drop the transitioning class after the animation finishes so
-    // the sheen, sparkles and sigil tear down cleanly. Slightly longer
-    // than the longest sub-animation (720 ms) to be safe.
-    setTimeout(() => stage.classList.remove("is-transitioning"), 780);
+    // Page-turn: keep the OUTGOING page beneath and let the new page
+    // "unfurl" over it from the bottom-right corner (clip-path diagonal
+    // reveal + a light-edge sweep) — like turning to the next leaf of a
+    // book. New page is inserted FIRST in the DOM (so helpers that do
+    // querySelector('.stage .page') resolve to it) but painted ON TOP
+    // via z-index, with the old page at a lower z below it.
+    if (prev) {
+      prev.classList.add("page-beneath");
+      prev.style.pointerEvents = "none";
+      node.classList.add("page-turning-in");
+      stage.insertBefore(node, prev);
+
+      const edge = document.createElement("div");
+      edge.className = "page-turn-edge";
+      stage.appendChild(edge);
+
+      const dying = prev;
+      setTimeout(() => { try { dying.remove(); } catch (_) {} }, 660);
+      setTimeout(() => { try { edge.remove();  } catch (_) {} }, 660);
+    } else {
+      stage.appendChild(node);
+    }
 
     const view = Views[name];
     try {
