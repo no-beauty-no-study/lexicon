@@ -362,6 +362,24 @@ const Views = (function () {
 
       renderMarginalia(null);
 
+      // Locket — the running count of folded words. Visible, growing
+      // progress is a small but reliable engagement loop. Sync on
+      // enter so the chip already shows the player's running total.
+      function syncLocket(pop) {
+        const el = host.querySelector("[data-saved-count]");
+        if (!el) return;
+        el.textContent = String(Storage.getNotes().length);
+        if (pop) {
+          const locket = el.closest(".marginalia-locket");
+          if (locket) {
+            locket.classList.remove("is-pop");
+            void locket.offsetWidth;
+            locket.classList.add("is-pop");
+          }
+        }
+      }
+      syncLocket(false);
+
       const fold = host.querySelector('.marginalia-btn[data-action="fold"]');
       if (fold) fold.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -380,6 +398,7 @@ const Views = (function () {
           card.classList.add("is-saved", "just-folded");
           setTimeout(() => card.classList.remove("just-folded"), 740);
         }
+        syncLocket(true);
       });
 
       // Spawn a small burst of warm-gold particles at (clientX, clientY).

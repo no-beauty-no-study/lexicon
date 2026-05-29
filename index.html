@@ -386,6 +386,13 @@
             <button type="button" class="marginalia-btn" data-action="fold" disabled>
               <span class="marginalia-btn-glyph">✤</span>FOLD
             </button>
+            <!-- Locket — runs the persistent count of folded words.
+                 Pops on every successful FOLD so the reader sees the
+                 number grow. -->
+            <div class="marginalia-locket" aria-label="Folded words">
+              <span class="marginalia-locket-glyph">❦</span>
+              <span class="marginalia-locket-count" data-saved-count>0</span>
+            </div>
           </div>
         </aside>
       </div>

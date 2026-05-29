@@ -179,6 +179,18 @@
   font-size: 12px;
   line-height: 1;
   color: rgba(126, 105, 74, 0.85);
+  display: inline-block;
+}
+/* Subtle breathing only on the chapter title divider — adds a tiny
+   bit of life to the otherwise-static title block without
+   distracting the rest of the page (other instances of
+   .antique-divider-glyph stay still). */
+.zone-reading-title .antique-divider-glyph {
+  animation: divider-glyph-pulse 4.4s ease-in-out infinite alternate;
+}
+@keyframes divider-glyph-pulse {
+  0%   { opacity: 0.82; transform: scale(1);     color: rgba(126, 105, 74, 0.85); }
+  100% { opacity: 1;    transform: scale(1.18);  color: rgba(168, 122, 58, 0.98); }
 }
 
 /* ============================================================
@@ -496,13 +508,43 @@
 /* Action row — single FOLD button now (SAVE moved to bottom nav). */
 .marginalia-card-actions {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   margin-top: 12px;
   padding-top: 10px;
   border-top: 1px solid rgba(167, 141, 91, 0.30);
 }
 .marginalia-card-actions .marginalia-btn {
-  min-width: 70%;
+  flex: 1;                  /* FOLD takes the available width, locket sits to its right */
+}
+
+/* Locket — the running count of folded words. The reader sees this
+   tick up on every successful fold (".is-pop" pulse below), which is
+   a small but reliable engagement loop without being intrusive. */
+.marginalia-locket {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid rgba(167, 141, 91, 0.45);
+  border-radius: 11px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(124, 95, 50, 0.92);
+  background: rgba(244, 222, 170, 0.18);
+  user-select: none;
+  flex: 0 0 auto;
+}
+.marginalia-locket-glyph { font-size: 13px; line-height: 1; }
+.marginalia-locket.is-pop {
+  animation: marginalia-locket-pop 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes marginalia-locket-pop {
+  0%   { transform: scale(1);     background: rgba(244, 222, 170, 0.18); box-shadow: 0 0 0 0 rgba(255,210,140,0); }
+  30%  { transform: scale(1.16);  background: rgba(255, 230, 175, 0.55); box-shadow: 0 0 14px 4px rgba(255,210,140,0.55); color: #5d3a14; }
+  100% { transform: scale(1);     background: rgba(244, 222, 170, 0.18); box-shadow: 0 0 0 0 rgba(255,210,140,0); }
 }
 .marginalia-btn {
   appearance: none;
