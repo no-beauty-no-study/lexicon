@@ -26,6 +26,30 @@
    wrong default and the user wants to lock in. */
 const TTS = (function () {
 
+  // Tier hoisted to module scope so the override branch can also
+  // tier-sort. iOS exposes multiple voices with identical .name (eg.
+  // "Ava") that differ only by voiceURI suffix:
+  //   com.apple.voice.compact.en-US.Ava     robotic — the "demon" voice
+  //   com.apple.voice.enhanced.en-US.Ava    good
+  //   com.apple.voice.premium.en-US.Ava     best
+  //   com.apple.ttsbundle.siri_*_en-US      neural (iOS 16+)
+  // getVoices() reorders between utterances, so .find(name === "Ava")
+  // returned a different tier each call → first sentence enhanced,
+  // second sentence compact-robot. tier-sort fixes it.
+  function tier(v) {
+    const s = ((v.voiceURI || "") + " " + (v.name || "")).toLowerCase();
+    if (/siri/.test(s))     return 6;
+    if (/neural/.test(s))   return 5;
+    if (/premium/.test(s))  return 4;
+    if (/enhanced/.test(s)) return 3;
+    if (/compact/.test(s))  return 0;
+    return 2;
+  }
+  function bestOf(list) {
+    if (!list.length) return null;
+    return list.slice().sort((a, b) => tier(b) - tier(a))[0];
+  }
+
   let pickedVoice = null;
 
   function pickVoice(refresh) {
@@ -38,39 +62,33 @@ const TTS = (function () {
       try { return localStorage.getItem("tpl.voice"); } catch (_) { return null; }
     })();
     if (override) {
-      const forced = voices.find(v => v.name === override)
-                  || voices.find(v => v.name.toLowerCase().includes(override.toLowerCase()));
-      if (forced) { pickedVoice = forced; logPicked(voices); return pickedVoice; }
+      // 1) Exact voiceURI match — unique, tier-locked. The voices
+      //    picker writes URI on "Use", so a fresh selection always
+      //    hits this branch and is stable across utterances.
+      let chosen = voices.find(v => v.voiceURI === override);
+      // 2) Exact name match (legacy: user typed "Ava" into the
+      //    localStorage override before the URI was stored, or
+      //    "tpl.voice" was set via console). Tier-sort the matches
+      //    so we always grab enhanced/premium-Ava over compact-Ava
+      //    no matter how getVoices() is ordered this call.
+      if (!chosen) {
+        const exact = voices.filter(v => v.name === override);
+        if (exact.length) chosen = bestOf(exact);
+      }
+      // 3) Substring match — same tier-sort caveat as 2.
+      if (!chosen) {
+        const lc = override.toLowerCase();
+        const fuzzy = voices.filter(v =>
+          v.name && v.name.toLowerCase().includes(lc)
+        );
+        if (fuzzy.length) chosen = bestOf(fuzzy);
+      }
+      if (chosen) { pickedVoice = chosen; logPicked(voices); return pickedVoice; }
     }
 
-    // iOS exposes SEVERAL voices that share a .name but differ in
-    // .voiceURI quality tier:
-    //   com.apple.voice.compact.en-US.Ava       robotic, tiny
-    //   com.apple.voice.enhanced.en-US.Ava      good
-    //   com.apple.voice.premium.en-US.Ava       best
-    //   com.apple.ttsbundle.siri_<Name>_en-US   neural (iOS 16+)
-    // Two bugs we have to dodge:
-    //   1. getVoices() reorders between utterances — first-match is
-    //      non-deterministic → mid-session "downgrade" to compact.
-    //   2. The compact tier is the "mechanical female" voice the
-    //      user is hearing; if a non-compact en voice exists we MUST
-    //      pick that even if its name doesn't match Ava/Samantha.
-    // Strategy: tier every voice, hard-reject compact in pass 1, and
-    // only fall back to compact if no enhanced/premium/siri en voice
-    // is installed on the device at all.
-    function tier(v) {
-      const s = ((v.voiceURI || "") + " " + (v.name || "")).toLowerCase();
-      if (/siri/.test(s))     return 6;
-      if (/neural/.test(s))   return 5;
-      if (/premium/.test(s))  return 4;
-      if (/enhanced/.test(s)) return 3;
-      if (/compact/.test(s))  return 0;
-      return 2;
-    }
-    function bestOf(list) {
-      if (!list.length) return null;
-      return list.slice().sort((a, b) => tier(b) - tier(a))[0];
-    }
+    // No override (or no match). Reject compact-tier voices in the
+    // first pass; only fall back to them if NO non-compact English
+    // voice exists on the device at all.
     const enVoices   = voices.filter(v => /^en/i.test(v.lang) && !/daniel/i.test(v.name));
     const nonCompact = enVoices.filter(v => tier(v) > 0);
     const pool       = nonCompact.length ? nonCompact : enVoices;

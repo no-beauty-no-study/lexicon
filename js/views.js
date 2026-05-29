@@ -948,7 +948,12 @@ const Views = (function () {
           return;
         }
         if (e.target.closest(".voice-use")) {
-          try { localStorage.setItem("tpl.voice", name || uri); } catch (_) {}
+          // Store voiceURI, NOT name. iOS exposes multiple voices
+          // sharing the same .name across quality tiers (compact /
+          // enhanced / premium Ava all report name "Ava"); storing
+          // the name lets the engine reorder to compact between
+          // utterances. URI is unique per tier and stable.
+          try { localStorage.setItem("tpl.voice", uri || name); } catch (_) {}
           if (TTS && TTS.pickVoice) TTS.pickVoice(true);
           render();
           window.toast && window.toast("Voice set: " + (name || uri));
