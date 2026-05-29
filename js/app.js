@@ -98,6 +98,10 @@
     fitStage();
     requestAnimationFrame(fitStage);
 
+    // Tag body with the current view so view-specific selectors
+    // (e.g. .global-voice-link hide-on-splash) can target it.
+    document.body.dataset.currentView = name;
+
     if (window.BGM && BGM.applyForView) BGM.applyForView(name, params);
 
     if (params.debug === "1") document.body.classList.add("debug-ui");

@@ -53,21 +53,30 @@
   .menu-btn.left  .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-start.png"); }
   .menu-btn.right .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-enter.png"); }
 
-  /* Top-right "voice" link — small text, low chroma so it sits on
-     the painted menu background without competing with the two
-     hero buttons. Big tap target via padding. */
-  .menu-corner-link {
-    position: absolute; top: 2.4%; right: 2.6%;
-    padding: 10px 14px;
-    background: transparent; border: 0;
+  /* Global "voice" link — fixed-position so it sits above .stage
+     and stays visible across all views. Hidden on splash (where it
+     would compete with the full-screen tap target) and on #voices
+     itself (redundant). The current view is set on body.dataset
+     by app.js render(). */
+  .global-voice-link {
+    position: fixed;
+    top: env(safe-area-inset-top, 0px);
+    right: 0;
+    margin: 10px 14px;
+    padding: 8px 12px;
+    background: rgba(20, 14, 8, 0.42);
+    border: 1px solid rgba(220, 195, 145, 0.45);
+    border-radius: 14px;
     font-family: var(--font-display);
-    font-size: 12px; letter-spacing: 0.22em;
+    font-size: 11px; letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(240, 220, 180, 0.78);
+    color: rgba(245, 225, 180, 0.92);
     text-shadow: 0 1px 2px rgba(0,0,0,0.45);
-    cursor: pointer; z-index: 10;
+    cursor: pointer; z-index: 1000;
   }
-  .menu-corner-link:active { color: rgba(255, 240, 200, 1); }
+  .global-voice-link:active { color: rgba(255, 240, 200, 1); background: rgba(40, 28, 16, 0.62); }
+  body[data-current-view="splash"] .global-voice-link,
+  body[data-current-view="voices"] .global-voice-link { display: none; }
 
   /* Voices view — a simple scrollable list of installed system
      voices, each row testable + selectable. Painted on the same
@@ -164,6 +173,13 @@
 
 <div class="stage" id="stage"></div>
 
+<!-- Global "voice" link — visible top-right on every view EXCEPT
+     splash (it would compete with the splash-hit) and #voices
+     itself. Always available so the user can hop to the voice
+     picker mid-reading without having to back out to the menu. -->
+<button type="button" class="global-voice-link" data-go="#voices"
+        aria-label="Choose voice">voice</button>
+
 
 <template id="view-splash">
   <main class="page splash">
@@ -179,11 +195,6 @@
     <button type="button" class="menu-btn right" data-action="enter-chapters">
       <span class="menu-btn-inner"></span>
     </button>
-    <!-- Tiny "voice" link top-right: opens the in-app voice picker
-         so the user can switch off the mechanical compact-tier voice
-         iOS sometimes defaults to when no enhanced voice is installed. -->
-    <button type="button" class="menu-corner-link" data-go="#voices"
-            aria-label="Choose voice">voice</button>
   </main>
 </template>
 

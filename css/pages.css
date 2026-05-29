@@ -198,17 +198,17 @@
   display: flex;
   flex-direction: column;
   z-index: 9;
-  /* v3: drop the hand-drawn double-line border and let the painted
-     rose/lily/ribbon frame-blank do all of the framing. Stretch-fit
-     to the card so the cartouche always sits at the top centre even
-     when the marginalia zone re-flows. The inside content is padded
-     in clear of the painted vines on every side. */
-  background-image: url("assets/bg/ui/frame-blank.jpg");
+  /* v4: frameless. The painted rose/lily/ribbon frame-blank that
+     used to wrap the card has been dropped — user prefers the
+     content to breathe with no border, and the missing frame also
+     buys ~25% of horizontal room back for the word card's text.
+     Padding shrunk in proportion since there's no vine to clear. */
+  background-image: none;
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   border: 0;
-  padding: 17% 11% 9%;
+  padding: 4% 4% 4%;
 }
 .marginalia-card::before,
 .marginalia-card::after { content: none; }
@@ -313,49 +313,52 @@
   transform: scale(0.965);
   background: rgba(201, 174, 103, 0.16);
 }
+/* Type sizes bumped ~15–20% across the word-card now that the
+   right column is ~27% wider and the painted frame no longer
+   eats the inside padding. Old values in parens for reference. */
 .word-card-headword {
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: 23px;          /* was 19 */
   font-weight: 500;
   line-height: 1.18;
   letter-spacing: 0.03em;
   color: #2f261d;
 }
 .word-card-meaning {
-  margin-top: 4px;
+  margin-top: 5px;
   font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
-  font-size: 14.5px;
+  font-size: 17px;          /* was 14.5 */
   line-height: 1.4;
   color: #5e5040;
 }
 .word-card-phrase {
-  margin-top: 7px;
+  margin-top: 9px;
   line-height: 1.34;
 }
 .word-card-phrase .wcp-en {
   display: block;
   font-family: var(--font-display);
-  font-size: 13.5px;
+  font-size: 16px;          /* was 13.5 */
   color: #5a4e3a;
   font-style: italic;
 }
 .word-card-phrase .wcp-zh {
   display: block;
   font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
-  font-size: 12.5px;
+  font-size: 15px;          /* was 12.5 */
   color: #6f6353;
 }
 /* Example sentence row — set off from the phrases by a thin rule. */
 .word-card-example {
-  margin-top: 9px;
-  padding-top: 8px;
+  margin-top: 11px;
+  padding-top: 9px;
   border-top: 1px solid rgba(126, 105, 74, 0.28);
   line-height: 1.36;
 }
 .word-card-example .wce-en {
   display: block;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 15px;          /* was 13 */
   font-style: italic;
   color: #4f4636;
 }
@@ -363,7 +366,7 @@
   display: block;
   margin-top: 2px;
   font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
-  font-size: 12px;
+  font-size: 14px;          /* was 12 */
   color: #6f6353;
 }
 .marginalia-card-body {

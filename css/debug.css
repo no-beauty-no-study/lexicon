@@ -98,9 +98,13 @@ body.debug-ui .master-frame::after {
    into a title row (top) and a content row (bottom-left body +
    bottom-right marginalia). Body and marginalia share the SAME top
    AND bottom edges so the two columns are visually height-aligned. */
+/* Right-column word card was too narrow / fonts too small to read.
+   Widened the marginalia zone by ~27% (1/4 + a hair) — shifted its
+   left edge inward and shrank the body zone the same amount so the
+   small gap between them stays preserved. */
 .zone-reading-title    { left: 30.75%; top:  5.69%; width: 50.04%; height: 16.00%; }
-.zone-reading-body     { left: 30.75%; top: 24.05%; width: 50.04%; height: 53.73%; }
-.zone-marginalia       { left: 81.41%; top: 24.05%; width: 14.01%; height: 53.73%; }
+.zone-reading-body     { left: 30.75%; top: 24.05%; width: 46.20%; height: 53.73%; }
+.zone-marginalia       { left: 77.55%; top: 24.05%; width: 17.85%; height: 53.73%; }
 /* Quiz body uses the full available width (no marginalia column). */
 .zone-quiz-body        { left: 30.75%; top: 24.05%; width: 65.00%; height: 53.73%; }
 

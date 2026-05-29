@@ -145,6 +145,7 @@ const TTS = (function () {
     return u;
   }
 
+  let utterIdx = 0;
   function speak(text) {
     if (!text) return;
     if (!window.speechSynthesis) return;
@@ -159,20 +160,40 @@ const TTS = (function () {
     // is exactly what triggered the regression.
     const v = pickVoice(true);
     try { window.speechSynthesis.cancel(); } catch (_) {}
-    const u = buildUtterance(text, v);
 
-    // Optional debug aid: when localStorage.tpl.voiceDebug === "1",
-    // toast the picked voice's name + tier on every utterance, so
-    // the user can see whether pickVoice() chose the wrong voice or
-    // iOS substituted one after the fact. Toggle from #voices view.
-    let dbg = false;
-    try { dbg = localStorage.getItem("tpl.voiceDebug") === "1"; } catch (_) {}
-    if (dbg && window.toast) {
-      const tag = v
-        ? (v.name || "?") + " · " + (((v.voiceURI || "")
-            .match(/(siri|premium|enhanced|compact|neural)/i) || ["std"])[0])
-        : "no voice";
-      try { window.toast(tag); } catch (_) {}
+    // PHANTOM WARMUP — even with sync cancel/speak inside a gesture,
+    // iOS Safari sometimes commits the LOCALE-DEFAULT voice for the
+    // 2nd, 3rd, … utterance because the engine "forgets" u.voice
+    // between calls. Sneak a 0-volume, single-space utterance with
+    // the chosen voice in FIRST: iOS commits the voice when it
+    // starts processing this dummy, and the real utterance right
+    // behind it inherits the commitment. Cost is one silent frame.
+    if (v) {
+      const warm = new SpeechSynthesisUtterance(" ");
+      warm.lang = v.lang || "en-US";
+      warm.voice = v;
+      warm.voice = v;            // double-set workaround (see buildUtterance)
+      warm.volume = 0;
+      warm.rate = 1.0;
+      try { window.speechSynthesis.speak(warm); } catch (_) {}
+    }
+
+    const u = buildUtterance(text, v);
+    utterIdx++;
+
+    // Diagnostic toast — auto-on for the first 5 utterances of a
+    // fresh session so the user can immediately see WHICH voice we
+    // asked iOS to use. Also toggleable for all utterances via
+    // localStorage.tpl.voiceDebug from the #voices page. The toast
+    // fires on u.onstart so it lines up with the audio rather than
+    // with the request.
+    let dbg = utterIdx <= 5;
+    try { dbg = dbg || localStorage.getItem("tpl.voiceDebug") === "1"; } catch (_) {}
+    if (dbg) {
+      const tier = ((v && v.voiceURI || "")
+        .match(/(siri|premium|enhanced|compact|neural)/i) || ["std"])[0];
+      const tag  = v ? `#${utterIdx} ${v.name || "?"}·${tier}` : `#${utterIdx} no voice`;
+      u.onstart = () => { try { window.toast && window.toast(tag); } catch (_) {} };
     }
 
     try { window.speechSynthesis.speak(u); } catch (_) {}
