@@ -77,6 +77,21 @@ const Storage = (function () {
     setNotesMap(map);
     return getNotes();
   }
+  // Count of distinct folded word ids within a single CHAPTER
+  // (merged across all of that chapter's sections). Drives the
+  // reading-page locket so the running total restarts at 0 when the
+  // reader moves to a different chapter, instead of the global tally
+  // (user req: "fold 计数每章从 0 开始"). Scope keys are
+  // `${chapter}:${section}`, so we match on the `${chapter}:` prefix.
+  function getChapterNoteCount(chapter) {
+    const map = getNotesMap();
+    const prefix = (chapter || "_") + ":";
+    const ids = new Set();
+    Object.keys(map).forEach(k => {
+      if (k.indexOf(prefix) === 0) (map[k] || []).forEach(id => ids.add(id));
+    });
+    return ids.size;
+  }
   // Returns the scope (chapter, section) where this id was saved.
   // Used by the Notes view to jump back to where the user folded it.
   function findScopeOf(id) {
@@ -134,7 +149,7 @@ const Storage = (function () {
 
   return {
     SLOT_COUNT,
-    getNotes, isSaved, saveWord, unsaveWord, findScopeOf,
+    getNotes, isSaved, saveWord, unsaveWord, findScopeOf, getChapterNoteCount,
     getSlots, setSlot, clearSlot,
     saveChapter,
   };

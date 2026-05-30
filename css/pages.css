@@ -276,15 +276,22 @@
   flex-direction: column;
   width: 100%;
 }
+/* "Tap a word" placeholder — a soft, hand-on-the-page invitation,
+   NOT a tiny system label. Lifted to the display serif (matches the
+   chapter titles), enlarged from 10.5 → 14px, given gentle tracking
+   and the muted-gold paper tone so it reads as a quiet manuscript
+   cue. Centred + a little vertical breathing room so it sits
+   naturally in the empty card without shouting. */
 .word-card-empty {
-  font-family: var(--font-body);
-  font-size: 10.5px;
-  line-height: 1.4;
-  color: #8d7f68;
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  color: var(--color-subtitle);
   font-style: italic;
-  opacity: 0.78;
-  text-align: left;
-  padding: 4px 0;
+  opacity: 0.82;
+  text-align: center;
+  padding: 16px 8px 6px;
 }
 /* Card separator — fading rule, thinner at ends, denser in middle. */
 .word-card {
@@ -378,31 +385,39 @@
   right: 0;
   left: auto;
   bottom: auto;
-  width: 14px;
-  height: 14px;
-  clip-path: polygon(100% 0, 0 0, 100% 100%);
-  /* Flat dark paper-shadow gradient — no light gradient stops.
-     Reads as a fold crease, not a glow. */
+  width: 16px;
+  height: 16px;
+  /* Top-RIGHT page corner folded down. The clip keeps a right-angle
+     triangle whose right angle sits exactly on the card's top-right
+     corner; its hypotenuse (the 0,0 → 100%,100% diagonal) is the
+     fold line.
+       polygon( top-left , top-right , bottom-right ) */
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  /* 225deg runs from the folded corner (top-right, 0%) inward toward
+     the fold line. So the lifted flap shows a slightly DEEPER
+     parchment (the paper's back side), then a soft crease shadow
+     lands right on the diagonal fold — reads as a creased dog-ear,
+     not a glowing tab. No light stops, no shadow halo. */
   background: linear-gradient(
-    135deg,
-    rgba(118, 102, 72, 0.22) 0%,
-    rgba(118, 102, 72, 0.10) 48%,
-    transparent              55%
+    225deg,
+    rgba(224, 211, 184, 0.95) 0%,
+    rgba(218, 203, 173, 0.95) 44%,
+    rgba(132, 112, 76, 0.45)  52%,
+    rgba(132, 112, 76, 0.0)   60%
   );
-  opacity: 0.78;
   filter: none;
   pointer-events: none;
   z-index: 2;
 }
 .word-card.is-saved.is-current::after {
-  /* Current saved card: deepen the crease very slightly, no glow */
+  /* Current saved card: deepen the crease a touch, still no glow. */
   background: linear-gradient(
-    135deg,
-    rgba(120, 96, 56, 0.34) 0%,
-    rgba(120, 96, 56, 0.16) 48%,
-    transparent             55%
+    225deg,
+    rgba(226, 213, 186, 0.97) 0%,
+    rgba(216, 200, 168, 0.97) 44%,
+    rgba(120, 98, 60, 0.58)   52%,
+    rgba(120, 98, 60, 0.0)    60%
   );
-  opacity: 0.92;
 }
 
 /* Word-tap sparkle puff: warm-gold particles that radiate outward
@@ -513,12 +528,14 @@
   text-align: left;
 }
 .marginalia-card-empty {
-  font-family: var(--font-body);
-  font-size: 10.5px;
-  line-height: 1.4;
-  color: #8d7f68;
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  color: var(--color-subtitle);
   font-style: italic;
-  opacity: 0.78;
+  opacity: 0.82;
+  text-align: center;
 }
 .marginalia-headword {
   margin: 0 0 8px;
@@ -1175,34 +1192,38 @@
    reference; the .pre-crop column is what we actually use. */
 /* Per the user: reading's button bar was sitting too low, and the
    other pages were each at slightly different tops. Unified: nav
-   sits at --nav-top: 91.50% on EVERY page. Per-page left/width
-   still adapt to each painted background. */
+   sits at --nav-top on EVERY page (per-page left/width still adapt
+   to each painted background).
+   FOLLOW-UP: the unified 91.50% read a hair too HIGH — nudged down
+   to 92.30% (a small, conservative drop, still well ABOVE the old
+   "too low" reading value). Kept identical across pages so the bar
+   stays vertically consistent everywhere. */
 .page[data-page="reading"],
 .page[data-page="quiz"] {
   --nav-count:  5;
   --nav-left:   29.47%;
-  --nav-top:    91.50%;
+  --nav-top:    92.30%;
   --nav-width:  51.04%;
   --nav-height:  6.70%;
 }
 .page.select-art {
   --nav-count:  2;
   --nav-left:   22.60%;
-  --nav-top:    91.50%;
+  --nav-top:    92.30%;
   --nav-width:  54.92%;
   --nav-height:  6.70%;
 }
 .page[data-page="chapters"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    91.50%;
+  --nav-top:    92.30%;
   --nav-width:  30.00%;
   --nav-height:  6.70%;
 }
 .page[data-page="word-garden"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    91.50%;
+  --nav-top:    92.30%;
   --nav-width:  30.00%;
   --nav-height:  6.70%;
 }
@@ -1210,14 +1231,14 @@
 .page[data-page="load"] {
   --nav-count:  2;
   --nav-left:   30.00%;
-  --nav-top:    91.50%;
+  --nav-top:    92.30%;
   --nav-width:  40.00%;
   --nav-height:  6.70%;
 }
 .page[data-page="notes"] {
   --nav-count:  2;
   --nav-left:   30.00%;
-  --nav-top:    91.50%;
+  --nav-top:    92.30%;
   --nav-width:  40.00%;
   --nav-height:  6.70%;
 }
