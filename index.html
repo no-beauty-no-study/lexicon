@@ -480,38 +480,23 @@
   }
 
   /* ============================
-     MENU BUTTON RIPPLE
-     Antique gold ripple on press. ::after expands from the actual
-     tap coordinates (CSS vars --ripple-x / --ripple-y set in JS).
-     Note: no `overflow: hidden` on .menu-btn — that would clip the
-     -7px translateY of the breathing animation and shave the top
-     of the painted button. The ripple's max scale is kept modest
-     (scale 9) so any bleed past the button edge stays subtle over
-     the painted scene.
+     MENU BUTTON PRESS GLOW
+     The user killed the separate ripple ::after — the position was
+     off (clientX/Y vs button rect math was occasionally drifting
+     during the breathing translateY) and "the button IS a
+     component, just light it up". So now: pointerdown adds
+     .is-clicking, which flashes the painted .menu-btn-inner with
+     a brightness + warm drop-shadow glow on the button silhouette
+     itself. No separate overlay element to misalign.
      ============================ */
-  .menu-btn::after {
-    content: "";
-    position: absolute;
-    left: var(--ripple-x, 50%);
-    top:  var(--ripple-y, 50%);
-    width:  14px;
-    height: 14px;
-    border-radius: 50%;
-    pointer-events: none;
-    background: radial-gradient(circle,
-      rgba(255,241,178,0.70) 0%,
-      rgba(215,180,105,0.32) 38%,
-      rgba(215,180,105,0)    70%);
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    z-index: 12;
+  .menu-btn.is-clicking .menu-btn-inner {
+    animation: menu-btn-glow 620ms ease-out;
   }
-  .menu-btn.is-clicking::after {
-    animation: menu-btn-ripple 560ms ease-out;
-  }
-  @keyframes menu-btn-ripple {
-    0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0.78; }
-    100% { transform: translate(-50%, -50%) scale(9);   opacity: 0; }
+  @keyframes menu-btn-glow {
+    0%   { filter: brightness(1)    saturate(1)    drop-shadow(0 0  0px rgba(255, 230, 170, 0)); }
+    35%  { filter: brightness(1.32) saturate(1.18) drop-shadow(0 0 24px rgba(255, 240, 195, 0.92)); }
+    70%  { filter: brightness(1.16) saturate(1.10) drop-shadow(0 0 16px rgba(255, 235, 180, 0.65)); }
+    100% { filter: brightness(1)    saturate(1)    drop-shadow(0 0  0px rgba(255, 230, 170, 0)); }
   }
 
   /* ============================

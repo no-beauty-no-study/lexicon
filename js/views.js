@@ -149,19 +149,15 @@ const Views = (function () {
             else                window.go("#chapters?browse=1");
           }, 540);
         });
-        btn.addEventListener("pointerdown", (e) => {
-          const rect = btn.getBoundingClientRect();
-          if (!rect.width) return;
-          const x = ((e.clientX - rect.left) / rect.width)  * 100;
-          const y = ((e.clientY - rect.top)  / rect.height) * 100;
-          btn.style.setProperty("--ripple-x", x + "%");
-          btn.style.setProperty("--ripple-y", y + "%");
+        btn.addEventListener("pointerdown", () => {
+          // Whole-button glow on press — no coord tracking needed,
+          // the silhouette of the painted button IS the highlight.
           btn.classList.remove("is-clicking");
           void btn.offsetWidth;
           btn.classList.add("is-clicking");
         });
         btn.addEventListener("animationend", (e) => {
-          if (e.animationName === "menu-btn-ripple")     btn.classList.remove("is-clicking");
+          if (e.animationName === "menu-btn-glow")       btn.classList.remove("is-clicking");
           if (e.animationName === "menu-badge-blessing") btn.classList.remove("is-activated");
         });
       });
@@ -585,13 +581,21 @@ const Views = (function () {
         fresh.scrollIntoView({ block: "nearest", behavior: "smooth" });
       }
 
-      function syncMarginaliaButtons(entry) {
+      // Drives the FOLD button's enabled/saved state straight from
+      // the current-card's data-id, NOT from currentEntryFromStack()
+      // (which had to re-find the entry in WORDS/WORD_LIBRARY by id;
+      // when the id stored on the card differed from the library
+      // index — eg word entries scoped to a chapter — that re-find
+      // returned null and FOLD wrongly stayed disabled. The user
+      // reported "有的可以按 fold 有的不可以" exactly this case).
+      function syncMarginaliaButtons() {
         const fold = host.querySelector('.marginalia-btn[data-action="fold"]');
         if (!fold) return;
-        if (!entry) {
+        const card = host.querySelector(".word-card.is-current");
+        const id   = card && card.dataset.id;
+        if (!id) {
           fold.disabled = true; fold.classList.remove("is-active"); return;
         }
-        const id = entry.id || entry.word;
         if (Storage.isSaved(id)) { fold.disabled = true;  fold.classList.add("is-active"); }
         else                     { fold.disabled = false; fold.classList.remove("is-active"); }
       }
@@ -619,21 +623,20 @@ const Views = (function () {
       const fold = host.querySelector('.marginalia-btn[data-action="fold"]');
       if (fold) fold.addEventListener("click", (e) => {
         e.stopPropagation();
-        const entry = currentEntryFromStack();
-        if (!entry) return;
-        const id = entry.id || entry.word;
-        if (Storage.isSaved(id)) return;
-        Storage.saveWord(id);
-        syncMarginaliaButtons(entry);
-        window.toast && window.toast("Folded into Notes");
-        // Golden flash on the current card + persistent ❦ saved
-        // indicator. Tactile feedback that the press actually did
-        // something — without this, FOLD felt PowerPoint-y.
+        // Pull the id straight from the current card's data
+        // attribute. Doesn't matter whether the entry can be
+        // re-resolved from WORDS / WORD_LIBRARY — the id alone
+        // is what Storage.saveWord wants.
         const card = host.querySelector(".word-card.is-current");
+        const id   = card && card.dataset.id;
+        if (!id || Storage.isSaved(id)) return;
+        Storage.saveWord(id);
         if (card) {
           card.classList.add("is-saved", "just-folded");
           setTimeout(() => card.classList.remove("just-folded"), 740);
         }
+        syncMarginaliaButtons();
+        window.toast && window.toast("Folded into Notes");
         syncLocket(true);
       });
 
@@ -676,7 +679,7 @@ const Views = (function () {
         // up per-card inside renderMarginalia(). Do NOT auto-open the
         // drawer here.
         renderMarginalia(resolved);
-        syncMarginaliaButtons(currentEntryFromStack());
+        syncMarginaliaButtons();
         try {
           const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
           const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
@@ -687,7 +690,7 @@ const Views = (function () {
 
       host.addEventListener("click", (e) => {
         if (e.target.closest(".word-card")) {
-          setTimeout(() => syncMarginaliaButtons(currentEntryFromStack()), 0);
+          setTimeout(() => syncMarginaliaButtons(), 0);
         }
       });
 
