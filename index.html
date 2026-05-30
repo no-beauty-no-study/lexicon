@@ -105,7 +105,38 @@
     100% { transform: translate(-50%, -50%) scale(120); opacity: 0; }
   }
 
-  .page.home         { background-image: url("assets/bg/ui/main-menu.jpg"); }
+  /* Menu — bg is painted on a dedicated ::before so we can run the
+     SVG billow filter on JUST the painted scene (skirts, flowers,
+     hair, banner — whatever the painting holds) without distorting
+     the hero buttons or the global voice link sitting on top. The
+     ::before is outset by 4% so the filter's edge displacement
+     doesn't reveal raw image edges, and a slow background-position
+     drift adds a layer of wind "direction" on top of the
+     turbulence's per-frame motion. */
+  .page.home {
+    background-image: none;
+    overflow: hidden;
+  }
+  .page.home::before {
+    content: "";
+    display: block !important;       /* override .page.art-bg::before { display:none } */
+    position: absolute;
+    inset: -4%;
+    background-image: url("assets/bg/ui/main-menu.jpg");
+    background-size: cover;
+    background-position: 50% 50%;
+    filter: url(#menu-billow);
+    z-index: 0;
+    pointer-events: none;
+    will-change: filter;
+    animation: menu-bg-drift 26s ease-in-out infinite alternate;
+  }
+  @keyframes menu-bg-drift {
+    0%   { background-position: 49% 51%; }
+    100% { background-position: 51% 49%; }
+  }
+  .page.art-bg.home    { background-image: none; }    /* kill the default art-bg paint on home */
+
   .page.select-art   { background-image: url("assets/bg/ui/select-mode.jpg"); }
   .page.chapters-art { background-image: url("assets/bg/ui/chapters.jpg"); }
   .page.wg-art       { background-image: url("assets/bg/ui/word-garden.jpg"); }
@@ -274,6 +305,36 @@
 </style>
 </head>
 <body>
+
+<!-- Hidden SVG filter library. Reachable by any element via
+     `filter: url(#id)`. The wind / liquid distortion that gives
+     the menu background its wallpaper-engine feel lives here. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Slow, organic distortion for the menu bg. fractalNoise looks
+         more cloth-like than turbulence. Two animations sweep the
+         noise frequency back and forth so the pattern visibly flows
+         instead of just shimmering in place. -->
+    <filter id="menu-billow" x="-6%" y="-6%" width="112%" height="112%">
+      <feTurbulence type="fractalNoise"
+                    baseFrequency="0.011 0.018"
+                    numOctaves="2"
+                    seed="3"
+                    result="noise">
+        <animate attributeName="baseFrequency"
+                 dur="16s"
+                 values="0.011 0.018; 0.018 0.012; 0.013 0.020; 0.011 0.018"
+                 repeatCount="indefinite"/>
+        <animate attributeName="seed"
+                 dur="40s"
+                 values="3; 11; 7; 19; 3"
+                 repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="7"
+                         xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
 
 <div class="stage" id="stage"></div>
 

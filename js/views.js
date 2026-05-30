@@ -712,13 +712,63 @@ const Views = (function () {
         if (!itemEls.length) return false;
         return Array.from(itemEls).every(it => it.dataset.solved === "1");
       }
+      // Star-burst helper. n stars fly radially out from the
+      // center; angle / distance / size / phase-delay all randomised
+      // so the visual never reads as identical loops. Also drops a
+      // pulsing halo ring. Pure-CSS keyframes + auto-cleanup.
+      function spawnStarBurst(n) {
+        for (let i = 0; i < n; i++) {
+          const s = document.createElement("div");
+          s.className = "chapter-star";
+          s.style.setProperty("--ang",  (Math.random() * 360) + "deg");
+          s.style.setProperty("--dist", (160 + Math.random() * 240) + "px");
+          s.style.setProperty("--sz",   (8 + Math.random() * 10) + "px");
+          s.style.animationDelay = (Math.random() * 220) + "ms";
+          host.appendChild(s);
+          setTimeout(() => { try { s.remove(); } catch (_) {} }, 1700);
+        }
+        const halo = document.createElement("div");
+        halo.className = "chapter-halo";
+        host.appendChild(halo);
+        setTimeout(() => { try { halo.remove(); } catch (_) {} }, 1450);
+      }
+      function isLastSectionOfChapter() {
+        const list = ChapterNav.sectionsOf(chapterId);
+        if (!list.length) return true;
+        const i = list.findIndex(s => s.number === sectionNum);
+        return i === list.length - 1;
+      }
       function maybeChapterComplete() {
         if (advancing || !allCorrect()) return;
         advancing = true;
-        showToast({ title: "Chapter Complete", subtitle: "The next page opens.", ms: 0 });
-        playSuccessChord();
-        const nextHref = ChapterNav.nextAfterQuiz(chapterId, sectionNum);
-        setTimeout(() => window.go(nextHref), 1200);
+        const last = isLastSectionOfChapter();
+        // Different reward weight depending on what's being closed.
+        // A full chapter gets the 4-note chord, 16 stars, and a
+        // longer celebration window. A single section gets 8 stars
+        // and the brighter 2-note rising ding.
+        if (last) {
+          spawnStarBurst(16);
+          showToast({
+            title:    "Chapter Complete",
+            subtitle: "The next chapter opens.",
+            ms: 0,
+          });
+          playSuccessChord();
+          setTimeout(() => {
+            window.go(ChapterNav.nextAfterQuiz(chapterId, sectionNum));
+          }, 1900);
+        } else {
+          spawnStarBurst(8);
+          showToast({
+            title:    "Section Cleared",
+            subtitle: "Onwards to the next page.",
+            ms: 0,
+          });
+          playCorrectDing();
+          setTimeout(() => {
+            window.go(ChapterNav.nextAfterQuiz(chapterId, sectionNum));
+          }, 1300);
+        }
       }
 
       body.addEventListener("click", (e) => {
