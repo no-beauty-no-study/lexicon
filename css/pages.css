@@ -1031,7 +1031,12 @@
    transform on individual pages anymore (it would clobber this and
    only reach one of the two pages mid-transition). */
 .stage[data-scale] .page {
-  transform: scale(var(--page-scale, 1));
+  /* Composition matters: translate is LISTED FIRST so it applies
+     LAST in the matrix (visual translation is in viewport pixels,
+     unaffected by scale magnitude). --tx / --ty are set inline by
+     app.js render() during page transitions; they default to 0
+     so this rule is identity for any page sitting in place. */
+  transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--page-scale, 1));
   transform-origin: top left;
 }
 
@@ -1168,37 +1173,36 @@
    shifted UP about 1.5% in displayed page-relative coords. The
    user-originally-measured nav-top values are kept below for
    reference; the .pre-crop column is what we actually use. */
+/* Per the user: reading's button bar was sitting too low, and the
+   other pages were each at slightly different tops. Unified: nav
+   sits at --nav-top: 91.50% on EVERY page. Per-page left/width
+   still adapt to each painted background. */
 .page[data-page="reading"],
 .page[data-page="quiz"] {
   --nav-count:  5;
   --nav-left:   29.47%;
-  --nav-top:    93.00%;   /* was 91.50%, +1.5% pre-crop comp */
+  --nav-top:    91.50%;
   --nav-width:  51.04%;
-  --nav-height:  6.70%;   /* was 8.19% */
+  --nav-height:  6.70%;
 }
-/* NOTE: every nav below now shares the reading page's --nav-height
-   (6.70%) per user request — "把所有按钮的高度统一为reading页面的".
-   Tops were nudged up where height-unification would have pushed the
-   band past the page bottom. Per-page left/width still follow each
-   painted background and can be fine-tuned later. */
 .page.select-art {
   --nav-count:  2;
   --nav-left:   22.60%;
-  --nav-top:    92.30%;
+  --nav-top:    91.50%;
   --nav-width:  54.92%;
   --nav-height:  6.70%;
 }
 .page[data-page="chapters"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    92.30%;
+  --nav-top:    91.50%;
   --nav-width:  30.00%;
   --nav-height:  6.70%;
 }
 .page[data-page="word-garden"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    92.30%;
+  --nav-top:    91.50%;
   --nav-width:  30.00%;
   --nav-height:  6.70%;
 }
@@ -1206,14 +1210,14 @@
 .page[data-page="load"] {
   --nav-count:  2;
   --nav-left:   30.00%;
-  --nav-top:    90.50%;
+  --nav-top:    91.50%;
   --nav-width:  40.00%;
   --nav-height:  6.70%;
 }
 .page[data-page="notes"] {
   --nav-count:  2;
   --nav-left:   30.00%;
-  --nav-top:    92.30%;
+  --nav-top:    91.50%;
   --nav-width:  40.00%;
   --nav-height:  6.70%;
 }
@@ -1361,6 +1365,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* master-frame children inherit pointer-events:none — re-enable
+     so the search box can actually receive focus + keystrokes. */
+  pointer-events: auto;
 }
 .wg-searchbar input {
   width: 100%;
@@ -1408,6 +1415,7 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
+  pointer-events: auto;
 }
 .wg-az-letter {
   flex: 0 0 auto;
@@ -1450,6 +1458,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 26px;
   align-items: stretch;
+  /* master-frame is pointer-events:none so its children inherit
+     none — without re-enabling here, the rows were ignoring taps
+     entirely. Same fix used on the voices view and the marginalia
+     stack. */
+  pointer-events: auto;
 }
 .wg-table > .wg-col-frame {
   min-height: 0;          /* let grid item shrink so inner can scroll */

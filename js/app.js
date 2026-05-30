@@ -66,55 +66,59 @@
     const prev = stage.querySelector(".page");
 
     // Cinematic page transition — vertical UP push for cover/menu
-    // flows, horizontal LEFT push for reading↔quiz. Implemented via
-    // INLINE styles instead of class-swap CSS because Safari iOS
-    // was silently skipping the class-swap transition (likely a
-    // race between adding the transition property and changing the
-    // transform value in the same style recalc). Inline styles
-    // give us deterministic control: set initial state with
-    // transition:none, force layout, then set transition + final
-    // state on the next paint frame so the transition is guaranteed
-    // to fire.
+    // flows, horizontal LEFT push for reading↔quiz. The translate
+    // is driven via CSS variables (--tx / --ty) that compose with
+    // .stage[data-scale] .page's scale(var(--page-scale)) — so the
+    // page keeps its scale-to-fit-viewport while it slides. Setting
+    // `style.transform` directly would have clobbered the scale and
+    // blown the page up past the viewport — that was the "右下角被
+    // 裁没了" bug the user just reported.
     const READING_FLOW = { reading: 1, quiz: 1 };
     const prevName = document.body.dataset.currentView || "";
     const dir = (READING_FLOW[prevName] && READING_FLOW[name]) ? "left" : "up";
-    const enterAxis = dir === "left" ? "X" : "Y";
-    const enterFrom = `translate${enterAxis}(100%)`;
-    const leaveTo   = `translate${enterAxis}(-100%)`;
-    const easing    = "cubic-bezier(0.22, 0.8, 0.22, 1)";
-    const tDur      = "950ms";
+    const enterTx = dir === "left" ? "100%" : "0";
+    const enterTy = dir === "up"   ? "100%" : "0";
+    const leaveTx = dir === "left" ? "-100%" : "0";
+    const leaveTy = dir === "up"   ? "-100%" : "0";
+    const easing  = "cubic-bezier(0.22, 0.8, 0.22, 1)";
+    const tDur    = "950ms";
 
     if (prev) {
-      // INCOMING — start off-screen on the chosen axis, no transition.
-      node.style.transition = "none";
-      node.style.transform  = enterFrom;
+      // INCOMING — start off-screen on the chosen axis. No transition
+      // during setup so the initial off-screen position lands
+      // instantly. Transition then enabled on the next paint frame.
+      node.style.setProperty("--tx", enterTx);
+      node.style.setProperty("--ty", enterTy);
       node.style.opacity    = "0.92";
       node.style.zIndex     = "2";
       node.style.willChange = "transform, opacity";
       stage.appendChild(node);
-      // OUTGOING — class marker (so .page-leaving * { animation-play-
-      // state: paused } still kicks in to free GPU) + inline slide off.
+      // OUTGOING — class marker for animation-play-state:paused on
+      // children, plus inline transition + final --tx / --ty.
       prev.classList.add("page-leaving");
       prev.style.transition = `transform ${tDur} ${easing}, opacity 620ms ease-in`;
       prev.style.willChange = "transform, opacity";
-      prev.style.transform  = leaveTo;
+      prev.style.setProperty("--tx", leaveTx);
+      prev.style.setProperty("--ty", leaveTy);
       prev.style.opacity    = "0.6";
       prev.style.zIndex     = "1";
       prev.style.pointerEvents = "none";
-      // Force layout so the initial state of `node` is committed
-      // before we add the transition. Without this read, Safari
-      // batches both styles and skips the animation.
+      // Force layout to commit the initial --tx/--ty before we
+      // add the transition on `node`. Without this read, Safari
+      // sometimes batches the two style mutations and skips the
+      // animation entirely.
       void node.offsetHeight;
       requestAnimationFrame(() => {
         node.style.transition = `transform ${tDur} ${easing}, opacity 620ms ease-out`;
-        node.style.transform  = "translate(0, 0)";
+        node.style.setProperty("--tx", "0");
+        node.style.setProperty("--ty", "0");
         node.style.opacity    = "1";
       });
 
       const dying = prev;
       setTimeout(() => { try { dying.remove(); } catch (_) {} }, 1000);
     } else {
-      // First render — no slide, just place it.
+      // First render — no slide.
       stage.appendChild(node);
     }
 

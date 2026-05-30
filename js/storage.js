@@ -18,21 +18,77 @@ const Storage = (function () {
     try { localStorage.setItem(key, JSON.stringify(value)); } catch (_) {}
   }
 
-  /* ----- notes (saved word ids) ----- */
-  function getNotes()  { return read(NOTES_KEY, []); }
-  function isSaved(id) { return getNotes().indexOf(id) !== -1; }
-  function saveWord(id) {
-    const list = getNotes();
-    if (list.indexOf(id) === -1) {
-      list.push(id);
-      write(NOTES_KEY, list);
-    }
-    return list;
+  /* ----- notes (saved word ids), SECTION-SCOPED ------------------
+     User: words saved in section 1.1 should NOT appear when reading
+     section 1.2; each section keeps its own collection. The Notes
+     view shows a merged flat list across every section. Key format:
+     `${chapterId}:${sectionNum}` so universe:1.1 and universe:1.2
+     are distinct buckets.
+     ----------------------------------------------------------- */
+  const NOTES_V2_KEY = "tpl.notesByScope";          // { [scope]: [...ids] }
+  function getNotesMap()    { return read(NOTES_V2_KEY, {}); }
+  function setNotesMap(map) { write(NOTES_V2_KEY, map); }
+
+  function scopeKey(chapter, section) {
+    if (!chapter && !section) return "_global";
+    return (chapter || "_") + ":" + (section || "_");
   }
-  function unsaveWord(id) {
-    const list = getNotes().filter(x => x !== id);
-    write(NOTES_KEY, list);
-    return list;
+
+  // 1-arg legacy: getNotes() returns ALL ids merged across scopes
+  //                (used by the Notes view).
+  // 2-arg new:    getNotes(chapter, section) returns just that
+  //                scope's ids (used by reading.init).
+  function getNotes(chapter, section) {
+    const map = getNotesMap();
+    if (chapter || section) return (map[scopeKey(chapter, section)] || []).slice();
+    const out = new Set();
+    Object.keys(map).forEach(k => (map[k] || []).forEach(id => out.add(id)));
+    return Array.from(out);
+  }
+  // 1-arg legacy: isSaved(id) checks any scope.
+  // 3-arg new:    isSaved(id, chapter, section) checks a single scope.
+  function isSaved(id, chapter, section) {
+    const map = getNotesMap();
+    if (chapter || section) {
+      return (map[scopeKey(chapter, section)] || []).indexOf(id) !== -1;
+    }
+    return Object.keys(map).some(k => (map[k] || []).indexOf(id) !== -1);
+  }
+  function saveWord(id, chapter, section) {
+    const map = getNotesMap();
+    const k = scopeKey(chapter, section);
+    if (!map[k]) map[k] = [];
+    if (map[k].indexOf(id) === -1) map[k].push(id);
+    setNotesMap(map);
+    return map[k].slice();
+  }
+  function unsaveWord(id, chapter, section) {
+    const map = getNotesMap();
+    if (chapter || section) {
+      const k = scopeKey(chapter, section);
+      if (map[k]) map[k] = map[k].filter(x => x !== id);
+    } else {
+      // unsave from EVERY scope (used by the global Notes view's
+      // unsave action, if any).
+      Object.keys(map).forEach(k => {
+        map[k] = (map[k] || []).filter(x => x !== id);
+      });
+    }
+    setNotesMap(map);
+    return getNotes();
+  }
+  // Returns the scope (chapter, section) where this id was saved.
+  // Used by the Notes view to jump back to where the user folded it.
+  function findScopeOf(id) {
+    const map = getNotesMap();
+    for (const k of Object.keys(map)) {
+      if ((map[k] || []).indexOf(id) !== -1) {
+        const sep = k.indexOf(":");
+        if (sep === -1) return { chapter: null, section: null };
+        return { chapter: k.slice(0, sep), section: k.slice(sep + 1) };
+      }
+    }
+    return null;
   }
 
   /* ----- save slots ----- */
@@ -78,7 +134,7 @@ const Storage = (function () {
 
   return {
     SLOT_COUNT,
-    getNotes, isSaved, saveWord, unsaveWord,
+    getNotes, isSaved, saveWord, unsaveWord, findScopeOf,
     getSlots, setSlot, clearSlot,
     saveChapter,
   };

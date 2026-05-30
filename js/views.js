@@ -599,7 +599,7 @@ const Views = (function () {
             ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
           </div>` : "";
 
-        const savedAlready = Storage.isSaved(id);
+        const savedAlready = Storage.isSaved(id, chapterId, sectionNum);
         const html = `
           <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}" data-id="${esc(id)}">
             <div class="word-card-headword">${esc(entry.word || id)}</div>
@@ -627,12 +627,11 @@ const Views = (function () {
       }
 
       // Drives the FOLD button's enabled/saved state straight from
-      // the current-card's data-id, NOT from currentEntryFromStack()
-      // (which had to re-find the entry in WORDS/WORD_LIBRARY by id;
-      // when the id stored on the card differed from the library
-      // index — eg word entries scoped to a chapter — that re-find
-      // returned null and FOLD wrongly stayed disabled. The user
-      // reported "有的可以按 fold 有的不可以" exactly this case).
+      // the current-card's data-id. FOLD is now a TOGGLE — saved
+      // cards can be unsaved by pressing FOLD again (user request).
+      // .is-active class on the button reflects "this card is
+      // currently saved", but the button is never disabled — it
+      // always invites a press (either to fold OR unfold).
       function syncMarginaliaButtons() {
         const fold = host.querySelector('.marginalia-btn[data-action="fold"]');
         if (!fold) return;
@@ -641,23 +640,21 @@ const Views = (function () {
         if (!id) {
           fold.disabled = true; fold.classList.remove("is-active"); return;
         }
-        if (Storage.isSaved(id)) { fold.disabled = true;  fold.classList.add("is-active"); }
-        else                     { fold.disabled = false; fold.classList.remove("is-active"); }
+        fold.disabled = false;
+        if (Storage.isSaved(id, chapterId, sectionNum)) fold.classList.add("is-active");
+        else                                            fold.classList.remove("is-active");
       }
 
       renderMarginalia(null);
 
-      // Persist FOLDED cards across reading-view re-entries.
-      // On init, pre-populate the marginalia stack with every word
-      // the user has previously folded (Storage.getNotes()), so the
-      // right column doesn't reset every time they leave for the
-      // index and come back. Cards rendered here carry .is-saved
-      // from the get-go → the persistent amber glow + ❦ glyph + a
-      // disabled FOLD button until a different card becomes current.
+      // Persist FOLDED cards across reading-view re-entries — SECTION
+      // SCOPED. Only this section's saved words are rendered, so
+      // navigating to a different section doesn't pull in the prior
+      // section's notes (user req: "1.1 的词不应该出现在 1.2").
       function loadFoldedCardsIntoStack() {
         const stack = host.querySelector(".word-card-stack");
         if (!stack) return;
-        const ids = Storage.getNotes ? Storage.getNotes() : [];
+        const ids = Storage.getNotes ? Storage.getNotes(chapterId, sectionNum) : [];
         if (!ids.length) return;
         const empty = stack.querySelector(".word-card-empty");
         if (empty) empty.remove();
@@ -723,20 +720,25 @@ const Views = (function () {
       const fold = host.querySelector('.marginalia-btn[data-action="fold"]');
       if (fold) fold.addEventListener("click", (e) => {
         e.stopPropagation();
-        // Pull the id straight from the current card's data
-        // attribute. Doesn't matter whether the entry can be
-        // re-resolved from WORDS / WORD_LIBRARY — the id alone
-        // is what Storage.saveWord wants.
+        // FOLD as a toggle — press once to save, press again to
+        // unfold. The user explicitly asked for the un-save path
+        // ("再按一下 fold 取消收藏的功能没做").
         const card = host.querySelector(".word-card.is-current");
         const id   = card && card.dataset.id;
-        if (!id || Storage.isSaved(id)) return;
-        Storage.saveWord(id);
-        if (card) {
-          card.classList.add("is-saved", "just-folded");
-          setTimeout(() => card.classList.remove("just-folded"), 740);
+        if (!id) return;
+        if (Storage.isSaved(id, chapterId, sectionNum)) {
+          Storage.unsaveWord(id, chapterId, sectionNum);
+          if (card) card.classList.remove("is-saved");
+          window.toast && window.toast("Unfolded");
+        } else {
+          Storage.saveWord(id, chapterId, sectionNum);
+          if (card) {
+            card.classList.add("is-saved", "just-folded");
+            setTimeout(() => card.classList.remove("just-folded"), 540);
+          }
+          window.toast && window.toast("Folded into Notes");
         }
         syncMarginaliaButtons();
-        window.toast && window.toast("Folded into Notes");
         syncLocket(true);
       });
 
@@ -861,10 +863,26 @@ const Views = (function () {
       if (next) next.addEventListener("click", (e) => {
         e.stopPropagation();
         if (isBrowse) {
+          // Browse-mode Next: walk SECTIONS first (1.1 → 1.2 → 1.3 …),
+          // hop to the next chapter only when this chapter's sections
+          // are exhausted, return to the index when the whole book is.
+          // User reported: prior version jumped straight to the next
+          // chapter instead of advancing within the current one.
+          const list = (ChapterNav && ChapterNav.sectionsOf) ? ChapterNav.sectionsOf(chapterId) : [];
+          const i = list.findIndex(s => s.number === sectionNum);
+          if (i >= 0 && i + 1 < list.length) {
+            const ns = list[i + 1];
+            window.go(
+              `#reading?chapter=${encodeURIComponent(chapterId)}`
+              + `&section=${encodeURIComponent(ns.number)}`
+              + `&browse=1`
+            );
+            return;
+          }
           if (typeof CHAPTERS !== "undefined") {
-            const i = CHAPTERS.findIndex(c => c.id === chapterId);
-            if (i >= 0 && i + 1 < CHAPTERS.length) {
-              const nb = CHAPTERS[i + 1];
+            const j = CHAPTERS.findIndex(c => c.id === chapterId);
+            if (j >= 0 && j + 1 < CHAPTERS.length) {
+              const nb = CHAPTERS[j + 1];
               window.go(
                 `#reading?chapter=${encodeURIComponent(nb.id)}`
                 + `&section=${encodeURIComponent(nb.firstSection || "1.1")}`
@@ -1206,13 +1224,29 @@ const Views = (function () {
           li.classList.toggle("is-active", li.dataset.id === id);
         });
         const w = getWord(id);
-        if (w) detail.innerHTML = WordCard.renderFullBody(w);
+        // Two-pane preview stays in the right column for desktop /
+        // landscape reference; the user-requested DRAWER pops up
+        // over it on every click so the full card with phrases +
+        // example is one tap away (matches word-garden behavior).
+        if (w) {
+          detail.innerHTML = WordCard.renderFullBody(w);
+          if (typeof WordCard !== "undefined" && WordCard.openDrawer) {
+            WordCard.openDrawer(w);
+          }
+        }
       }
       list.addEventListener("click", e => {
         const li = e.target.closest(".word-list-item");
         if (li) select(li.dataset.id);
       });
-      select(words[0].id || words[0].word);
+      // Open the first word's drawer? No — startup should NOT auto-
+      // open the drawer; render the inline preview only.
+      const firstId = words[0].id || words[0].word;
+      host.querySelectorAll(".word-list-item").forEach(li => {
+        li.classList.toggle("is-active", li.dataset.id === firstId);
+      });
+      const firstW = getWord(firstId);
+      if (firstW) detail.innerHTML = WordCard.renderFullBody(firstW);
     },
   };
 
