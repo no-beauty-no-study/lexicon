@@ -88,7 +88,9 @@
       });
 
       const dying = prev;
-      setTimeout(() => { try { dying.remove(); } catch (_) {} }, 720);
+      // Match the 950ms slide so the leaving page isn't yanked out
+      // mid-animation. +50ms grace.
+      setTimeout(() => { try { dying.remove(); } catch (_) {} }, 1000);
     } else {
       stage.appendChild(node);
       // First paint after splash: still soft-fade-in instead of

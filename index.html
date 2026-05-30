@@ -334,25 +334,20 @@
        solid in every Safari version that supports the property. */
   }
 
-  /* ---- SCROLL BANNER waves & all OTHER sway keyframes ----
-     Amplitudes BOOSTED ~3× from the initial cautious values —
-     the user could not perceive the prior ±1° / ±3px motion at
-     all. Now the regions visibly rotate and lift in the breeze. */
-  @keyframes wave-root {
-    0%   { transform: translateY(0)    rotate(-0.4deg); }
-    100% { transform: translateY(-2px) rotate( 0.4deg); }
+  /* ---- CONTINUOUS RIBBON wave (ONE polygon per ribbon, not 3
+     slices). transform-origin is anchored at the root attachment
+     so rotating around that pivot makes the tail swing in a wide
+     arc while the root barely moves — the "root weak, tail
+     strong" continuous deformation the user requested. */
+  @keyframes ribbon-wave-l {
+    0%   { transform: rotate(-2.2deg) translate(-2px, 1px); }
+    50%  { transform: rotate( 0.6deg) translate( 0,    3px); }
+    100% { transform: rotate( 2.4deg) translate( 3px, 4px); }
   }
-  @keyframes wave-middle {
-    0%   { transform: translateY(0)    skewX(-2.0deg) rotate(-0.8deg); }
-    100% { transform: translateY( 6px) skewX( 1.6deg) rotate( 0.8deg); }
-  }
-  @keyframes wave-tail-l {
-    0%   { transform: translate(-3px, 2px) rotate(-2.5deg); }
-    100% { transform: translate( 8px, 8px) rotate( 2.8deg); }
-  }
-  @keyframes wave-tail-r {
-    0%   { transform: translate( 3px, 2px) rotate( 2.5deg); }
-    100% { transform: translate(-8px, 8px) rotate(-2.8deg); }
+  @keyframes ribbon-wave-r {
+    0%   { transform: rotate( 2.2deg) translate( 2px, 1px); }
+    50%  { transform: rotate(-0.6deg) translate( 0,    3px); }
+    100% { transform: rotate(-2.4deg) translate(-3px, 4px); }
   }
 
   /* ---- HAIR ---- */

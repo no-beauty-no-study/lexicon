@@ -249,23 +249,16 @@ const Views = (function () {
       }
 
       // === SWAY OVERLAYS — per the user's painted spec ===============
-      // 19 regions in total. Each entry: [x1, y1, x2, y2] (all % of
+      // 17 regions in total. Each entry: [x1, y1, x2, y2] (all % of
       // the 1448×1086 reference frame), pivot in % too, plus
       // animation name + period + optional negative delay for
       // desync. Hair, ribbons, tassels, vertical flowers, bottom
-      // flowers, AND the user-explicit "wave" 3-slice scroll banners
-      // flanking the title — root almost still, middle skews, tail
-      // rotates more, with overlapping feathered masks to hide the
-      // slice boundary.
+      // flowers. The two scroll banner tails flanking the title
+      // are NO LONGER sliced into root/middle/tail — they're now
+      // ONE continuous polygon overlay each (see RIBBONS below),
+      // because the user pointed out the 3-slice approach was
+      // visibly breaking the cloth's continuity.
       const SWAY = [
-        // --- WAVE: left scroll banner ---
-        { bbox: [18.65, 17.13, 24.31, 22.28], pivot: [22, 18],   anim: "wave-root",  dur: 6.2, delay:  0   },
-        { bbox: [17.13, 20.26, 25.97, 29.65], pivot: [22, 22],   anim: "wave-middle",dur: 6.5, delay: -1.2 },
-        { bbox: [15.26, 26.34, 23.20, 34.71], pivot: [19, 28],   anim: "wave-tail-l",dur: 5.4, delay: -0.5 },
-        // --- WAVE: right scroll banner ---
-        { bbox: [75.14, 17.40, 80.94, 22.56], pivot: [78, 18],   anim: "wave-root",  dur: 6.5, delay: -0.8 },
-        { bbox: [73.76, 20.17, 82.60, 29.37], pivot: [78, 22],   anim: "wave-middle",dur: 6.8, delay: -2.1 },
-        { bbox: [76.66, 26.15, 84.12, 34.53], pivot: [81, 28],   anim: "wave-tail-r",dur: 5.7, delay: -1.5 },
         // --- HAIR (right side, three layers desynced) ---
         { bbox: [53.18, 29.65, 66.92, 59.85], pivot: [53.52, 37.75], anim: "sway-hair-long", dur: 8.5, delay:  0   },
         { bbox: [57.66, 41.90, 67.68, 63.54], pivot: [58.01, 45.12], anim: "sway-hair-tips", dur: 7.5, delay: -2.4 },
@@ -286,13 +279,6 @@ const Views = (function () {
         { bbox: [71.55, 63.72, 86.00, 92.82], pivot: [83.43, 92.82], anim: "sway-bot-r",     dur: 10.0,delay: -2.5 },
       ];
       const bgLayer = host.querySelector(".cover-bg-layer");
-      // clip-path: inset(top right bottom left) — the four values
-      // are how much to trim from each edge in %. For a region with
-      // top-left (x1, y1) and bottom-right (x2, y2):
-      //   top    = y1
-      //   right  = 100 - x2
-      //   bottom = 100 - y2
-      //   left   = x1
       function clipFor(x1, y1, x2, y2) {
         return `inset(${y1}% ${100 - x2}% ${100 - y2}% ${x1}%)`;
       }
@@ -302,8 +288,6 @@ const Views = (function () {
         d.style.clipPath = clipFor(r.bbox[0], r.bbox[1], r.bbox[2], r.bbox[3]);
         d.style.webkitClipPath = d.style.clipPath;
         d.style.transformOrigin = r.pivot[0] + "% " + r.pivot[1] + "%";
-        // Set animation longhand instead of shorthand — Safari is
-        // pickier about parsing the shorthand with a negative delay.
         d.style.animationName            = r.anim;
         d.style.animationDuration        = r.dur + "s";
         d.style.animationDelay           = (r.delay || 0) + "s";
@@ -312,6 +296,41 @@ const Views = (function () {
         d.style.animationDirection       = "alternate";
         if (bgLayer) bgLayer.appendChild(d);
       });
+
+      // === CONTINUOUS RIBBON OVERLAYS ===============================
+      // Each scroll-banner tail flanking the title is now ONE polygon
+      // overlay (not 3 slices) so the cloth never visibly breaks.
+      // Polygon vertices traced from the painting at the user's
+      // exact red-line marks. Root pivot near the title attachment
+      // → rotate around pivot makes the tail swing far while the
+      // root barely moves (the "weighted continuous deformation"
+      // the user asked for).
+      const RIBBON_L_POLYGON =
+        "polygon(15.47% 34.07%, 17.27% 29.83%, 18.30% 24.86%, 18.16% 19.34%, " +
+        "20.93% 17.13%, 24.59% 17.50%, 25.21% 22.10%, 28.80% 21.73%, " +
+        "27.97% 26.34%, 25.55% 26.89%, 24.31% 30.85%, 20.93% 32.41%, " +
+        "17.96% 33.15%)";
+      const RIBBON_R_POLYGON =
+        "polygon(71.00% 21.73%, 73.76% 21.64%, 75.14% 17.50%, 79.07% 17.50%, " +
+        "80.94% 19.71%, 80.80% 24.86%, 84.12% 34.07%, 80.80% 32.23%, " +
+        "78.04% 30.85%, 77.00% 26.89%, 75.00% 26.34%, 73.76% 23.02%, " +
+        "70.72% 22.83%)";
+      function makeRibbon(polygon, pivot, anim, dur, delay) {
+        const d = document.createElement("div");
+        d.className = "menu-sway menu-ribbon";
+        d.style.clipPath        = polygon;
+        d.style.webkitClipPath  = polygon;
+        d.style.transformOrigin = pivot;
+        d.style.animationName            = anim;
+        d.style.animationDuration        = dur + "s";
+        d.style.animationDelay           = delay + "s";
+        d.style.animationTimingFunction  = "ease-in-out";
+        d.style.animationIterationCount  = "infinite";
+        d.style.animationDirection       = "alternate";
+        if (bgLayer) bgLayer.appendChild(d);
+      }
+      makeRibbon(RIBBON_L_POLYGON, "22% 17%", "ribbon-wave-l", 7.5, 0);
+      makeRibbon(RIBBON_R_POLYGON, "78% 17%", "ribbon-wave-r", 8.2, -2.5);
 
       // === Magic-dust motes — slow upward drift =====================
       // 20 small luminous specks slowly rise from below the page,
@@ -601,6 +620,61 @@ const Views = (function () {
       }
 
       renderMarginalia(null);
+
+      // Persist FOLDED cards across reading-view re-entries.
+      // On init, pre-populate the marginalia stack with every word
+      // the user has previously folded (Storage.getNotes()), so the
+      // right column doesn't reset every time they leave for the
+      // index and come back. Cards rendered here carry .is-saved
+      // from the get-go → the persistent amber glow + ❦ glyph + a
+      // disabled FOLD button until a different card becomes current.
+      function loadFoldedCardsIntoStack() {
+        const stack = host.querySelector(".word-card-stack");
+        if (!stack) return;
+        const ids = Storage.getNotes ? Storage.getNotes() : [];
+        if (!ids.length) return;
+        const empty = stack.querySelector(".word-card-empty");
+        if (empty) empty.remove();
+        ids.forEach(id => {
+          const entry =
+               (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === id))
+            || (typeof WORDS        !== "undefined" && WORDS.find(w        => (w.id || w.word) === id))
+            || null;
+          // Even if the library no longer indexes this id, render a
+          // minimal card so the saved state isn't silently lost.
+          const word    = (entry && entry.word) || id;
+          const meaning = (entry && entry.meaning) || "";
+          const phrases = entry ? getPhrasePairs(entry) : [];
+          const phraseRows = phrases.slice(0, 2).map(p => `
+            <div class="word-card-phrase">
+              <span class="wcp-en">${esc(p.en)}</span>
+              ${p.zh ? `<span class="wcp-zh">${esc(p.zh)}</span>` : ""}
+            </div>`).join("");
+          const exEn = (entry && entry.example) || "";
+          const exZh = (entry && (entry.exampleZh || entry.example_zh)) || "";
+          const exampleRow = exEn ? `
+            <div class="word-card-example">
+              <span class="wce-en">${esc(exEn)}</span>
+              ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
+            </div>` : "";
+          stack.insertAdjacentHTML("beforeend", `
+            <div class="word-card is-saved" data-id="${esc(id)}">
+              <div class="word-card-headword">${esc(word)}</div>
+              <div class="word-card-meaning">${esc(meaning)}</div>
+              ${phraseRows}
+              ${exampleRow}
+            </div>`);
+          const fresh = stack.lastElementChild;
+          fresh.addEventListener("click", (e) => {
+            e.stopPropagation();
+            clearCurrent(stack);
+            fresh.classList.add("is-current");
+            if (typeof WordCard !== "undefined" && entry) WordCard.openDrawer(entry);
+            syncMarginaliaButtons();
+          });
+        });
+      }
+      loadFoldedCardsIntoStack();
 
       // Locket — the running count of folded words. Visible, growing
       // progress is a small but reliable engagement loop. Sync on
