@@ -250,6 +250,28 @@ const Views = (function () {
         const y = rnd(195, 545);
         spawnStar(x, y, { size: rnd(0.9, 1.8), dur: rnd(4.5, 7.5) });
       }
+
+      // === Magic-dust motes — slow upward drift =====================
+      // 8 small luminous specks slowly rise from below the page,
+      // drift through the night sky, and fade above. Real
+      // translation animation → the user's missing "background is
+      // actually moving" cue, without distorting the painting.
+      // Avoids the princess silhouette by biasing x to L/R bands.
+      const layer = host.querySelector(".cover-bg-layer");
+      for (let i = 0; i < 8; i++) {
+        const d = document.createElement("div");
+        d.className = "menu-dust";
+        // X biased to the wide outer bands the night-sky stars live
+        // in — keeps motes away from her face/hands.
+        const left  = Math.random() < 0.5;
+        const xpct  = left ? rnd(8, 38) : rnd(62, 92);
+        d.style.setProperty("--x",     xpct + "%");
+        d.style.setProperty("--sz",    rnd(3, 6) + "px");
+        d.style.setProperty("--drift", ((Math.random() - 0.5) * 90) + "px");
+        d.style.setProperty("--d",     rnd(14, 22) + "s");
+        d.style.setProperty("--delay", (-Math.random() * 16) + "s");
+        if (layer) layer.appendChild(d);
+      }
     },
   };
 

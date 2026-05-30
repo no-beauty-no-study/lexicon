@@ -268,7 +268,11 @@
     100% { opacity: 0.78; transform: translate(-50%, -50%) scale(1.12); }
   }
   /* Cross-star uses the ✦ glyph as the visual. text-shadow doubles
-     as the glow halo so we don't need a wrapping element. */
+     as the glow halo so we don't need a wrapping element. A second,
+     much slower animation rotates the glyph (the `rotate:` CSS
+     property is independent from `transform`, so it doesn't fight
+     the twinkle keyframe's translate/scale). 60s per full turn ≈
+     6°/s — visible as motion, not noticeable as rotation. */
   .menu-star.is-cross {
     width: auto; height: auto;
     background: none;
@@ -280,7 +284,9 @@
     text-shadow:
       0 0 4px  rgba(255,235,180,0.95),
       0 0 10px rgba(255,225,170,0.55);
-    animation: menu-cross-twinkle var(--d) ease-in-out infinite;
+    animation:
+      menu-cross-twinkle var(--d) ease-in-out infinite,
+      menu-cross-spin    60s     linear      infinite;
     opacity: 0;
   }
   @keyframes menu-cross-twinkle {
@@ -288,41 +294,87 @@
     78%           { opacity: 1;    transform: translate(-50%, -50%) scale(1.5);  }
     87%           { opacity: 0.55; transform: translate(-50%, -50%) scale(0.9);  }
   }
+  @keyframes menu-cross-spin {
+    from { rotate: 0deg;   }
+    to   { rotate: 360deg; }
+  }
 
-  /* WAND TIP GLOW — center (662, 432) of 1536×1151 → (43.10%, 37.53%).
-     User likes it big and conspicuous. Kept large (~2.4% w), refined
-     so the CENTRE reads white-hot and the falloff is layered warm
-     gold instead of a flat blob:
-       - Inner hard-white core via tight gradient stop at 8%
-       - Three-step radial gradient → warm gold halo
-       - Three box-shadow rings for atmospheric outer glow
-     The breath now goes deeper (opacity 0.40 → 1.00, scale 1 → 1.30)
-     over 3.4s so the moment of brightness reads as inhale-exhale,
-     not just "lamp flicker". */
+  /* Magic-dust motes — 8 small luminous specks drifting slowly
+     upward across the night sky. Pure translation, no displacement
+     filter, no overlay copy of the painting → no risk of distorting
+     the princess. Wallpaper-engine-style atmosphere: gives the menu
+     a sense of "the air is moving" without touching any painted
+     pixel. Each mote randomises x / drift / size / duration / delay
+     so the layer never reads as synced. */
+  .menu-dust {
+    position: absolute;
+    top: 0;
+    left: var(--x);
+    width: var(--sz);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(255, 245, 215, 0.92) 0%,
+      rgba(255, 225, 170, 0.45) 45%,
+      transparent 80%);
+    box-shadow: 0 0 6px 1px rgba(255, 230, 180, 0.55);
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: menu-dust-rise var(--d) linear infinite;
+    animation-delay: var(--delay);
+  }
+  @keyframes menu-dust-rise {
+    0%   { transform: translate(0, 105vh)                   scale(0.6); opacity: 0; }
+    8%   { opacity: 0.78; }
+    50%  { transform: translate(calc(var(--drift) * 0.6),  50vh)  scale(1);   opacity: 0.92; }
+    92%  { opacity: 0.55; }
+    100% { transform: translate(var(--drift),             -12vh)  scale(0.4); opacity: 0; }
+  }
+
+  /* WAND TIP GLOW — center (620, 419) of 1448×1086 → (42.82%, 38.58%).
+     Third reposition; the user measured BOTH ends of the painted
+     glow's max diameter (top (613,389) → bottom (627,450)) and
+     gave the midpoint, so this is the definitive coord and the
+     prior (43.1%, 37.5%) was 11px too high.
+
+     Stays BIG as the user explicitly asked. Refinement per the
+     "中间更亮" (centre brighter) request:
+       - centre is now pure white-hot from 0% all the way to 14%
+         (rgba 255,253,245) before falling off, so it really reads
+         as a light SOURCE not a glow patch
+       - three concentric stops in the radial gradient (sharp
+         core → warm gold → amber → transparent)
+       - three layered box-shadow halos at 14/34/68 px spread for
+         the atmospheric outer reach the user likes
+     Breath: 0.40 → 1.00 opacity, scale 1 → 1.30, brightness sweep
+     for the inhale/exhale feel. */
   .glow-wand {
     position: absolute;
-    left: 43.1%; top: 37.5%;
+    left: 42.82%; top: 38.58%;
     width: 2.4%; height: 2.8%;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
     background: radial-gradient(circle,
-      rgba(255, 252, 240, 1)   0%,
-      rgba(255, 245, 215, 0.95) 12%,
-      rgba(255, 228, 175, 0.65) 38%,
-      rgba(255, 212, 140, 0.30) 62%,
-      transparent 88%);
+      rgba(255, 253, 245, 1)    0%,
+      rgba(255, 253, 245, 1)   14%,
+      rgba(255, 240, 205, 0.92) 28%,
+      rgba(255, 222, 165, 0.55) 50%,
+      rgba(255, 205, 130, 0.22) 72%,
+      transparent              92%);
     box-shadow:
-      0 0  14px  5px rgba(255, 240, 195, 0.80),
+      0 0  14px  5px rgba(255, 245, 200, 0.85),
       0 0  34px 12px rgba(255, 225, 170, 0.50),
-      0 0  70px 24px rgba(255, 210, 140, 0.22);
+      0 0  68px 24px rgba(255, 210, 140, 0.22);
     mix-blend-mode: screen;
     z-index: 5;
     animation: glow-wand-breathe 3.4s ease-in-out infinite alternate;
   }
   @keyframes glow-wand-breathe {
-    0%   { opacity: 0.40; transform: translate(-50%, -50%) scale(1);    filter: brightness(0.96); }
-    100% { opacity: 1;    transform: translate(-50%, -50%) scale(1.30); filter: brightness(1.10); }
+    0%   { opacity: 0.40; transform: translate(-50%, -50%) scale(1);    filter: brightness(0.95); }
+    100% { opacity: 1;    transform: translate(-50%, -50%) scale(1.30); filter: brightness(1.12); }
   }
 
   /* ============================

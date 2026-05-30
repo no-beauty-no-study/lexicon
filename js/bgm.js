@@ -61,10 +61,16 @@
   // BGM.autoMode() so view changes drive the music again.
   let manualTrack  = null;
 
+  // Persisted volume; a tiny floor on the init path so a legacy "0"
+  // (e.g. left over from when the user accidentally dragged the
+  // slider all the way down during testing, before the slider was
+  // visible enough to notice) doesn't permanently mute the app on
+  // next launch. Within a session, setVolume(0) is still honoured.
   let userVolume = (() => {
     try {
       const v = parseFloat(localStorage.getItem("tpl.bgmVol"));
-      return isFinite(v) ? Math.min(1, Math.max(0, v)) : DEFAULT_VOLUME;
+      if (!isFinite(v) || v < 0.02) return DEFAULT_VOLUME;
+      return Math.min(1, v);
     } catch (_) { return DEFAULT_VOLUME; }
   })();
 
