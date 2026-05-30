@@ -276,49 +276,43 @@
 }
 
 /* ============================================================
-   PAGE TRANSITION — soft cinematic fade-up + blur-to-clear.
-   Replaced the prior clip-path "page-turn" (the user described it
-   as "two yellow flashes across the screen, PowerPoint-style") with
-   the slide-up + opacity + blur model GPT recommended: new page
-   comes in from translateY(28px), filter blur(4px), opacity 0 and
-   eases up to its natural state; old page lifts up and blurs out
-   in the opposite direction. Reads as a camera dolly into the
-   next scene — no flash, no flicker, no hard cuts.
+   PAGE TRANSITION — vertical PUSH (new from bottom, old to top).
+   User: "从下至上 ... 推成新的网页的那个推感" — the prior soft
+   fade-up + blur was still a crossfade, not a push. Now both
+   pages translate in LOCKSTEP: the incoming page enters from
+   translateY(100%) (one full page below the viewport) and rises
+   to translateY(0); the outgoing page goes from 0 to -100%. A
+   light opacity ramp on each end gives the transition some
+   atmosphere instead of being a pure mechanical slide.
    ============================================================ */
 .page-entering {
-  opacity: 0;
-  transform: translateY(28px);
-  filter: blur(4px);
+  opacity: 0.78;
+  transform: translateY(100%);
 }
 .page-active {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
   transition:
-    opacity   760ms ease-out,
-    transform 880ms cubic-bezier(0.22, 0.8, 0.22, 1),
-    filter    860ms ease-out;
+    transform 720ms cubic-bezier(0.22, 0.8, 0.22, 1),
+    opacity   460ms ease-out;
   z-index: 2;
 }
 .page-leaving {
-  opacity: 0;
-  transform: translateY(-18px);
-  filter: blur(3px);
+  opacity: 0.55;
+  transform: translateY(-100%);
   pointer-events: none;
   z-index: 1;
   transition:
-    opacity   500ms ease-in,
-    transform 600ms cubic-bezier(0.5, 0, 0.75, 0),
-    filter    500ms ease-in;
+    transform 720ms cubic-bezier(0.22, 0.8, 0.22, 1),
+    opacity   620ms ease-in;
 }
 
-/* Respect reduced-motion: skip the slide + blur, plain cross-fade. */
+/* Respect reduced-motion: skip the slide, plain cross-fade. */
 @media (prefers-reduced-motion: reduce) {
   .page-entering,
   .page-active,
   .page-leaving {
     transition: opacity 220ms ease !important;
     transform: none !important;
-    filter:    none !important;
   }
 }

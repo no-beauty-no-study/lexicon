@@ -324,86 +324,93 @@
     pointer-events: none;
     z-index: 2;
     will-change: transform;
-    -webkit-mask-composite: source-in;
-            mask-composite: intersect;
+    /* clip-path is set inline per div by menu.init. We bailed on
+       mask-image + mask-composite: intersect because Safari's
+       handling of the multi-mask intersect composite is unreliable
+       across iOS versions — when it failed, every sway overlay
+       degenerated into a "full-width strip ∪ full-height strip"
+       cross that covered most of the page, so transforms barely
+       registered against the base. clip-path: inset(...) is rock
+       solid in every Safari version that supports the property. */
   }
 
-  /* ---- SCROLL BANNER waves: 3-slice technique per spec ----
-     Root barely moves, middle does a small skew, tail rotates
-     more. Slight delay desyncs between L/R via inline anim. */
+  /* ---- SCROLL BANNER waves & all OTHER sway keyframes ----
+     Amplitudes BOOSTED ~3× from the initial cautious values —
+     the user could not perceive the prior ±1° / ±3px motion at
+     all. Now the regions visibly rotate and lift in the breeze. */
   @keyframes wave-root {
-    0%   { transform: translateY(0)    rotate(-0.15deg); }
-    100% { transform: translateY(-1px) rotate( 0.15deg); }
+    0%   { transform: translateY(0)    rotate(-0.4deg); }
+    100% { transform: translateY(-2px) rotate( 0.4deg); }
   }
   @keyframes wave-middle {
-    0%   { transform: translateY(0)    skewX(-0.8deg) rotate(-0.3deg); }
-    100% { transform: translateY( 3px) skewX( 0.6deg) rotate( 0.3deg); }
+    0%   { transform: translateY(0)    skewX(-2.0deg) rotate(-0.8deg); }
+    100% { transform: translateY( 6px) skewX( 1.6deg) rotate( 0.8deg); }
   }
   @keyframes wave-tail-l {
-    0%   { transform: translate(-1px, 1px) rotate(-0.9deg); }
-    100% { transform: translate( 3px, 4px) rotate( 1.0deg); }
+    0%   { transform: translate(-3px, 2px) rotate(-2.5deg); }
+    100% { transform: translate( 8px, 8px) rotate( 2.8deg); }
   }
   @keyframes wave-tail-r {
-    0%   { transform: translate( 1px, 1px) rotate( 0.9deg); }
-    100% { transform: translate(-3px, 4px) rotate(-1.0deg); }
+    0%   { transform: translate( 3px, 2px) rotate( 2.5deg); }
+    100% { transform: translate(-8px, 8px) rotate(-2.8deg); }
   }
 
   /* ---- HAIR ---- */
   @keyframes sway-hair-long {
-    0%   { transform: translate(0,0)    rotate(-0.30deg); }
-    100% { transform: translate(4px,1px) rotate( 0.55deg); }
+    0%   { transform: translate(0,0)      rotate(-0.9deg); }
+    100% { transform: translate(10px,3px) rotate( 1.6deg); }
   }
   @keyframes sway-hair-tips {
-    0%   { transform: translate(0,0)    rotate(-0.55deg); }
-    100% { transform: translate(6px,2px) rotate( 0.85deg); }
+    0%   { transform: translate(0,0)       rotate(-1.6deg); }
+    100% { transform: translate(15px,5px)  rotate( 2.4deg); }
   }
   @keyframes sway-hair-ear {
-    0%   { transform: translate(0,0)    rotate(-0.15deg); }
-    100% { transform: translate(2px,1px) rotate( 0.30deg); }
+    0%   { transform: translate(0,0)     rotate(-0.4deg); }
+    100% { transform: translate(5px,2px) rotate( 0.8deg); }
   }
   @keyframes sway-bow-tails {
-    0%   { transform: translate(0,0)    rotate(-0.6deg); }
-    100% { transform: translate(4px,2px) rotate( 0.9deg); }
+    0%   { transform: translate(0,0)       rotate(-1.7deg); }
+    100% { transform: translate(11px,4px)  rotate( 2.5deg); }
   }
 
-  /* ---- BLUE banner-side tails (the OG curtain pair) ---- */
+  /* ---- BLUE banner-side tails ---- */
   @keyframes sway-blue-l {
-    0%   { transform: translate(0,0)    rotate(-0.30deg); }
-    100% { transform: translate(5px,1px) rotate( 0.85deg); }
+    0%   { transform: translate(0,0)      rotate(-0.9deg); }
+    100% { transform: translate(12px,3px) rotate( 2.4deg); }
   }
   @keyframes sway-blue-r {
-    0%   { transform: translate(0,0)    rotate(-0.55deg); }
-    100% { transform: translate(-3px,1px) rotate( 0.65deg); }
+    0%   { transform: translate(0,0)       rotate(-1.6deg); }
+    100% { transform: translate(-10px,3px) rotate( 1.8deg); }
   }
 
-  /* ---- TASSELS (pivot at top, swing slow) ---- */
+  /* ---- TASSELS (pivot at top, big pendulum swing) ---- */
   @keyframes sway-tassel-l {
-    0%   { transform: rotate(-1.10deg); }
-    100% { transform: rotate( 1.10deg); }
+    0%   { transform: rotate(-3.0deg); }
+    100% { transform: rotate( 3.0deg); }
   }
   @keyframes sway-tassel-r {
-    0%   { transform: rotate( 0.95deg); }
-    100% { transform: rotate(-0.95deg); }
+    0%   { transform: rotate( 2.8deg); }
+    100% { transform: rotate(-2.8deg); }
   }
 
   /* ---- VERTICAL flower stalks (pivot at base) ---- */
   @keyframes sway-vert-l {
-    0%   { transform: translate(0,0)    rotate(-0.75deg); }
-    100% { transform: translate(2px,0)  rotate( 0.75deg); }
+    0%   { transform: translate(0,0)    rotate(-1.8deg); }
+    100% { transform: translate(4px,0)  rotate( 1.8deg); }
   }
   @keyframes sway-vert-r {
-    0%   { transform: translate(0,0)    rotate( 0.85deg); }
-    100% { transform: translate(-2px,0) rotate(-0.65deg); }
+    0%   { transform: translate(0,0)    rotate( 2.0deg); }
+    100% { transform: translate(-4px,0) rotate(-1.6deg); }
   }
 
   /* ---- BOTTOM-EDGE flower clusters (pivot at base) ---- */
   @keyframes sway-bot-l {
-    0%   { transform: rotate(-0.65deg); }
-    100% { transform: rotate( 0.85deg); }
+    0%   { transform: rotate(-1.6deg); }
+    100% { transform: rotate( 2.0deg); }
   }
   @keyframes sway-bot-r {
-    0%   { transform: rotate( 0.70deg); }
-    100% { transform: rotate(-0.75deg); }
+    0%   { transform: rotate( 1.8deg); }
+    100% { transform: rotate(-1.8deg); }
   }
 
   /* Magic-dust motes — 8 small luminous specks drifting slowly

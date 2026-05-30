@@ -290,35 +290,42 @@ const Views = (function () {
         { bbox: [71.55, 63.72, 86.00, 92.82], pivot: [83.43, 92.82], anim: "sway-bot-r",     dur: 10.0,delay: -2.5 },
       ];
       const bgLayer = host.querySelector(".cover-bg-layer");
-      function maskGrad(x1, y1, x2, y2) {
-        // 1% feather either side so the seam at the mask edge fades
-        // into the base (the small 1px-ish sway then never reveals
-        // a hard discontinuity).
-        return (
-          `linear-gradient(to right, transparent ${x1 - 1}%, #000 ${x1}%, #000 ${x2}%, transparent ${x2 + 1}%),` +
-          `linear-gradient(to bottom, transparent ${y1 - 1}%, #000 ${y1}%, #000 ${y2}%, transparent ${y2 + 1}%)`
-        );
+      // clip-path: inset(top right bottom left) — the four values
+      // are how much to trim from each edge in %. For a region with
+      // top-left (x1, y1) and bottom-right (x2, y2):
+      //   top    = y1
+      //   right  = 100 - x2
+      //   bottom = 100 - y2
+      //   left   = x1
+      function clipFor(x1, y1, x2, y2) {
+        return `inset(${y1}% ${100 - x2}% ${100 - y2}% ${x1}%)`;
       }
       SWAY.forEach(r => {
         const d = document.createElement("div");
         d.className = "menu-sway";
-        const m = maskGrad(r.bbox[0], r.bbox[1], r.bbox[2], r.bbox[3]);
-        d.style.webkitMaskImage = m;
-        d.style.maskImage       = m;
+        d.style.clipPath = clipFor(r.bbox[0], r.bbox[1], r.bbox[2], r.bbox[3]);
+        d.style.webkitClipPath = d.style.clipPath;
         d.style.transformOrigin = r.pivot[0] + "% " + r.pivot[1] + "%";
-        d.style.animation =
-          r.anim + " " + r.dur + "s ease-in-out " + (r.delay || 0) + "s infinite alternate";
+        // Set animation longhand instead of shorthand — Safari is
+        // pickier about parsing the shorthand with a negative delay.
+        d.style.animationName            = r.anim;
+        d.style.animationDuration        = r.dur + "s";
+        d.style.animationDelay           = (r.delay || 0) + "s";
+        d.style.animationTimingFunction  = "ease-in-out";
+        d.style.animationIterationCount  = "infinite";
+        d.style.animationDirection       = "alternate";
         if (bgLayer) bgLayer.appendChild(d);
       });
 
       // === Magic-dust motes — slow upward drift =====================
-      // 8 small luminous specks slowly rise from below the page,
-      // drift through the night sky, and fade above. Real
-      // translation animation → the user's missing "background is
-      // actually moving" cue, without distorting the painting.
-      // Avoids the princess silhouette by biasing x to L/R bands.
+      // 20 small luminous specks slowly rise from below the page,
+      // drift through the night sky, and fade above. The phases
+      // are spread across the full period range (delay -16s ... 0s)
+      // so at any moment some mote is mid-rise — gives a
+      // continuous, never-empty layer rather than 8 motes that
+      // briefly all disappear at once.
       const layer = host.querySelector(".cover-bg-layer");
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 20; i++) {
         const d = document.createElement("div");
         d.className = "menu-dust";
         // X biased to the wide outer bands the night-sky stars live
