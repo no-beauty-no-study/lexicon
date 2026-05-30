@@ -299,6 +299,111 @@
     to   { rotate: 360deg; }
   }
 
+  /* ============================
+     SWAY OVERLAY LAYERS (the user explicitly OK'd distorting bg.)
+     Each .menu-sway is a full-page copy of the painting (same
+     bg-image / size: cover / position: 50% 50% so it pixel-aligns
+     with the base bg underneath). A two-axis feathered mask
+     restricts the visible portion to one region; the inline
+     transform-origin + animation rotate/translate that region as a
+     rigid body. Hard edges of the mask move WITH the content so
+     the sway can't reveal a seam against the base.
+
+     Per-instance mask-image / transform-origin / animation are
+     set by menu.init from the SWAY_REGIONS array — coords are %
+     of 1448×1086 (the painting's reference frame).
+     ============================ */
+  .menu-sway {
+    position: absolute;
+    inset: 0;
+    background-image: url("assets/bg/ui/main-menu.jpg");
+    background-size: cover;
+    background-position: 50% 50%;
+    pointer-events: none;
+    z-index: 2;
+    will-change: transform;
+    -webkit-mask-composite: source-in;
+            mask-composite: intersect;
+  }
+
+  /* ---- SCROLL BANNER waves: 3-slice technique per spec ----
+     Root barely moves, middle does a small skew, tail rotates
+     more. Slight delay desyncs between L/R via inline anim. */
+  @keyframes wave-root {
+    0%   { transform: translateY(0)    rotate(-0.15deg); }
+    100% { transform: translateY(-1px) rotate( 0.15deg); }
+  }
+  @keyframes wave-middle {
+    0%   { transform: translateY(0)    skewX(-0.8deg) rotate(-0.3deg); }
+    100% { transform: translateY( 3px) skewX( 0.6deg) rotate( 0.3deg); }
+  }
+  @keyframes wave-tail-l {
+    0%   { transform: translate(-1px, 1px) rotate(-0.9deg); }
+    100% { transform: translate( 3px, 4px) rotate( 1.0deg); }
+  }
+  @keyframes wave-tail-r {
+    0%   { transform: translate( 1px, 1px) rotate( 0.9deg); }
+    100% { transform: translate(-3px, 4px) rotate(-1.0deg); }
+  }
+
+  /* ---- HAIR ---- */
+  @keyframes sway-hair-long {
+    0%   { transform: translate(0,0)    rotate(-0.30deg); }
+    100% { transform: translate(4px,1px) rotate( 0.55deg); }
+  }
+  @keyframes sway-hair-tips {
+    0%   { transform: translate(0,0)    rotate(-0.55deg); }
+    100% { transform: translate(6px,2px) rotate( 0.85deg); }
+  }
+  @keyframes sway-hair-ear {
+    0%   { transform: translate(0,0)    rotate(-0.15deg); }
+    100% { transform: translate(2px,1px) rotate( 0.30deg); }
+  }
+  @keyframes sway-bow-tails {
+    0%   { transform: translate(0,0)    rotate(-0.6deg); }
+    100% { transform: translate(4px,2px) rotate( 0.9deg); }
+  }
+
+  /* ---- BLUE banner-side tails (the OG curtain pair) ---- */
+  @keyframes sway-blue-l {
+    0%   { transform: translate(0,0)    rotate(-0.30deg); }
+    100% { transform: translate(5px,1px) rotate( 0.85deg); }
+  }
+  @keyframes sway-blue-r {
+    0%   { transform: translate(0,0)    rotate(-0.55deg); }
+    100% { transform: translate(-3px,1px) rotate( 0.65deg); }
+  }
+
+  /* ---- TASSELS (pivot at top, swing slow) ---- */
+  @keyframes sway-tassel-l {
+    0%   { transform: rotate(-1.10deg); }
+    100% { transform: rotate( 1.10deg); }
+  }
+  @keyframes sway-tassel-r {
+    0%   { transform: rotate( 0.95deg); }
+    100% { transform: rotate(-0.95deg); }
+  }
+
+  /* ---- VERTICAL flower stalks (pivot at base) ---- */
+  @keyframes sway-vert-l {
+    0%   { transform: translate(0,0)    rotate(-0.75deg); }
+    100% { transform: translate(2px,0)  rotate( 0.75deg); }
+  }
+  @keyframes sway-vert-r {
+    0%   { transform: translate(0,0)    rotate( 0.85deg); }
+    100% { transform: translate(-2px,0) rotate(-0.65deg); }
+  }
+
+  /* ---- BOTTOM-EDGE flower clusters (pivot at base) ---- */
+  @keyframes sway-bot-l {
+    0%   { transform: rotate(-0.65deg); }
+    100% { transform: rotate( 0.85deg); }
+  }
+  @keyframes sway-bot-r {
+    0%   { transform: rotate( 0.70deg); }
+    100% { transform: rotate(-0.75deg); }
+  }
+
   /* Magic-dust motes — 8 small luminous specks drifting slowly
      upward across the night sky. Pure translation, no displacement
      filter, no overlay copy of the painting → no risk of distorting

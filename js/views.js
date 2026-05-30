@@ -251,6 +251,65 @@ const Views = (function () {
         spawnStar(x, y, { size: rnd(0.9, 1.8), dur: rnd(4.5, 7.5) });
       }
 
+      // === SWAY OVERLAYS — per the user's painted spec ===============
+      // 19 regions in total. Each entry: [x1, y1, x2, y2] (all % of
+      // the 1448×1086 reference frame), pivot in % too, plus
+      // animation name + period + optional negative delay for
+      // desync. Hair, ribbons, tassels, vertical flowers, bottom
+      // flowers, AND the user-explicit "wave" 3-slice scroll banners
+      // flanking the title — root almost still, middle skews, tail
+      // rotates more, with overlapping feathered masks to hide the
+      // slice boundary.
+      const SWAY = [
+        // --- WAVE: left scroll banner ---
+        { bbox: [18.65, 17.13, 24.31, 22.28], pivot: [22, 18],   anim: "wave-root",  dur: 6.2, delay:  0   },
+        { bbox: [17.13, 20.26, 25.97, 29.65], pivot: [22, 22],   anim: "wave-middle",dur: 6.5, delay: -1.2 },
+        { bbox: [15.26, 26.34, 23.20, 34.71], pivot: [19, 28],   anim: "wave-tail-l",dur: 5.4, delay: -0.5 },
+        // --- WAVE: right scroll banner ---
+        { bbox: [75.14, 17.40, 80.94, 22.56], pivot: [78, 18],   anim: "wave-root",  dur: 6.5, delay: -0.8 },
+        { bbox: [73.76, 20.17, 82.60, 29.37], pivot: [78, 22],   anim: "wave-middle",dur: 6.8, delay: -2.1 },
+        { bbox: [76.66, 26.15, 84.12, 34.53], pivot: [81, 28],   anim: "wave-tail-r",dur: 5.7, delay: -1.5 },
+        // --- HAIR (right side, three layers desynced) ---
+        { bbox: [53.18, 29.65, 66.92, 59.85], pivot: [53.52, 37.75], anim: "sway-hair-long", dur: 8.5, delay:  0   },
+        { bbox: [57.66, 41.90, 67.68, 63.54], pivot: [58.01, 45.12], anim: "sway-hair-tips", dur: 7.5, delay: -2.4 },
+        { bbox: [52.49, 24.86, 59.74, 37.75], pivot: [53.18, 27.62], anim: "sway-hair-ear",  dur: 9.5, delay: -3   },
+        // --- BOW tail ribbons (blue, behind the hair) ---
+        { bbox: [55.94, 26.89, 63.12, 42.36], pivot: [56.49, 28.55], anim: "sway-bow-tails", dur: 6.5, delay: -0.7 },
+        // --- BLUE banner-side hanging tails ---
+        { bbox: [8.63,  22.84, 21.06, 35.91], pivot: [10.36, 23.76], anim: "sway-blue-l",    dur: 7.2, delay:  0   },
+        { bbox: [78.66, 22.74, 90.99, 35.91], pivot: [89.36, 23.76], anim: "sway-blue-r",    dur: 8.0, delay: -2   },
+        // --- TASSELS (cord-and-bobble pair at the corners) ---
+        { bbox: [5.59,  13.26,  8.91, 26.33], pivot: [7.25, 13.26],  anim: "sway-tassel-l",  dur: 5.5, delay:  0   },
+        { bbox: [91.02, 13.35, 94.41, 26.43], pivot: [92.75, 13.35], anim: "sway-tassel-r",  dur: 6.0, delay: -1.8 },
+        // --- VERTICAL flower stalks flanking the circle frame ---
+        { bbox: [14.37, 43.09, 23.48, 80.29], pivot: [16.23, 80.29], anim: "sway-vert-l",    dur: 9.5, delay:  0   },
+        { bbox: [76.52, 43.28, 85.50, 80.11], pivot: [83.57, 80.11], anim: "sway-vert-r",    dur: 10.2,delay: -3   },
+        // --- BOTTOM-edge flower clusters (the high ones) ---
+        { bbox: [8.98,  63.72, 23.14, 92.82], pivot: [11.60, 92.82], anim: "sway-bot-l",     dur: 9.2, delay:  0   },
+        { bbox: [71.55, 63.72, 86.00, 92.82], pivot: [83.43, 92.82], anim: "sway-bot-r",     dur: 10.0,delay: -2.5 },
+      ];
+      const bgLayer = host.querySelector(".cover-bg-layer");
+      function maskGrad(x1, y1, x2, y2) {
+        // 1% feather either side so the seam at the mask edge fades
+        // into the base (the small 1px-ish sway then never reveals
+        // a hard discontinuity).
+        return (
+          `linear-gradient(to right, transparent ${x1 - 1}%, #000 ${x1}%, #000 ${x2}%, transparent ${x2 + 1}%),` +
+          `linear-gradient(to bottom, transparent ${y1 - 1}%, #000 ${y1}%, #000 ${y2}%, transparent ${y2 + 1}%)`
+        );
+      }
+      SWAY.forEach(r => {
+        const d = document.createElement("div");
+        d.className = "menu-sway";
+        const m = maskGrad(r.bbox[0], r.bbox[1], r.bbox[2], r.bbox[3]);
+        d.style.webkitMaskImage = m;
+        d.style.maskImage       = m;
+        d.style.transformOrigin = r.pivot[0] + "% " + r.pivot[1] + "%";
+        d.style.animation =
+          r.anim + " " + r.dur + "s ease-in-out " + (r.delay || 0) + "s infinite alternate";
+        if (bgLayer) bgLayer.appendChild(d);
+      });
+
       // === Magic-dust motes — slow upward drift =====================
       // 8 small luminous specks slowly rise from below the page,
       // drift through the night sky, and fade above. Real
