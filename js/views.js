@@ -699,13 +699,16 @@ const Views = (function () {
       }
       loadFoldedCardsIntoStack();
 
-      // Locket — the running count of folded words. Visible, growing
-      // progress is a small but reliable engagement loop. Sync on
-      // enter so the chip already shows the player's running total.
+      // Locket — the running count of folded words IN THIS CHAPTER.
+      // Counts only the current chapter's folds (merged across its
+      // sections) so the tally restarts at 0 on entering a new
+      // chapter rather than accumulating globally across chapters
+      // (user req: "fold 计数每章从 0 开始"). The underlying save
+      // logic is unchanged — only what the chip displays.
       function syncLocket(pop) {
         const el = host.querySelector("[data-saved-count]");
         if (!el) return;
-        el.textContent = String(Storage.getNotes().length);
+        el.textContent = String(Storage.getChapterNoteCount(chapterId));
         if (pop) {
           const locket = el.closest(".marginalia-locket");
           if (locket) {
