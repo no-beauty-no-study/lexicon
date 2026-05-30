@@ -339,15 +339,19 @@
      so rotating around that pivot makes the tail swing in a wide
      arc while the root barely moves — the "root weak, tail
      strong" continuous deformation the user requested. */
+  /* Ribbon swing AMPED — user said "怎么动都 ok 的 只要线不断".
+     The polygon is one continuous shape so rotating it (even
+     ±5°) doesn't break the cloth — just makes the tail swing
+     dramatically while the root stays near the title attachment. */
   @keyframes ribbon-wave-l {
-    0%   { transform: rotate(-2.2deg) translate(-2px, 1px); }
-    50%  { transform: rotate( 0.6deg) translate( 0,    3px); }
-    100% { transform: rotate( 2.4deg) translate( 3px, 4px); }
+    0%   { transform: rotate(-4.5deg) translate(-4px, 2px); }
+    50%  { transform: rotate( 1.2deg) translate( 0,    5px); }
+    100% { transform: rotate( 5.0deg) translate( 5px, 6px); }
   }
   @keyframes ribbon-wave-r {
-    0%   { transform: rotate( 2.2deg) translate( 2px, 1px); }
-    50%  { transform: rotate(-0.6deg) translate( 0,    3px); }
-    100% { transform: rotate(-2.4deg) translate(-3px, 4px); }
+    0%   { transform: rotate( 4.5deg) translate( 4px, 2px); }
+    50%  { transform: rotate(-1.2deg) translate( 0,    5px); }
+    100% { transform: rotate(-5.0deg) translate(-5px, 6px); }
   }
 
   /* ---- HAIR ---- */
