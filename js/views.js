@@ -166,10 +166,14 @@ const Views = (function () {
       });
 
       // === sparkles — explicit coords per the painting spec ==========
-      // All four point lists below are PIXEL coords on the 1366×1024
-      // painting; converted to % inline so the same layout survives
-      // the .stage scale transform on different iPad widths.
-      const W = 1366, H = 1024;
+      // All point lists below are PIXEL coords on the 1536×1151
+      // reference screenshot; converted to % inline (the painting
+      // aspect ~1.334 matches the .page 1448×1086 ~1.333 closely
+      // enough that the % mapping lands within 1px on the iPad).
+      // Spread is now LEFT+RIGHT heavy per the user's complaint that
+      // stars were "all crammed in the middle". 50 explicit coords
+      // + 15 randomised dust particles in the night-sky region.
+      const W = 1536, H = 1151;
       const px = (x) => (x / W * 100) + "%";
       const py = (y) => (y / H * 100) + "%";
       function spawnStar(x, y, opt) {
@@ -187,43 +191,65 @@ const Views = (function () {
       }
       function rnd(lo, hi) { return lo + Math.random() * (hi - lo); }
 
-      // --- A. Night-sky dot glows (small round) ---
+      // --- LEFT half night sky (11 dots, 4 crosses) ---
       [
-        [431, 228], [500, 216], [566, 232], [701, 233],
-        [850, 366], [917, 337], [931, 263], [461, 321],
-        [618, 332], [579, 429], [758, 408],
+        [430, 214], [521, 207], [566, 229], [608, 245],
+        [442, 286], [540, 343], [632, 334],
+        [425, 394], [548, 458], [603, 482], [642, 520],
       ].forEach(([x, y]) =>
         spawnStar(x, y, { size: rnd(2, 4), dur: rnd(3.2, 5.5) }));
-
-      // --- A. Night-sky cross-stars (twinkle in/out) ---
       [
-        [626, 248], [785, 226], [544, 361],
-        [765, 324], [633, 404], [837, 436],
+        [472, 191], [490, 322], [594, 365], [479, 434],
       ].forEach(([x, y]) =>
         spawnStar(x, y, { cross: true, size: rnd(9, 13), dur: rnd(2.8, 5.5) }));
 
-      // --- C. Moon-side accent dots (NOT the moon itself) ---
+      // --- RIGHT half night sky (10 dots, 5 crosses) ---
       [
-        [486, 248], [546, 255], [552, 308],
+        [927, 214], [1027, 208], [1074, 233], [1116, 254],
+        [915, 291], [1020, 346], [1110, 338],
+        [907, 397], [1018, 462], [1104, 523],
+      ].forEach(([x, y]) =>
+        spawnStar(x, y, { size: rnd(2, 4), dur: rnd(3.2, 5.5) }));
+      [
+        [978, 192], [967, 322], [1072, 366], [958, 433], [1070, 490],
+      ].forEach(([x, y]) =>
+        spawnStar(x, y, { cross: true, size: rnd(9, 13), dur: rnd(2.8, 5.5) }));
+
+      // --- MID-UPPER passage (sparse, all small dots) ---
+      [
+        [681, 214], [735, 198], [793, 202], [848, 219],
+        [705, 274], [776, 254], [846, 279], [740, 326],
+      ].forEach(([x, y]) =>
+        spawnStar(x, y, { size: rnd(1.8, 3), dur: rnd(3.5, 5.8) }));
+
+      // --- MOON halo (3 small dots, 1 cross flanking the moon) ---
+      [
+        [548, 251], [563, 308], [520, 295],
       ].forEach(([x, y]) =>
         spawnStar(x, y, { size: rnd(2, 3), dur: rnd(3.0, 5.0) }));
+      spawnStar(586, 267, { cross: true, size: rnd(8, 11), dur: rnd(3.0, 5.0) });
 
-      // --- B. Wand-tip surrounding sparkles (3 dots + 2 crosses) ---
+      // --- WAND tip surround (5 dots, 3 crosses) ---
       [
-        [626, 461], [682, 482], [617, 492],
+        [639, 417], [678, 451], [635, 446], [699, 445], [652, 458],
       ].forEach(([x, y]) =>
-        spawnStar(x, y, { size: rnd(2, 3), dur: rnd(2.5, 4.0) }));
+        spawnStar(x, y, { size: rnd(2, 3.5), dur: rnd(2.5, 4.0) }));
       [
-        [666, 452], [654, 503],
+        [652, 405], [676, 412], [689, 430],
       ].forEach(([x, y]) =>
-        spawnStar(x, y, { cross: true, size: rnd(7, 10), dur: rnd(2.5, 4.0) }));
+        spawnStar(x, y, { cross: true, size: rnd(8, 11), dur: rnd(2.5, 4.0) }));
 
-      // --- G. Lake glints — small, slow, well away from princess ---
-      [
-        [470, 704], [561, 723], [890, 711],
-        [958, 742], [823, 760],
-      ].forEach(([x, y]) =>
-        spawnStar(x, y, { size: rnd(1.5, 2.5), dur: rnd(4.0, 6.5) }));
+      // --- DUST: 15 randomised sub-2px specks scattered through
+      //     the night-sky region for the deep-field atmospheric
+      //     density (no specific coords, just fills the gaps so the
+      //     sky doesn't read as 50 isolated points). Distribution
+      //     biased to the left+right halves like the explicit set.
+      for (let i = 0; i < 15; i++) {
+        const sideLeft = Math.random() < 0.5;
+        const x = sideLeft ? rnd(410,  660) : rnd(880, 1140);
+        const y = rnd(195, 545);
+        spawnStar(x, y, { size: rnd(0.9, 1.8), dur: rnd(4.5, 7.5) });
+      }
     },
   };
 

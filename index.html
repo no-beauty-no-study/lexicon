@@ -289,29 +289,40 @@
     87%           { opacity: 0.55; transform: translate(-50%, -50%) scale(0.9);  }
   }
 
-  /* WAND TIP GLOW — center (645, 474) of 1366×1024 → (47.22%, 46.29%).
-     Single additive radial breathing, the only "color block" allowed
-     because it IS the wand tip, no surface to read as overlay. */
+  /* WAND TIP GLOW — center (662, 432) of 1536×1151 → (43.10%, 37.53%).
+     User likes it big and conspicuous. Kept large (~2.4% w), refined
+     so the CENTRE reads white-hot and the falloff is layered warm
+     gold instead of a flat blob:
+       - Inner hard-white core via tight gradient stop at 8%
+       - Three-step radial gradient → warm gold halo
+       - Three box-shadow rings for atmospheric outer glow
+     The breath now goes deeper (opacity 0.40 → 1.00, scale 1 → 1.30)
+     over 3.4s so the moment of brightness reads as inhale-exhale,
+     not just "lamp flicker". */
   .glow-wand {
     position: absolute;
-    left: 47.22%; top: 46.29%;
-    width: 3.2%; height: 4.2%;
+    left: 43.1%; top: 37.5%;
+    width: 2.4%; height: 2.8%;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
     background: radial-gradient(circle,
-      rgba(255,245,200,0.85) 0%,
-      rgba(255,225,170,0.5)  35%,
-      rgba(255,210,140,0.18) 60%,
-      transparent 82%);
-    box-shadow: 0 0 28px 8px rgba(255,230,180,0.50);
+      rgba(255, 252, 240, 1)   0%,
+      rgba(255, 245, 215, 0.95) 12%,
+      rgba(255, 228, 175, 0.65) 38%,
+      rgba(255, 212, 140, 0.30) 62%,
+      transparent 88%);
+    box-shadow:
+      0 0  14px  5px rgba(255, 240, 195, 0.80),
+      0 0  34px 12px rgba(255, 225, 170, 0.50),
+      0 0  70px 24px rgba(255, 210, 140, 0.22);
     mix-blend-mode: screen;
     z-index: 5;
-    animation: glow-wand-breathe 2.8s ease-in-out infinite alternate;
+    animation: glow-wand-breathe 3.4s ease-in-out infinite alternate;
   }
   @keyframes glow-wand-breathe {
-    0%   { opacity: 0.35; transform: translate(-50%, -50%) scale(1);    }
-    100% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.18); }
+    0%   { opacity: 0.40; transform: translate(-50%, -50%) scale(1);    filter: brightness(0.96); }
+    100% { opacity: 1;    transform: translate(-50%, -50%) scale(1.30); filter: brightness(1.10); }
   }
 
   /* ============================
