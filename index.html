@@ -143,14 +143,16 @@
     0%   { transform: translateY(0)    scale(1);     filter: brightness(1); }
     100% { transform: translateY(-3px) scale(1.012); filter: brightness(1.05); }
   }
-  /* Layer 2 — press sink: matches GPT spec (translateY 2px +
-     small scale, not the dramatic 0.93 of the prior version)
-     so it reads as the button "settling into" the painted bg
-     rather than smashing flat. */
+  /* Layer 2 — press sink: REAL "I'm being pressed" feel.
+     translateY(5px) is much more visible than the prior 2px;
+     scale 0.93 fully smacks the button into the painting; the
+     brightness(0.85) + contrast(1.08) sells "depressed". 60ms
+     transition so the press is snappy, not floaty. */
   .menu-btn:active .menu-btn-inner {
     animation-play-state: paused;
-    transform: translateY(2px) scale(0.985);
-    filter: brightness(0.98);
+    transition: transform 60ms ease-out, filter 60ms ease-out;
+    transform: translateY(5px) scale(0.93);
+    filter: brightness(0.85) contrast(1.08);
   }
 
   /* Layer 4 — badge "blessing" at the top-centre of the painted
@@ -430,6 +432,38 @@
     animation: menu-dust-rise var(--d) linear infinite;
     animation-delay: var(--delay);
   }
+  /* ============================
+     CLICK-POINT DISSOLVE — fixed-position, expands radially from
+     wherever the user actually tapped, fades the menu to white
+     before the page-turn takes over. The user wanted "from the
+     clicked point, dissolving outward" — this is that, sized to
+     cover the full viewport at peak (scale 120 on a 30px circle =
+     3600px diameter, easily past 2x iPad width). */
+  .menu-dissolve {
+    position: fixed;
+    left: var(--dx, 50%);
+    top:  var(--dy, 50%);
+    width:  30px;
+    height: 30px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%) scale(0);
+    background: radial-gradient(circle,
+      rgba(255, 250, 235, 0.96) 0%,
+      rgba(255, 244, 218, 0.88) 45%,
+      rgba(255, 236, 195, 0.55) 75%,
+      rgba(255, 230, 180, 0.10) 95%,
+      transparent              100%);
+    animation: menu-dissolve-grow 680ms cubic-bezier(0.45, 0, 0.7, 0) forwards;
+  }
+  @keyframes menu-dissolve-grow {
+    0%   { transform: translate(-50%, -50%) scale(0);   opacity: 0; }
+    12%  { opacity: 0.85; }
+    55%  { opacity: 0.95; }
+    100% { transform: translate(-50%, -50%) scale(120); opacity: 0.85; }
+  }
+
   @keyframes menu-dust-rise {
     0%   { transform: translate(0, 105vh)                   scale(0.6); opacity: 0; }
     8%   { opacity: 0.78; }
@@ -439,22 +473,11 @@
   }
 
   /* WAND TIP GLOW — center (620, 419) of 1448×1086 → (42.82%, 38.58%).
-     Third reposition; the user measured BOTH ends of the painted
-     glow's max diameter (top (613,389) → bottom (627,450)) and
-     gave the midpoint, so this is the definitive coord and the
-     prior (43.1%, 37.5%) was 11px too high.
-
-     Stays BIG as the user explicitly asked. Refinement per the
-     "中间更亮" (centre brighter) request:
-       - centre is now pure white-hot from 0% all the way to 14%
-         (rgba 255,253,245) before falling off, so it really reads
-         as a light SOURCE not a glow patch
-       - three concentric stops in the radial gradient (sharp
-         core → warm gold → amber → transparent)
-       - three layered box-shadow halos at 14/34/68 px spread for
-         the atmospheric outer reach the user likes
-     Breath: 0.40 → 1.00 opacity, scale 1 → 1.30, brightness sweep
-     for the inhale/exhale feel. */
+     User said "成灯泡了" — was too bright at peak. Toned down:
+     centre opacity capped at 0.85 (was 1.0), three box-shadow
+     halos cut to 10/22/44 px spread with reduced intensity, breath
+     peak now 0.78 not 1.0. Still large + visible, just no longer
+     burning a hole through the painting. */
   .glow-wand {
     position: absolute;
     left: 42.82%; top: 38.58%;
@@ -463,23 +486,22 @@
     transform: translate(-50%, -50%);
     pointer-events: none;
     background: radial-gradient(circle,
-      rgba(255, 253, 245, 1)    0%,
-      rgba(255, 253, 245, 1)   14%,
-      rgba(255, 240, 205, 0.92) 28%,
-      rgba(255, 222, 165, 0.55) 50%,
-      rgba(255, 205, 130, 0.22) 72%,
+      rgba(255, 252, 240, 0.85)  0%,
+      rgba(255, 248, 220, 0.70) 16%,
+      rgba(255, 232, 185, 0.42) 38%,
+      rgba(255, 215, 145, 0.18) 62%,
       transparent              92%);
     box-shadow:
-      0 0  14px  5px rgba(255, 245, 200, 0.85),
-      0 0  34px 12px rgba(255, 225, 170, 0.50),
-      0 0  68px 24px rgba(255, 210, 140, 0.22);
+      0 0  10px  3px rgba(255, 240, 195, 0.55),
+      0 0  22px  8px rgba(255, 225, 170, 0.30),
+      0 0  44px 16px rgba(255, 210, 140, 0.12);
     mix-blend-mode: screen;
     z-index: 5;
     animation: glow-wand-breathe 3.4s ease-in-out infinite alternate;
   }
   @keyframes glow-wand-breathe {
-    0%   { opacity: 0.40; transform: translate(-50%, -50%) scale(1);    filter: brightness(0.95); }
-    100% { opacity: 1;    transform: translate(-50%, -50%) scale(1.30); filter: brightness(1.12); }
+    0%   { opacity: 0.32; transform: translate(-50%, -50%) scale(1);    filter: brightness(0.94); }
+    100% { opacity: 0.78; transform: translate(-50%, -50%) scale(1.16); filter: brightness(1.06); }
   }
 
   /* ============================

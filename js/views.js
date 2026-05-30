@@ -133,20 +133,38 @@ const Views = (function () {
           setTimeout(() => { try { ctx.close(); } catch (_) {} }, 1100);
         } catch (_) {}
       }
+      // Click-point dissolve — body-level overlay so it can't be
+      // clipped by .stage / .cover-bg-layer overflow. clientX/Y
+      // are device-px coords; CSS `position: fixed` resolves them
+      // against the viewport directly so they always land at the
+      // real tap. Auto-removes after 800ms.
+      function spawnDissolveFromPoint(clientX, clientY) {
+        const d = document.createElement("div");
+        d.className = "menu-dissolve";
+        d.style.setProperty("--dx", clientX + "px");
+        d.style.setProperty("--dy", clientY + "px");
+        document.body.appendChild(d);
+        setTimeout(() => { try { d.remove(); } catch (_) {} }, 800);
+      }
+
       host.querySelectorAll(".menu-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", (e) => {
           const a = btn.dataset.action;
           btn.classList.remove("is-activated");
           void btn.offsetWidth;
           btn.classList.add("is-activated");
           playBookChime();
-          // Hold for ~600ms so the blessing's mid-flare hits the eye
-          // before the page-turn animation begins. 820ms total anim;
-          // hand off after the brightest moment.
+          // Dissolve from the actual tap point — the painting fades
+          // to warm white before the page-turn fires, so the cut to
+          // the next view doesn't feel like a PowerPoint slide.
+          spawnDissolveFromPoint(e.clientX, e.clientY);
+          // Hand off late enough that the dissolve is near-full
+          // coverage when the page-turn starts → no visible gap
+          // between "menu still showing" and "next view appearing".
           setTimeout(() => {
             if (a === "resume") window.go("#select");
             else                window.go("#chapters?browse=1");
-          }, 600);
+          }, 540);
         });
         btn.addEventListener("pointerdown", (e) => {
           const rect = btn.getBoundingClientRect();
