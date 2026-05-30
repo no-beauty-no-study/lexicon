@@ -23,6 +23,8 @@ const CHAPTER_ILLUSTRATIONS = {
     images: [
       { id: "africa-main", label: "Africa",
         src: "assets/illustrations/content/africa.jpg" },
+      { id: "africa-egypt", label: "Egypt (the Nile)",
+        src: "assets/illustrations/content/africa-egypt.jpg" },
     ],
   },
   antarctica: {
@@ -49,8 +51,6 @@ const CHAPTER_ILLUSTRATIONS = {
   asia: {
     title: "Asia",
     images: [
-      { id: "asia-egypt", label: "Egypt",
-        src: "assets/illustrations/content/asia-egypt.jpg" },
       { id: "asia-china", label: "China",
         src: "assets/illustrations/content/asia-china.jpg" },
     ],
