@@ -165,7 +165,13 @@ const TTS = (function () {
     return u;
   }
 
-  function speak(text) {
+  // speak(text, opts?)
+  //   opts.onStart  — fires when the utterance actually begins to
+  //                   speak (NOT when it's queued). Reading view
+  //                   uses this to delay paragraph fade-up until
+  //                   the voice begins, so the visual reveal lines
+  //                   up with the audio.
+  function speak(text, opts) {
     if (!text) return;
     if (!window.speechSynthesis) return;
 
@@ -205,11 +211,15 @@ const TTS = (function () {
     // from the #voices page still works if needed for diagnosis.)
     let dbg = false;
     try { dbg = localStorage.getItem("tpl.voiceDebug") === "1"; } catch (_) {}
-    if (dbg) {
+    const userOnStart = opts && typeof opts.onStart === "function" ? opts.onStart : null;
+    if (dbg || userOnStart) {
       const tier = ((v && v.voiceURI || "")
         .match(/(siri|premium|enhanced|compact|neural)/i) || ["std"])[0];
       const tag  = v ? `${v.name || "?"}·${tier}` : "no voice";
-      u.onstart = () => { try { window.toast && window.toast(tag); } catch (_) {} };
+      u.onstart = () => {
+        if (dbg) try { window.toast && window.toast(tag); } catch (_) {}
+        if (userOnStart) try { userOnStart(); } catch (_) {}
+      };
     }
 
     try { window.speechSynthesis.speak(u); } catch (_) {}

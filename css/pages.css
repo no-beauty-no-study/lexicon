@@ -336,32 +336,33 @@
   100% { opacity: 1; transform: translateY(0)    scale(1); }
 }
 
-/* Folded into Notes: brief golden flash on the current card + a
-   persistent ❦ ribbon-glyph in the top-right corner that stays so
-   the reader can see at a glance which cards were folded. */
+/* Folded into Notes: brief milky-blue flash on the just-folded
+   card. User: the prior amber glow looked like the card was
+   stuck in pressed state — switched to a pale Alice-blue at high
+   transparency so the saved indicator reads as a gentle "logged"
+   wash, not a permanent press. */
 .word-card.just-folded {
   animation: word-card-fold-flash 740ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 @keyframes word-card-fold-flash {
-  0%   { background: rgba(255,225,170,0.10); transform: scale(1);     box-shadow: 0 0 0 0 rgba(255,210,140,0); }
-  30%  { background: rgba(255,225,170,0.34); transform: scale(1.030); box-shadow: 0 0 22px 6px rgba(255,210,140,0.55); }
-  100% { background: rgba(255,225,170,0.10); transform: scale(1);     box-shadow: 0 0 0 0 rgba(255,210,140,0); }
+  0%   { background: rgba(210, 228, 245, 0.10); transform: scale(1);     box-shadow: 0 0 0 0 rgba(170, 205, 240, 0); }
+  30%  { background: rgba(210, 228, 245, 0.42); transform: scale(1.030); box-shadow: 0 0 22px 6px rgba(170, 205, 240, 0.55); }
+  100% { background: rgba(210, 228, 245, 0.12); transform: scale(1);     box-shadow: 0 0 0 0 rgba(170, 205, 240, 0); }
 }
-/* Persistent saved state — soft amber glow + warm bg + ❦ ribbon
-   glyph top-right. Stays on the card forever once folded, so a
-   glance down the marginalia tells the reader which words are
-   already in their notes. */
+/* Persistent saved state — pale Alice-blue / "milk blue" wash
+   that lingers but doesn't compete with the card content. ❦
+   glyph stays gold for warm/cool contrast. */
 .word-card.is-saved {
-  background: rgba(255, 220, 165, 0.12);
+  background: rgba(210, 228, 245, 0.10);
   box-shadow:
-    inset 0 0 0 1px rgba(220, 175, 105, 0.32),
-    0 0 12px rgba(255, 215, 160, 0.22);
+    inset 0 0 0 1px rgba(150, 185, 220, 0.26),
+    0 0 12px rgba(180, 210, 240, 0.18);
 }
 .word-card.is-saved.is-current {
-  background: rgba(255, 215, 155, 0.22);
+  background: rgba(200, 222, 245, 0.22);
   box-shadow:
-    inset 0 0 0 1px rgba(220, 175, 105, 0.55),
-    0 0 18px rgba(255, 215, 160, 0.42);
+    inset 0 0 0 1px rgba(120, 165, 210, 0.46),
+    0 0 18px rgba(170, 205, 240, 0.36);
 }
 .word-card.is-saved::after {
   content: "❦";

@@ -785,15 +785,27 @@ const Views = (function () {
       function revealNext() {
         if (nextIdx >= blocks.length) return;
         const b = blocks[nextIdx++];
-        b.classList.add("is-revealed");
+        // Ink ripple on tap stays IMMEDIATE — feedback that the tap
+        // landed. The block itself only fades up when the voice
+        // actually begins (u.onstart) so the text and audio appear
+        // in lockstep — "ink developing as it's spoken". A 1.4s
+        // fallback fires the reveal anyway if TTS never starts
+        // (no voices installed, OS muted, etc.).
         if (!b.querySelector(".ink-ripple")) {
           const r = document.createElement("span");
           r.className = "ink-ripple"; b.appendChild(r);
         }
-        if (nextIdx === 1) {
-          host.querySelector(".zone-reading-title")?.classList.add("is-revealed");
+        let revealed = false;
+        function doReveal() {
+          if (revealed) return;
+          revealed = true;
+          b.classList.add("is-revealed");
+          if (nextIdx === 1) {
+            host.querySelector(".zone-reading-title")?.classList.add("is-revealed");
+          }
         }
-        TTS.speak(b.dataset.speakText || b.textContent);
+        TTS.speak(b.dataset.speakText || b.textContent, { onStart: doReveal });
+        setTimeout(doReveal, 1400);
       }
       host.addEventListener("click", (e) => {
         if (e.target.closest("button, a, .clickable-word, .side-note-button,"

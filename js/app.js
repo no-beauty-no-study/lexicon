@@ -65,15 +65,21 @@
     const node = tpl.content.firstElementChild.cloneNode(true);
     const prev = stage.querySelector(".page");
 
-    // Cinematic transition: outgoing page lifts up and blurs out
-    // while the incoming page slides up from below with a blur that
-    // resolves to clear. Both are present in DOM simultaneously
-    // during the ~700 ms crossfade window; old page is removed when
-    // its leaving animation completes.
+    // Push transition with direction inferred from prev→next view:
+    //   reading ↔ quiz, quiz → next reading  → LEFT (turning a page
+    //                                          in the book)
+    //   everything else                       → UP (opening the book
+    //                                          cover, lifting a panel)
+    // body.dataset.currentView still holds the OUTGOING view name at
+    // this point (it gets overwritten further down), so it doubles
+    // as the "previous view" reference.
+    const READING_FLOW = { reading: 1, quiz: 1 };
+    const prevName = document.body.dataset.currentView || "";
+    const dir = (READING_FLOW[prevName] && READING_FLOW[name]) ? "left" : "up";
     if (prev) {
-      prev.classList.add("page-leaving");
+      prev.classList.add("page-leaving", "leave-" + dir);
       prev.style.pointerEvents = "none";
-      node.classList.add("page-entering");
+      node.classList.add("page-entering", "enter-" + dir);
       stage.appendChild(node);
 
       // Two animation frames before adding .page-active so the

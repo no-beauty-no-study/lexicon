@@ -292,19 +292,27 @@
    transition stuttered ("点按钮进 index 很卡"). Pausing on
    .page-leaving frees the compositor for the incoming page.
    ============================================================ */
-.page-entering {
+/* Direction modifiers — applied alongside .page-entering /
+   .page-leaving by app.js render(). UP for menu / cover / index
+   flows (vertical book-cover open); LEFT for reading ↔ quiz /
+   quiz → next-section reading (turning the page of a book). */
+.page-entering.enter-up    { opacity: 0.92; transform: translateY(100%); }
+.page-entering.enter-left  { opacity: 0.92; transform: translateX(100%); }
+.page-entering             { /* fallback when no direction class */
   opacity: 0.92;
   transform: translateY(100%);
 }
 .page-active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(0, 0);
   transition:
     transform 950ms cubic-bezier(0.22, 0.8, 0.22, 1),
     opacity   600ms ease-out;
   z-index: 2;
 }
-.page-leaving {
+.page-leaving.leave-up    { opacity: 0.7; transform: translateY(-100%); }
+.page-leaving.leave-left  { opacity: 0.7; transform: translateX(-100%); }
+.page-leaving             { /* fallback */
   opacity: 0.7;
   transform: translateY(-100%);
   pointer-events: none;
