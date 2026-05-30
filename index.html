@@ -105,38 +105,7 @@
     100% { transform: translate(-50%, -50%) scale(120); opacity: 0; }
   }
 
-  /* Menu — bg is painted on a dedicated ::before so we can run the
-     SVG billow filter on JUST the painted scene (skirts, flowers,
-     hair, banner — whatever the painting holds) without distorting
-     the hero buttons or the global voice link sitting on top. The
-     ::before is outset by 4% so the filter's edge displacement
-     doesn't reveal raw image edges, and a slow background-position
-     drift adds a layer of wind "direction" on top of the
-     turbulence's per-frame motion. */
-  .page.home {
-    background-image: none;
-    overflow: hidden;
-  }
-  .page.home::before {
-    content: "";
-    display: block !important;       /* override .page.art-bg::before { display:none } */
-    position: absolute;
-    inset: -4%;
-    background-image: url("assets/bg/ui/main-menu.jpg");
-    background-size: cover;
-    background-position: 50% 50%;
-    filter: url(#menu-billow);
-    z-index: 0;
-    pointer-events: none;
-    will-change: filter;
-    animation: menu-bg-drift 26s ease-in-out infinite alternate;
-  }
-  @keyframes menu-bg-drift {
-    0%   { background-position: 49% 51%; }
-    100% { background-position: 51% 49%; }
-  }
-  .page.art-bg.home    { background-image: none; }    /* kill the default art-bg paint on home */
-
+  .page.home         { background-image: url("assets/bg/ui/main-menu.jpg"); }
   .page.select-art   { background-image: url("assets/bg/ui/select-mode.jpg"); }
   .page.chapters-art { background-image: url("assets/bg/ui/chapters.jpg"); }
   .page.wg-art       { background-image: url("assets/bg/ui/word-garden.jpg"); }
@@ -177,6 +146,293 @@
   }
   .menu-btn.left  .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-start.png"); }
   .menu-btn.right .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-enter.png"); }
+
+  /* =========================================================
+     COVER LAYER SYSTEM
+     Two flat layers stacked over the painted .page.home bg:
+       - .cover-bg-layer  : every animated overlay (curtains, stars,
+                            water, wand, flowers). pointer-events: none
+                            so no overlay can swallow a button tap.
+       - .cover-ui-layer  : buttons + future interactive chrome.
+                            pointer-events: auto. Sits ABOVE the bg
+                            layer so even an opaque overlay can't hide
+                            a button.
+     ========================================================= */
+  .cover-bg-layer {
+    position: absolute; inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    /* Clip every sway overlay (which has full-page bg + mask) to the
+       cover bounds so a mistuned mask can never leak past the edge. */
+    overflow: hidden;
+  }
+  .cover-ui-layer {
+    position: absolute; inset: 0;
+    z-index: 10;
+    pointer-events: auto;
+  }
+
+  /* ============================
+     A. STAR SPARKLES (twinkle)
+     ============================ */
+  .menu-stars { position: absolute; pointer-events: none; z-index: 4; }
+  .stars-title  { left: 35.7%; top:  0%;   width: 28.6%; height: 14.3%; }
+  .stars-circle { left: 31.4%; top: 23.8%; width: 37.5%; height: 36.7%; }
+  .menu-star {
+    position: absolute;
+    left: var(--x); top: var(--y);
+    width:  var(--sz);
+    height: var(--sz);
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(255,250,225,1) 0%,
+      rgba(255,235,180,0.55) 50%,
+      transparent 80%);
+    box-shadow: 0 0 4px 1px rgba(255,235,180,0.45);
+    opacity: 0.25;
+    pointer-events: none;
+    animation: menu-star-twinkle var(--d) ease-in-out infinite alternate;
+    animation-delay: var(--delay);
+    will-change: opacity, transform;
+  }
+  @keyframes menu-star-twinkle {
+    0%   { opacity: 0.18; transform: scale(0.92); }
+    100% { opacity: 0.62; transform: scale(1.10); }
+  }
+
+  /* ============================
+     B. WAND TIP GLOW
+     B1 center ~(742, 455) of 1400×1050 → (53.0%, 43.3%)
+     ============================ */
+  .glow-wand {
+    position: absolute;
+    left: 53.0%; top: 43.3%;
+    width: 3.6%; height: 4.8%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    background: radial-gradient(circle,
+      rgba(255,245,200,0.85) 0%,
+      rgba(255,225,170,0.5)  35%,
+      rgba(255,210,140,0.18) 60%,
+      transparent 82%);
+    box-shadow: 0 0 28px 8px rgba(255,230,180,0.50);
+    mix-blend-mode: screen;
+    z-index: 5;
+    animation: glow-wand-breathe 2.8s ease-in-out infinite alternate;
+  }
+  @keyframes glow-wand-breathe {
+    0%   { opacity: 0.35; transform: translate(-50%, -50%) scale(1);    }
+    100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.18); }
+  }
+
+  /* ============================
+     G. LAKE SHIMMER
+     G1 30.4–69.7% × 64.8–80.5%
+     Diagonal gold band travels left→right via background-position;
+     mix-blend-mode: screen brightens the water without darkening it.
+     ============================ */
+  .shimmer-water {
+    position: absolute;
+    left: 30.4%; top: 64.8%;
+    width: 39.3%; height: 15.7%;
+    background: linear-gradient(98deg,
+      transparent 0%,
+      transparent 32%,
+      rgba(255,245,210,0.15) 41%,
+      rgba(255,255,230,0.32) 50%,
+      rgba(255,245,210,0.15) 59%,
+      transparent 68%,
+      transparent 100%);
+    background-size: 250% 100%;
+    background-repeat: no-repeat;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 3;
+    animation: shimmer-water-slide 13s linear infinite;
+  }
+  @keyframes shimmer-water-slide {
+    0%   { background-position: -100% 50%; }
+    100% { background-position:  200% 50%; }
+  }
+
+  /* ============================
+     C / D / E. SWAY OVERLAYS
+     Each overlay div is a full-page bg copy aligned with the base
+     image (same background-size: cover / position: 50% 50%), masked
+     to reveal ONLY its target region with feathered edges, then
+     transform-animated as a single rigid body. Hard edges of the
+     mask move WITH the content so the sway can't reveal seams.
+     ============================ */
+  .menu-sway {
+    position: absolute;
+    inset: 0;
+    background-image: url("assets/bg/ui/main-menu.jpg");
+    background-size: cover;
+    background-position: 50% 50%;
+    pointer-events: none;
+    z-index: 2;
+    will-change: transform;
+  }
+  /* C1 — left curtain.  Region: 0–20.4% × 9–96.7%. Soft right edge. */
+  .sway-curtain-left {
+    -webkit-mask-image:
+      linear-gradient(to right, #000 0%, #000 17%, transparent 23%),
+      linear-gradient(to bottom, transparent 7%, #000 11%, #000 95%, transparent 99%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to right, #000 0%, #000 17%, transparent 23%),
+      linear-gradient(to bottom, transparent 7%, #000 11%, #000 95%, transparent 99%);
+            mask-composite: intersect;
+    transform-origin: 15% 10%;
+    animation: sway-curtain-l 7.2s ease-in-out infinite alternate;
+  }
+  @keyframes sway-curtain-l {
+    0%   { transform: rotate(-0.28deg) translateX(-1px); }
+    100% { transform: rotate( 0.28deg) translateX( 1px); }
+  }
+  /* C2 — right curtain.  79.6–100% × 9–96.7%. delay desync = -1.8s. */
+  .sway-curtain-right {
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 77%, #000 83%, #000 100%),
+      linear-gradient(to bottom, transparent 7%, #000 11%, #000 95%, transparent 99%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to right, transparent 77%, #000 83%, #000 100%),
+      linear-gradient(to bottom, transparent 7%, #000 11%, #000 95%, transparent 99%);
+            mask-composite: intersect;
+    transform-origin: 85% 10%;
+    animation: sway-curtain-r 8.1s ease-in-out -1.8s infinite alternate;
+  }
+  @keyframes sway-curtain-r {
+    0%   { transform: rotate(-0.24deg) translateX(-1px); }
+    100% { transform: rotate( 0.24deg) translateX( 1px); }
+  }
+  /* D1 — left blue banner ribbon.  11.1–29.3% × 17.6–40.9%. */
+  .sway-banner-left {
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 9%, #000 14%, #000 26%, transparent 32%),
+      linear-gradient(to bottom, transparent 15%, #000 19%, #000 39%, transparent 44%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to right, transparent 9%, #000 14%, #000 26%, transparent 32%),
+      linear-gradient(to bottom, transparent 15%, #000 19%, #000 39%, transparent 44%);
+            mask-composite: intersect;
+    transform-origin: 25% 15%;
+    animation: sway-banner 6.4s ease-in-out infinite alternate;
+  }
+  /* D2 — right blue banner ribbon, desynced. */
+  .sway-banner-right {
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 68%, #000 73%, #000 86%, transparent 92%),
+      linear-gradient(to bottom, transparent 15%, #000 19%, #000 39%, transparent 44%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to right, transparent 68%, #000 73%, #000 86%, transparent 92%),
+      linear-gradient(to bottom, transparent 15%, #000 19%, #000 39%, transparent 44%);
+            mask-composite: intersect;
+    transform-origin: 75% 15%;
+    animation: sway-banner 7.0s ease-in-out -2.2s infinite alternate;
+  }
+  @keyframes sway-banner {
+    0%   { transform: translateY(-1px) rotate(-0.35deg); }
+    100% { transform: translateY( 1px) rotate( 0.35deg); }
+  }
+  /* E1 — bottom-left flower cluster. 0–33.6% × 75.2–100%. */
+  .sway-flowers-left {
+    -webkit-mask-image:
+      linear-gradient(to right, #000 0%, #000 28%, transparent 36%),
+      linear-gradient(to bottom, transparent 73%, #000 77%, #000 100%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to right, #000 0%, #000 28%, transparent 36%),
+      linear-gradient(to bottom, transparent 73%, #000 77%, #000 100%);
+            mask-composite: intersect;
+    transform-origin: 18% 100%;
+    animation: sway-flowers 5.8s ease-in-out infinite alternate;
+  }
+  /* E2 — bottom-right flower cluster. 66.4–100% × 75.2–100%. */
+  .sway-flowers-right {
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 64%, #000 72%, #000 100%),
+      linear-gradient(to bottom, transparent 73%, #000 77%, #000 100%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to right, transparent 64%, #000 72%, #000 100%),
+      linear-gradient(to bottom, transparent 73%, #000 77%, #000 100%);
+            mask-composite: intersect;
+    transform-origin: 82% 100%;
+    animation: sway-flowers 6.6s ease-in-out -1.7s infinite alternate;
+  }
+  @keyframes sway-flowers {
+    0%   { transform: rotate(-0.5deg) translateY( 0); }
+    100% { transform: rotate( 0.5deg) translateY(-1px); }
+  }
+  /* E3 — bottom-center vines.  27.5–73.6% × 81.9–100%. Lower amp. */
+  .sway-vines-center {
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 25%, #000 31%, #000 69%, transparent 75%),
+      linear-gradient(to bottom, transparent 79%, #000 83%, #000 100%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to right, transparent 25%, #000 31%, #000 69%, transparent 75%),
+      linear-gradient(to bottom, transparent 79%, #000 83%, #000 100%);
+            mask-composite: intersect;
+    transform-origin: 50% 100%;
+    animation: sway-vines 8.5s ease-in-out infinite alternate;
+  }
+  @keyframes sway-vines {
+    0%   { transform: rotate(-0.2deg) translateY( 0); }
+    100% { transform: rotate( 0.2deg) translateY(-1px); }
+  }
+
+  /* ============================
+     MENU BUTTON RIPPLE
+     Antique gold ripple on press. ::after expands from the actual
+     tap coordinates (CSS vars --ripple-x / --ripple-y set in JS).
+     Note: no `overflow: hidden` on .menu-btn — that would clip the
+     -7px translateY of the breathing animation and shave the top
+     of the painted button. The ripple's max scale is kept modest
+     (scale 9) so any bleed past the button edge stays subtle over
+     the painted scene.
+     ============================ */
+  .menu-btn::after {
+    content: "";
+    position: absolute;
+    left: var(--ripple-x, 50%);
+    top:  var(--ripple-y, 50%);
+    width:  14px;
+    height: 14px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle,
+      rgba(255,241,178,0.70) 0%,
+      rgba(215,180,105,0.32) 38%,
+      rgba(215,180,105,0)    70%);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    z-index: 12;
+  }
+  .menu-btn.is-clicking::after {
+    animation: menu-btn-ripple 560ms ease-out;
+  }
+  @keyframes menu-btn-ripple {
+    0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0.78; }
+    100% { transform: translate(-50%, -50%) scale(9);   opacity: 0; }
+  }
+
+  /* ============================
+     REDUCED MOTION
+     Disable every cover-bg animation so motion-sensitive users see
+     a still painting. Button feedback (ripple, press) is preserved
+     since those are user-initiated, not idle.
+     ============================ */
+  @media (prefers-reduced-motion: reduce) {
+    .menu-sway, .menu-star, .glow-wand, .shimmer-water,
+    .menu-btn-inner {
+      animation: none !important;
+    }
+  }
 
   /* Global "voice" link — fixed-position so it sits above .stage
      and stays visible across all views. Hidden on splash (where it
@@ -306,36 +562,6 @@
 </head>
 <body>
 
-<!-- Hidden SVG filter library. Reachable by any element via
-     `filter: url(#id)`. The wind / liquid distortion that gives
-     the menu background its wallpaper-engine feel lives here. -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <!-- Slow, organic distortion for the menu bg. fractalNoise looks
-         more cloth-like than turbulence. Two animations sweep the
-         noise frequency back and forth so the pattern visibly flows
-         instead of just shimmering in place. -->
-    <filter id="menu-billow" x="-6%" y="-6%" width="112%" height="112%">
-      <feTurbulence type="fractalNoise"
-                    baseFrequency="0.011 0.018"
-                    numOctaves="2"
-                    seed="3"
-                    result="noise">
-        <animate attributeName="baseFrequency"
-                 dur="16s"
-                 values="0.011 0.018; 0.018 0.012; 0.013 0.020; 0.011 0.018"
-                 repeatCount="indefinite"/>
-        <animate attributeName="seed"
-                 dur="40s"
-                 values="3; 11; 7; 19; 3"
-                 repeatCount="indefinite"/>
-      </feTurbulence>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="7"
-                         xChannelSelector="R" yChannelSelector="G"/>
-    </filter>
-  </defs>
-</svg>
-
 <div class="stage" id="stage"></div>
 
 <!-- Global "voice" link — visible top-right on every view EXCEPT
@@ -354,12 +580,42 @@
 
 <template id="view-menu">
   <main class="page art-bg home" data-page="menu">
-    <button type="button" class="menu-btn left"  data-action="resume">
-      <span class="menu-btn-inner"></span>
-    </button>
-    <button type="button" class="menu-btn right" data-action="enter-chapters">
-      <span class="menu-btn-inner"></span>
-    </button>
+    <!-- ==================== Cover BG animation layer ====================
+         z-index 1, pointer-events: none. Holds every per-region overlay
+         that animates the painted scene (curtains, banners, flowers,
+         vines, water, stars, wand). The painted face / hands / castle /
+         title scroll have NO overlay on top — they stay perfectly still.
+         Coords + mask regions are tuned to the 1400×1050 source PNG.   -->
+    <div class="cover-bg-layer" aria-hidden="true">
+      <!-- C1 left curtain · C2 right curtain -->
+      <div class="menu-sway sway-curtain-left"></div>
+      <div class="menu-sway sway-curtain-right"></div>
+      <!-- D1 / D2 blue ribbon banners flanking the title scroll -->
+      <div class="menu-sway sway-banner-left"></div>
+      <div class="menu-sway sway-banner-right"></div>
+      <!-- E1 / E2 / E3 bottom flower beds + center vines -->
+      <div class="menu-sway sway-flowers-left"></div>
+      <div class="menu-sway sway-flowers-right"></div>
+      <div class="menu-sway sway-vines-center"></div>
+      <!-- A1 / A2 star sparkle layers (stars spawned by menu.init) -->
+      <div class="menu-stars stars-title"></div>
+      <div class="menu-stars stars-circle"></div>
+      <!-- B1 wand-tip glow -->
+      <div class="menu-glow glow-wand"></div>
+      <!-- G1 lake shimmer -->
+      <div class="menu-shimmer shimmer-water"></div>
+    </div>
+    <!-- ==================== Cover UI / interaction layer ===================
+         z-index 10, pointer-events: auto. Buttons live here; the bg layer
+         above this comment cannot block their taps. -->
+    <div class="cover-ui-layer">
+      <button type="button" class="menu-btn left"  data-action="resume">
+        <span class="menu-btn-inner"></span>
+      </button>
+      <button type="button" class="menu-btn right" data-action="enter-chapters">
+        <span class="menu-btn-inner"></span>
+      </button>
+    </div>
   </main>
 </template>
 

@@ -93,6 +93,7 @@ const Views = (function () {
   /* ---------- menu ---------- */
   const menu = {
     init(host) {
+      // ---- button click + antique-gold ripple feedback ------------
       host.querySelectorAll(".menu-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const a = btn.dataset.action;
@@ -102,7 +103,49 @@ const Views = (function () {
           if (a === "resume") window.go("#select");
           else                window.go("#chapters?browse=1");
         });
+        // pointerdown fires earlier than click → ripple expands while
+        // the press is still happening, not after release. Better
+        // perceived responsiveness.
+        btn.addEventListener("pointerdown", (e) => {
+          const rect = btn.getBoundingClientRect();
+          if (!rect.width) return;
+          const x = ((e.clientX - rect.left) / rect.width)  * 100;
+          const y = ((e.clientY - rect.top)  / rect.height) * 100;
+          btn.style.setProperty("--ripple-x", x + "%");
+          btn.style.setProperty("--ripple-y", y + "%");
+          btn.classList.remove("is-clicking");
+          void btn.offsetWidth;             // restart the keyframe
+          btn.classList.add("is-clicking");
+        });
+        btn.addEventListener("animationend", (e) => {
+          if (e.animationName === "menu-btn-ripple") {
+            btn.classList.remove("is-clicking");
+          }
+        });
       });
+
+      // ---- A1 / A2 star spawning ---------------------------------
+      // Each star is its own div so twinkle delays can stagger and
+      // the layer never reads as a synced shimmer. Position is
+      // uniformly random within the zone (each layer has its own
+      // % bounds from CSS). 7 stars over the title area, 12 over
+      // the dark circle sky — denser there to read as a starry sky.
+      function spawnStars(selector, n, sizeMin, sizeMax) {
+        const layer = host.querySelector(selector);
+        if (!layer) return;
+        for (let i = 0; i < n; i++) {
+          const s = document.createElement("div");
+          s.className = "menu-star";
+          s.style.setProperty("--x",     (Math.random() * 96 + 2) + "%");
+          s.style.setProperty("--y",     (Math.random() * 96 + 2) + "%");
+          s.style.setProperty("--d",     (3.2 + Math.random() * 3.6) + "s");
+          s.style.setProperty("--delay", (-Math.random() * 5)        + "s");
+          s.style.setProperty("--sz",    (sizeMin + Math.random() * (sizeMax - sizeMin)) + "px");
+          layer.appendChild(s);
+        }
+      }
+      spawnStars(".stars-title",  7,  1.6, 3.0);
+      spawnStars(".stars-circle", 12, 1.4, 2.8);
     },
   };
 
