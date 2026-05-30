@@ -67,10 +67,10 @@ const CHAPTER_ILLUSTRATIONS = {
     images: [
       { id: "europe-france", label: "France",
         src: "assets/illustrations/content/europe-france.jpg" },
-      { id: "europe-alice", label: "Alice",
-        src: "assets/illustrations/content/europe-alice.jpg" },
       { id: "europe-empress", label: "Empress",
         src: "assets/illustrations/content/europe-empress.jpg" },
+      { id: "europe-alice", label: "Alice (the lantern)",
+        src: "assets/illustrations/content/europe-alice.jpg" },
     ],
   },
   "north-america": {

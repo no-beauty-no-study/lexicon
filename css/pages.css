@@ -101,6 +101,26 @@
   font-style: italic;
   margin: 4px 0 18px;
 }
+
+/* Reading title alignment (reading page only — quiz keeps its centred
+   title). Right-justify the title block to the right edge of the BODY
+   column, NOT the word-list column: narrow the title zone so its right
+   edge meets the body's (30.75% + 48.00% = 78.75%) and push the stack
+   flush-right. Otherwise the centred title reads left-of-centre against
+   the full page width. (user req) */
+[data-page="reading"] .zone-reading-title {
+  width: 48.00%;
+  align-items: flex-end;
+  text-align: right;
+}
+[data-page="reading"] .reading-kicker,
+[data-page="reading"] .reading-title,
+[data-page="reading"] .reading-subtitle {
+  text-align: right;
+}
+[data-page="reading"] .zone-reading-title .antique-divider {
+  margin: 6px 0 10px auto;   /* flush-right under the title text */
+}
 .reading-art .reading-body {
   width: 100%;
   height: 100%;
@@ -1227,20 +1247,29 @@
   --nav-width:  30.00%;
   --nav-height:  6.70%;
 }
+/* notes / save / load have NO .master-frame, so their bottom-nav is
+   positioned relative to the full .page (1086px tall) instead of the
+   frame (95.85% tall, offset 2.15% from the top). With the same 92.30%
+   / 6.70% the bar therefore rendered a touch taller and ~18px lower
+   than on reading. Convert reading's frame-relative values to the
+   page-relative equivalents so the bar's pixel height + level match
+   reading exactly:  page% = 2.15% + frac × 95.85%
+     --nav-top    = 2.15% + 0.9230 × 95.85% = 90.62%
+     --nav-height =        0.0670 × 95.85% =  6.42%  */
 .page[data-page="save"],
 .page[data-page="load"] {
   --nav-count:  2;
   --nav-left:   30.00%;
-  --nav-top:    92.30%;
+  --nav-top:    90.62%;
   --nav-width:  40.00%;
-  --nav-height:  6.70%;
+  --nav-height:  6.42%;
 }
 .page[data-page="notes"] {
   --nav-count:  2;
   --nav-left:   30.00%;
-  --nav-top:    92.30%;
+  --nav-top:    90.62%;
   --nav-width:  40.00%;
-  --nav-height:  6.70%;
+  --nav-height:  6.42%;
 }
 
 /* ============================================================
