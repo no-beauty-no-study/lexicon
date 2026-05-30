@@ -65,27 +65,41 @@
     const node = tpl.content.firstElementChild.cloneNode(true);
     const prev = stage.querySelector(".page");
 
-    // Page-turn: keep the OUTGOING page beneath and let the new page
-    // "unfurl" over it from the bottom-right corner (clip-path diagonal
-    // reveal + a light-edge sweep) — like turning to the next leaf of a
-    // book. New page is inserted FIRST in the DOM (so helpers that do
-    // querySelector('.stage .page') resolve to it) but painted ON TOP
-    // via z-index, with the old page at a lower z below it.
+    // Cinematic transition: outgoing page lifts up and blurs out
+    // while the incoming page slides up from below with a blur that
+    // resolves to clear. Both are present in DOM simultaneously
+    // during the ~700 ms crossfade window; old page is removed when
+    // its leaving animation completes.
     if (prev) {
-      prev.classList.add("page-beneath");
+      prev.classList.add("page-leaving");
       prev.style.pointerEvents = "none";
-      node.classList.add("page-turning-in");
-      stage.insertBefore(node, prev);
+      node.classList.add("page-entering");
+      stage.appendChild(node);
 
-      const edge = document.createElement("div");
-      edge.className = "page-turn-edge";
-      stage.appendChild(edge);
+      // Two animation frames before adding .page-active so the
+      // browser has actually painted the .page-entering initial
+      // state — without this double-rAF, the transition can be
+      // skipped (the element jumps straight to its end state).
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          node.classList.remove("page-entering");
+          node.classList.add("page-active");
+        });
+      });
 
       const dying = prev;
-      setTimeout(() => { try { dying.remove(); } catch (_) {} }, 660);
-      setTimeout(() => { try { edge.remove();  } catch (_) {} }, 660);
+      setTimeout(() => { try { dying.remove(); } catch (_) {} }, 720);
     } else {
       stage.appendChild(node);
+      // First paint after splash: still soft-fade-in instead of
+      // popping. Same two-rAF trick.
+      node.classList.add("page-entering");
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          node.classList.remove("page-entering");
+          node.classList.add("page-active");
+        });
+      });
     }
 
     const view = Views[name];

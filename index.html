@@ -432,38 +432,6 @@
     animation: menu-dust-rise var(--d) linear infinite;
     animation-delay: var(--delay);
   }
-  /* ============================
-     CLICK-POINT DISSOLVE — fixed-position, expands radially from
-     wherever the user actually tapped, fades the menu to white
-     before the page-turn takes over. The user wanted "from the
-     clicked point, dissolving outward" — this is that, sized to
-     cover the full viewport at peak (scale 120 on a 30px circle =
-     3600px diameter, easily past 2x iPad width). */
-  .menu-dissolve {
-    position: fixed;
-    left: var(--dx, 50%);
-    top:  var(--dy, 50%);
-    width:  30px;
-    height: 30px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%) scale(0);
-    background: radial-gradient(circle,
-      rgba(255, 250, 235, 0.96) 0%,
-      rgba(255, 244, 218, 0.88) 45%,
-      rgba(255, 236, 195, 0.55) 75%,
-      rgba(255, 230, 180, 0.10) 95%,
-      transparent              100%);
-    animation: menu-dissolve-grow 680ms cubic-bezier(0.45, 0, 0.7, 0) forwards;
-  }
-  @keyframes menu-dissolve-grow {
-    0%   { transform: translate(-50%, -50%) scale(0);   opacity: 0; }
-    12%  { opacity: 0.85; }
-    55%  { opacity: 0.95; }
-    100% { transform: translate(-50%, -50%) scale(120); opacity: 0.85; }
-  }
-
   @keyframes menu-dust-rise {
     0%   { transform: translate(0, 105vh)                   scale(0.6); opacity: 0; }
     8%   { opacity: 0.78; }

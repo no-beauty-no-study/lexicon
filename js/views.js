@@ -133,20 +133,6 @@ const Views = (function () {
           setTimeout(() => { try { ctx.close(); } catch (_) {} }, 1100);
         } catch (_) {}
       }
-      // Click-point dissolve — body-level overlay so it can't be
-      // clipped by .stage / .cover-bg-layer overflow. clientX/Y
-      // are device-px coords; CSS `position: fixed` resolves them
-      // against the viewport directly so they always land at the
-      // real tap. Auto-removes after 800ms.
-      function spawnDissolveFromPoint(clientX, clientY) {
-        const d = document.createElement("div");
-        d.className = "menu-dissolve";
-        d.style.setProperty("--dx", clientX + "px");
-        d.style.setProperty("--dy", clientY + "px");
-        document.body.appendChild(d);
-        setTimeout(() => { try { d.remove(); } catch (_) {} }, 800);
-      }
-
       host.querySelectorAll(".menu-btn").forEach(btn => {
         btn.addEventListener("click", (e) => {
           const a = btn.dataset.action;
@@ -154,13 +140,10 @@ const Views = (function () {
           void btn.offsetWidth;
           btn.classList.add("is-activated");
           playBookChime();
-          // Dissolve from the actual tap point — the painting fades
-          // to warm white before the page-turn fires, so the cut to
-          // the next view doesn't feel like a PowerPoint slide.
-          spawnDissolveFromPoint(e.clientX, e.clientY);
-          // Hand off late enough that the dissolve is near-full
-          // coverage when the page-turn starts → no visible gap
-          // between "menu still showing" and "next view appearing".
+          // The cinematic fade-up + blur transition in app.js
+          // render() does the heavy lifting — no on-screen white
+          // circle needed. Hold so the badge blessing and bell
+          // are heard/seen before the page lifts away.
           setTimeout(() => {
             if (a === "resume") window.go("#select");
             else                window.go("#chapters?browse=1");

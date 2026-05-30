@@ -276,79 +276,49 @@
 }
 
 /* ============================================================
-   PAGE TURN  (v3 — quiet e-book leaf, no game flash)
-   The user found the gold-sigil flourish too "video-game" for a
-   book. This is a calm page-turn instead: the OUTGOING page stays
-   put underneath while the INCOMING page unfurls over it from the
-   bottom-right corner — a clip-path diagonal reveal — with a single
-   soft light-edge sweeping along the fold from bottom-right to
-   top-left. No 3D mirror flip (which CSS does badly), no sparkles.
-
-   js/app.js keeps both pages in the DOM for ~660 ms: the new page is
-   inserted first (so .stage .page resolves to it) but painted on top
-   via z-index; the old page sits beneath and is removed when done.
+   PAGE TRANSITION — soft cinematic fade-up + blur-to-clear.
+   Replaced the prior clip-path "page-turn" (the user described it
+   as "two yellow flashes across the screen, PowerPoint-style") with
+   the slide-up + opacity + blur model GPT recommended: new page
+   comes in from translateY(28px), filter blur(4px), opacity 0 and
+   eases up to its natural state; old page lifts up and blurs out
+   in the opposite direction. Reads as a camera dolly into the
+   next scene — no flash, no flicker, no hard cuts.
    ============================================================ */
-.page-beneath    { z-index: 1; }
-.page-turning-in {
+.page-entering {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(4px);
+}
+.page-active {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity   760ms ease-out,
+    transform 880ms cubic-bezier(0.22, 0.8, 0.22, 1),
+    filter    860ms ease-out;
   z-index: 2;
-  animation: page-turn-in 600ms cubic-bezier(0.33, 0.02, 0.20, 1) both;
 }
-@keyframes page-turn-in {
-  /* Collapsed triangle pinned at the bottom-right corner … */
-  from { clip-path: polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%); }
-  /* … grows past the top and left edges so the whole leaf is shown.
-     The hypotenuse stays at ~45°, so the reveal reads as a corner
-     being turned down toward the top-left. */
-  to   { clip-path: polygon(100% -120%, 100% 100%, -120% 100%, -120% 100%); }
-}
-
-/* The travelling light-edge — a thin bright/shadow band on a 135°
-   axis whose position sweeps from the bottom-right corner to the
-   top-left, tracking the clip fold. Pure background-position move. */
-.page-turn-edge {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
+.page-leaving {
+  opacity: 0;
+  transform: translateY(-18px);
+  filter: blur(3px);
   pointer-events: none;
-  background-image: linear-gradient(135deg,
-    transparent          43%,
-    rgba(120, 96, 60, 0.16) 47.5%,
-    rgba(255, 250, 235, 0.55) 50%,
-    rgba(120, 96, 60, 0.12) 52.5%,
-    transparent          57%);
-  background-size: 300% 300%;
-  background-repeat: no-repeat;
-  animation: page-edge-sweep 600ms cubic-bezier(0.33, 0.02, 0.20, 1) both;
-}
-@keyframes page-edge-sweep {
-  from { background-position: 100% 100%; opacity: 0.9; }
-  to   { background-position:   0%   0%; opacity: 0;   }
+  z-index: 1;
+  transition:
+    opacity   500ms ease-in,
+    transform 600ms cubic-bezier(0.5, 0, 0.75, 0),
+    filter    500ms ease-in;
 }
 
-/* The new page COMPOSES rather than pops: after the geometric turn
-   sweeps in, the bottom-nav and marginalia panel fade-up into place
-   with a small stagger. Without this, even with the page-turn
-   animation, the panels felt like PowerPoint cuts — appearing at
-   their final state the instant the leaf finished turning. */
-.page-turning-in .ui-bottom-nav {
-  animation: panel-fade-in 420ms ease-out 280ms both;
-}
-.page-turning-in .marginalia-card {
-  animation: panel-fade-in 460ms ease-out 320ms both;
-}
-@keyframes panel-fade-in {
-  0%   { opacity: 0; transform: translateY(6px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-/* Respect reduced-motion: skip the geometric turn, just cross-fade. */
+/* Respect reduced-motion: skip the slide + blur, plain cross-fade. */
 @media (prefers-reduced-motion: reduce) {
-  .page-turning-in {
-    animation: page-fade-in 260ms ease-out both;
-    clip-path: none;
+  .page-entering,
+  .page-active,
+  .page-leaving {
+    transition: opacity 220ms ease !important;
+    transform: none !important;
+    filter:    none !important;
   }
-  @keyframes page-fade-in { from { opacity: 0; } to { opacity: 1; } }
-  .page-turn-edge { display: none; }
-  .page-turning-in .ui-bottom-nav,
-  .page-turning-in .marginalia-card { animation: none; }
 }
