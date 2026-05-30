@@ -359,7 +359,7 @@
 
 .word-card.is-saved {
   background: transparent;
-  box-shadow: none;
+  box-shadow: inset 0 0 10px rgba(100, 84, 56, 0.04);
   border-top:    1px dashed rgba(128, 111, 78, 0.32);
   border-bottom: 1px dashed rgba(128, 111, 78, 0.32);
 }
@@ -367,44 +367,60 @@
   border-top-color:    rgba(168, 122, 58, 0.58);
   border-bottom-color: rgba(168, 122, 58, 0.58);
 }
-/* The folded paper-corner triangle. Specificity matches the
-   sibling-separator rule (.word-card + .word-card::before) — this
-   declaration comes AFTER in source order, so on saved cards the
-   ::before is the fold instead of the divider. Acceptable
-   trade-off; the saved card stands out anyway. */
+/* DOG-EARED CORNER — the fold itself.
+   IMPORTANT: explicitly reset `left` and `bottom` because the
+   sibling-divider rule `.word-card + .word-card::before` sets
+   `left: 6%` with the same specificity; without `left: auto` here
+   the override partially applied — first card's fold corner was
+   correct, the 2nd / 3rd / Nth ones inherited left: 6% and ended
+   up on the LEFT instead of the right. Real bug, real fix. */
 .word-card.is-saved::before {
   content: "";
   position: absolute;
   top: 0;
   right: 0;
-  width: 16px;
-  height: 16px;
+  left: auto;
+  bottom: auto;
+  width: 18px;
+  height: 18px;
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+  /* The fold-face gradient now carries an extra stop right at
+     the inner edge — that becomes the visible "crease line"
+     where the folded paper meets the page underneath. */
   background: linear-gradient(
-    225deg,
-    rgba(245, 235, 215, 0.95) 0%,
-    rgba(220, 200, 165, 0.88) 38%,
-    rgba(178, 158, 112, 0.45) 50%,
-    transparent 51%
+    135deg,
+    rgba(255, 251, 238, 0.94) 0%,
+    rgba(245, 232, 200, 0.90) 30%,
+    rgba(218, 198, 162, 0.85) 58%,
+    rgba(178, 158, 112, 0.55) 82%,
+    rgba(118, 100, 70, 0.42)  91%,   /* crease shadow */
+    transparent              95%
   );
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
-  filter: drop-shadow(-1px 1px 1px rgba(90, 70, 42, 0.20));
+  /* drop-shadow doubles as the "shadow cast on the page below
+     the folded corner" — sells the thickness. */
+  filter: drop-shadow(-1.5px 1.5px 1.5px rgba(90, 72, 42, 0.22));
   pointer-events: none;
+  z-index: 2;
 }
 .word-card.is-saved.is-current::before {
   background: linear-gradient(
-    225deg,
-    rgba(255, 246, 220, 0.98) 0%,
-    rgba(232, 207, 158, 0.94) 38%,
-    rgba(190, 158, 92, 0.62)  50%,
-    transparent 51%
+    135deg,
+    rgba(255, 250, 224, 0.98) 0%,
+    rgba(248, 232, 188, 0.94) 30%,
+    rgba(225, 200, 148, 0.92) 58%,
+    rgba(190, 158, 92, 0.66)  82%,
+    rgba(120, 96, 56, 0.48)   91%,
+    transparent              95%
   );
-  filter: drop-shadow(-1px 1px 2px rgba(90, 70, 42, 0.28));
+  filter: drop-shadow(-1.5px 1.5px 2px rgba(90, 72, 42, 0.30));
 }
 .word-card.is-saved::after {
   content: "❦";
   position: absolute;
   top: 8px;
   right: 22px;       /* shifted left so it doesn't sit on top of the fold */
+  left: auto;
+  bottom: auto;
   font-size: 12px;
   color: rgba(168, 122, 58, 0.70);
   pointer-events: none;

@@ -298,23 +298,40 @@ const Views = (function () {
       });
 
       // === CONTINUOUS RIBBON OVERLAYS ===============================
-      // Each scroll-banner tail flanking the title is now ONE polygon
-      // overlay (not 3 slices) so the cloth never visibly breaks.
-      // Polygon vertices traced from the painting at the user's
-      // exact red-line marks. Root pivot near the title attachment
-      // → rotate around pivot makes the tail swing far while the
-      // root barely moves (the "weighted continuous deformation"
-      // the user asked for).
-      const RIBBON_L_POLYGON =
-        "polygon(15.47% 34.07%, 17.27% 29.83%, 18.30% 24.86%, 18.16% 19.34%, " +
-        "20.93% 17.13%, 24.59% 17.50%, 25.21% 22.10%, 28.80% 21.73%, " +
-        "27.97% 26.34%, 25.55% 26.89%, 24.31% 30.85%, 20.93% 32.41%, " +
-        "17.96% 33.15%)";
-      const RIBBON_R_POLYGON =
-        "polygon(71.00% 21.73%, 73.76% 21.64%, 75.14% 17.50%, 79.07% 17.50%, " +
-        "80.94% 19.71%, 80.80% 24.86%, 84.12% 34.07%, 80.80% 32.23%, " +
-        "78.04% 30.85%, 77.00% 26.89%, 75.00% 26.34%, 73.76% 23.02%, " +
-        "70.72% 22.83%)";
+      // Each scroll-banner tail flanking the title is ONE polygon
+      // overlay — never sliced. User: the 13-point polygon I had
+      // before was still breaking visually at the inner-curl-to-
+      // tail junction (~ y 232–266 on the 1448×1086 ref), because
+      // the contour wasn't dense enough to follow the painted
+      // curl. Replaced with a 26-point clockwise contour traced
+      // along the actual cloth shape (above and BACK across the
+      // inner curl), so the polygon now properly hugs the inside
+      // of the curl too. Junction region is no longer a notch.
+      // ZERO SLICES. ONE shape per ribbon. Continuous deformation
+      // achieved purely via rotation around a root-anchored
+      // transform-origin → tail swings widely, root sits still. */
+      const RIBBON_L_POLYGON = "polygon(" + [
+        [21.20, 17.31], [19.75, 17.50], [18.51, 18.23],
+        [17.82, 19.71], [17.61, 21.73], [17.61, 23.76],
+        [16.85, 26.15], [15.75, 29.37], [15.06, 32.32],
+        [15.06, 34.72], [16.85, 33.52], [19.41, 32.41],
+        [22.10, 32.23], [23.76, 31.59], [24.59, 30.02],
+        [25.00, 27.81], [26.66, 26.80], [28.25, 26.61],
+        [28.73, 24.95], [28.59, 22.47], [27.69, 21.73],
+        [25.83, 21.73], [24.86, 20.63], [24.59, 18.69],
+        [23.48, 17.59], [22.24, 17.31],
+      ].map(p => p[0] + "% " + p[1] + "%").join(", ") + ")";
+      const RIBBON_R_POLYGON = "polygon(" + [
+        [75.14, 17.31], [76.66, 17.40], [78.04, 18.23],
+        [78.73, 19.71], [78.87, 21.73], [78.87, 23.76],
+        [79.63, 26.15], [80.73, 29.37], [81.77, 32.23],
+        [84.25, 34.62], [83.98, 32.14], [82.18, 31.12],
+        [79.14, 30.57], [77.35, 29.74], [76.52, 27.99],
+        [75.97, 26.80], [74.45, 26.61], [72.45, 26.61],
+        [71.55, 24.95], [71.27, 22.47], [72.10, 21.73],
+        [74.03, 21.73], [75.00, 20.63], [75.35, 18.69],
+        [76.17, 17.59], [75.14, 17.31],
+      ].map(p => p[0] + "% " + p[1] + "%").join(", ") + ")";
       function makeRibbon(polygon, pivot, anim, dur, delay) {
         const d = document.createElement("div");
         d.className = "menu-sway menu-ribbon";
@@ -329,8 +346,14 @@ const Views = (function () {
         d.style.animationDirection       = "alternate";
         if (bgLayer) bgLayer.appendChild(d);
       }
-      makeRibbon(RIBBON_L_POLYGON, "22% 17%", "ribbon-wave-l", 7.5, 0);
-      makeRibbon(RIBBON_R_POLYGON, "78% 17%", "ribbon-wave-r", 8.2, -2.5);
+      // Pivot anchored at the painted root attachment (top-centre of
+      // the inner curl, just below the scroll). Rotating around
+      // this point swings the TAIL across the painting while the
+      // top edge — where the ribbon meets the title scroll —
+      // barely shifts. Gives the "root weak, tail strong"
+      // weighting in one continuous transform.
+      makeRibbon(RIBBON_L_POLYGON, "23% 18%", "ribbon-wave-l", 7.5,  0);
+      makeRibbon(RIBBON_R_POLYGON, "77% 18%", "ribbon-wave-r", 8.2, -2.5);
 
       // === Magic-dust motes — slow upward drift =====================
       // 20 small luminous specks slowly rise from below the page,
