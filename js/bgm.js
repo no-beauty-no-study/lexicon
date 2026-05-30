@@ -80,11 +80,20 @@
 
   function clampVol(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
 
+  // Each call to fade() bumps fadeTok and the rAF loop bails out the
+  // moment a newer fade (or an explicit setVolume) supersedes it.
+  // Without this, dragging the volume slider while a fade is mid-flight
+  // would have the slider's audio.volume = userVolume immediately
+  // clobbered by the next frame of the in-flight fade — i.e. "I dragged
+  // and nothing happened", which is exactly what the user reported.
+  let fadeTok = 0;
   function fade(target, ms, onDone) {
     if (!audio) return;
+    const mine = ++fadeTok;
     const start = audio.volume;
     const t0 = performance.now();
     (function step(now) {
+      if (mine !== fadeTok) return;            // newer fade owns audio now
       const p = Math.min(1, (now - t0) / ms);
       audio.volume = clampVol(start + (target - start) * p);
       if (p < 1) requestAnimationFrame(step);
@@ -136,9 +145,13 @@
 
   // ---- Public controls bound by the global BGM widget ----
   function setVolume(v) {
-    userVolume = Math.min(1, Math.max(0, +v || 0));
+    const n = parseFloat(v);
+    userVolume = isFinite(n) ? Math.min(1, Math.max(0, n)) : 0;
     try { localStorage.setItem("tpl.bgmVol", String(userVolume)); } catch (_) {}
-    if (audio) audio.volume = userVolume;
+    if (audio) {
+      fadeTok++;                     // cancel any in-progress fade
+      audio.volume = userVolume;
+    }
   }
   function getVolume() { return userVolume; }
   function nextTrack() {

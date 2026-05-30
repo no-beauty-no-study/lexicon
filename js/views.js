@@ -93,25 +93,60 @@ const Views = (function () {
   /* ---------- menu ---------- */
   const menu = {
     init(host) {
-      // ---- button click + 4-layer antique feedback -----------------
+      // === button click + 4-layer antique feedback ==================
       // Layer 1 (hover)      → CSS only, mouse-only (iPad has no hover)
       // Layer 2 (press sink) → CSS only, .menu-btn:active rule
       // Layer 3 (gold ripple)→ ::after on .menu-btn, pointerdown fires
-      // Layer 4 (badge + character-specific gleam/unlock) → .is-activated
-      //                        class set on click; navigation is held
-      //                        ~440ms so the ceremony actually plays
-      //                        before the page-turn. Left = gleam sweep,
-      //                        right = unlock pulse, both = badge bless.
+      // Layer 4 (badge bless)→ .is-activated class; the bigger blessing
+      //                        + expanding ring play for 820ms before
+      //                        navigation hands off to the page-turn.
+      // A short warm bell tone fires on click for auditory "opening".
+      function playBookChime() {
+        try {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (!Ctx) return;
+          const ctx = new Ctx();
+          // Two-note rising: G5 → C6, soft triangle wave, sustained
+          // partial overtone for a small bell colour. ~520ms total.
+          const notes = [783.99, 1046.50];
+          const now = ctx.currentTime;
+          notes.forEach((f, i) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = "triangle"; o.frequency.value = f;
+            const t0 = now + i * 0.08;
+            g.gain.setValueAtTime(0, t0);
+            g.gain.linearRampToValueAtTime(0.18, t0 + 0.02);
+            g.gain.exponentialRampToValueAtTime(0.0008, t0 + 0.5);
+            o.connect(g).connect(ctx.destination);
+            o.start(t0); o.stop(t0 + 0.55);
+          });
+          // Light overtone for the warm-bell colour.
+          const o2 = ctx.createOscillator();
+          const g2 = ctx.createGain();
+          o2.type = "sine"; o2.frequency.value = 1567.98;
+          g2.gain.setValueAtTime(0, now);
+          g2.gain.linearRampToValueAtTime(0.06, now + 0.04);
+          g2.gain.exponentialRampToValueAtTime(0.0006, now + 0.45);
+          o2.connect(g2).connect(ctx.destination);
+          o2.start(now); o2.stop(now + 0.5);
+          setTimeout(() => { try { ctx.close(); } catch (_) {} }, 1100);
+        } catch (_) {}
+      }
       host.querySelectorAll(".menu-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const a = btn.dataset.action;
           btn.classList.remove("is-activated");
           void btn.offsetWidth;
           btn.classList.add("is-activated");
+          playBookChime();
+          // Hold for ~600ms so the blessing's mid-flare hits the eye
+          // before the page-turn animation begins. 820ms total anim;
+          // hand off after the brightest moment.
           setTimeout(() => {
             if (a === "resume") window.go("#select");
             else                window.go("#chapters?browse=1");
-          }, 440);
+          }, 600);
         });
         btn.addEventListener("pointerdown", (e) => {
           const rect = btn.getBoundingClientRect();
@@ -130,28 +165,65 @@ const Views = (function () {
         });
       });
 
-      // ---- A1 / A2 star spawning ---------------------------------
-      // Each star is its own div so twinkle delays can stagger and
-      // the layer never reads as a synced shimmer. Position is
-      // uniformly random within the zone (each layer has its own
-      // % bounds from CSS). 7 stars over the title area, 12 over
-      // the dark circle sky — denser there to read as a starry sky.
-      function spawnStars(selector, n, sizeMin, sizeMax) {
-        const layer = host.querySelector(selector);
+      // === sparkles — explicit coords per the painting spec ==========
+      // All four point lists below are PIXEL coords on the 1366×1024
+      // painting; converted to % inline so the same layout survives
+      // the .stage scale transform on different iPad widths.
+      const W = 1366, H = 1024;
+      const px = (x) => (x / W * 100) + "%";
+      const py = (y) => (y / H * 100) + "%";
+      function spawnStar(x, y, opt) {
+        const layer = host.querySelector(".cover-bg-layer");
         if (!layer) return;
-        for (let i = 0; i < n; i++) {
-          const s = document.createElement("div");
-          s.className = "menu-star";
-          s.style.setProperty("--x",     (Math.random() * 96 + 2) + "%");
-          s.style.setProperty("--y",     (Math.random() * 96 + 2) + "%");
-          s.style.setProperty("--d",     (3.2 + Math.random() * 3.6) + "s");
-          s.style.setProperty("--delay", (-Math.random() * 5)        + "s");
-          s.style.setProperty("--sz",    (sizeMin + Math.random() * (sizeMax - sizeMin)) + "px");
-          layer.appendChild(s);
-        }
+        const s = document.createElement("div");
+        s.className = "menu-star" + (opt.cross ? " is-cross" : "");
+        s.style.setProperty("--x", px(x));
+        s.style.setProperty("--y", py(y));
+        s.style.setProperty("--sz", opt.size + "px");
+        s.style.setProperty("--d", opt.dur + "s");
+        s.style.setProperty("--delay", (-Math.random() * 5) + "s");
+        if (opt.cross) s.textContent = "✦";
+        layer.appendChild(s);
       }
-      spawnStars(".stars-title",  7,  1.6, 3.0);
-      spawnStars(".stars-circle", 12, 1.4, 2.8);
+      function rnd(lo, hi) { return lo + Math.random() * (hi - lo); }
+
+      // --- A. Night-sky dot glows (small round) ---
+      [
+        [431, 228], [500, 216], [566, 232], [701, 233],
+        [850, 366], [917, 337], [931, 263], [461, 321],
+        [618, 332], [579, 429], [758, 408],
+      ].forEach(([x, y]) =>
+        spawnStar(x, y, { size: rnd(2, 4), dur: rnd(3.2, 5.5) }));
+
+      // --- A. Night-sky cross-stars (twinkle in/out) ---
+      [
+        [626, 248], [785, 226], [544, 361],
+        [765, 324], [633, 404], [837, 436],
+      ].forEach(([x, y]) =>
+        spawnStar(x, y, { cross: true, size: rnd(9, 13), dur: rnd(2.8, 5.5) }));
+
+      // --- C. Moon-side accent dots (NOT the moon itself) ---
+      [
+        [486, 248], [546, 255], [552, 308],
+      ].forEach(([x, y]) =>
+        spawnStar(x, y, { size: rnd(2, 3), dur: rnd(3.0, 5.0) }));
+
+      // --- B. Wand-tip surrounding sparkles (3 dots + 2 crosses) ---
+      [
+        [626, 461], [682, 482], [617, 492],
+      ].forEach(([x, y]) =>
+        spawnStar(x, y, { size: rnd(2, 3), dur: rnd(2.5, 4.0) }));
+      [
+        [666, 452], [654, 503],
+      ].forEach(([x, y]) =>
+        spawnStar(x, y, { cross: true, size: rnd(7, 10), dur: rnd(2.5, 4.0) }));
+
+      // --- G. Lake glints — small, slow, well away from princess ---
+      [
+        [470, 704], [561, 723], [890, 711],
+        [958, 742], [823, 760],
+      ].forEach(([x, y]) =>
+        spawnStar(x, y, { size: rnd(1.5, 2.5), dur: rnd(4.0, 6.5) }));
     },
   };
 

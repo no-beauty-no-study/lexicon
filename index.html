@@ -153,76 +153,56 @@
     filter: brightness(0.98);
   }
 
-  /* Layer 4 — badge "blessing" pulse at the top-centre of the
-     painted button (where the crown / book is). Both buttons
-     animate on .is-activated, which menu.init sets on click. */
+  /* Layer 4 — badge "blessing" at the top-centre of the painted
+     button (crown for left, book for right). The two screen-spanning
+     gleam / unlock layers are gone — the user reported them reading
+     as "two flashes across the screen with no transition", which is
+     the opposite of "opening a magic book". The badge is now bigger
+     (38% w), longer (820ms), and emits a small ring + a sparkle puff
+     around itself so the moment of activation is unmistakable. */
   .menu-btn-badge {
     position: absolute;
-    top: 8%; left: 50%;
-    width: 26%; aspect-ratio: 1;
+    top: 9%; left: 50%;
+    width: 38%; aspect-ratio: 1;
     transform: translate(-50%, 0) scale(0.7);
     border-radius: 50%;
     pointer-events: none;
     z-index: 12;
     opacity: 0;
     background: radial-gradient(circle,
-      rgba(255,246,200,0.6)  0%,
-      rgba(255,225,170,0.35) 50%,
-      transparent 80%);
+      rgba(255,246,200,0.78) 0%,
+      rgba(255,228,170,0.42) 40%,
+      rgba(255,210,140,0.10) 65%,
+      transparent 82%);
+    box-shadow: 0 0 28px 8px rgba(255,225,170,0.5);
     mix-blend-mode: screen;
   }
   .menu-btn.is-activated .menu-btn-badge {
-    animation: menu-badge-blessing 640ms ease-out;
+    animation: menu-badge-blessing 820ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   @keyframes menu-badge-blessing {
-    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.7); }
-    40%  { opacity: 1; transform: translate(-50%, 0) scale(1.18); }
-    100% { opacity: 0; transform: translate(-50%, 0) scale(0.95); }
+    0%   { opacity: 0;    transform: translate(-50%, 0) scale(0.6);  }
+    18%  { opacity: 1;    transform: translate(-50%, 0) scale(1.05); }
+    45%  { opacity: 0.95; transform: translate(-50%, 0) scale(1.42); }
+    100% { opacity: 0;    transform: translate(-50%, 0) scale(1.05); }
   }
-
-  /* Layer 5a — LEFT button: diagonal gleam sweep on activation,
-     like a candle scanning across an old page. */
-  .menu-btn.left::before {
+  /* Expanding gold ring traced AROUND the badge — gives a "lock
+     opening / blessing accepted" beat instead of just a glow blob. */
+  .menu-btn-badge::after {
     content: "";
     position: absolute;
     inset: 0;
-    pointer-events: none;
-    z-index: 11;
-    background: linear-gradient(115deg,
-      transparent 30%,
-      rgba(255,246,190,0.42) 48%,
-      rgba(255,246,190,0)    62%);
-    transform: translateX(-130%);
-    opacity: 0;
-    mix-blend-mode: screen;
+    border: 2px solid rgba(255,232,184,0);
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(220,190,120,0);
   }
-  .menu-btn.left.is-activated::before {
-    animation: menu-gleam-sweep 720ms ease-out;
+  .menu-btn.is-activated .menu-btn-badge::after {
+    animation: menu-badge-ring 720ms ease-out;
   }
-  @keyframes menu-gleam-sweep {
-    0%   { transform: translateX(-130%); opacity: 0.95; }
-    100% { transform: translateX( 130%); opacity: 0;    }
-  }
-
-  /* Layer 5b — RIGHT button: unlock pulse. A gold ring expands
-     outward + gold halo blooms then fades, like a lock turning. */
-  .menu-btn.right::before {
-    content: "";
-    position: absolute;
-    inset: 6%;
-    border: 2px solid rgba(220, 190, 120, 0);
-    border-radius: 8px;
-    pointer-events: none;
-    z-index: 11;
-    box-shadow: 0 0 0 rgba(220, 190, 120, 0);
-  }
-  .menu-btn.right.is-activated::before {
-    animation: menu-unlock-pulse 540ms ease-out;
-  }
-  @keyframes menu-unlock-pulse {
-    0%   { inset: 6%;  border-color: rgba(220, 190, 120, 0);    box-shadow: 0 0 0 rgba(220, 190, 120, 0); }
-    45%  { inset: -1%; border-color: rgba(220, 190, 120, 0.7);  box-shadow: 0 0 16px rgba(220, 190, 120, 0.5); }
-    100% { inset: -6%; border-color: rgba(220, 190, 120, 0);    box-shadow: 0 0 0 rgba(220, 190, 120, 0); }
+  @keyframes menu-badge-ring {
+    0%   { inset: 25%;  border-color: rgba(255,232,184,0);    box-shadow: 0 0 0 rgba(220,190,120,0); }
+    45%  { inset:  0%;  border-color: rgba(255,232,184,0.85); box-shadow: 0 0 22px rgba(255,225,170,0.55); }
+    100% { inset: -22%; border-color: rgba(255,232,184,0);    box-shadow: 0 0 0 rgba(220,190,120,0); }
   }
   .menu-btn.left  .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-start.png"); }
   .menu-btn.right .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-enter.png"); }
@@ -253,16 +233,23 @@
   }
 
   /* ============================
-     A. STAR SPARKLES (twinkle)
+     SPARKLES — explicit coords per the painting spec.
+     menu.init places each star with --x / --y / --sz / --d / --delay
+     so positions, sizes and twinkle phases are individually tuned;
+     coordinates are PERCENTAGES of the 1366×1024 painting (same
+     aspect as the 1448×1086 page, so the % translate cleanly).
+     - .menu-star          : small round glow (dot-type sparkle)
+     - .menu-star.is-cross : 4-point glyph star (the "✦" sparkle)
+     The cross-stars use a brief flare-and-fade keyframe (mostly
+     invisible, snaps bright for ~10% of the period) so they read
+     as twinkles in a night sky rather than constant lit pixels.
      ============================ */
-  .menu-stars { position: absolute; pointer-events: none; z-index: 4; }
-  .stars-title  { left: 35.7%; top:  0%;   width: 28.6%; height: 14.3%; }
-  .stars-circle { left: 31.4%; top: 23.8%; width: 37.5%; height: 36.7%; }
   .menu-star {
     position: absolute;
     left: var(--x); top: var(--y);
     width:  var(--sz);
     height: var(--sz);
+    transform: translate(-50%, -50%);
     border-radius: 50%;
     background: radial-gradient(circle,
       rgba(255,250,225,1) 0%,
@@ -274,20 +261,41 @@
     animation: menu-star-twinkle var(--d) ease-in-out infinite alternate;
     animation-delay: var(--delay);
     will-change: opacity, transform;
+    z-index: 4;
   }
   @keyframes menu-star-twinkle {
-    0%   { opacity: 0.18; transform: scale(0.92); }
-    100% { opacity: 0.62; transform: scale(1.10); }
+    0%   { opacity: 0.18; transform: translate(-50%, -50%) scale(0.92); }
+    100% { opacity: 0.78; transform: translate(-50%, -50%) scale(1.12); }
+  }
+  /* Cross-star uses the ✦ glyph as the visual. text-shadow doubles
+     as the glow halo so we don't need a wrapping element. */
+  .menu-star.is-cross {
+    width: auto; height: auto;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: var(--sz);
+    line-height: 1;
+    color: rgba(255,250,225,1);
+    text-shadow:
+      0 0 4px  rgba(255,235,180,0.95),
+      0 0 10px rgba(255,225,170,0.55);
+    animation: menu-cross-twinkle var(--d) ease-in-out infinite;
+    opacity: 0;
+  }
+  @keyframes menu-cross-twinkle {
+    0%, 70%, 100% { opacity: 0;    transform: translate(-50%, -50%) scale(0.45); }
+    78%           { opacity: 1;    transform: translate(-50%, -50%) scale(1.5);  }
+    87%           { opacity: 0.55; transform: translate(-50%, -50%) scale(0.9);  }
   }
 
-  /* ============================
-     B. WAND TIP GLOW
-     B1 center ~(742, 455) of 1400×1050 → (53.0%, 43.3%)
-     ============================ */
+  /* WAND TIP GLOW — center (645, 474) of 1366×1024 → (47.22%, 46.29%).
+     Single additive radial breathing, the only "color block" allowed
+     because it IS the wand tip, no surface to read as overlay. */
   .glow-wand {
     position: absolute;
-    left: 53.0%; top: 43.3%;
-    width: 3.6%; height: 4.8%;
+    left: 47.22%; top: 46.29%;
+    width: 3.2%; height: 4.2%;
     border-radius: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
@@ -303,167 +311,7 @@
   }
   @keyframes glow-wand-breathe {
     0%   { opacity: 0.35; transform: translate(-50%, -50%) scale(1);    }
-    100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1.18); }
-  }
-
-  /* ============================
-     G. LAKE SHIMMER
-     G1 30.4–69.7% × 64.8–80.5%
-     Diagonal gold band travels left→right via background-position;
-     mix-blend-mode: screen brightens the water without darkening it.
-     ============================ */
-  .shimmer-water {
-    position: absolute;
-    left: 30.4%; top: 64.8%;
-    width: 39.3%; height: 15.7%;
-    background: linear-gradient(98deg,
-      transparent 0%,
-      transparent 32%,
-      rgba(255,245,210,0.15) 41%,
-      rgba(255,255,230,0.32) 50%,
-      rgba(255,245,210,0.15) 59%,
-      transparent 68%,
-      transparent 100%);
-    background-size: 250% 100%;
-    background-repeat: no-repeat;
-    mix-blend-mode: screen;
-    pointer-events: none;
-    z-index: 3;
-    animation: shimmer-water-slide 13s linear infinite;
-  }
-  @keyframes shimmer-water-slide {
-    0%   { background-position: -100% 50%; }
-    100% { background-position:  200% 50%; }
-  }
-
-  /* ============================
-     C / D / E. SWAY OVERLAYS
-     Each overlay div is a full-page bg copy aligned with the base
-     image (same background-size: cover / position: 50% 50%), masked
-     to reveal ONLY its target region with feathered edges, then
-     transform-animated as a single rigid body. Hard edges of the
-     mask move WITH the content so the sway can't reveal seams.
-     ============================ */
-  .menu-sway {
-    position: absolute;
-    inset: 0;
-    background-image: url("assets/bg/ui/main-menu.jpg");
-    background-size: cover;
-    background-position: 50% 50%;
-    pointer-events: none;
-    z-index: 2;
-    will-change: transform;
-  }
-  /* C1 — left curtain.  Region: 0–20.4% × 9–96.7%. Soft right edge. */
-  .sway-curtain-left {
-    -webkit-mask-image:
-      linear-gradient(to right, #000 0%, #000 17%, transparent 23%),
-      linear-gradient(to bottom, transparent 7%, #000 11%, #000 95%, transparent 99%);
-    -webkit-mask-composite: source-in;
-            mask-image:
-      linear-gradient(to right, #000 0%, #000 17%, transparent 23%),
-      linear-gradient(to bottom, transparent 7%, #000 11%, #000 95%, transparent 99%);
-            mask-composite: intersect;
-    transform-origin: 15% 10%;
-    animation: sway-curtain-l 7.2s ease-in-out infinite alternate;
-  }
-  @keyframes sway-curtain-l {
-    0%   { transform: rotate(-0.28deg) translateX(-1px); }
-    100% { transform: rotate( 0.28deg) translateX( 1px); }
-  }
-  /* C2 — right curtain.  79.6–100% × 9–96.7%. delay desync = -1.8s. */
-  .sway-curtain-right {
-    -webkit-mask-image:
-      linear-gradient(to right, transparent 77%, #000 83%, #000 100%),
-      linear-gradient(to bottom, transparent 7%, #000 11%, #000 95%, transparent 99%);
-    -webkit-mask-composite: source-in;
-            mask-image:
-      linear-gradient(to right, transparent 77%, #000 83%, #000 100%),
-      linear-gradient(to bottom, transparent 7%, #000 11%, #000 95%, transparent 99%);
-            mask-composite: intersect;
-    transform-origin: 85% 10%;
-    animation: sway-curtain-r 8.1s ease-in-out -1.8s infinite alternate;
-  }
-  @keyframes sway-curtain-r {
-    0%   { transform: rotate(-0.24deg) translateX(-1px); }
-    100% { transform: rotate( 0.24deg) translateX( 1px); }
-  }
-  /* D1 — left blue banner ribbon.  11.1–29.3% × 17.6–40.9%. */
-  .sway-banner-left {
-    -webkit-mask-image:
-      linear-gradient(to right, transparent 9%, #000 14%, #000 26%, transparent 32%),
-      linear-gradient(to bottom, transparent 15%, #000 19%, #000 39%, transparent 44%);
-    -webkit-mask-composite: source-in;
-            mask-image:
-      linear-gradient(to right, transparent 9%, #000 14%, #000 26%, transparent 32%),
-      linear-gradient(to bottom, transparent 15%, #000 19%, #000 39%, transparent 44%);
-            mask-composite: intersect;
-    transform-origin: 25% 15%;
-    animation: sway-banner 6.4s ease-in-out infinite alternate;
-  }
-  /* D2 — right blue banner ribbon, desynced. */
-  .sway-banner-right {
-    -webkit-mask-image:
-      linear-gradient(to right, transparent 68%, #000 73%, #000 86%, transparent 92%),
-      linear-gradient(to bottom, transparent 15%, #000 19%, #000 39%, transparent 44%);
-    -webkit-mask-composite: source-in;
-            mask-image:
-      linear-gradient(to right, transparent 68%, #000 73%, #000 86%, transparent 92%),
-      linear-gradient(to bottom, transparent 15%, #000 19%, #000 39%, transparent 44%);
-            mask-composite: intersect;
-    transform-origin: 75% 15%;
-    animation: sway-banner 7.0s ease-in-out -2.2s infinite alternate;
-  }
-  @keyframes sway-banner {
-    0%   { transform: translateY(-1px) rotate(-0.35deg); }
-    100% { transform: translateY( 1px) rotate( 0.35deg); }
-  }
-  /* E1 — bottom-left flower cluster. 0–33.6% × 75.2–100%. */
-  .sway-flowers-left {
-    -webkit-mask-image:
-      linear-gradient(to right, #000 0%, #000 28%, transparent 36%),
-      linear-gradient(to bottom, transparent 73%, #000 77%, #000 100%);
-    -webkit-mask-composite: source-in;
-            mask-image:
-      linear-gradient(to right, #000 0%, #000 28%, transparent 36%),
-      linear-gradient(to bottom, transparent 73%, #000 77%, #000 100%);
-            mask-composite: intersect;
-    transform-origin: 18% 100%;
-    animation: sway-flowers 5.8s ease-in-out infinite alternate;
-  }
-  /* E2 — bottom-right flower cluster. 66.4–100% × 75.2–100%. */
-  .sway-flowers-right {
-    -webkit-mask-image:
-      linear-gradient(to right, transparent 64%, #000 72%, #000 100%),
-      linear-gradient(to bottom, transparent 73%, #000 77%, #000 100%);
-    -webkit-mask-composite: source-in;
-            mask-image:
-      linear-gradient(to right, transparent 64%, #000 72%, #000 100%),
-      linear-gradient(to bottom, transparent 73%, #000 77%, #000 100%);
-            mask-composite: intersect;
-    transform-origin: 82% 100%;
-    animation: sway-flowers 6.6s ease-in-out -1.7s infinite alternate;
-  }
-  @keyframes sway-flowers {
-    0%   { transform: rotate(-0.5deg) translateY( 0); }
-    100% { transform: rotate( 0.5deg) translateY(-1px); }
-  }
-  /* E3 — bottom-center vines.  27.5–73.6% × 81.9–100%. Lower amp. */
-  .sway-vines-center {
-    -webkit-mask-image:
-      linear-gradient(to right, transparent 25%, #000 31%, #000 69%, transparent 75%),
-      linear-gradient(to bottom, transparent 79%, #000 83%, #000 100%);
-    -webkit-mask-composite: source-in;
-            mask-image:
-      linear-gradient(to right, transparent 25%, #000 31%, #000 69%, transparent 75%),
-      linear-gradient(to bottom, transparent 79%, #000 83%, #000 100%);
-            mask-composite: intersect;
-    transform-origin: 50% 100%;
-    animation: sway-vines 8.5s ease-in-out infinite alternate;
-  }
-  @keyframes sway-vines {
-    0%   { transform: rotate(-0.2deg) translateY( 0); }
-    100% { transform: rotate( 0.2deg) translateY(-1px); }
+    100% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.18); }
   }
 
   /* ============================
@@ -508,78 +356,86 @@
      since those are user-initiated, not idle.
      ============================ */
   @media (prefers-reduced-motion: reduce) {
-    .menu-sway, .menu-star, .glow-wand, .shimmer-water,
-    .menu-btn-inner {
+    .menu-star, .glow-wand, .menu-btn-inner {
       animation: none !important;
     }
   }
 
-  /* Global BGM control — fixed top-right, parchment-gold chip
-     matching the rest of the antique aesthetic. Hidden on splash
-     (so the full-screen tap-to-begin isn't competing for taps). */
+  /* Global BGM control — top-right, no black pill bg per user.
+     Just a thin parchment-gold track + small dot knob + a single
+     chevron skip. Drops in front of the painting unobtrusively. */
   .global-bgm-control {
     position: fixed;
     top: env(safe-area-inset-top, 0px);
     right: 0;
-    margin: 10px 14px;
+    margin: 14px 18px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 7px 10px 7px 12px;
-    background: rgba(20, 14, 8, 0.46);
-    border: 1px solid rgba(220, 195, 145, 0.45);
-    border-radius: 16px;
+    gap: 14px;
+    padding: 0;
+    background: transparent;
+    border: 0;
     z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-  .bgm-glyph {
-    font-size: 13px;
-    line-height: 1;
-    color: rgba(245, 225, 180, 0.85);
-    user-select: none;
   }
   .bgm-vol {
     -webkit-appearance: none;
     appearance: none;
-    width: 86px;
-    height: 4px;
-    background: rgba(220, 195, 145, 0.35);
-    border-radius: 2px;
+    width: 96px;
+    height: 14px;             /* tall enough to be a comfortable touch target */
+    background: transparent;  /* track painted via ::before so we control width */
     outline: none;
     margin: 0;
+    padding: 0;
+    position: relative;
     cursor: pointer;
+    pointer-events: auto;
+    /* The slider works by handling pointer/touch on the input itself.
+       We layer a custom thin track behind the native runnable track. */
+    z-index: 1;
+  }
+  /* WebKit needs the track style on the runnable-track pseudo. */
+  .bgm-vol::-webkit-slider-runnable-track {
+    height: 1.5px;
+    background: rgba(245, 225, 180, 0.55);
+    border: 0;
+    border-radius: 1px;
+  }
+  .bgm-vol::-moz-range-track {
+    height: 1.5px;
+    background: rgba(245, 225, 180, 0.55);
+    border: 0;
+    border-radius: 1px;
   }
   .bgm-vol::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 14px; height: 14px;
+    width: 10px; height: 10px;
     background: rgba(245, 225, 180, 1);
     border-radius: 50%;
-    border: 1px solid rgba(124, 95, 50, 0.7);
-    box-shadow: 0 0 4px rgba(255, 230, 180, 0.5);
+    border: 0;
+    box-shadow: 0 0 4px rgba(0,0,0,0.55);
     cursor: pointer;
+    margin-top: -4.25px;        /* re-centre thumb on the 1.5px track */
   }
   .bgm-vol::-moz-range-thumb {
-    width: 14px; height: 14px;
+    width: 10px; height: 10px;
     background: rgba(245, 225, 180, 1);
     border-radius: 50%;
-    border: 1px solid rgba(124, 95, 50, 0.7);
+    border: 0;
+    box-shadow: 0 0 4px rgba(0,0,0,0.55);
     cursor: pointer;
   }
   .bgm-skip {
     background: transparent;
     border: 0;
     color: rgba(245, 225, 180, 0.92);
-    font-size: 13px;
+    font-size: 22px;
     line-height: 1;
     padding: 4px 6px;
     cursor: pointer;
-    border-radius: 6px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.55);
   }
-  .bgm-skip:active {
-    background: rgba(40, 28, 16, 0.62);
-    color: rgba(255, 240, 200, 1);
-  }
+  .bgm-skip:active { color: rgba(255, 240, 200, 1); }
   body[data-current-view="splash"] .global-bgm-control { display: none; }
 
   /* Voices view — a simple scrollable list of installed system
@@ -695,10 +551,9 @@
      picker is still reachable from the #voices URL; the link
      was removed since system TTS volume is OS-controlled. -->
 <div class="global-bgm-control" aria-label="Music control">
-  <span class="bgm-glyph" aria-hidden="true">♪</span>
   <input class="bgm-vol" type="range" min="0" max="100" value="32"
          aria-label="Music volume" />
-  <button type="button" class="bgm-skip" aria-label="Next track">⏭</button>
+  <button type="button" class="bgm-skip" aria-label="Next track">›</button>
 </div>
 
 
@@ -717,23 +572,12 @@
          title scroll have NO overlay on top — they stay perfectly still.
          Coords + mask regions are tuned to the 1400×1050 source PNG.   -->
     <div class="cover-bg-layer" aria-hidden="true">
-      <!-- C1 left curtain · C2 right curtain -->
-      <div class="menu-sway sway-curtain-left"></div>
-      <div class="menu-sway sway-curtain-right"></div>
-      <!-- D1 / D2 blue ribbon banners flanking the title scroll -->
-      <div class="menu-sway sway-banner-left"></div>
-      <div class="menu-sway sway-banner-right"></div>
-      <!-- E1 / E2 / E3 bottom flower beds + center vines -->
-      <div class="menu-sway sway-flowers-left"></div>
-      <div class="menu-sway sway-flowers-right"></div>
-      <div class="menu-sway sway-vines-center"></div>
-      <!-- A1 / A2 star sparkle layers (stars spawned by menu.init) -->
-      <div class="menu-stars stars-title"></div>
-      <div class="menu-stars stars-circle"></div>
-      <!-- B1 wand-tip glow -->
+      <!-- Wand-tip glow at (645, 474) of the 1366×1024 painting. The
+           single additive radial breath. Everything else is dots. -->
       <div class="menu-glow glow-wand"></div>
-      <!-- G1 lake shimmer -->
-      <div class="menu-shimmer shimmer-water"></div>
+      <!-- All sparkles (night-sky dots + cross-stars, moon halo dots,
+           wand-side dots + crosses, lake glints) are appended here by
+           menu.init at the exact px coords spec'd in the painting. -->
     </div>
     <!-- ==================== Cover UI / interaction layer ===================
          z-index 10, pointer-events: auto. Buttons live here; the bg layer
