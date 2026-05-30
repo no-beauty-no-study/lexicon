@@ -93,19 +93,26 @@ const Views = (function () {
   /* ---------- menu ---------- */
   const menu = {
     init(host) {
-      // ---- button click + antique-gold ripple feedback ------------
+      // ---- button click + 4-layer antique feedback -----------------
+      // Layer 1 (hover)      → CSS only, mouse-only (iPad has no hover)
+      // Layer 2 (press sink) → CSS only, .menu-btn:active rule
+      // Layer 3 (gold ripple)→ ::after on .menu-btn, pointerdown fires
+      // Layer 4 (badge + character-specific gleam/unlock) → .is-activated
+      //                        class set on click; navigation is held
+      //                        ~440ms so the ceremony actually plays
+      //                        before the page-turn. Left = gleam sweep,
+      //                        right = unlock pulse, both = badge bless.
       host.querySelectorAll(".menu-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const a = btn.dataset.action;
-          // Resume → Select (the three-arch screen) so the user can
-          // still pick Story / Notes / Word Garden. The actual
-          // "continue from last read" hop lives on the Story arch.
-          if (a === "resume") window.go("#select");
-          else                window.go("#chapters?browse=1");
+          btn.classList.remove("is-activated");
+          void btn.offsetWidth;
+          btn.classList.add("is-activated");
+          setTimeout(() => {
+            if (a === "resume") window.go("#select");
+            else                window.go("#chapters?browse=1");
+          }, 440);
         });
-        // pointerdown fires earlier than click → ripple expands while
-        // the press is still happening, not after release. Better
-        // perceived responsiveness.
         btn.addEventListener("pointerdown", (e) => {
           const rect = btn.getBoundingClientRect();
           if (!rect.width) return;
@@ -114,13 +121,12 @@ const Views = (function () {
           btn.style.setProperty("--ripple-x", x + "%");
           btn.style.setProperty("--ripple-y", y + "%");
           btn.classList.remove("is-clicking");
-          void btn.offsetWidth;             // restart the keyframe
+          void btn.offsetWidth;
           btn.classList.add("is-clicking");
         });
         btn.addEventListener("animationend", (e) => {
-          if (e.animationName === "menu-btn-ripple") {
-            btn.classList.remove("is-clicking");
-          }
+          if (e.animationName === "menu-btn-ripple")     btn.classList.remove("is-clicking");
+          if (e.animationName === "menu-badge-blessing") btn.classList.remove("is-activated");
         });
       });
 

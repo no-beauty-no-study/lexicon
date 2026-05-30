@@ -31,11 +31,42 @@
     "north-america":     "23_reading_northamerica_skip.mp3",
   };
 
-  const TARGET_VOLUME = 0.32;
+  const DEFAULT_VOLUME = 0.32;
+
+  // Full track inventory — used by nextTrack() for manual cycling
+  // when the player wants something other than the per-view default.
+  const ALL_TRACKS = [
+    UI_TRACK,
+    "02_note.mp3",
+    "03_words_garden.mp3",
+    "04_story_lobby.mp3",
+    "05_choice_quiz_all_fast_short.mp3",
+    "06_reading_universe_dark.mp3",
+    "08_reading_earth_sunlit.mp3",
+    "10_reading_africa_sunflower.mp3",
+    "12_reading_antarctica_ice.mp3",
+    "14_reading_australia_garden.mp3",
+    "16_reading_southamerica_clocktower.mp3",
+    "18_reading_asia_alice_key.mp3",
+    "20_reading_ocean_cafe_swing.mp3",
+    "21_reading_europe_empress.mp3",
+    "23_reading_northamerica_skip.mp3",
+  ];
 
   let audio        = null;
   let currentTrack = null;
   let unlocked     = false;
+  // manualTrack: if non-null, applyForView ignores its per-view
+  // default and keeps playing whatever the user picked. Reset by
+  // BGM.autoMode() so view changes drive the music again.
+  let manualTrack  = null;
+
+  let userVolume = (() => {
+    try {
+      const v = parseFloat(localStorage.getItem("tpl.bgmVol"));
+      return isFinite(v) ? Math.min(1, Math.max(0, v)) : DEFAULT_VOLUME;
+    } catch (_) { return DEFAULT_VOLUME; }
+  })();
 
   function ensureAudio() {
     if (audio) return audio;
@@ -73,13 +104,13 @@
     if (!audio) return;
     const p = audio.play();
     if (p && p.then) {
-      p.then(() => fade(TARGET_VOLUME, 600))
+      p.then(() => fade(userVolume, 600))
        .catch(() => { /* iOS will retry on next gesture */ });
     }
   }
 
   function applyForView(name, params) {
-    const track = trackForView(name, params);
+    const track = manualTrack || trackForView(name, params);
     ensureAudio();
     if (track === currentTrack) {
       if (audio.paused) playNow();
@@ -103,5 +134,27 @@
   ["touchstart","pointerdown","click","keydown"].forEach(ev =>
     document.addEventListener(ev, wakeUp, { passive: true }));
 
-  window.BGM = { applyForView };
+  // ---- Public controls bound by the global BGM widget ----
+  function setVolume(v) {
+    userVolume = Math.min(1, Math.max(0, +v || 0));
+    try { localStorage.setItem("tpl.bgmVol", String(userVolume)); } catch (_) {}
+    if (audio) audio.volume = userVolume;
+  }
+  function getVolume() { return userVolume; }
+  function nextTrack() {
+    ensureAudio();
+    const i = ALL_TRACKS.indexOf(currentTrack);
+    const next = ALL_TRACKS[(i + 1 + ALL_TRACKS.length) % ALL_TRACKS.length];
+    manualTrack = next;       // lock in: don't get blown away by view changes
+    fade(0, 180, () => {
+      currentTrack = next;
+      audio.src = BGM_DIR + next;
+      try { audio.currentTime = 0; } catch (_) {}
+      playNow();
+    });
+    return next;
+  }
+  function autoMode() { manualTrack = null; }
+
+  window.BGM = { applyForView, setVolume, getVolume, nextTrack, autoMode };
 })();

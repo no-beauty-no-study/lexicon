@@ -125,24 +125,104 @@
   .menu-btn:focus { outline: none; }
   .menu-btn.left  { left: 10.5%; }
   .menu-btn.right { right: 10.5%; }
+  /* Button itself: overflow: hidden so the diagonal gleam sweep
+     and unlock pulse don't bleed past the painted edge. Costs a
+     small clip on the breathing translateY, so the translate is
+     limited to 3px (was 7) — barely shaved, still visibly alive. */
+  .menu-btn { overflow: hidden; }
   .menu-btn-inner {
     display: block; width: 100%; height: 100%;
     background-size: 100% 100%; background-repeat: no-repeat;
     background-color: transparent; transform-origin: center;
     transition: transform 180ms cubic-bezier(0.2,0.8,0.4,1.2),
                 filter    180ms ease-out;
-    /* Gentle, alternating float so the cover doesn't feel static.
-       Pauses on :active so the press scale doesn't fight the keyframe. */
     animation: menu-hero-breathe 4.6s ease-in-out infinite alternate;
   }
   .menu-btn.right .menu-btn-inner { animation-delay: -2.3s; }
   @keyframes menu-hero-breathe {
     0%   { transform: translateY(0)    scale(1);     filter: brightness(1); }
-    100% { transform: translateY(-7px) scale(1.012); filter: brightness(1.05); }
+    100% { transform: translateY(-3px) scale(1.012); filter: brightness(1.05); }
   }
+  /* Layer 2 — press sink: matches GPT spec (translateY 2px +
+     small scale, not the dramatic 0.93 of the prior version)
+     so it reads as the button "settling into" the painted bg
+     rather than smashing flat. */
   .menu-btn:active .menu-btn-inner {
     animation-play-state: paused;
-    transform: scale(0.93); filter: brightness(1.06);
+    transform: translateY(2px) scale(0.985);
+    filter: brightness(0.98);
+  }
+
+  /* Layer 4 — badge "blessing" pulse at the top-centre of the
+     painted button (where the crown / book is). Both buttons
+     animate on .is-activated, which menu.init sets on click. */
+  .menu-btn-badge {
+    position: absolute;
+    top: 8%; left: 50%;
+    width: 26%; aspect-ratio: 1;
+    transform: translate(-50%, 0) scale(0.7);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 12;
+    opacity: 0;
+    background: radial-gradient(circle,
+      rgba(255,246,200,0.6)  0%,
+      rgba(255,225,170,0.35) 50%,
+      transparent 80%);
+    mix-blend-mode: screen;
+  }
+  .menu-btn.is-activated .menu-btn-badge {
+    animation: menu-badge-blessing 640ms ease-out;
+  }
+  @keyframes menu-badge-blessing {
+    0%   { opacity: 0; transform: translate(-50%, 0) scale(0.7); }
+    40%  { opacity: 1; transform: translate(-50%, 0) scale(1.18); }
+    100% { opacity: 0; transform: translate(-50%, 0) scale(0.95); }
+  }
+
+  /* Layer 5a — LEFT button: diagonal gleam sweep on activation,
+     like a candle scanning across an old page. */
+  .menu-btn.left::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 11;
+    background: linear-gradient(115deg,
+      transparent 30%,
+      rgba(255,246,190,0.42) 48%,
+      rgba(255,246,190,0)    62%);
+    transform: translateX(-130%);
+    opacity: 0;
+    mix-blend-mode: screen;
+  }
+  .menu-btn.left.is-activated::before {
+    animation: menu-gleam-sweep 720ms ease-out;
+  }
+  @keyframes menu-gleam-sweep {
+    0%   { transform: translateX(-130%); opacity: 0.95; }
+    100% { transform: translateX( 130%); opacity: 0;    }
+  }
+
+  /* Layer 5b — RIGHT button: unlock pulse. A gold ring expands
+     outward + gold halo blooms then fades, like a lock turning. */
+  .menu-btn.right::before {
+    content: "";
+    position: absolute;
+    inset: 6%;
+    border: 2px solid rgba(220, 190, 120, 0);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 11;
+    box-shadow: 0 0 0 rgba(220, 190, 120, 0);
+  }
+  .menu-btn.right.is-activated::before {
+    animation: menu-unlock-pulse 540ms ease-out;
+  }
+  @keyframes menu-unlock-pulse {
+    0%   { inset: 6%;  border-color: rgba(220, 190, 120, 0);    box-shadow: 0 0 0 rgba(220, 190, 120, 0); }
+    45%  { inset: -1%; border-color: rgba(220, 190, 120, 0.7);  box-shadow: 0 0 16px rgba(220, 190, 120, 0.5); }
+    100% { inset: -6%; border-color: rgba(220, 190, 120, 0);    box-shadow: 0 0 0 rgba(220, 190, 120, 0); }
   }
   .menu-btn.left  .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-start.png"); }
   .menu-btn.right .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-enter.png"); }
@@ -434,30 +514,73 @@
     }
   }
 
-  /* Global "voice" link — fixed-position so it sits above .stage
-     and stays visible across all views. Hidden on splash (where it
-     would compete with the full-screen tap target) and on #voices
-     itself (redundant). The current view is set on body.dataset
-     by app.js render(). */
-  .global-voice-link {
+  /* Global BGM control — fixed top-right, parchment-gold chip
+     matching the rest of the antique aesthetic. Hidden on splash
+     (so the full-screen tap-to-begin isn't competing for taps). */
+  .global-bgm-control {
     position: fixed;
     top: env(safe-area-inset-top, 0px);
     right: 0;
     margin: 10px 14px;
-    padding: 8px 12px;
-    background: rgba(20, 14, 8, 0.42);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px 7px 12px;
+    background: rgba(20, 14, 8, 0.46);
     border: 1px solid rgba(220, 195, 145, 0.45);
-    border-radius: 14px;
-    font-family: var(--font-display);
-    font-size: 11px; letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(245, 225, 180, 0.92);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.45);
-    cursor: pointer; z-index: 1000;
+    border-radius: 16px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
-  .global-voice-link:active { color: rgba(255, 240, 200, 1); background: rgba(40, 28, 16, 0.62); }
-  body[data-current-view="splash"] .global-voice-link,
-  body[data-current-view="voices"] .global-voice-link { display: none; }
+  .bgm-glyph {
+    font-size: 13px;
+    line-height: 1;
+    color: rgba(245, 225, 180, 0.85);
+    user-select: none;
+  }
+  .bgm-vol {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 86px;
+    height: 4px;
+    background: rgba(220, 195, 145, 0.35);
+    border-radius: 2px;
+    outline: none;
+    margin: 0;
+    cursor: pointer;
+  }
+  .bgm-vol::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px; height: 14px;
+    background: rgba(245, 225, 180, 1);
+    border-radius: 50%;
+    border: 1px solid rgba(124, 95, 50, 0.7);
+    box-shadow: 0 0 4px rgba(255, 230, 180, 0.5);
+    cursor: pointer;
+  }
+  .bgm-vol::-moz-range-thumb {
+    width: 14px; height: 14px;
+    background: rgba(245, 225, 180, 1);
+    border-radius: 50%;
+    border: 1px solid rgba(124, 95, 50, 0.7);
+    cursor: pointer;
+  }
+  .bgm-skip {
+    background: transparent;
+    border: 0;
+    color: rgba(245, 225, 180, 0.92);
+    font-size: 13px;
+    line-height: 1;
+    padding: 4px 6px;
+    cursor: pointer;
+    border-radius: 6px;
+  }
+  .bgm-skip:active {
+    background: rgba(40, 28, 16, 0.62);
+    color: rgba(255, 240, 200, 1);
+  }
+  body[data-current-view="splash"] .global-bgm-control { display: none; }
 
   /* Voices view — a simple scrollable list of installed system
      voices, each row testable + selectable. Painted on the same
@@ -564,12 +687,19 @@
 
 <div class="stage" id="stage"></div>
 
-<!-- Global "voice" link — visible top-right on every view EXCEPT
-     splash (it would compete with the splash-hit) and #voices
-     itself. Always available so the user can hop to the voice
-     picker mid-reading without having to back out to the menu. -->
-<button type="button" class="global-voice-link" data-go="#voices"
-        aria-label="Choose voice">voice</button>
+<!-- Global BGM control — small chip top-right that's visible on
+     every view except splash (where it would compete with the
+     full-screen tap target). Holds a volume slider + a "next
+     track" skip button so the player can break out of the
+     per-view default music when one track wears thin. The voice
+     picker is still reachable from the #voices URL; the link
+     was removed since system TTS volume is OS-controlled. -->
+<div class="global-bgm-control" aria-label="Music control">
+  <span class="bgm-glyph" aria-hidden="true">♪</span>
+  <input class="bgm-vol" type="range" min="0" max="100" value="32"
+         aria-label="Music volume" />
+  <button type="button" class="bgm-skip" aria-label="Next track">⏭</button>
+</div>
 
 
 <template id="view-splash">
@@ -607,13 +737,22 @@
     </div>
     <!-- ==================== Cover UI / interaction layer ===================
          z-index 10, pointer-events: auto. Buttons live here; the bg layer
-         above this comment cannot block their taps. -->
+         above this comment cannot block their taps.
+
+         Each button now has a small overlay stack on top of the painted
+         .menu-btn-inner:
+           - .menu-btn-badge  → top-centre gold blessing pulse on click
+           - .menu-btn ::before → LEFT  = diagonal gleam sweep
+                                  RIGHT = box-shadow unlock pulse
+           - .menu-btn ::after  → tap-point gold ripple                 -->
     <div class="cover-ui-layer">
       <button type="button" class="menu-btn left"  data-action="resume">
         <span class="menu-btn-inner"></span>
+        <span class="menu-btn-badge" aria-hidden="true"></span>
       </button>
       <button type="button" class="menu-btn right" data-action="enter-chapters">
         <span class="menu-btn-inner"></span>
+        <span class="menu-btn-badge" aria-hidden="true"></span>
       </button>
     </div>
   </main>

@@ -169,6 +169,29 @@
     return params[key] ?? fallback;
   };
 
+  /* ---------- global BGM widget wiring ---------- */
+  // The slider + skip button live outside #stage and persist across
+  // every view (except splash, which hides them via CSS). Wire them
+  // up once on DOMContentLoaded. Volume input fires `input` events
+  // during drag; we forward each to BGM.setVolume immediately so
+  // the music tracks the finger.
+  document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.querySelector(".bgm-vol");
+    const skip   = document.querySelector(".bgm-skip");
+    if (slider && window.BGM && BGM.getVolume) {
+      slider.value = Math.round(BGM.getVolume() * 100);
+      slider.addEventListener("input", () => {
+        BGM.setVolume((+slider.value) / 100);
+      });
+    }
+    if (skip && window.BGM && BGM.nextTrack) {
+      skip.addEventListener("click", () => {
+        BGM.nextTrack();
+      });
+    }
+  });
+
+
   /* ---------- ornate panel press flash ---------- */
   document.addEventListener("click", (e) => {
     const el = e.target.closest(".ornate-panel.is-clickable");
