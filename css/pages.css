@@ -357,73 +357,52 @@
   100% { transform: scale(1)     rotate( 0deg);   }
 }
 
+/* Folded state — paper crease, NOT a glowing highlight.
+   User pushback: the warm-amber fold corner was reading as a hover
+   / pressed / selected state. Now reduced to a flat dark crease
+   that looks like the actual paper has been creased once at the
+   corner — no gradient brightness, no drop-shadow glow, no
+   coloured fill on the card body. The sibling separator
+   (.word-card + .word-card::before) — the tapered solid line — is
+   PRESERVED across saved cards by using ::after for the crease
+   instead of ::before. */
 .word-card.is-saved {
   background: transparent;
-  box-shadow: inset 0 0 10px rgba(100, 84, 56, 0.04);
-  border-top:    1px dashed rgba(128, 111, 78, 0.32);
-  border-bottom: 1px dashed rgba(128, 111, 78, 0.32);
+  box-shadow: none;
+  border: 0;
 }
-.word-card.is-saved.is-current {
-  border-top-color:    rgba(168, 122, 58, 0.58);
-  border-bottom-color: rgba(168, 122, 58, 0.58);
-}
-/* DOG-EARED CORNER — the fold itself.
-   IMPORTANT: explicitly reset `left` and `bottom` because the
-   sibling-divider rule `.word-card + .word-card::before` sets
-   `left: 6%` with the same specificity; without `left: auto` here
-   the override partially applied — first card's fold corner was
-   correct, the 2nd / 3rd / Nth ones inherited left: 6% and ended
-   up on the LEFT instead of the right. Real bug, real fix. */
-.word-card.is-saved::before {
+.word-card.is-saved::after {
   content: "";
   position: absolute;
   top: 0;
   right: 0;
   left: auto;
   bottom: auto;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   clip-path: polygon(100% 0, 0 0, 100% 100%);
-  /* The fold-face gradient now carries an extra stop right at
-     the inner edge — that becomes the visible "crease line"
-     where the folded paper meets the page underneath. */
+  /* Flat dark paper-shadow gradient — no light gradient stops.
+     Reads as a fold crease, not a glow. */
   background: linear-gradient(
     135deg,
-    rgba(255, 251, 238, 0.94) 0%,
-    rgba(245, 232, 200, 0.90) 30%,
-    rgba(218, 198, 162, 0.85) 58%,
-    rgba(178, 158, 112, 0.55) 82%,
-    rgba(118, 100, 70, 0.42)  91%,   /* crease shadow */
-    transparent              95%
+    rgba(118, 102, 72, 0.22) 0%,
+    rgba(118, 102, 72, 0.10) 48%,
+    transparent              55%
   );
-  /* drop-shadow doubles as the "shadow cast on the page below
-     the folded corner" — sells the thickness. */
-  filter: drop-shadow(-1.5px 1.5px 1.5px rgba(90, 72, 42, 0.22));
+  opacity: 0.78;
+  filter: none;
   pointer-events: none;
   z-index: 2;
 }
-.word-card.is-saved.is-current::before {
+.word-card.is-saved.is-current::after {
+  /* Current saved card: deepen the crease very slightly, no glow */
   background: linear-gradient(
     135deg,
-    rgba(255, 250, 224, 0.98) 0%,
-    rgba(248, 232, 188, 0.94) 30%,
-    rgba(225, 200, 148, 0.92) 58%,
-    rgba(190, 158, 92, 0.66)  82%,
-    rgba(120, 96, 56, 0.48)   91%,
-    transparent              95%
+    rgba(120, 96, 56, 0.34) 0%,
+    rgba(120, 96, 56, 0.16) 48%,
+    transparent             55%
   );
-  filter: drop-shadow(-1.5px 1.5px 2px rgba(90, 72, 42, 0.30));
-}
-.word-card.is-saved::after {
-  content: "❦";
-  position: absolute;
-  top: 8px;
-  right: 22px;       /* shifted left so it doesn't sit on top of the fold */
-  left: auto;
-  bottom: auto;
-  font-size: 12px;
-  color: rgba(168, 122, 58, 0.70);
-  pointer-events: none;
+  opacity: 0.92;
 }
 
 /* Word-tap sparkle puff: warm-gold particles that radiate outward
@@ -726,22 +705,25 @@
 .reading-art .quiz-body::-webkit-scrollbar { width: 0; }
 /* Compressed inter-question + inter-option spacing so all 3 questions
    × 4 options fit inside the painted body slot without scrolling. */
-.reading-art .quiz-item { margin: 0 0 12px; padding-left: 18px; }
+/* Type bumped to match reading-body (18px / line 1.4) — the user
+   reported the prior 14px was too small. Margins tightened
+   accordingly so 3 questions × 4 options still fit. */
+.reading-art .quiz-item { margin: 0 0 14px; padding-left: 22px; }
 .reading-art .quiz-no {
   font-family: var(--font-display);
-  font-size: 10.5px;
+  font-size: 12px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-subtitle);
-  margin: 0 0 3px -18px;
+  margin: 0 0 4px -22px;
 }
 .reading-art .quiz-question {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 18px;
   line-height: 1.4;
   letter-spacing: 0.03em;
   color: var(--color-body);
-  margin: 0 0 6px -18px;
+  margin: 0 0 8px -22px;
 }
 .reading-art .quiz-options {
   margin: 0;
@@ -758,15 +740,15 @@
   position: relative;
   display: flex;
   align-items: baseline;
-  gap: 0.95em;
+  gap: 0.6em;
   width: fit-content;
   max-width: 100%;
-  margin: 0 0 0.30em;            /* was 0.72em — tighter row spacing */
-  padding: 0.04em 0.32em 0.04em 0.2em;
+  margin: 0 0 0.32em;
+  padding: 0.06em 0.4em 0.06em 0.25em;
   font-family: var(--font-body);
-  font-size: 14px;
-  line-height: 1.32;             /* was 1.42 — tighter */
-  letter-spacing: 0.035em;
+  font-size: 18px;               /* match reading body */
+  line-height: 1.4;
+  letter-spacing: 0.032em;
   color: #3f3a31;
   cursor: pointer;
   background: transparent;
@@ -809,16 +791,24 @@
   background: rgba(167, 141, 91, 0.72);
 }
 
-/* Correct answer — gold ✤ mark + faint gold under-ink on the text. */
+/* Correct answer — gold ✤ mark + faint gold under-ink on the text.
+   Position: line-height: 1 + top 50% + translateY(-50%) centres
+   the glyph on the option's vertical centre regardless of the
+   option's actual line-box height. (Prior version inherited 1.32
+   line-height from the base ::before rule, so the glyph drifted up
+   visually — the bug the user reported as "标识错位".) */
 .reading-art .quiz-option.is-correct { color: #5d4d2f; }
 .reading-art .quiz-option.is-correct::before {
   content: "✤";
-  left: -1.25em;
-  width: auto; height: auto;
+  left: -1.4em;
+  top: 50%;
+  width: auto;
+  height: auto;
+  line-height: 1;
   transform: translateY(-50%);
   background: transparent;
   color: #a78d5b;
-  font-size: 0.82em;
+  font-size: 0.95em;
   border-radius: 0;
 }
 .reading-art .quiz-option.is-correct .quiz-option-text {
@@ -832,12 +822,15 @@
 }
 .reading-art .quiz-option.is-wrong::before {
   content: "×";
-  left: -1.1em;
-  width: auto; height: auto;
-  transform: translateY(-52%);
+  left: -1.2em;
+  top: 50%;
+  width: auto;
+  height: auto;
+  line-height: 1;
+  transform: translateY(-50%);
   background: transparent;
   color: rgba(122, 80, 72, 0.72);
-  font-size: 0.92em;
+  font-size: 1.05em;
   border-radius: 0;
 }
 .reading-art .quiz-option.is-wrong .quiz-option-text::after {

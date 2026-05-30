@@ -258,16 +258,19 @@ const Views = (function () {
       // ONE continuous polygon overlay each (see RIBBONS below),
       // because the user pointed out the 3-slice approach was
       // visibly breaking the cloth's continuity.
+      // PRINCESS-STATIC POLICY: every overlay that ever intersected
+      // the princess silhouette (rough bbox x 430–965, y 226–1048)
+      // has been removed. The user reported "后脑勺在动" — the prior
+      // sway-hair-long / -tips / -ear / sway-bow-tails all clipped
+      // into the back-of-head / blue-bow / shoulder area and made
+      // the painted figure visibly distort. The blue-tail pair
+      // (sway-blue-l/r) was also dropped because it overlapped the
+      // scroll-ribbon polygon coverage area — duplicate work that
+      // could only conflict. Princess + her hair + the bow are now
+      // 100% static. Sway is restricted to corner tassels, vertical
+      // frame flowers, and bottom flower clusters — all far from
+      // the figure.
       const SWAY = [
-        // --- HAIR (right side, three layers desynced) ---
-        { bbox: [53.18, 29.65, 66.92, 59.85], pivot: [53.52, 37.75], anim: "sway-hair-long", dur: 8.5, delay:  0   },
-        { bbox: [57.66, 41.90, 67.68, 63.54], pivot: [58.01, 45.12], anim: "sway-hair-tips", dur: 7.5, delay: -2.4 },
-        { bbox: [52.49, 24.86, 59.74, 37.75], pivot: [53.18, 27.62], anim: "sway-hair-ear",  dur: 9.5, delay: -3   },
-        // --- BOW tail ribbons (blue, behind the hair) ---
-        { bbox: [55.94, 26.89, 63.12, 42.36], pivot: [56.49, 28.55], anim: "sway-bow-tails", dur: 6.5, delay: -0.7 },
-        // --- BLUE banner-side hanging tails ---
-        { bbox: [8.63,  22.84, 21.06, 35.91], pivot: [10.36, 23.76], anim: "sway-blue-l",    dur: 7.2, delay:  0   },
-        { bbox: [78.66, 22.74, 90.99, 35.91], pivot: [89.36, 23.76], anim: "sway-blue-r",    dur: 8.0, delay: -2   },
         // --- TASSELS (cord-and-bobble pair at the corners) ---
         { bbox: [5.59,  13.26,  8.91, 26.33], pivot: [7.25, 13.26],  anim: "sway-tassel-l",  dur: 5.5, delay:  0   },
         { bbox: [91.02, 13.35, 94.41, 26.43], pivot: [92.75, 13.35], anim: "sway-tassel-r",  dur: 6.0, delay: -1.8 },

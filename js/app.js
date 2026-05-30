@@ -65,49 +65,57 @@
     const node = tpl.content.firstElementChild.cloneNode(true);
     const prev = stage.querySelector(".page");
 
-    // Push transition with direction inferred from prev→next view:
-    //   reading ↔ quiz, quiz → next reading  → LEFT (turning a page
-    //                                          in the book)
-    //   everything else                       → UP (opening the book
-    //                                          cover, lifting a panel)
-    // body.dataset.currentView still holds the OUTGOING view name at
-    // this point (it gets overwritten further down), so it doubles
-    // as the "previous view" reference.
+    // Cinematic page transition — vertical UP push for cover/menu
+    // flows, horizontal LEFT push for reading↔quiz. Implemented via
+    // INLINE styles instead of class-swap CSS because Safari iOS
+    // was silently skipping the class-swap transition (likely a
+    // race between adding the transition property and changing the
+    // transform value in the same style recalc). Inline styles
+    // give us deterministic control: set initial state with
+    // transition:none, force layout, then set transition + final
+    // state on the next paint frame so the transition is guaranteed
+    // to fire.
     const READING_FLOW = { reading: 1, quiz: 1 };
     const prevName = document.body.dataset.currentView || "";
     const dir = (READING_FLOW[prevName] && READING_FLOW[name]) ? "left" : "up";
-    if (prev) {
-      prev.classList.add("page-leaving", "leave-" + dir);
-      prev.style.pointerEvents = "none";
-      node.classList.add("page-entering", "enter-" + dir);
-      stage.appendChild(node);
+    const enterAxis = dir === "left" ? "X" : "Y";
+    const enterFrom = `translate${enterAxis}(100%)`;
+    const leaveTo   = `translate${enterAxis}(-100%)`;
+    const easing    = "cubic-bezier(0.22, 0.8, 0.22, 1)";
+    const tDur      = "950ms";
 
-      // Two animation frames before adding .page-active so the
-      // browser has actually painted the .page-entering initial
-      // state — without this double-rAF, the transition can be
-      // skipped (the element jumps straight to its end state).
+    if (prev) {
+      // INCOMING — start off-screen on the chosen axis, no transition.
+      node.style.transition = "none";
+      node.style.transform  = enterFrom;
+      node.style.opacity    = "0.92";
+      node.style.zIndex     = "2";
+      node.style.willChange = "transform, opacity";
+      stage.appendChild(node);
+      // OUTGOING — class marker (so .page-leaving * { animation-play-
+      // state: paused } still kicks in to free GPU) + inline slide off.
+      prev.classList.add("page-leaving");
+      prev.style.transition = `transform ${tDur} ${easing}, opacity 620ms ease-in`;
+      prev.style.willChange = "transform, opacity";
+      prev.style.transform  = leaveTo;
+      prev.style.opacity    = "0.6";
+      prev.style.zIndex     = "1";
+      prev.style.pointerEvents = "none";
+      // Force layout so the initial state of `node` is committed
+      // before we add the transition. Without this read, Safari
+      // batches both styles and skips the animation.
+      void node.offsetHeight;
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          node.classList.remove("page-entering");
-          node.classList.add("page-active");
-        });
+        node.style.transition = `transform ${tDur} ${easing}, opacity 620ms ease-out`;
+        node.style.transform  = "translate(0, 0)";
+        node.style.opacity    = "1";
       });
 
       const dying = prev;
-      // Match the 950ms slide so the leaving page isn't yanked out
-      // mid-animation. +50ms grace.
       setTimeout(() => { try { dying.remove(); } catch (_) {} }, 1000);
     } else {
+      // First render — no slide, just place it.
       stage.appendChild(node);
-      // First paint after splash: still soft-fade-in instead of
-      // popping. Same two-rAF trick.
-      node.classList.add("page-entering");
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          node.classList.remove("page-entering");
-          node.classList.add("page-active");
-        });
-      });
     }
 
     const view = Views[name];
