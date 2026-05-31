@@ -126,13 +126,30 @@
    identical position, single centred title line, identical tracking.
    Using .reading-art (not [data-page="reading"]) applies it to quiz
    too, overriding the generic debug.css zone box on both. */
+/* === Reading/Quiz zone boxes — user's 1448×1086 page-relative
+   measurements converted to MASTER-FRAME-relative (these zones are
+   children of .master-frame): Lf=(Lp-1.78)/0.9633, Tf=(Tp-2.15)/0.9585,
+   Wf=Wp/0.9633, Hf=Hp/0.9585.
+     title box   page 28.04/7.46/57.32/14.27 → 27.26/5.54/59.50/14.89
+     body        page 28.11/23.85/50.90/63.44→ 27.33/22.64/52.84/66.19
+     word column page 79.70/23.85/15.88/63.44→ 80.89/22.64/16.49/66.19
+     controls    page 86.19/7.46/9.39/14.27  → 87.63/5.54/9.75/14.89
+   Title box is shorter so the top-right control group gets its own
+   space; the title typography itself is unchanged. */
 .reading-art .zone-reading-title {
-  left:   30.23%;
-  top:     4.75%;
-  width:  66.33%;
-  height: 14.40%;
+  left:   27.26%;
+  top:     5.54%;
+  width:  59.50%;
+  height: 14.89%;
   align-items: center;
   text-align: center;
+}
+/* Top-right control group box (BGM volume + AUTO). */
+.reading-art .zone-reading-controls {
+  left:   87.63%;
+  top:     5.54%;
+  width:   9.75%;
+  height: 14.89%;
 }
 /* CHAPTER NN + THE TITLE share ONE centred line. */
 .reading-art .reading-titleline {
@@ -156,16 +173,16 @@
   margin: 8px auto 8px;
 }
 [data-page="reading"] .zone-reading-body {
-  left:   30.23%;
-  top:    19.14%;
-  width:  47.70%;
-  height: 70.21%;
+  left:   27.33%;
+  top:    22.64%;
+  width:  52.84%;
+  height: 66.19%;
 }
 [data-page="reading"] .zone-marginalia {
-  left:   78.71%;   /* right edge 78.71 + 17.85 = 96.56% = the region's right boundary */
-  top:    19.14%;
-  width:  17.85%;
-  height: 70.21%;
+  left:   80.89%;
+  top:    22.64%;
+  width:  16.49%;
+  height: 66.19%;
 }
 .reading-art .reading-body {
   width: 100%;
@@ -174,13 +191,22 @@
   font-size: 18px;
   line-height: 1.82;
   letter-spacing: 0.032em;
-  word-spacing: 0.07em;
   color: #3f3a31;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-gutter: stable;
   /* Stay tappable inside reveal.js's container click handler. */
   -webkit-overflow-scrolling: touch;
+}
+/* Book-style flush justification: paragraphs flow normally and the
+   browser stretches the inter-word spacing on each line so both edges
+   line up (no fixed word-spacing, no manual line breaks). The last
+   line of a paragraph stays left, as in print. */
+.reading-art .reading-body:not(.quiz-body) p {
+  text-align: justify;
+  text-justify: inter-word;
+  word-spacing: normal;
+  hyphens: none;
 }
 .reading-art .reading-body::-webkit-scrollbar { width: 6px; }
 .reading-art .reading-body::-webkit-scrollbar-thumb {
@@ -782,10 +808,10 @@
    match reading body; full region width since the quiz has no
    marginalia column). */
 [data-page="quiz"] .zone-quiz-body {
-  left:   30.23%;
-  top:    19.14%;
-  width:  66.33%;
-  height: 70.21%;
+  left:   27.33%;
+  top:    22.64%;
+  width:  70.04%;
+  height: 66.19%;
 }
 .reading-art .quiz-body {
   font-family: var(--font-body);
@@ -1277,22 +1303,20 @@
    to 92.30% (a small, conservative drop, still well ABOVE the old
    "too low" reading value). Kept identical across pages so the bar
    stays vertically consistent everywhere. */
-/* Reading carries the full control bar: Auto · Prev · Back · Quiz ·
-   Next · Save · Load · Menu (8 cells), centred on the reading region's
-   axis (centre ≈ 63%). Quiz keeps its own 5-cell bar. */
-.page[data-page="reading"] {
-  --nav-count:  8;
-  --nav-left:   30.00%;
-  --nav-top:    92.30%;
-  --nav-width:  66.00%;
-  --nav-height:  6.70%;
-}
+/* Bottom nav button group, confined to the user's measured limit
+   points (page x 31.98%–76.31%, y 90.33%–97.24%) and equally divided
+   within. Converted to master-frame-relative (nav is a frame child):
+     left=(31.98-1.78)/0.9633=31.35%  width=44.41/0.9633=46.10%
+     top =(90.33-2.15)/0.9585=92.00%  height=7.00/0.9585=7.30%
+   Story reading = 5 cells (Save·Load·Quiz·Next·Menu); browse mode is
+   rebuilt to 3 cells in JS. Quiz keeps 5. */
+.page[data-page="reading"],
 .page[data-page="quiz"] {
   --nav-count:  5;
-  --nav-left:   29.47%;
-  --nav-top:    92.30%;
-  --nav-width:  51.04%;
-  --nav-height:  6.70%;
+  --nav-left:   31.35%;
+  --nav-top:    92.00%;
+  --nav-width:  46.10%;
+  --nav-height:  7.30%;
 }
 .page.select-art {
   --nav-count:  2;
@@ -1887,4 +1911,66 @@
   0%   { background: rgba(201, 174, 103, 0.22); box-shadow: 0 0 0 rgba(180,140,60,0); }
   25%  { background: rgba(201, 174, 103, 0.66); box-shadow: 0 0 12px rgba(180,140,60,0.55); }
   100% { background: rgba(201, 174, 103, 0.22); box-shadow: 0 0 0 rgba(180,140,60,0); }
+}
+
+/* ============================================================
+   READING top-right control group (zone G): BGM volume + AUTO.
+   Auto-read moved off the bottom bar to here. Classical paper /
+   thin-gold styling — no modern system controls. The global BGM
+   chip is hidden on reading so there's only one volume control.
+   ============================================================ */
+body[data-current-view="reading"] .global-bgm-control { display: none; }
+
+.reading-art .zone-reading-controls { pointer-events: none; }
+.reading-art .reading-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16%;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+.reading-art .reading-vol {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+}
+.reading-art .reading-vol-glyph {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  color: rgba(108, 90, 67, 0.82);
+  line-height: 1;
+}
+.reading-art .reading-bgm-vol { width: 74%; }
+.reading-art .reading-auto-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 4px 14px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6c5a43;
+  background: rgba(244, 236, 219, 0.48);
+  border: 1px solid rgba(149, 124, 84, 0.35);
+  border-radius: 18px;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.reading-art .reading-auto-btn .auto-glyph {
+  font-size: 0.8em;
+  color: rgba(150, 96, 38, 0.85);
+  line-height: 1;
+}
+.reading-art .reading-auto-btn:hover { border-color: rgba(150, 110, 55, 0.55); }
+.reading-art .reading-auto-btn.is-active {
+  color: #5a3a18;
+  border-color: rgba(150, 110, 55, 0.72);
+  background: rgba(226, 207, 158, 0.55);
 }
