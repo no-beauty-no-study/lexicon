@@ -94,29 +94,61 @@
     return out;
   }
 
-  // raw reading token → the card to show. Tries: exact card → regex
-  // lemma → family-head map → proper small card.
+  // Memo cache keyed by the CLEANED lowercase token. A reading section is
+  // ~180 words, most of them non-vocab ("the", "was", "of") that otherwise
+  // run the WHOLE fallback chain (10 regex tests + several map lookups) to
+  // a null result on EVERY build. Building a fresh section was therefore
+  // ~180 cold full-miss chains run synchronously — the jank felt on the
+  // forward page-turn (a *new* section), while turning back to an
+  // already-resolved section felt smooth. Caching collapses both to O(1).
+  const resolveCache = new Map();
+
+  // raw reading token → the card to show. Tries: inflection→base-lemma
+  // collapse (defies→defy) → exact card → regex lemma → family-head map →
+  // proper small card.
   function resolveReadingWord(rawToken) {
     const raw = String(rawToken || '');
     const w = norm(raw).replace(/^[^a-z]+|[^a-z]+$/g, '').replace(/'s$/, '');
     if (!w) return { raw, resolvedWord: w, card: null, matchType: 'none' };
 
+    const cached = resolveCache.get(w);
+    if (cached) return { ...cached, raw };
+
+    const result = resolveCore(w);
+    resolveCache.set(w, result);
+    return { ...result, raw };
+  }
+
+  function resolveCore(w) {
+    // INFLECTION → BASE LEMMA. A plural/tense surface form (defies, studies,
+    // erupted) should pop the BASE word's card (defy, study, erupt) — even
+    // when the surface form has its own master entry. We only collapse when
+    // the family head is *also* a regex-lemma of the surface word, so true
+    // DERIVATIONS (defiance, defiant → keep their own distinct card) are
+    // left alone — their head is not among the inflection candidates.
+    const head = getFamilyHead(w);
+    if (head && head !== w) {
+      const headCard = getWordCard(head);
+      if (headCard && lemmaCandidates(w).indexOf(head) !== -1) {
+        return { resolvedWord: head, card: headCard, matchType: 'lemma_head' };
+      }
+    }
+
     let c = getWordCard(w);
-    if (c) return { raw, resolvedWord: w, card: c, matchType: 'exact' };
+    if (c) return { resolvedWord: w, card: c, matchType: 'exact' };
 
     for (const cand of lemmaCandidates(w)) {
       c = getWordCard(cand);
-      if (c) return { raw, resolvedWord: cand, card: c, matchType: 'lemma' };
+      if (c) return { resolvedWord: cand, card: c, matchType: 'lemma' };
     }
-    const head = getFamilyHead(w);
     if (head && head !== w) {
       c = getWordCard(head);
-      if (c) return { raw, resolvedWord: head, card: c, matchType: 'family_head' };
+      if (c) return { resolvedWord: head, card: c, matchType: 'family_head' };
     }
     const p = getProperSmallCard(w);
-    if (p) return { raw, resolvedWord: w, card: p, matchType: 'proper', proper: true };
+    if (p) return { resolvedWord: w, card: p, matchType: 'proper', proper: true };
 
-    return { raw, resolvedWord: w, card: null, matchType: 'none' };
+    return { resolvedWord: w, card: null, matchType: 'none' };
   }
 
   function getSmallCard(word) {
