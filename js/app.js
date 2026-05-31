@@ -129,6 +129,13 @@
 
       const dying = prev;
       setTimeout(() => { try { dying.remove(); } catch (_) {} }, 1000);
+      // Release the compositor layer once the turn is done — otherwise every
+      // reading page we land on keeps a will-change layer alive (each one
+      // re-rasterising its blurred sentence spans), which piles up over a
+      // long read and starves the NEXT turn. Clearing it lets the page fall
+      // back to a normal layer until the next navigation re-promotes it.
+      const settled = node;
+      setTimeout(() => { try { settled.style.willChange = "auto"; } catch (_) {} }, 1050);
     } else {
       // First render — no slide.
       stage.appendChild(node);

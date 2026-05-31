@@ -273,8 +273,16 @@ const WordCard = (function () {
     const items = sec.querySelectorAll(".wc-sep, .wc-head, .wc-row, .wc-ex");
     items.forEach((el, k) => { el.style.animationDelay = (k * 0.26) + "s"; el.classList.add("wc-ink"); });
     try { sec.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
+    // "在读" — mark THIS block as currently-being-read so the user can see
+    // which one the voice is on (warm rail + glow), then clear it the moment
+    // the voice finishes. Only one block reads at a time.
+    cardSecs.forEach(s => s.classList.remove("is-reading"));
     const txt = sec.getAttribute("data-speak");
-    if (txt && typeof TTS !== "undefined" && TTS.speak) { try { TTS.speak(txt); } catch (_) {} }
+    if (txt && typeof TTS !== "undefined" && TTS.speak) {
+      sec.classList.add("is-reading");
+      const clear = () => { sec.classList.remove("is-reading"); };
+      try { TTS.speak(txt, { onEnd: clear }); } catch (_) { clear(); }
+    }
   }
   function advanceCardSection() {
     if (cardSecIdx + 1 < cardSecs.length) showCardSection(cardSecIdx + 1);
