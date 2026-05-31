@@ -946,36 +946,33 @@ button.ornate-panel {
    tall page: 1086 × 1024/1536 ≈ 724px. Two fixed zones land on top
    of it, using the user's hand-measured percentages — nothing
    else is positioned over the artwork. */
-/* Sliding frame that parks the card against the right edge. ABOVE all
-   reading UI (z 9999; scrim 9998 below it). Holds no ratio of its own. */
+/* Container only — full area, above all reading UI. No transform of its
+   own (the WRAPPER slides), so nothing can mis-start it from the centre. */
 .word-drawer {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 1.5%;
-  transform: translateX(118%);   /* off-screen right */
-  transition: transform 360ms cubic-bezier(0.22, 0.61, 0.36, 1);
   z-index: 9999;
   pointer-events: none;          /* empty area lets taps fall to the scrim */
   border: 0;
   background: transparent;
 }
-.word-drawer.is-open { transform: translateX(0); }
 
-/* The card = a real <img> at TRUE intrinsic ratio (height-driven,
-   width:auto → the browser can never squash it). The wrapper
-   shrink-wraps the img; the overlay sits over it 1:1. */
+/* The card = a real <img> at TRUE intrinsic ratio. ABSOLUTELY pinned to
+   the right edge and slid in via its OWN transform — no flex, so its
+   width never collapses/jumps while the image loads. */
 .word-card-wrapper {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  right: 1.5%;
   height: 96%;
-  aspect-ratio: 976 / 1492;   /* stable width BEFORE the img loads → no
-                                 reflow / left→centre→right jump on open */
+  aspect-ratio: 976 / 1492;
   width: auto;
+  transform: translateY(-50%) translateX(116%);   /* off-screen right */
+  transition: transform 380ms cubic-bezier(0.22, 0.61, 0.36, 1);
   pointer-events: auto;
   box-shadow: -20px 0 60px rgba(0, 0, 0, 0.35);
 }
+.word-drawer.is-open .word-card-wrapper { transform: translateY(-50%) translateX(0); }
 .word-card-bg {
   width: 100%;
   height: 100%;
@@ -1008,9 +1005,9 @@ button.ornate-panel {
   display: flex; align-items: center; justify-content: center;
 }
 /* 3) Content (scrolls). Small left inset = safe bleed so text doesn't
-   touch the painted frame. */
+   touch the painted frame. Bottom lifted a touch (was reaching too low). */
 .word-card-body-zone {
-  left: 10.25%; top: 24.13%; width: 79.51%; height: 65.15%;
+  left: 10.25%; top: 24.13%; width: 79.51%; height: 60.4%;
   overflow-y: auto; overflow-x: hidden; text-align: left;
   padding-left: 3.2%;
 }
@@ -1024,9 +1021,9 @@ button.ornate-panel {
 .word-card-body-zone .wc-sec .wc-head,
 .word-card-body-zone .wc-sec .wc-row,
 .word-card-body-zone .wc-sec .wc-ex { opacity: 0; }
-.word-card-body-zone .wc-sec .wc-ink { animation: wc-ink-in 0.7s ease both; }
+.word-card-body-zone .wc-sec .wc-ink { animation: wc-ink-in 1.05s ease both; }
 @keyframes wc-ink-in {
-  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  from { opacity: 0; transform: translateY(9px); filter: blur(2.4px); }
   to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1040,9 +1037,9 @@ button.ornate-panel {
 .word-card-body-zone::-webkit-scrollbar-thumb {
   background: rgba(167, 141, 91, 0.40); border-radius: 3px;
 }
-/* 4) Sign */
+/* 4) Sign — lifted up off the painted bottom ribbon. */
 .word-card-sign-zone {
-  left: 27.15%; top: 89.28%; width: 47.75%; height: 4.96%;
+  left: 27.15%; top: 85.4%; width: 47.75%; height: 4.6%;
   display: flex; align-items: center; justify-content: center;
 }
 
@@ -1205,11 +1202,14 @@ button.ornate-panel {
   border-bottom-color: rgba(150, 110, 55, 0.9);
 }
 .word-card-open-zone .wc-open {
-  height: 100%;
+  height: 70%;            /* flatter button, centred in its zone */
+  min-height: 0;
   min-width: 0;
-  padding: 0 14px;
-  font-size: clamp(9px, 1.4vw, 13px);
+  padding: 0 16px;
+  font-size: clamp(9px, 1.3vw, 12px);
 }
+.word-card-open-zone .wc-open::before { top: 2px; }
+.word-card-open-zone .wc-open::after  { bottom: 2px; }
 
 /* Close button — small, no modern fill on hover. */
 .word-drawer-close {

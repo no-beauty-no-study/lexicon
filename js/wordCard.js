@@ -271,10 +271,10 @@ const WordCard = (function () {
     cardSecIdx = i;
     const sec = cardSecs[i];
     const items = sec.querySelectorAll(".wc-sep, .wc-head, .wc-row, .wc-ex");
-    items.forEach((el, k) => { el.style.animationDelay = (k * 0.18) + "s"; el.classList.add("wc-ink"); });
+    items.forEach((el, k) => { el.style.animationDelay = (k * 0.26) + "s"; el.classList.add("wc-ink"); });
     try { sec.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
     const txt = sec.getAttribute("data-speak");
-    if (txt && window.TTS && TTS.speak) { try { TTS.speak(txt); } catch (_) {} }
+    if (txt && typeof TTS !== "undefined" && TTS.speak) { try { TTS.speak(txt); } catch (_) {} }
   }
   function advanceCardSection() {
     if (cardSecIdx + 1 < cardSecs.length) showCardSection(cardSecIdx + 1);
@@ -290,7 +290,7 @@ const WordCard = (function () {
     drawerEl.setAttribute("aria-hidden", "true");
     scrimEl.classList.remove("is-open");
     drawerEl.classList.remove("is-open");
-    if (window.TTS && TTS.cancel) { try { TTS.cancel(); } catch (_) {} }
+    if (typeof TTS !== "undefined" && TTS.cancel) { try { TTS.cancel(); } catch (_) {} }
   }
 
   return { openBigCard, openDrawer, closeDrawer };
