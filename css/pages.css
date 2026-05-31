@@ -1857,8 +1857,8 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
    words surface one at a time like developing ink. */
 .reading-art .reading-body .sentence-block .w { transition: opacity 0.5s ease; }
 .reading-art .reading-body .sentence-block.is-current .w {
-  animation: word-ink 0.85s ease both;
-  animation-delay: calc(var(--wi, 0) * 0.11s);
+  animation: word-ink 1.1s ease both;
+  animation-delay: calc(var(--wi, 0) * 0.17s);
 }
 @keyframes word-ink {
   from { opacity: 0.18; filter: blur(1.5px); }
@@ -1874,6 +1874,9 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .reading-art .reading-body {
   box-sizing: border-box;
   padding-right: 18px;
+  /* Lets the LAST sentence scroll fully clear of the bottom edge so its
+     final line is always reachable. */
+  padding-bottom: 64px;
 }
 
 /* Quiz: the question currently being read gets the same soft left mark
