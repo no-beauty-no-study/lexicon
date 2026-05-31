@@ -1024,35 +1024,120 @@ button.ornate-panel {
 }
 .word-drawer.is-open { transform: translateY(-50%) translateX(0); }
 
-/* User-measured zones on the 1024×1536 painted card (NOT auto). */
+/* Two text boxes hand-measured by the user on frame-blank.jpg:
+   title cartouche  x 25.4%→74.2%  y 6.6%→16.8%   (centred)
+   body panel       x 13.6%→85.5%  y 18.8%→86.8%  (left-aligned) */
 .word-card-title-zone {
   position: absolute;
-  left: 19.74%;
-  top: 10.04%;
-  width: 59.66%;
-  height: 10.67%;
+  left: 25.4%;
+  top: 6.6%;
+  width: 48.8%;
+  height: 10.2%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 1%;
 }
 .word-card-body-zone {
   position: absolute;
-  left: 12.34%;
-  top: 23.46%;
-  width: 74.20%;
-  height: 70.56%;
+  left: 13.6%;
+  top: 18.8%;
+  width: 71.9%;
+  height: 68.0%;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-gutter: stable;
-  padding: 8px 10px;
-  text-align: center;        /* user: '词卡的字要居中' */
+  box-sizing: border-box;
+  padding: 22px 30px;
+  text-align: left;
 }
 .word-card-body-zone::-webkit-scrollbar { width: 5px; }
 .word-card-body-zone::-webkit-scrollbar-thumb {
   background: rgba(167, 141, 91, 0.40); border-radius: 3px;
+}
+
+/* ============================================================
+   BIG WORD CARD CONTENT (VocabRuntime.getBigCard)
+   Classical word-entry typography. Only the palette below — no pure
+   black, no blue, no glow, no heavy bold.
+     main EN #4A4034 · second EN #5A4D3F · zh #7A6B58 · light #8A7A67
+   ============================================================ */
+.word-card-title-zone .wc-word {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  color: #4A4034;
+}
+.word-card-title-zone .wc-zh {
+  margin-top: 12px;
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #7A6B58;
+}
+
+/* own phrases + example */
+.word-card-body-zone .wc-own { margin-bottom: 6px; }
+.word-card-body-zone .wc-phrases { margin: 0 0 4px; }
+.word-card-body-zone .wc-phrase {
+  font-family: var(--font-body), Georgia, serif;
+  line-height: 1.65;
+  margin: 0 0 2px;
+}
+.word-card-body-zone .wc-ph-en { font-size: 22px; color: #4B4135; }
+.word-card-body-zone .wc-ph-zh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: 18px; color: #7B6C59; margin-left: 0.5em;
+}
+.word-card-body-zone .wc-example {
+  margin-top: 16px;
+  font-family: var(--font-body), Georgia, serif;
+}
+.word-card-body-zone .wc-ex-en {
+  display: block;
+  font-size: 23px; font-style: italic; line-height: 1.7; color: #5A4D3F;
+}
+.word-card-body-zone .wc-ex-zh {
+  display: block;
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: 18px; line-height: 1.55; color: #857562; margin-top: 2px;
+}
+
+/* Family / Group / Kin sections */
+.word-card-body-zone .wc-section { margin-top: 22px; }
+.word-card-body-zone .wc-section-title {
+  margin: 0 0 8px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 18px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: #8A775E;
+}
+.word-card-body-zone .wc-member { margin: 0 0 14px; }
+.word-card-body-zone .wc-member-head { line-height: 1.3; margin-bottom: 1px; }
+.word-card-body-zone .wc-member-head .wc-plain,
+.word-card-body-zone .wc-member-head .wc-jump {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 21px; color: #4A4034;
+}
+.word-card-body-zone .wc-member-zh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: 18px; color: #7A6B58; margin-left: 0.55em;
+}
+/* clickable Family/Group/Kin word → opens its own card */
+.word-card-body-zone .wc-jump {
+  cursor: pointer;
+  border-bottom: 1px dotted rgba(143, 111, 60, 0.5);
+}
+.word-card-body-zone .wc-jump:hover {
+  color: #2f2719;
+  border-bottom-color: rgba(143, 111, 60, 0.85);
 }
 
 /* Close button — small, no modern fill on hover. */

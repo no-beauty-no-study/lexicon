@@ -2062,3 +2062,15 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
     transparent 85%);
   border-radius: 2px;
 }
+
+/* Small marginalia card → "tap for full card" hint (only when the word
+   has a big card; proper/place words omit it). */
+.marginalia-card .word-card.is-openable { cursor: pointer; }
+.marginalia-card .word-card-more {
+  margin-top: 6px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 11px;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: rgba(124, 95, 50, 0.8);
+}

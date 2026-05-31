@@ -992,6 +992,17 @@
 <script src="data/wordLibrary.js"></script>
 <script src="data/wordIndex.js"></script>
 
+<!-- Vocab system (load order per README): word master → family content
+     → family-head map → kin clusters → proper small cards → runtime.
+     Builds window.VocabRuntime used by reading clicks, the word drawer,
+     and the word garden. -->
+<script src="data/vocab/VOCAB_WORD_MASTER_FINAL.js"></script>
+<script src="data/vocab/VOCAB_FAMILY_CONTENT_MASTER_FINAL.js"></script>
+<script src="data/vocab/VOCAB_FAMILY_HEAD_MAP_FINAL.js"></script>
+<script src="data/vocab/VOCAB_KIN_CLUSTER_MASTER_FINAL.js"></script>
+<script src="data/vocab/VOCAB_PROPER_SMALL_CARDS_FINAL.js"></script>
+<script src="data/vocab/VOCAB_RUNTIME_HELPERS.js"></script>
+
 <script src="js/storage.js"></script>
 <script src="js/chapterNav.js"></script>
 <script src="js/tts.js"></script>
