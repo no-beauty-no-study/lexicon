@@ -1001,78 +1001,70 @@ button.ornate-panel {
   position: absolute;
   top: 50%;
   right: 1.5%;
-  /* Preserve the painted card's TRUE native aspect ratio (1024 × 1536
-     = 2:3). The old 976/1492 squashed it narrower than the art. */
+  /* Uses the user's JPEG frame (976×1492) — thinner borders, far wider
+     inner panel than the old PNG. True ratio, no squashing. */
   height: 97%;
-  aspect-ratio: 1024 / 1536;
+  aspect-ratio: 976 / 1492;
   width: auto;
   transform: translateY(-50%) translateX(120%);  /* off-screen right */
   transition: transform 360ms cubic-bezier(0.22, 0.61, 0.36, 1);
-  background-image: url("../assets/bg/ui/frame-blank.jpg");
+  background-image: url("../assets/bg/ui/word-card-frame.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-color: transparent;
   border: 0;
-  /* No clip-path corner crop, no inset double-line border, no ✤
-     centerpiece — the painted card image already has its own
-     frame and ornament. */
   clip-path: none;
   box-shadow: -20px 0 60px rgba(0, 0, 0, 0.35);
   z-index: 40;
   pointer-events: auto;
+  /* Flex column so the action bar is ALWAYS below the scrolling body
+     (never overlapping it), independent of how tall the content is.
+     Padding insets the text into the painted panel (thin borders). */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 6% 9% 8.5%;
 }
 .word-drawer.is-open { transform: translateY(-50%) translateX(0); }
 
-/* Hand-measured boxes on frame-blank.jpg, with the body shortened so a
-   FIXED action bar fits at the bottom (Signed input + Open Chapter).
-   title  x 25.4–74.2%  y 6.6–17.2%   (centred, compact)
-   body   x 13.6–85.5%  y 18.8–69%    (scroll, left-aligned)
-   action x 13.6–85.5%  y 70–84.5%    (fixed, centred) */
+/* Title — fills the top cartouche band so the body always begins
+   BELOW it; word + pos + zh, centred. */
 .word-card-title-zone {
-  position: absolute;
-  left: 24.4%;
-  top: 6.4%;
-  width: 51.2%;
-  height: 11.6%;
+  flex: 0 0 auto;
+  min-height: 15%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   overflow: hidden;
-  box-sizing: border-box;
-  padding: 0 1%;
+  padding: 0 0 1.5%;
 }
+/* Body — the WORD CONTENT box: scrolls; never holds Signed/Open. */
 .word-card-body-zone {
-  position: absolute;
-  left: 13.6%;
-  top: 18.8%;
-  width: 71.9%;
-  height: 50.2%;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-gutter: stable;
-  box-sizing: border-box;
-  padding: 4px 22px 8px;
   text-align: left;
+  padding: 2px 2px 4px;
 }
 .word-card-body-zone::-webkit-scrollbar { width: 5px; }
 .word-card-body-zone::-webkit-scrollbar-thumb {
   background: rgba(167, 141, 91, 0.40); border-radius: 3px;
 }
+/* Action bar — BELOW the content box, not inside it. */
 .word-card-action-zone {
-  position: absolute;
-  left: 13.6%;
-  top: 70%;
-  width: 71.9%;
-  height: 14.5%;
+  flex: 0 0 auto;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding-top: 8px;
+  gap: 9px;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(150, 124, 82, 0.30);
 }
 
 /* ============================================================
@@ -1108,19 +1100,24 @@ button.ornate-panel {
 /* ---- EN ｜ ZH two-column row (ZH aligns down a stable column) ---- */
 .word-card-body-zone .wc-row {
   display: grid;
-  grid-template-columns: 1fr 42%;
+  grid-template-columns: 1fr 34%;
   column-gap: 6px;
   align-items: baseline;
   margin: 0 0 3px;
 }
+/* EVERY ✦ collocation — own / family / group / kin — is identical:
+   same font, weight, size. (Headwords add bold + a touch larger.) */
 .word-card-body-zone .wc-en {
   font-family: var(--font-display), Georgia, serif;
-  line-height: 1.45;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
   color: #2F251F;
 }
 .word-card-body-zone .wc-zh {
   font-family: "Songti SC", "Noto Serif SC", serif;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.5;
   color: #6C5B50;
 }
 .word-card-body-zone .wc-zh:not(:empty)::before {
@@ -1129,13 +1126,14 @@ button.ornate-panel {
   color: rgba(150, 124, 82, 0.5);
 }
 /* collocation rows indent with a ✦ bullet */
-.word-card-body-zone .wc-phrase .wc-en { padding-left: 16px; }
+.word-card-body-zone .wc-phrase .wc-en { padding-left: 15px; }
 .word-card-body-zone .wc-phrase .wc-en::before {
   content: "✦";
-  margin-left: -16px; margin-right: 0.45em;
+  margin-left: -15px; margin-right: 0.45em;
   color: #A8844E;
 }
-/* headword line: word (bold) + pos (italic) */
+/* headword line: word (bold, a little larger) + pos (italic) */
+.word-card-body-zone .wc-head .wc-en { font-size: 19px; }
 .word-card-body-zone .wc-head .wc-w {
   font-weight: 700;
   color: #2E241D;
@@ -1145,20 +1143,19 @@ button.ornate-panel {
   font-size: 0.78em;
   color: #6E6253;
 }
+.word-card-body-zone .wc-head .wc-zh { font-size: 15px; color: #66574C; }
 
 /* OWN block (focus word's own phrases + example, no heading) */
 .word-card-body-zone .wc-own { margin: 2px 0 0; }
-.word-card-body-zone .wc-own .wc-en { font-size: 19px; font-weight: 600; }
-.word-card-body-zone .wc-own .wc-zh { font-size: 17px; }
-.word-card-body-zone .wc-ex { margin-top: 11px; }
+.word-card-body-zone .wc-ex { margin-top: 10px; }
 .word-card-body-zone .wc-ex-en {
   font-family: var(--font-display), Georgia, serif;
   font-style: italic;
-  font-size: 21px; line-height: 1.5; color: #473A31;
+  font-size: 20px; line-height: 1.5; color: #473A31;
 }
 .word-card-body-zone .wc-ex-zh {
   font-family: "Songti SC", "Noto Serif SC", serif;
-  font-size: 17px; line-height: 1.5; color: #756559; margin-top: 3px;
+  font-size: 14px; line-height: 1.5; color: #756559; margin-top: 3px;
 }
 
 /* ---- centred text divider: thin lines ── LABEL ── thin lines ---- */
@@ -1182,13 +1179,10 @@ button.ornate-panel {
   color: #7B6654;
 }
 
-/* FAMILY / GROUP / KIN entry block — staggered word ▸ phrases */
-.word-card-body-zone .wc-item { margin: 0 0 11px; }
-.word-card-body-zone .wc-block .wc-head { margin-bottom: 3px; }
-.word-card-body-zone .wc-block .wc-head .wc-w { font-size: 20px; }
-.word-card-body-zone .wc-block .wc-head .wc-zh { font-size: 16px; color: #66574C; }
-.word-card-body-zone .wc-block .wc-phrase .wc-en { font-size: 17px; font-weight: 500; }
-.word-card-body-zone .wc-block .wc-phrase .wc-zh { font-size: 15px; color: #7A6B58; }
+/* FAMILY / GROUP / KIN entry block — staggered word ▸ phrases.
+   (Sizing inherits the uniform base rules above; only spacing here.) */
+.word-card-body-zone .wc-item { margin: 0 0 10px; }
+.word-card-body-zone .wc-block .wc-head { margin-bottom: 2px; }
 
 /* clickable Family/Group/Kin word → opens its own card */
 .word-card-body-zone .wc-jump {
