@@ -474,6 +474,23 @@ const Views = (function () {
       return `<span class="clickable-word" data-word="${lc}">${m}</span>`;
     });
   }
+  // Wrap EVERY word in a .w span so the current sentence can ink its
+  // words in one-by-one (GPT-style streaming); clickable words also get
+  // .clickable-word + data-word. Non-letter runs (spaces / punctuation)
+  // pass through untouched. --wi carries each word's index so CSS can
+  // stagger the brighten.
+  function renderSentenceHTML(sentence) {
+    const used = new Set();
+    let wi = 0;
+    return String(sentence).replace(/[A-Za-z][A-Za-z'-]*|[^A-Za-z]+/g, (m) => {
+      if (!/^[A-Za-z]/.test(m)) return esc(m);
+      const lc = m.toLowerCase();
+      const clickable = !used.has(lc) && hasClickableWord(lc);
+      if (clickable) used.add(lc);
+      return `<span class="w${clickable ? " clickable-word" : ""}" style="--wi:${wi++}"`
+           + `${clickable ? ` data-word="${lc}"` : ""}>${esc(m)}</span>`;
+    });
+  }
   function getPhrasePairs(entry) {
     const out = [];
     if (Array.isArray(entry.phrases)) {
@@ -564,10 +581,10 @@ const Views = (function () {
       if (section && section.blocks && section.blocks.length) {
         body.innerHTML = section.blocks.map((sent, i) => {
           const audio = `${section.audio_prefix}-${i + 1}.mp3`;
-          return `<p class="reveal-block" data-audio="${audio}">${markClickable(sent)}</p>`;
+          return `<p class="sentence-block" data-i="${i}" data-audio="${audio}">${renderSentenceHTML(sent)}</p>`;
         }).join("");
       } else {
-        body.innerHTML = `<p class="reveal-block">No content available yet for this section.</p>`;
+        body.innerHTML = `<p class="sentence-block" data-i="0">No content available yet for this section.</p>`;
       }
 
       function currentEntryFromStack() {
@@ -789,108 +806,69 @@ const Views = (function () {
         }
       }
 
-      body.addEventListener("click", (e) => {
-        const el = e.target.closest(".clickable-word");
-        if (!el) return;
-        e.stopPropagation();
-        spawnWordSparkles(e.clientX, e.clientY);
-        host.querySelectorAll(".clickable-word.is-selected")
-            .forEach(x => x.classList.remove("is-selected"));
-        el.classList.add("is-selected");
-        const resolved = (typeof resolveClickedWord === "function")
-                         ? resolveClickedWord(el.dataset.word) : null;
-        // Tapping a word in the text only fills the right-column card
-        // (word / 翻译 / 词组 / 翻译 / 例句). The full word-card DRAWER
-        // is opened by a SECOND tap on that right-column block — wired
-        // up per-card inside renderMarginalia(). Do NOT auto-open the
-        // drawer here.
-        renderMarginalia(resolved);
-        syncMarginaliaButtons();
-        try {
-          const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
-          const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
-          const parts = [el.textContent, ...phrases.map(p => p.en)].filter(Boolean);
-          TTS.speak(parts.join(". "));
-        } catch (_) {}
-      });
+      const blocks = Array.from(body.querySelectorAll(".sentence-block"));
+      const titleZone = host.querySelector(".zone-reading-title");
+      let curIdx = -1;
+      let autoOn = false;
+      let autoTimer = null;
 
-      host.addEventListener("click", (e) => {
-        if (e.target.closest(".word-card")) {
-          setTimeout(() => syncMarginaliaButtons(), 0);
-        }
-      });
-
-      // Reveal blocks — tap anywhere on .page reveals next block; first
-      // tap also reveals the chapter title block and reads the title +
-      // section heading before the first paragraph.
-      const blocks = Array.from(body.querySelectorAll(".reveal-block"));
-      let nextIdx = 0;
-      const firstBlock = blocks[0];
-      if (firstBlock) {
+      // The first sentence's speech is prefixed with the chapter title +
+      // section heading, so opening a page reads "The Universe. 1.1 ·
+      // The First Light. <sentence>".
+      function introFor(i) {
+        if (i !== 0) return "";
         const t1 = (host.querySelector("[data-chapter-title]")?.textContent || "").trim();
         const t2 = (host.querySelector("[data-chapter-section]")?.textContent || "").trim();
-        const intro = [t1, t2].filter(Boolean).join(". ");
-        firstBlock.dataset.speakText = intro
-          ? `${intro}. ${firstBlock.textContent}`
-          : firstBlock.textContent;
-      }
-      function revealNext(opts) {
-        if (nextIdx >= blocks.length) { if (opts && opts.onEnd) opts.onEnd(); return; }
-        const b = blocks[nextIdx++];
-        // Ink ripple on tap stays IMMEDIATE — feedback that the tap
-        // landed. The block itself only fades up when the voice
-        // actually begins (u.onstart) so the text and audio appear
-        // in lockstep — "ink developing as it's spoken". A 1.4s
-        // fallback fires the reveal anyway if TTS never starts
-        // (no voices installed, OS muted, etc.).
-        if (!b.querySelector(".ink-ripple")) {
-          const r = document.createElement("span");
-          r.className = "ink-ripple"; b.appendChild(r);
-        }
-        let revealed = false;
-        function doReveal() {
-          if (revealed) return;
-          revealed = true;
-          b.classList.add("is-revealed");
-          if (nextIdx === 1) {
-            host.querySelector(".zone-reading-title")?.classList.add("is-revealed");
-          }
-        }
-        TTS.speak(b.dataset.speakText || b.textContent, {
-          onStart: doReveal,
-          onEnd: opts && opts.onEnd,
-        });
-        setTimeout(doReveal, 1400);
+        return [t1, t2].filter(Boolean).join(". ");
       }
 
-      // ---- AUTO (autoplay) ----
-      // Reads the page sentence after sentence, hands-free: each block
-      // reveals + speaks, and when the voice ends the next one starts
-      // automatically. Tapping Auto again (or tapping the page) stops.
-      let autoOn = false;
+      // Read ONE sentence: mark it the current (rises up, warm underglow,
+      // words ink in one-by-one), demote the previous current to "read"
+      // (stays fully visible), reveal the title, and speak it. onEnd lets
+      // AUTO chain to the next sentence.
+      function readSentence(i, opts) {
+        if (i < 0 || i >= blocks.length) { if (opts && opts.onEnd) opts.onEnd(); return; }
+        const prev = body.querySelector(".sentence-block.is-current");
+        if (prev && prev !== blocks[i]) {
+          prev.classList.remove("is-current");
+          prev.classList.add("is-read");
+        }
+        const b = blocks[i];
+        b.classList.remove("is-read");
+        // Reflow so the rise + word-ink animations replay on re-read.
+        b.classList.remove("is-current"); void b.offsetWidth; b.classList.add("is-current");
+        b.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        curIdx = i;
+        titleZone && titleZone.classList.add("is-revealed");
+        const intro = introFor(i);
+        const txt = (intro ? intro + ". " : "") + b.textContent;
+        TTS.speak(txt, { onEnd: opts && opts.onEnd });
+      }
+
+      // ---- AUTO: continuous, hands-free read straight down the page ----
       const autoBtn = host.querySelector("[data-auto]");
       function syncAutoBtn() {
         if (!autoBtn) return;
         autoBtn.classList.toggle("is-active", autoOn);
         const label = autoBtn.querySelector(".auto-label");
-        const glyph = autoBtn.querySelector(".auto-glyph");
         if (label) label.textContent = autoOn ? "Stop" : "Auto";
-        if (glyph) glyph.textContent = autoOn ? "■" : "▶";
       }
+      function autoChain() { if (autoOn) autoTimer = setTimeout(autoTick, 450); }
       function autoTick() {
         if (!autoOn || !body.isConnected) return;
-        if (nextIdx >= blocks.length) { stopAuto(); return; }
-        revealNext({ onEnd: () => { if (autoOn) setTimeout(autoTick, 350); } });
+        const n = curIdx + 1;
+        if (n >= blocks.length) { stopAuto(); return; }
+        readSentence(n, { onEnd: autoChain });
       }
       function startAuto() {
         if (autoOn) return;
         autoOn = true; syncAutoBtn();
-        autoTick();
+        readSentence(curIdx < 0 ? 0 : curIdx, { onEnd: autoChain });
       }
       function stopAuto() {
         if (!autoOn) return;
         autoOn = false; syncAutoBtn();
-        TTS.cancel();
+        clearTimeout(autoTimer); TTS.cancel();
       }
       if (autoBtn) autoBtn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -898,16 +876,44 @@ const Views = (function () {
       });
       // Leaving the reading view stops autoplay and silences the voice.
       window.addEventListener("hashchange", function onLeaveReading() {
-        autoOn = false; TTS.cancel();
+        autoOn = false; clearTimeout(autoTimer); TTS.cancel();
       }, { once: true });
 
+      // Sentence / word interaction. Word tap = word card + speak the
+      // word (does NOT reread the sentence). Tapping anywhere else in a
+      // sentence rereads that whole sentence. During AUTO, either keeps
+      // the chain going from where you tapped.
+      body.addEventListener("click", (e) => {
+        const word = e.target.closest(".clickable-word");
+        if (word) {
+          e.stopPropagation();
+          spawnWordSparkles(e.clientX, e.clientY);
+          host.querySelectorAll(".clickable-word.is-selected")
+              .forEach(x => x.classList.remove("is-selected"));
+          word.classList.add("is-selected");
+          const resolved = (typeof resolveClickedWord === "function")
+                           ? resolveClickedWord(word.dataset.word) : null;
+          renderMarginalia(resolved);
+          syncMarginaliaButtons();
+          try {
+            const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
+            const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
+            const parts = [word.textContent, ...phrases.map(p => p.en)].filter(Boolean);
+            TTS.speak(parts.join(". "), autoOn ? { onEnd: autoChain } : undefined);
+          } catch (_) {}
+          return;
+        }
+        const sent = e.target.closest(".sentence-block");
+        if (sent) {
+          e.stopPropagation();
+          readSentence(+sent.dataset.i, autoOn ? { onEnd: autoChain } : undefined);
+        }
+      });
+
       host.addEventListener("click", (e) => {
-        if (e.target.closest("button, a, .clickable-word, .side-note-button,"
-                           + " .marginalia-card, .word-card, input, select, textarea")) return;
-        // While autoplay runs, a page tap pauses it rather than
-        // double-advancing the reveal cursor.
-        if (autoOn) { stopAuto(); return; }
-        revealNext();
+        if (e.target.closest(".word-card")) {
+          setTimeout(() => syncMarginaliaButtons(), 0);
+        }
       });
 
       // Two reading modes share this view but NOT the bottom bar:
@@ -938,6 +944,7 @@ const Views = (function () {
       }
 
       // Prev (上一章) — back to the previous section's reading page.
+      // Turns the page BACKWARD (old page in from the left).
       const prevBtn = host.querySelector("[data-prev]");
       if (prevBtn) prevBtn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -945,18 +952,21 @@ const Views = (function () {
         if (isBrowse) {
           href += href.indexOf("?") >= 0 ? "&browse=1" : "?browse=1";
         }
+        window.__navDir = "back";
         window.go(href);
       });
-      // Back — return to the chapter index.
+      // Back — return to the chapter index (soft crossfade, not a turn).
       const toIndexBtn = host.querySelector("[data-toindex]");
       if (toIndexBtn) toIndexBtn.addEventListener("click", (e) => {
         e.stopPropagation();
+        window.__navDir = "fade";
         window.go(isBrowse ? "#chapters?browse=1" : "#chapters");
       });
 
       const next = host.querySelector("[data-next]");
       if (next) next.addEventListener("click", (e) => {
         e.stopPropagation();
+        window.__navDir = "forward";   // turn the page onward
         if (isBrowse) {
           // Browse-mode Next: walk SECTIONS first (1.1 → 1.2 → 1.3 …),
           // hop to the next chapter only when this chapter's sections
@@ -997,12 +1007,13 @@ const Views = (function () {
         window.go(`#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}`);
       });
 
-      // Arrived from a Notes card "Open Chapter": reveal the whole
-      // section and spotlight the saved word on its sentence for ~2s.
+      // Arrived from a Notes card "Open Chapter": show the whole section
+      // (all sentences fully visible) and spotlight the saved word on its
+      // sentence for ~2s.
       if (params.word) {
-        blocks.forEach(b => b.classList.add("is-revealed"));
+        blocks.forEach(b => b.classList.add("is-read"));
         host.querySelector(".zone-reading-title")?.classList.add("is-revealed");
-        nextIdx = blocks.length;
+        curIdx = blocks.length - 1;
         const target = host.querySelector(
           `.clickable-word[data-word="${cssEsc(params.word)}"]`);
         if (target) {
@@ -1236,6 +1247,7 @@ const Views = (function () {
           });
           playSuccessChord();
           setTimeout(() => {
+            window.__navDir = "forward";
             window.go(ChapterNav.nextAfterQuiz(chapterId, sectionNum));
           }, 1900);
         } else {
@@ -1247,6 +1259,7 @@ const Views = (function () {
           });
           playCorrectDing();
           setTimeout(() => {
+            window.__navDir = "forward";
             window.go(ChapterNav.nextAfterQuiz(chapterId, sectionNum));
           }, 1300);
         }
@@ -1284,13 +1297,14 @@ const Views = (function () {
           opt.classList.add("is-wrong", "is-locked");
           try { TTS.speak(opt.dataset.value || opt.textContent || ""); } catch (_) {}
           const backHref = ChapterNav.prevBeforeQuiz(chapterId, sectionNum);
-          setTimeout(() => window.go(backHref), 1500);
+          setTimeout(() => { window.__navDir = "back"; window.go(backHref); }, 1500);
         }
       });
 
       const back = host.querySelector("[data-back]");
       if (back) back.addEventListener("click", (e) => {
         e.stopPropagation();
+        window.__navDir = "back";
         window.go(ChapterNav.prevBeforeQuiz(chapterId, sectionNum));
       });
       const next = host.querySelector("[data-next]");

@@ -73,13 +73,25 @@
     // `style.transform` directly would have clobbered the scale and
     // blown the page up past the viewport — that was the "右下角被
     // 裁没了" bug the user just reported.
+    // Direction of the page-turn. A caller (Prev/Next/Back) can set
+    // window.__navDir to force it; otherwise reading↔quiz turns forward
+    // and everything else flows up.
+    //   forward → new enters from RIGHT, old leaves LEFT  (turn onward)
+    //   back    → new enters from LEFT,  old leaves RIGHT (turn back)
+    //   up      → new enters from BOTTOM, old leaves TOP
+    //   fade    → pure crossfade (e.g. Back to the index)
     const READING_FLOW = { reading: 1, quiz: 1 };
     const prevName = document.body.dataset.currentView || "";
-    const dir = (READING_FLOW[prevName] && READING_FLOW[name]) ? "left" : "up";
-    const enterTx = dir === "left" ? "100%" : "0";
-    const enterTy = dir === "up"   ? "100%" : "0";
-    const leaveTx = dir === "left" ? "-100%" : "0";
-    const leaveTy = dir === "up"   ? "-100%" : "0";
+    const hint = window.__navDir; window.__navDir = null;
+    let dir;
+    if (hint) dir = hint;
+    else if (READING_FLOW[prevName] && READING_FLOW[name]) dir = "forward";
+    else dir = "up";
+    let enterTx = "0", enterTy = "0", leaveTx = "0", leaveTy = "0";
+    if      (dir === "forward") { enterTx = "100%";  leaveTx = "-100%"; }
+    else if (dir === "back")    { enterTx = "-100%"; leaveTx = "100%";  }
+    else if (dir === "up")      { enterTy = "100%";  leaveTy = "-100%"; }
+    /* dir === "fade": all offsets stay 0 → only opacity animates */
     const easing  = "cubic-bezier(0.22, 0.8, 0.22, 1)";
     const tDur    = "950ms";
 
