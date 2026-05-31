@@ -1054,13 +1054,17 @@ button.ornate-panel {
   color: #5D4D42;
 }
 
-/* ---- EN ｜ ZH two-column row (ZH aligns down a stable column) ---- */
+/* ---- collocation row: ✦ EN  —  ZH (two columns, dash before ZH) ---- */
 .word-card-body-zone .wc-row {
   display: grid;
-  grid-template-columns: 1fr 34%;
-  column-gap: 6px;
+  grid-template-columns: 1fr 38%;
+  column-gap: 14px;
   align-items: baseline;
   margin: 0 0 3px;
+}
+.word-card-body-zone .wc-phrase .wc-zh::before {
+  content: "- ";
+  color: rgba(150, 124, 82, 0.7);
 }
 /* EVERY ✦ collocation — own / family / group / kin — is identical:
    same font, weight, size. (Headwords add bold + a touch larger.) */
