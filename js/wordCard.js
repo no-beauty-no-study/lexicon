@@ -21,6 +21,10 @@
 */
 const WordCard = (function () {
 
+  // Preload the frame so the first open doesn't reflow (uncached image
+  // → wrapper width 0 → the card visibly jumped left→centre→right).
+  try { const _pre = new Image(); _pre.src = "assets/bg/ui/word-card-frame.jpg"; } catch (_) {}
+
   function esc(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;")
@@ -258,12 +262,16 @@ const WordCard = (function () {
     showCardSection(0);
   }
 
-  // Reveal block i (and everything before it) and read it aloud.
+  // Reveal block i (and everything before it) and read it aloud. The
+  // newly-shown block's items (word lines / collocations / example) ink
+  // in one-by-one (staggered) instead of all at once.
   function showCardSection(i) {
     if (i < 0 || i >= cardSecs.length) return;
     for (let k = 0; k <= i; k++) cardSecs[k].classList.add("is-shown");
     cardSecIdx = i;
     const sec = cardSecs[i];
+    const items = sec.querySelectorAll(".wc-sep, .wc-head, .wc-row, .wc-ex");
+    items.forEach((el, k) => { el.style.animationDelay = (k * 0.18) + "s"; el.classList.add("wc-ink"); });
     try { sec.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
     const txt = sec.getAttribute("data-speak");
     if (txt && window.TTS && TTS.speak) { try { TTS.speak(txt); } catch (_) {} }
