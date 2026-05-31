@@ -628,14 +628,12 @@ const Views = (function () {
             <span class="wce-en">${esc(exEn)}</span>
             ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
           </div>` : "";
-        const more = sc.clickableForBigCard ? `<div class="word-card-more">Tap for full card ›</div>` : "";
         return `
           <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
             <div class="word-card-headword">${esc(sc.word || id)}</div>
             <div class="word-card-meaning">${esc(sc.zh || "")}</div>
             ${phraseRows}
             ${exampleRow}
-            ${more}
           </div>`;
       }
       function renderMarginalia(sc) {
@@ -901,7 +899,9 @@ const Views = (function () {
             renderMarginalia(sc);
             syncMarginaliaButtons();
             try {
-              const parts = [sc.word, ...(sc.phrases || []).slice(0, 2).map(p => p.phrase || p.en)];
+              const parts = [sc.word]
+                .concat((sc.phrases || []).slice(0, 2).map(p => p.phrase || p.en))
+                .concat((sc.examples || []).slice(0, 1).map(x => x.example || x.en));
               TTS.speak(parts.filter(Boolean).join(". "));
             } catch (_) {}
           } else {

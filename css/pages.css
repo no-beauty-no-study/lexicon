@@ -1833,36 +1833,40 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
   padding-left: 12px;
   border-left: 2px solid transparent;
   border-radius: 2px;
-  opacity: 0.38;
+  opacity: 0.32;
+  filter: blur(2.4px);                /* invisible-ink: blurred until read */
   cursor: pointer;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.7s ease, filter 0.7s ease;
 }
-.reading-art .reading-body .sentence-block.is-read { opacity: 1; }
+.reading-art .reading-body .sentence-block.is-read { opacity: 1; filter: blur(0); }
 .reading-art .reading-body .sentence-block.is-current {
   opacity: 1;
+  filter: blur(0);
   border-left-color: rgba(170, 135, 60, 0.5);
   background: linear-gradient(90deg,
     rgba(201, 170, 92, 0.12) 0%,
     rgba(201, 170, 92, 0.05) 45%,
     transparent 80%);
-  animation: sentence-rise 0.5s cubic-bezier(0.22, 0.8, 0.22, 1) both;
+  animation: sentence-rise 0.9s cubic-bezier(0.22, 0.8, 0.22, 1) both;
 }
 @keyframes sentence-rise {
   from { transform: translateY(8px); }
   to   { transform: translateY(0); }
 }
-.reading-art .reading-body .sentence-block .w { transition: opacity 0.3s ease; }
+/* word-by-word ink-in — SLOWED ~2× (longer fade + wider stagger) so the
+   words surface one at a time like developing ink. */
+.reading-art .reading-body .sentence-block .w { transition: opacity 0.5s ease; }
 .reading-art .reading-body .sentence-block.is-current .w {
-  animation: word-ink 0.5s ease both;
-  animation-delay: calc(var(--wi, 0) * 0.05s);
+  animation: word-ink 0.85s ease both;
+  animation-delay: calc(var(--wi, 0) * 0.11s);
 }
 @keyframes word-ink {
-  from { opacity: 0.22; }
-  to   { opacity: 1; }
+  from { opacity: 0.18; filter: blur(1.5px); }
+  to   { opacity: 1; filter: blur(0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .reading-art .reading-body .sentence-block,
-  .reading-art .reading-body .sentence-block .w { animation: none !important; }
+  .reading-art .reading-body .sentence-block .w { animation: none !important; filter: none !important; }
 }
 
 /* Right-side safety margin so the scrollbar / interaction layer never
