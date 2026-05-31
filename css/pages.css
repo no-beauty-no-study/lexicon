@@ -1689,3 +1689,202 @@
   color: #5E5040;
   line-height: 1.2;
 }
+
+/* ============================================================
+   NOTES — saved-word note cards
+   Each saved word is ONE horizontal note card painted on
+   assets/bg/ui/note-card.png (its white margin was made
+   transparent so cards sit on the parchment Notes page).
+   Cards stack vertically and scroll. Four content zones,
+   positioned in PER-CARD percentages from the 2095×444 art:
+     1 .note-index   2 .note-quote   3 .note-open   4 .word-preview
+   Palette (classical paper, low-saturation, no pure black /
+   modern blue / highlight yellow):
+     ink-main #3f3628  ink-soft #6d604b  gold-line rgba(159,130,75,.45)
+   ============================================================ */
+.notes-art .notes-scroll {
+  position: absolute;
+  left: 5%; right: 5%;
+  top: 16.5%; bottom: 11.5%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+  padding-right: 6px;
+}
+.notes-art .notes-scroll::-webkit-scrollbar { width: 6px; }
+.notes-art .notes-scroll::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.32); border-radius: 3px;
+}
+.notes-art .note-cards {
+  list-style: none; margin: 0; padding: 2px 0 0;
+  display: flex; flex-direction: column; gap: 2.6%;
+}
+.note-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2095 / 444;
+  background: url("assets/bg/ui/note-card.png") no-repeat center center;
+  background-size: 100% 100%;
+  flex: 0 0 auto;
+}
+
+/* ---- zone 1: index number ---- */
+.note-card .note-index {
+  position: absolute;
+  left: 2.39%; top: 16.44%; width: 5.11%; height: 10.81%;
+  display: flex; align-items: flex-start; justify-content: center;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(22px, 2vw, 42px);
+  font-weight: 400; letter-spacing: 0.04em;
+  color: #5a4932; line-height: 1;
+  pointer-events: none;
+}
+
+/* ---- zone 2: reading quote ---- */
+.note-card .note-quote {
+  position: absolute;
+  left: 9.50%; top: 14.64%; width: 39.28%; height: 59.46%;
+  box-sizing: border-box;
+  padding: 3.5% 8% 4% 9%;
+  pointer-events: none;
+}
+.note-card .note-source {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(10px, 0.85vw, 17px);
+  letter-spacing: 0.08em;
+  color: rgba(74, 61, 43, 0.78);
+  margin-bottom: 0.7em;
+}
+.note-card .note-quote-text {
+  font-family: "Cormorant Garamond", "EB Garamond", Georgia, serif;
+  font-size: clamp(17px, 1.45vw, 31px);
+  font-style: italic; font-weight: 400;
+  line-height: 1.45; letter-spacing: 0.035em;
+  color: #3f3628;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+.note-card .quote-word {
+  background: rgba(191, 165, 103, 0.16);
+  border-bottom: 1px solid rgba(143, 111, 60, 0.38);
+  padding: 0 0.08em;
+}
+.note-card .note-quote::before {
+  content: "\201C";
+  position: absolute;
+  left: 3.5%; top: 18%;
+  font-family: Georgia, serif;
+  font-size: clamp(42px, 4.6vw, 86px);
+  color: rgba(132, 101, 52, 0.55);
+  line-height: 1;
+}
+.note-card .note-quote::after {
+  content: "\201D";
+  position: absolute;
+  right: 3%; bottom: 2%;
+  font-family: Georgia, serif;
+  font-size: clamp(42px, 4.6vw, 86px);
+  color: rgba(132, 101, 52, 0.55);
+  line-height: 1;
+}
+
+/* ---- zone 3: Open Chapter (reuses the chapters-page .antique-button) ---- */
+.note-card .note-open {
+  position: absolute;
+  left: 31.93%; top: 76.35%; width: 16.13%; height: 14.41%;
+}
+.note-card .note-open .antique-button {
+  width: 100%; height: 100%;
+  min-width: 0; padding: 0 8px;
+  font-size: clamp(9px, 0.9vw, 13px);
+}
+
+/* ---- zone 4: word preview small card ---- */
+.note-card .word-preview {
+  position: absolute;
+  left: 53.27%; top: 18.02%; width: 31.84%; height: 67.79%;
+  box-sizing: border-box;
+  padding: 2.6% 3.2% 2.4% 3.2%;
+  overflow: hidden;
+  cursor: pointer;
+}
+.note-card .word-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(26px, 2.15vw, 46px);
+  font-weight: 500; letter-spacing: 0.09em;
+  color: #3f3628; line-height: 1.05;
+  margin-bottom: 0.2em;
+}
+.note-card .word-zh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: clamp(12px, 0.95vw, 18px);
+  letter-spacing: 0.12em; color: #5d4b35; line-height: 1.4;
+  margin-bottom: 0.5em;
+}
+.note-card .word-divider {
+  height: 1px;
+  background: linear-gradient(to right,
+    transparent, rgba(160, 127, 68, 0.36), transparent);
+  margin: 0.5em 0 0.55em;
+}
+.note-card .word-phrases {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(12px, 1vw, 19px);
+  line-height: 1.5; color: #3f3628;
+}
+.note-card .word-phrase { display: block; }
+.note-card .word-phrase::before {
+  content: "\2726";
+  color: rgba(157, 126, 70, 0.65);
+  margin-right: 0.45em; font-size: 0.75em;
+}
+.note-card .word-phrase-zh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  color: #6d604b; font-size: 0.9em; margin-left: 0.35em;
+}
+.note-card .word-example {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(12px, 1vw, 19px);
+  font-style: italic; line-height: 1.4; letter-spacing: 0.025em;
+  color: #4b402f;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+/* Blue bookmark tab "Tap to Open" — painted into the card's
+   top-right; the label sits on its lower tail. */
+.note-card .bookmark-open {
+  position: absolute;
+  right: 1.4%; top: 12%;
+  width: 6.6%;
+  text-align: center;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(10px, 0.8vw, 15px);
+  font-style: italic; line-height: 1.2; letter-spacing: 0.04em;
+  color: #e9dcc0;
+  text-shadow: 0 1px 2px rgba(40, 52, 74, 0.55);
+  cursor: pointer;
+}
+
+/* Notes empty state */
+.notes-art .notes-empty {
+  margin: 8% auto 0;
+  text-align: center;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 18px; letter-spacing: 0.08em;
+  color: rgba(74, 61, 43, 0.6);
+}
+
+/* Spotlight a word when arriving from a note's "Open Chapter". */
+.reading-art .reading-body .clickable-word.is-spotlight {
+  animation: word-spotlight 2.2s ease-out;
+}
+@keyframes word-spotlight {
+  0%   { background: rgba(201, 174, 103, 0.22); box-shadow: 0 0 0 rgba(180,140,60,0); }
+  25%  { background: rgba(201, 174, 103, 0.66); box-shadow: 0 0 12px rgba(180,140,60,0.55); }
+  100% { background: rgba(201, 174, 103, 0.22); box-shadow: 0 0 0 rgba(180,140,60,0); }
+}
