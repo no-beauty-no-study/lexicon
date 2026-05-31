@@ -144,12 +144,14 @@
   align-items: center;
   text-align: center;
 }
-/* Top-right control group box (BGM volume + AUTO). */
+/* Control group box — sits to the RIGHT of the bottom nav, under the
+   word column / FOLD button, at the same vertical band as the nav
+   (matches the marginalia column's x so its centre lines up with FOLD). */
 .reading-art .zone-reading-controls {
-  left:   87.63%;
-  top:     5.54%;
-  width:   9.75%;
-  height: 14.89%;
+  left:   80.89%;
+  top:    92.00%;
+  width:  16.49%;
+  height:  7.30%;
 }
 /* CHAPTER NN + THE TITLE share ONE centred line. */
 .reading-art .reading-titleline {
@@ -1748,7 +1750,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 2095 / 444;
-  background: url("assets/bg/ui/note-card.png") no-repeat center center;
+  background: url("../assets/bg/ui/note-card.png") no-repeat center center;
   background-size: 100% 100%;
   flex: 0 0 auto;
 }
@@ -1925,8 +1927,8 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .reading-art .zone-reading-controls {
   pointer-events: none;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
 }
 .reading-art .reading-controls {
   pointer-events: auto;
@@ -2046,4 +2048,17 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .reading-art .reading-body {
   box-sizing: border-box;
   padding-right: 18px;
+}
+
+/* Quiz: the question currently being read gets the same soft left mark
+   + warm underglow as the reading page's current sentence, and is
+   scrolled into view, so the player can follow what's being spoken. */
+.reading-art .quiz-item { border-left: 2px solid transparent; }
+.reading-art .quiz-item.is-current {
+  border-left-color: rgba(170, 135, 60, 0.5);
+  background: linear-gradient(90deg,
+    rgba(201, 170, 92, 0.10) 0%,
+    rgba(201, 170, 92, 0.04) 50%,
+    transparent 85%);
+  border-radius: 2px;
 }
