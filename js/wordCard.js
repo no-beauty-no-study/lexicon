@@ -120,24 +120,24 @@ const WordCard = (function () {
     return own + divider("Family", fam) + divider("Group", grp) + divider("Kin", kin);
   }
 
-  function renderAction(word, loc) {
-    const openBtn = loc ? `
-      <button type="button" class="antique-button wc-open"
+  // Open Chapter — its own box (just under the title, above content).
+  function renderOpen(word, loc) {
+    if (!loc) return "";
+    return `<button type="button" class="antique-button wc-open"
               data-go="#reading?chapter=${encodeURIComponent(loc.chapter)}&section=${encodeURIComponent(loc.section)}&word=${encodeURIComponent(word)}">
         <span class="antique-button-label">Open Chapter</span>
-      </button>` : "";
-    return `
-      <div class="wc-signed">
-        <span class="wc-signed-pre">Signed</span>
-        <input class="wc-signed-input" type="text" autocomplete="off"
-               autocapitalize="off" spellcheck="false"
-               data-answer="${esc(word)}" aria-label="Write the word">
-      </div>
-      ${openBtn}`;
+      </button>`;
+  }
+  // Signed — its own box at the very bottom; the copy/dictation input.
+  function renderSign(word) {
+    return `<span class="wc-signed-pre">Signed</span>
+      <input class="wc-signed-input" type="text" autocomplete="off"
+             autocapitalize="off" spellcheck="false"
+             data-answer="${esc(word)}" aria-label="Write the word">`;
   }
 
   /* ---------- drawer DOM ---------- */
-  let drawerEl = null, scrimEl = null, titleZone = null, bodyZone = null, actionZone = null, hostPage = null;
+  let drawerEl = null, scrimEl = null, titleZone = null, openZone = null, bodyZone = null, signZone = null, hostPage = null;
 
   function ensureDrawer() {
     const page = document.querySelector(".stage .page");
@@ -167,8 +167,9 @@ const WordCard = (function () {
         <div class="word-card-overlay">
           <button type="button" class="word-drawer-close" aria-label="Close">×</button>
           <div class="word-card-title-zone"></div>
+          <div class="word-card-open-zone"></div>
           <div class="word-card-body-zone"></div>
-          <div class="word-card-action-zone"></div>
+          <div class="word-card-sign-zone"></div>
         </div>
       </div>`;
     drawerEl.addEventListener("click", (e) => e.stopPropagation());
@@ -176,8 +177,9 @@ const WordCard = (function () {
       e.stopPropagation(); closeDrawer();
     });
     titleZone  = drawerEl.querySelector(".word-card-title-zone");
+    openZone   = drawerEl.querySelector(".word-card-open-zone");
     bodyZone   = drawerEl.querySelector(".word-card-body-zone");
-    actionZone = drawerEl.querySelector(".word-card-action-zone");
+    signZone   = drawerEl.querySelector(".word-card-sign-zone");
 
     bodyZone.addEventListener("click", (e) => {
       const j = e.target.closest(".wc-jump");
@@ -185,14 +187,14 @@ const WordCard = (function () {
       e.stopPropagation();
       openBigCard(j.dataset.jump);
     });
-    actionZone.addEventListener("click", (e) => {
+    openZone.addEventListener("click", (e) => {
       const o = e.target.closest("[data-go]");
       if (!o) return;
       e.stopPropagation();
       closeDrawer();
       if (typeof window.go === "function") window.go(o.dataset.go);
     });
-    actionZone.addEventListener("input", (e) => {
+    signZone.addEventListener("input", (e) => {
       const inp = e.target.closest(".wc-signed-input");
       if (!inp) return;
       const ok = norm(inp.value) === norm(inp.dataset.answer) && inp.value.trim() !== "";
@@ -212,9 +214,10 @@ const WordCard = (function () {
     if (!data) return;
     const loc = (ctx && ctx.chapter) ? ctx : findWordLocation(data.word || word);
 
-    titleZone.innerHTML  = renderTitle(data);
-    bodyZone.innerHTML   = renderBody(data);
-    actionZone.innerHTML = renderAction(data.word || word, loc);
+    titleZone.innerHTML = renderTitle(data);
+    openZone.innerHTML  = renderOpen(data.word || word, loc);
+    bodyZone.innerHTML  = renderBody(data);
+    signZone.innerHTML  = renderSign(data.word || word);
     bodyZone.scrollTop   = 0;
     drawerEl.setAttribute("aria-hidden", "false");
     requestAnimationFrame(() => {

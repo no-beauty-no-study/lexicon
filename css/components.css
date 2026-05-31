@@ -946,8 +946,8 @@ button.ornate-panel {
    tall page: 1086 × 1024/1536 ≈ 724px. Two fixed zones land on top
    of it, using the user's hand-measured percentages — nothing
    else is positioned over the artwork. */
-/* The drawer is just a sliding, full-area flex frame that parks the
-   card against the right edge. It holds NO size/ratio of its own. */
+/* Sliding frame that parks the card against the right edge. ABOVE all
+   reading UI (z 9999; scrim 9998 below it). Holds no ratio of its own. */
 .word-drawer {
   position: absolute;
   inset: 0;
@@ -957,7 +957,7 @@ button.ornate-panel {
   padding-right: 1.5%;
   transform: translateX(118%);   /* off-screen right */
   transition: transform 360ms cubic-bezier(0.22, 0.61, 0.36, 1);
-  z-index: 40;
+  z-index: 9999;
   pointer-events: none;          /* empty area lets taps fall to the scrim */
   border: 0;
   background: transparent;
@@ -979,53 +979,44 @@ button.ornate-panel {
   width: auto;
   display: block;
 }
+/* Overlay = positioning context spanning the img 1:1. The four zones
+   below are ABSOLUTELY placed at the user's measured %s (976×1492). */
 .word-card-overlay {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
+}
+.word-card-title-zone,
+.word-card-open-zone,
+.word-card-body-zone,
+.word-card-sign-zone {
+  position: absolute;
   box-sizing: border-box;
-  padding: 6% 10% 8.5%;
 }
-
-/* Title — fills the top cartouche band so the body always begins
-   BELOW it; word + pos + zh, centred. */
+/* 1) Title */
 .word-card-title-zone {
-  flex: 0 0 auto;
-  min-height: 15%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  overflow: hidden;
-  padding: 0 0 1.5%;
+  left: 23.77%; top: 9.12%; width: 52.05%; height: 9.52%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; overflow: hidden;
 }
-/* Body — the WORD CONTENT box: scrolls; never holds Signed/Open. */
+/* 2) Open Chapter */
+.word-card-open-zone {
+  left: 27.05%; top: 20.44%; width: 45.39%; height: 3.55%;
+  display: flex; align-items: center; justify-content: center;
+}
+/* 3) Content (scrolls) */
 .word-card-body-zone {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  text-align: left;
-  padding: 2px 2px 4px;
+  left: 10.25%; top: 24.13%; width: 79.51%; height: 65.15%;
+  overflow-y: auto; overflow-x: hidden; text-align: left;
 }
 .word-card-body-zone::-webkit-scrollbar { width: 5px; }
 .word-card-body-zone::-webkit-scrollbar-thumb {
   background: rgba(167, 141, 91, 0.40); border-radius: 3px;
 }
-/* Action bar — BELOW the content box, not inside it. */
-.word-card-action-zone {
-  flex: 0 0 auto;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  margin-top: 8px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(150, 124, 82, 0.30);
+/* 4) Sign */
+.word-card-sign-zone {
+  left: 27.15%; top: 89.28%; width: 47.75%; height: 4.96%;
+  display: flex; align-items: center; justify-content: center;
 }
 
 /* ============================================================
@@ -1156,35 +1147,35 @@ button.ornate-panel {
 }
 
 /* Fixed action bar: "Signed ___" copy/dictation input + Open Chapter. */
-.word-card-action-zone .wc-signed {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 0.5em;
-}
-.word-card-action-zone .wc-signed-pre {
+.word-card-sign-zone .wc-signed-pre {
   font-family: var(--font-display), Georgia, serif;
   font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
   color: #8A775E;
+  margin-right: 0.5em;
 }
-.word-card-action-zone .wc-signed-input {
+.word-card-sign-zone .wc-signed-input {
   font-family: var(--font-display), Georgia, serif;
-  font-size: 19px; font-style: italic;
+  font-size: 18px; font-style: italic;
   color: #4A4034;
   text-align: center;
-  width: 52%; min-width: 120px;
+  flex: 1 1 auto; min-width: 0;
   background: transparent;
   border: 0;
   border-bottom: 1px solid rgba(150, 124, 82, 0.55);
-  padding: 2px 4px;
+  padding: 1px 4px;
   outline: none;
 }
-.word-card-action-zone .wc-signed-input:focus { border-bottom-color: rgba(126, 93, 42, 0.85); }
-.word-card-action-zone .wc-signed-input.is-correct {
+.word-card-sign-zone .wc-signed-input:focus { border-bottom-color: rgba(126, 93, 42, 0.85); }
+.word-card-sign-zone .wc-signed-input.is-correct {
   color: #7a4a1f;
   border-bottom-color: rgba(150, 110, 55, 0.9);
 }
-.word-card-action-zone .wc-open { min-width: 150px; }
+.word-card-open-zone .wc-open {
+  height: 100%;
+  min-width: 0;
+  padding: 0 14px;
+  font-size: clamp(9px, 1.4vw, 13px);
+}
 
 /* Close button — small, no modern fill on hover. */
 .word-drawer-close {
@@ -1228,7 +1219,7 @@ button.ornate-panel {
   opacity: 0;
   pointer-events: none;
   transition: opacity 240ms ease;
-  z-index: 39;
+  z-index: 9998;   /* just below the drawer (9999), above all reading UI */
 }
 .word-drawer-backdrop.is-open {
   opacity: 1;
