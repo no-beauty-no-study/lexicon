@@ -986,6 +986,23 @@ const Views = (function () {
         e.stopPropagation();
         window.go(`#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}`);
       });
+
+      // Arrived from a Notes card "Open Chapter": reveal the whole
+      // section and spotlight the saved word on its sentence for ~2s.
+      if (params.word) {
+        blocks.forEach(b => b.classList.add("is-revealed"));
+        host.querySelector(".zone-reading-title")?.classList.add("is-revealed");
+        nextIdx = blocks.length;
+        const target = host.querySelector(
+          `.clickable-word[data-word="${cssEsc(params.word)}"]`);
+        if (target) {
+          target.classList.add("is-selected", "is-spotlight");
+          setTimeout(() => {
+            try { target.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (_) {}
+          }, 80);
+          setTimeout(() => target.classList.remove("is-spotlight"), 2300);
+        }
+      }
     },
   };
 
@@ -1280,58 +1297,113 @@ const Views = (function () {
   };
 
 
-  /* ---------- notes ---------- */
+  /* ---------- notes ----------
+     Each saved word renders as one horizontal note card (painted frame
+     in CSS). A card carries four zones: an index number, the original
+     reading quote it was folded from, an "Open Chapter" plaque that
+     jumps back to that sentence, and a small word preview that opens
+     the full drawer. */
+  function resolveWordEntry(id) {
+    return (typeof window.getWord === "function" && window.getWord(id))
+        || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === id))
+        || (typeof WORDS        !== "undefined" && WORDS.find(w        => (w.id || w.word) === id))
+        || null;
+  }
+  function quoteForNote(entry, scope) {
+    const word = (entry && entry.word) || "";
+    if (scope && scope.chapter && scope.section && typeof ChapterNav !== "undefined") {
+      const sec = ChapterNav.findSection(scope.chapter, scope.section);
+      if (sec && Array.isArray(sec.blocks) && word) {
+        const re = new RegExp("\\b" + word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "i");
+        const hit = sec.blocks.find(b => re.test(b));
+        if (hit) return hit;
+      }
+    }
+    return (entry && (entry.example || entry.meaning)) || "";
+  }
+  function highlightWord(text, word) {
+    const safe = esc(text);
+    if (!word) return safe;
+    const re = new RegExp("(" + word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
+    return safe.replace(re, '<span class="quote-word">$1</span>');
+  }
+  function sourceLabel(scope) {
+    if (!scope || !scope.chapter) return "";
+    const ch  = (typeof getChapter === "function" && getChapter(scope.chapter)) || null;
+    const sec = (typeof ChapterNav !== "undefined") ? ChapterNav.findSection(scope.chapter, scope.section) : null;
+    const num = ch ? ch.number : "";
+    const sn  = sec ? sec.number : (scope.section || "");
+    const st  = sec ? sec.title : "";
+    return `Chapter ${num} · ${sn}${st ? " " + st : ""}`.trim();
+  }
+
   const notes = {
     init(host) {
+      const listEl = host.querySelector(".note-cards");
+      if (!listEl) return;
       const ids = Storage.getNotes();
-      const getWord = (id) => (typeof window.getWord === "function" ? window.getWord(id) : null);
-      const words = ids.map(getWord).filter(Boolean);
+      const byId = {};
+      const cards = [];
 
-      const list = host.querySelector(".word-list");
-      const detail = host.querySelector(".detail-pane");
-      const countEl = host.querySelector("[data-notes-count]");
-      if (countEl) countEl.textContent = words.length + " saved";
+      ids.forEach((id, i) => {
+        const entry = resolveWordEntry(id);
+        const word  = (entry && entry.word) || id;
+        byId[id] = entry || { word: id };
 
-      if (!words.length) {
-        list.innerHTML = `<li class="empty-state" style="margin:20px 0;">No saved words yet</li>`;
-        detail.innerHTML = `<div class="empty-state">Empty Notes</div>`;
-        return;
-      }
+        const scope = Storage.findScopeOf ? Storage.findScopeOf(id) : null;
+        const quote = quoteForNote(entry, scope);
+        const src   = sourceLabel(scope);
+        const idxStr = (i + 1 < 10 ? "0" : "") + (i + 1);
 
-      list.innerHTML = words.map(w => `
-        <li class="word-list-item" data-id="${esc(w.id || w.word)}">
-          <span class="wli-word">${esc(w.word)}</span>
-          <span class="wli-meaning">${esc(w.meaning)}</span>
-        </li>`).join("");
+        const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
+        const phraseRows = phrases.map(p => `
+            <span class="word-phrase">${esc(p.en)}${p.zh ? `<span class="word-phrase-zh">— ${esc(p.zh)}</span>` : ""}</span>`).join("");
+        const example = (entry && entry.example) || "";
 
-      function select(id) {
-        host.querySelectorAll(".word-list-item").forEach(li => {
-          li.classList.toggle("is-active", li.dataset.id === id);
-        });
-        const w = getWord(id);
-        // Two-pane preview stays in the right column for desktop /
-        // landscape reference; the user-requested DRAWER pops up
-        // over it on every click so the full card with phrases +
-        // example is one tap away (matches word-garden behavior).
-        if (w) {
-          detail.innerHTML = WordCard.renderFullBody(w);
-          if (typeof WordCard !== "undefined" && WordCard.openDrawer) {
-            WordCard.openDrawer(w);
-          }
-        }
-      }
-      list.addEventListener("click", e => {
-        const li = e.target.closest(".word-list-item");
-        if (li) select(li.dataset.id);
+        // Open Chapter → reading, located on the folded sentence with
+        // the word spotlit. Only when we know which section it came from.
+        const openBtn = (scope && scope.chapter) ? `
+          <div class="note-open">
+            <button type="button" class="antique-button"
+                    data-go="#reading?chapter=${encodeURIComponent(scope.chapter)}&section=${encodeURIComponent(scope.section || "1.1")}&word=${encodeURIComponent(id)}">
+              <span class="antique-button-label">Open Chapter</span>
+            </button>
+          </div>` : "";
+
+        cards.push(`
+          <li class="note-card" data-id="${esc(id)}">
+            <div class="note-index">${esc(idxStr)}</div>
+            <div class="note-quote">
+              ${src ? `<div class="note-source">${esc(src)}</div>` : ""}
+              <div class="note-quote-text">${highlightWord(quote, word)}</div>
+            </div>
+            ${openBtn}
+            <div class="word-preview">
+              <div class="word-title">${esc(word)}</div>
+              ${entry && entry.meaning ? `<div class="word-zh">${esc(entry.meaning)}</div>` : ""}
+              <div class="word-divider"></div>
+              <div class="word-phrases">${phraseRows}</div>
+              ${example ? `<div class="word-divider"></div><div class="word-example">${esc(example)}</div>` : ""}
+            </div>
+            <div class="bookmark-open" aria-label="Open word card">Tap to Open</div>
+          </li>`);
       });
-      // Open the first word's drawer? No — startup should NOT auto-
-      // open the drawer; render the inline preview only.
-      const firstId = words[0].id || words[0].word;
-      host.querySelectorAll(".word-list-item").forEach(li => {
-        li.classList.toggle("is-active", li.dataset.id === firstId);
+
+      listEl.innerHTML = cards.length
+        ? cards.join("")
+        : `<li class="notes-empty">No saved words yet — fold a word while reading to keep it here.</li>`;
+
+      // Tapping the word preview or the blue bookmark opens the full
+      // drawer card. (Open Chapter uses data-go and is handled globally.)
+      listEl.addEventListener("click", (e) => {
+        const hit = e.target.closest(".word-preview, .bookmark-open");
+        if (!hit) return;
+        const card = e.target.closest(".note-card");
+        if (!card) return;
+        e.stopPropagation();
+        const entry = byId[card.dataset.id];
+        if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry);
       });
-      const firstW = getWord(firstId);
-      if (firstW) detail.innerHTML = WordCard.renderFullBody(firstW);
     },
   };
 

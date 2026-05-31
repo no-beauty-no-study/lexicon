@@ -109,8 +109,8 @@
   .page.select-art   { background-image: url("assets/bg/ui/select-mode.jpg"); }
   .page.chapters-art { background-image: url("assets/bg/ui/chapters.jpg"); }
   .page.wg-art       { background-image: url("assets/bg/ui/word-garden.jpg"); }
-  .page.save-art     { background-image: url("assets/bg/ui/page-blank.jpg"); }
-  .page.load-art     { background-image: url("assets/bg/ui/page-blank.jpg"); }
+  .page.save-art     { background-image: url("assets/bg/ui/saveload.jpg"); }
+  .page.load-art     { background-image: url("assets/bg/ui/saveload.jpg"); }
   .page.notes-art    { background-image: url("assets/bg/ui/notes.jpg");
                        background-size: cover; background-position: center; }
   .page.notes-art::before, .page.notes-art::after { display: none; }
@@ -654,20 +654,6 @@
   }
   .voice-row button:active { background: rgba(126, 105, 74, 0.18); }
 
-  .notes-layer {
-    position: absolute; inset: 18% 18% 14% 18%;
-    display: grid; grid-template-columns: 300px 1fr; gap: 24px;
-  }
-  .notes-layer .split-left,
-  .notes-layer .split-right {
-    background: rgba(244,236,218,0.62);
-    border: 1px solid rgba(184,158,111,0.45);
-    border-radius: 4px; padding: 14px 14px 10px;
-    min-height: 0; display: flex; flex-direction: column;
-  }
-  .notes-layer .split-right { padding: 18px 22px; overflow-y: auto; }
-  .notes-layer .word-list   { flex: 1; overflow-y: auto; }
-
   /* Save / Load title group — centred on the WHOLE book page (x 50%),
      NOT on reading's right-side 62.9% axis. The title band sits in the
      y 11.4%–18.0% guide range (page-relative, since save/load have no
@@ -899,17 +885,11 @@
 
 <template id="view-notes">
   <main class="page notes-art" data-page="notes">
-    <div class="notes-layer">
-      <div class="split-left notes-list-frame">
-        <div class="split-header">
-          <span class="sh-title">Saved Words</span>
-          <span class="sh-count" data-notes-count>0 saved</span>
-        </div>
-        <ul class="word-list"></ul>
-      </div>
-      <div class="split-right">
-        <div class="detail-pane ornate-panel"></div>
-      </div>
+    <!-- Each saved word renders as one horizontal note card (painted
+         frame = assets/bg/ui/note-card.png) stacked vertically and
+         scrolled. Cards are built in Views.notes.init. -->
+    <div class="notes-scroll">
+      <ul class="note-cards" aria-label="Saved words"></ul>
     </div>
     <nav class="ui-bottom-nav is-two">
       <button type="button" data-go="#select"><span class="nav-glyph">‹</span>Back</button>
