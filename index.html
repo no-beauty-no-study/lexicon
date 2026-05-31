@@ -815,6 +815,20 @@
         <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
         <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
       </div>
+      <!-- Top-right classical control group: BGM volume + AUTO read.
+           (Auto moved here off the bottom bar.) -->
+      <div class="ui-zone zone-reading-controls" data-zone="controls">
+        <div class="reading-controls">
+          <div class="reading-vol">
+            <span class="reading-vol-glyph" aria-hidden="true">♪</span>
+            <input class="bgm-vol reading-bgm-vol" type="range" min="0" max="100" value="32"
+                   aria-label="Music volume">
+          </div>
+          <button type="button" class="reading-auto-btn" data-auto aria-label="Auto read">
+            <span class="auto-glyph" aria-hidden="true">▶</span><span class="auto-label">Auto</span>
+          </button>
+        </div>
+      </div>
       <div class="ui-zone zone-reading-body is-text" data-zone="reading body">
         <article class="reading-body"></article>
       </div>
@@ -839,14 +853,14 @@
           </div>
         </aside>
       </div>
+      <!-- STORY (linear) reading bar — 5 cells, unchanged. Browse mode
+           (entered from the index) rebuilds this to Prev · Back · Next
+           in Views.reading.init. -->
       <nav class="ui-bottom-nav">
-        <button type="button" data-auto><span class="nav-glyph auto-glyph">▶</span><span class="auto-label">Auto</span></button>
-        <button type="button" data-prev><span class="nav-glyph">‹</span>Prev</button>
-        <button type="button" data-toindex><span class="nav-glyph">❖</span>Back</button>
-        <button type="button" data-quiz><span class="nav-glyph">✦</span>Quiz</button>
-        <button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>
         <button type="button" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
         <button type="button" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
+        <button type="button" data-quiz><span class="nav-glyph">✦</span>Quiz</button>
+        <button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>
         <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
       </nav>
     </div>

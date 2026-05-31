@@ -910,21 +910,31 @@ const Views = (function () {
         revealNext();
       });
 
-      // Browse / preview mode (entered from the chapter index): no
-      // Save, no Load, no Quiz (anti-cheat), and Next advances to the
-      // NEXT CHAPTER instead of into the section's quiz. The index is
-      // for browsing previews of chapters, not graded reading.
+      // Two reading modes share this view but NOT the bottom bar:
+      //   • STORY (linear, the default markup): Save·Load·Quiz·Next·Menu
+      //     — the graded path to clearing the book.
+      //   • BROWSE (entered from the chapter index, ?browse=1): just a
+      //     reader. No Quiz / Save / Load (anti-cheat). Only Prev · Back
+      //     (return to the index) · Next — rebuilt here as 3 cells.
       if (isBrowse) {
         const nav = host.querySelector(".ui-bottom-nav");
         if (nav) {
-          nav.querySelectorAll(
-            '[data-go="#save"], [data-go="#load"], [data-quiz]'
-          ).forEach(b => b.remove());
-          // Re-fit the grid to whatever cells remain (Auto · Prev ·
-          // Back · Next · Menu) so they split evenly with no empty cell.
-          nav.style.setProperty("--nav-count",
-            String(nav.querySelectorAll("button").length));
+          nav.innerHTML =
+              '<button type="button" data-prev><span class="nav-glyph">‹</span>Prev</button>'
+            + '<button type="button" data-toindex><span class="nav-glyph">❖</span>Back</button>'
+            + '<button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>';
+          nav.style.setProperty("--nav-count", "3");
         }
+      }
+
+      // BGM volume slider in the top-right control group (mirrors the
+      // global chip, which is hidden on reading).
+      const vol = host.querySelector(".reading-bgm-vol");
+      if (vol && window.BGM) {
+        if (BGM.getVolume) vol.value = Math.round(BGM.getVolume() * 100);
+        vol.addEventListener("input", () => {
+          if (BGM.setVolume) BGM.setVolume((+vol.value) / 100);
+        });
       }
 
       // Prev (上一章) — back to the previous section's reading page.
