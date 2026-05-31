@@ -1,80 +1,98 @@
 /* The Princess Lexicon — wordCard.js
-   Right-slide word drawer + inline body renderer.
+   The right-slide DRAWER big word card. Content now comes from
+   VocabRuntime.getBigCard(word): the clicked word stays the focus, while
+   Family / Group / Kin inherit from its family head. Any Family/Group/Kin
+   word that itself exists in the word master is rendered as a clickable
+   link that re-opens the drawer on that new word.
+
    Public API:
-     WordCard.openDrawer(wordObj)
+     WordCard.openBigCard(word)   — open/replace the drawer on a word
+     WordCard.openDrawer(arg)     — legacy alias (string or {word})
      WordCard.closeDrawer()
-     WordCard.renderFullBody(wordObj) */
+*/
 const WordCard = (function () {
 
-  function renderTitleZone(w) {
-    if (!w) return "";
-    return `
-      <div class="word-card-word-row">
-        <span class="word-card-word">${esc(w.word)}</span>
-        ${w.pos ? `<span class="word-card-pos">${esc(w.pos)}</span>` : ""}
-      </div>
-      ${w.meaning ? `<p class="word-card-meaning">${esc(w.meaning)}</p>` : ""}
-    `;
-  }
-
-  function renderBodyZone(w) {
-    if (!w) return `<div class="empty-state">No Word Selected</div>`;
-    return [
-      renderSection("Her Family", w.family, renderFamilyItem),
-      renderSection("Her Friend", w.friend, renderFriendItem),
-      renderExampleBox(w),
-      renderSection("Her Kin",    w.kin,    renderKinItem),
-    ].join("");
-  }
-  function renderSection(title, items, item) {
-    if (!items || !items.length) return "";
-    return `<section class="word-section">
-      <h3 class="word-section-title">${title}</h3>
-      <ul class="word-entry-list">${items.map(item).join("")}</ul>
-    </section>`;
-  }
-  function renderFamilyItem(it) {
-    return `<li class="word-entry"><strong>${esc(it.word)}</strong> ${esc(it.text)}</li>`;
-  }
-  function renderFriendItem(s) {
-    const m = String(s).match(/^(.*?)\s*([一-鿿].*)$/);
-    if (m) return `<li class="word-entry"><strong>${esc(m[1].trim())}</strong> ${esc(m[2].trim())}</li>`;
-    return `<li class="word-entry">${esc(s)}</li>`;
-  }
-  function renderKinItem(it) {
-    if (typeof it === "string") {
-      const m = it.match(/^(.*?)\s*([一-鿿].*)$/);
-      if (m) return `<li class="word-entry"><strong>${esc(m[1].trim())}</strong> ${esc(m[2].trim())}</li>`;
-      return `<li class="word-entry">${esc(it)}</li>`;
-    }
-    const phr = (it.phrases || [])
-      .map(p => `<strong>${esc(p.en)}</strong> ${esc(p.zh)}`).join("； ");
-    return `<li class="word-entry">
-      <strong>${esc(it.word)}</strong>${it.zh ? " " + esc(it.zh) : ""}
-      ${phr ? `<br>${phr}` : ""}
-    </li>`;
-  }
-  function renderExampleBox(w) {
-    if (!w.example) return "";
-    return `<div class="example-box">
-      <p class="example-en">${esc(w.example)}</p>
-      ${w.exampleZh ? `<p class="example-zh">${esc(w.exampleZh)}</p>` : ""}
-    </div>`;
-  }
   function esc(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;")
       .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
-  function renderFullBody(w) { return renderTitleZone(w) + renderBodyZone(w); }
+  function norm(s) { return String(s == null ? "" : s).trim().toLowerCase(); }
+  function R() { return window.VocabRuntime || null; }
 
-  // Drawer DOM is rebuilt against whichever .page is currently mounted,
-  // since the SPA router swaps the stage on every view change.
-  let drawerEl  = null;
-  let scrimEl   = null;
-  let titleZone = null;
-  let bodyZone  = null;
-  let hostPage  = null;
+  /* ---------- render helpers ---------- */
+  function phraseList(arr) {
+    if (!arr || !arr.length) return "";
+    return `<div class="wc-phrases">` + arr.map(p => {
+      const en = p.phrase || p.en || "";
+      const zh = p.phrase_zh || p.zh || "";
+      if (!en && !zh) return "";
+      return `<div class="wc-phrase"><span class="wc-ph-en">${esc(en)}</span>`
+           + (zh ? `<span class="wc-ph-zh">${esc(zh)}</span>` : "") + `</div>`;
+    }).join("") + `</div>`;
+  }
+  function exampleList(arr) {
+    if (!arr || !arr.length) return "";
+    return arr.map(x => {
+      const en = x.example || x.en || "";
+      const zh = x.example_zh || x.zh || "";
+      if (!en) return "";
+      return `<div class="wc-example"><span class="wc-ex-en">${esc(en)}</span>`
+           + (zh ? `<span class="wc-ex-zh">${esc(zh)}</span>` : "") + `</div>`;
+    }).join("");
+  }
+  function wordRef(word, clickable) {
+    return clickable
+      ? `<span class="wc-jump" data-jump="${esc(word)}">${esc(word)}</span>`
+      : `<span class="wc-plain">${esc(word)}</span>`;
+  }
+  function memberPhrases(m) {
+    if (Array.isArray(m.phrases) && m.phrases.length) return m.phrases;
+    const out = [];
+    if (m.phrase)   out.push({ phrase: m.phrase,   phrase_zh: m.phrase_zh });
+    if (m.phrase_1) out.push({ phrase: m.phrase_1, phrase_zh: m.phrase_1_zh });
+    if (m.phrase_2) out.push({ phrase: m.phrase_2, phrase_zh: m.phrase_2_zh });
+    return out;
+  }
+  function renderMember(m) {
+    return `<div class="wc-member">
+        <div class="wc-member-head">${wordRef(m.word, !!m.clickable)}`
+      + (m.zh ? `<span class="wc-member-zh">${esc(m.zh)}</span>` : "")
+      + `</div>${phraseList(memberPhrases(m))}</div>`;
+  }
+  function section(title, inner) {
+    return inner ? `<section class="wc-section"><h3 class="wc-section-title">${esc(title)}</h3>${inner}</section>` : "";
+  }
+
+  function renderTitle(d) {
+    return `<div class="wc-word">${esc(d.word)}</div>`
+         + (d.zh ? `<div class="wc-zh">${esc(d.zh)}</div>` : "");
+  }
+  function renderBody(d) {
+    const own = phraseList(d.phrases) + exampleList(d.examples);
+    const ownBlock = own ? `<div class="wc-own">${own}</div>` : "";
+
+    const focusKey = norm(d.word);
+    const fam = (d.family_members || [])
+      .filter(m => norm(m.word) !== focusKey)
+      .map(renderMember).join("");
+
+    const grp = (d.group || []).map(renderMember).join("");
+
+    let kinInner = "";
+    (d.kin_clusters || []).forEach(c => {
+      kinInner += (c.internal_words || []).map(renderMember).join("");
+      kinInner += (c.external_words || []).map(renderMember).join("");
+    });
+
+    return ownBlock
+      + section("Family", fam)
+      + section("Group", grp)
+      + section("Kin", kinInner);
+  }
+
+  /* ---------- drawer DOM (rebuilt per mounted page) ---------- */
+  let drawerEl = null, scrimEl = null, titleZone = null, bodyZone = null, hostPage = null;
 
   function ensureDrawer() {
     const page = document.querySelector(".stage .page");
@@ -96,9 +114,7 @@ const WordCard = (function () {
     drawerEl.innerHTML = `
       <button type="button" class="word-drawer-close" aria-label="Close">×</button>
       <div class="word-card-title-zone"></div>
-      <div class="word-card-body-zone"></div>
-      <div class="word-drawer-footer">Signed · The Princess Lexicon</div>
-    `;
+      <div class="word-card-body-zone"></div>`;
     drawerEl.addEventListener("click", (e) => e.stopPropagation());
     drawerEl.querySelector(".word-drawer-close").addEventListener("click", (e) => {
       e.stopPropagation(); closeDrawer();
@@ -106,21 +122,41 @@ const WordCard = (function () {
     titleZone = drawerEl.querySelector(".word-card-title-zone");
     bodyZone  = drawerEl.querySelector(".word-card-body-zone");
 
+    // Clicking a clickable Family / Group / Kin word re-opens the drawer
+    // on that word (internal jump). Proper/place words have no big card,
+    // so they are never rendered clickable.
+    bodyZone.addEventListener("click", (e) => {
+      const j = e.target.closest(".wc-jump");
+      if (!j) return;
+      e.stopPropagation();
+      openBigCard(j.dataset.jump);
+    });
+
     page.appendChild(scrimEl);
     page.appendChild(drawerEl);
   }
 
-  function openDrawer(word) {
+  function openBigCard(word) {
     ensureDrawer();
     if (!drawerEl) return;
-    titleZone.innerHTML = renderTitleZone(word);
-    bodyZone.innerHTML  = renderBodyZone(word);
+    const rt = R();
+    let data = null;
+    try { data = rt && rt.getBigCard ? rt.getBigCard(word) : null; } catch (_) { data = null; }
+    if (!data) return;   // no big card (e.g. proper noun) → do nothing
+    titleZone.innerHTML = renderTitle(data);
+    bodyZone.innerHTML  = renderBody(data);
     bodyZone.scrollTop  = 0;
     drawerEl.setAttribute("aria-hidden", "false");
     requestAnimationFrame(() => {
       scrimEl.classList.add("is-open");
       drawerEl.classList.add("is-open");
     });
+  }
+
+  // Legacy alias — accepts a word string or a {word}/{id} object.
+  function openDrawer(arg) {
+    const word = typeof arg === "string" ? arg : (arg && (arg.word || arg.id));
+    if (word) openBigCard(word);
   }
 
   function closeDrawer() {
@@ -130,5 +166,5 @@ const WordCard = (function () {
     drawerEl.classList.remove("is-open");
   }
 
-  return { openDrawer, closeDrawer, renderFullBody };
+  return { openBigCard, openDrawer, closeDrawer };
 })();

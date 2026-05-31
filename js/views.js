@@ -479,13 +479,20 @@ const Views = (function () {
   // .clickable-word + data-word. Non-letter runs (spaces / punctuation)
   // pass through untouched. --wi carries each word's index so CSS can
   // stagger the brighten.
+  // A reading word is clickable when VocabRuntime can answer it (word
+  // master OR proper/place small card). Falls back to the legacy index
+  // if the runtime isn't loaded.
+  function vocabClickable(word) {
+    if (window.VocabRuntime && VocabRuntime.getSmallCard) return !!VocabRuntime.getSmallCard(word);
+    return (typeof hasClickableWord === "function") && hasClickableWord(word);
+  }
   function renderSentenceHTML(sentence) {
     const used = new Set();
     let wi = 0;
     return String(sentence).replace(/[A-Za-z][A-Za-z'-]*|[^A-Za-z]+/g, (m) => {
       if (!/^[A-Za-z]/.test(m)) return esc(m);
       const lc = m.toLowerCase();
-      const clickable = !used.has(lc) && hasClickableWord(lc);
+      const clickable = !used.has(lc) && vocabClickable(lc);
       if (clickable) used.add(lc);
       return `<span class="w${clickable ? " clickable-word" : ""}" style="--wi:${wi++}"`
            + `${clickable ? ` data-word="${lc}"` : ""}>${esc(m)}</span>`;
@@ -602,12 +609,39 @@ const Views = (function () {
       }
       function shortMeaning(entry) { return entry.meaning || ""; }
 
-      function renderMarginalia(resolved) {
+      // Right-column SMALL card from VocabRuntime.getSmallCard(word):
+      //   word / zh / up to 2 phrases / one example.
+      // Tapping the card opens the full DRAWER big card — unless it's a
+      // proper/place word (clickableForBigCard === false), which has no
+      // big card.
+      function smallCardHTML(sc, id, savedAlready) {
+        const phraseRows = (sc.phrases || []).slice(0, 2).map(p => `
+          <div class="word-card-phrase">
+            <span class="wcp-en">${esc(p.phrase || p.en || "")}</span>
+            ${(p.phrase_zh || p.zh) ? `<span class="wcp-zh">${esc(p.phrase_zh || p.zh)}</span>` : ""}
+          </div>`).join("");
+        const ex = (sc.examples || [])[0];
+        const exEn = ex && (ex.example || ex.en) || "";
+        const exZh = ex && (ex.example_zh || ex.zh) || "";
+        const exampleRow = exEn ? `
+          <div class="word-card-example">
+            <span class="wce-en">${esc(exEn)}</span>
+            ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
+          </div>` : "";
+        const more = sc.clickableForBigCard ? `<div class="word-card-more">Tap for full card ›</div>` : "";
+        return `
+          <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
+            <div class="word-card-headword">${esc(sc.word || id)}</div>
+            <div class="word-card-meaning">${esc(sc.zh || "")}</div>
+            ${phraseRows}
+            ${exampleRow}
+            ${more}
+          </div>`;
+      }
+      function renderMarginalia(sc) {
         const stack = host.querySelector(".word-card-stack");
-        if (!stack) return;
-        const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
-        if (!entry) return;
-        const id = entry.id || entry.word;
+        if (!stack || !sc) return;
+        const id = sc.word;
 
         const empty = stack.querySelector(".word-card-empty");
         if (empty) empty.remove();
@@ -620,46 +654,20 @@ const Views = (function () {
           return;
         }
 
-        // Right-column block layout (user spec):
-        //   单词 / 翻译 / 词组 翻译 / 词组 翻译 / (例句 if present)
-        const phrases = getPhrasePairs(entry);
-        const phraseRows = phrases.slice(0, 2).map(p => `
-          <div class="word-card-phrase">
-            <span class="wcp-en">${esc(p.en)}</span>
-            ${p.zh ? `<span class="wcp-zh">${esc(p.zh)}</span>` : ""}
-          </div>
-        `).join("");
-        const exEn = entry.example || "";
-        const exZh = entry.exampleZh || entry.example_zh || "";
-        const exampleRow = exEn ? `
-          <div class="word-card-example">
-            <span class="wce-en">${esc(exEn)}</span>
-            ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
-          </div>` : "";
-
         const savedAlready = Storage.isSaved(id, chapterId, sectionNum);
-        const html = `
-          <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}" data-id="${esc(id)}">
-            <div class="word-card-headword">${esc(entry.word || id)}</div>
-            <div class="word-card-meaning">${esc(shortMeaning(entry))}</div>
-            ${phraseRows}
-            ${exampleRow}
-          </div>`;
         clearCurrent(stack);
-        stack.insertAdjacentHTML("beforeend", html);
+        stack.insertAdjacentHTML("beforeend", smallCardHTML(sc, id, savedAlready));
 
         const fresh = stack.lastElementChild;
-        // Strip the entry-animation class once the keyframe completes
-        // so re-tapping the same card later doesn't replay it.
         setTimeout(() => fresh.classList.remove("is-entering"), 620);
-        const drawerEntry = resolved.headEntry || entry;
         fresh.addEventListener("click", (e) => {
           e.stopPropagation();
           clearCurrent(stack);
           fresh.classList.add("is-current");
-          if (typeof WordCard !== "undefined" && drawerEntry) {
-            WordCard.openDrawer(drawerEntry);
+          if (sc.clickableForBigCard && typeof WordCard !== "undefined") {
+            WordCard.openBigCard(sc.word);
           }
+          syncMarginaliaButtons();
         });
         fresh.scrollIntoView({ block: "nearest", behavior: "smooth" });
       }
@@ -697,40 +705,19 @@ const Views = (function () {
         const empty = stack.querySelector(".word-card-empty");
         if (empty) empty.remove();
         ids.forEach(id => {
-          const entry =
-               (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === id))
-            || (typeof WORDS        !== "undefined" && WORDS.find(w        => (w.id || w.word) === id))
-            || null;
-          // Even if the library no longer indexes this id, render a
-          // minimal card so the saved state isn't silently lost.
-          const word    = (entry && entry.word) || id;
-          const meaning = (entry && entry.meaning) || "";
-          const phrases = entry ? getPhrasePairs(entry) : [];
-          const phraseRows = phrases.slice(0, 2).map(p => `
-            <div class="word-card-phrase">
-              <span class="wcp-en">${esc(p.en)}</span>
-              ${p.zh ? `<span class="wcp-zh">${esc(p.zh)}</span>` : ""}
-            </div>`).join("");
-          const exEn = (entry && entry.example) || "";
-          const exZh = (entry && (entry.exampleZh || entry.example_zh)) || "";
-          const exampleRow = exEn ? `
-            <div class="word-card-example">
-              <span class="wce-en">${esc(exEn)}</span>
-              ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
-            </div>` : "";
-          stack.insertAdjacentHTML("beforeend", `
-            <div class="word-card is-saved" data-id="${esc(id)}">
-              <div class="word-card-headword">${esc(word)}</div>
-              <div class="word-card-meaning">${esc(meaning)}</div>
-              ${phraseRows}
-              ${exampleRow}
-            </div>`);
+          const sc = (window.VocabRuntime && VocabRuntime.getSmallCard)
+                     ? VocabRuntime.getSmallCard(id) : null;
+          // Even if the master no longer indexes this id, render a minimal
+          // card so the saved state isn't silently lost.
+          const card = sc || { word: id, zh: "", phrases: [], examples: [], clickableForBigCard: false };
+          stack.insertAdjacentHTML("beforeend",
+            smallCardHTML(card, id, true).replace("is-current is-entering", "is-saved"));
           const fresh = stack.lastElementChild;
           fresh.addEventListener("click", (e) => {
             e.stopPropagation();
             clearCurrent(stack);
             fresh.classList.add("is-current");
-            if (typeof WordCard !== "undefined" && entry) WordCard.openDrawer(entry);
+            if (card.clickableForBigCard && typeof WordCard !== "undefined") WordCard.openBigCard(card.word);
             syncMarginaliaButtons();
           });
         });
@@ -908,15 +895,18 @@ const Views = (function () {
           host.querySelectorAll(".clickable-word.is-selected")
               .forEach(x => x.classList.remove("is-selected"));
           word.classList.add("is-selected");
-          const resolved = (typeof resolveClickedWord === "function")
-                           ? resolveClickedWord(word.dataset.word) : null;
-          renderMarginalia(resolved);
-          syncMarginaliaButtons();
-          try {
-            const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
-            const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
-            TTS.speak([word.textContent, ...phrases.map(p => p.en)].filter(Boolean).join(". "));
-          } catch (_) {}
+          const sc = (window.VocabRuntime && VocabRuntime.getSmallCard)
+                     ? VocabRuntime.getSmallCard(word.dataset.word) : null;
+          if (sc) {
+            renderMarginalia(sc);
+            syncMarginaliaButtons();
+            try {
+              const parts = [sc.word, ...(sc.phrases || []).slice(0, 2).map(p => p.phrase || p.en)];
+              TTS.speak(parts.filter(Boolean).join(". "));
+            } catch (_) {}
+          } else {
+            try { TTS.speak(word.textContent); } catch (_) {}
+          }
           return;
         }
         if (sent && revealed) { speakSentence(+sent.dataset.i); return; }
@@ -1353,6 +1343,19 @@ const Views = (function () {
      jumps back to that sentence, and a small word preview that opens
      the full drawer. */
   function resolveWordEntry(id) {
+    if (window.VocabRuntime && VocabRuntime.getSmallCard) {
+      const sc = VocabRuntime.getSmallCard(id);
+      if (sc) {
+        const ex = (sc.examples || [])[0] || {};
+        return {
+          word: sc.word, meaning: sc.zh,
+          phrases: (sc.phrases || []).map(p => ({ en: p.phrase || p.en, zh: p.phrase_zh || p.zh })),
+          example: ex.example || ex.en || "",
+          exampleZh: ex.example_zh || ex.zh || "",
+          clickableForBigCard: sc.clickableForBigCard,
+        };
+      }
+    }
     return (typeof window.getWord === "function" && window.getWord(id))
         || (typeof WORD_LIBRARY !== "undefined" && WORD_LIBRARY.find(w => (w.id || w.word) === id))
         || (typeof WORDS        !== "undefined" && WORDS.find(w        => (w.id || w.word) === id))
@@ -1462,6 +1465,14 @@ const Views = (function () {
     init(host) {
       let query = "";
       function allWords() {
+        // Primary source: the vocab word master (same table reading uses).
+        if (window.VOCAB_WORD_MASTER_FINAL && VOCAB_WORD_MASTER_FINAL.cards) {
+          const cards = VOCAB_WORD_MASTER_FINAL.cards;
+          return Object.keys(cards).map(k => {
+            const c = cards[k] || {};
+            return { word: c.word || k, zh: c.zh || "" };
+          }).sort((a, b) => a.word.localeCompare(b.word));
+        }
         const seen = new Map();
         const push = (w) => {
           if (!w || !w.word) return;
@@ -1473,6 +1484,7 @@ const Views = (function () {
         return Array.from(seen.values()).sort((a, b) => a.word.localeCompare(b.word));
       }
       function shortGloss(w) {
+        if (w.zh) return w.zh;
         if (w.meaning) return w.meaning;
         if (Array.isArray(w.kin)) {
           for (const k of w.kin) {
@@ -1507,8 +1519,7 @@ const Views = (function () {
         host.querySelectorAll(".wg-row").forEach(row => {
           row.addEventListener("click", () => {
             const id = row.dataset.id;
-            const entry = list.find(w => (w.id || w.word) === id);
-            if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry);
+            if (typeof WordCard !== "undefined") WordCard.openBigCard(id);
           });
         });
       }
