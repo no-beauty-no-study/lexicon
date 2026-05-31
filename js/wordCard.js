@@ -1,12 +1,16 @@
 /* The Princess Lexicon — wordCard.js
-   The right-slide DRAWER big word card, rendered from
-   VocabRuntime.getBigCard(word). Layout (on frame-blank.jpg / 67CAC3D4,
-   native 1024×1536):
-     • title zone  — word + pos + zh core meaning (compact)
-     • body  zone  — scrolling: Own (phrases + example) · Family · Group ·
-                     Kin, each a titled block split by a thin-thick-thin rule
-     • action zone — FIXED bottom bar: "Signed ___" copy/dictation input
-                     with the Open Chapter plaque below it (both centred)
+   The right-slide DRAWER big word card from VocabRuntime.getBigCard(word).
+
+   Layout on frame-blank.jpg (1024×1536):
+     • title  — word (big) / pos / zh, centred in the cartouche
+     • body   — scrolling. First the focus word's own phrases + examples
+                (no heading), then FAMILY / GROUP / KIN, each introduced
+                by a centred text divider. Inside a section the entry is
+                STAGGERED: the headword line (word · pos ｜ zh) sits flush,
+                its collocations indent below with a ✦ bullet. English and
+                Chinese are split into two aligned columns (EN ｜ ZH).
+     • action — FIXED bottom bar: "Signed ___" copy/dictation input with
+                the Open Chapter plaque below it (both centred).
    Family/Group/Kin words that exist in the master are clickable links
    that re-open the drawer on that word.
 
@@ -26,9 +30,13 @@ const WordCard = (function () {
   function rx(s)   { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
   function R() { return window.VocabRuntime || null; }
 
-  // Where does this word first appear in the reading content? Used by
-  // Open Chapter when no explicit reading context was passed (garden /
-  // jumped words). Returns {chapter, section} or null.
+  // Split a Chinese gloss into a leading part-of-speech tag and meaning,
+  // e.g. "v. 建立；确立" → {pos:"v.", meaning:"建立；确立"}.
+  function splitPos(zh) {
+    const m = String(zh || "").match(/^\s*([A-Za-z][A-Za-z.\/-]*\.)\s*(.*)$/);
+    return m ? { pos: m[1], meaning: m[2] } : { pos: "", meaning: String(zh || "") };
+  }
+
   function findWordLocation(word) {
     if (typeof CHAPTER_CONTENT === "undefined") return null;
     const re = new RegExp("\\b" + rx(word) + "\\b", "i");
@@ -42,15 +50,16 @@ const WordCard = (function () {
   }
 
   /* ---------- render helpers ---------- */
-  function phraseRows(arr, limit) {
-    const list = (arr || []).slice(0, limit || 99).filter(p => (p.phrase || p.en));
-    if (!list.length) return "";
-    return list.map(p => {
-      const en = p.phrase || p.en || "";
-      const zh = p.phrase_zh || p.zh || "";
-      return `<div class="wc-row"><span class="wc-en">${esc(en)}</span>`
-           + (zh ? `<span class="wc-zh">${esc(zh)}</span>` : "") + `</div>`;
-    }).join("");
+  // EN ｜ ZH row. enHTML is raw HTML (already escaped); zh is plain text.
+  function row(enHTML, zh, phrase) {
+    return `<div class="wc-row${phrase ? " wc-phrase" : ""}">`
+         + `<span class="wc-en">${enHTML}</span>`
+         + `<span class="wc-zh">${zh ? esc(zh) : ""}</span></div>`;
+  }
+  function wordRef(word, clickable) {
+    return clickable
+      ? `<span class="wc-jump" data-jump="${esc(word)}">${esc(word)}</span>`
+      : esc(word);
   }
   function memberPhrases(m) {
     if (Array.isArray(m.phrases) && m.phrases.length) return m.phrases;
@@ -60,54 +69,55 @@ const WordCard = (function () {
     if (m.phrase_2) out.push({ phrase: m.phrase_2, phrase_zh: m.phrase_2_zh });
     return out;
   }
-  function wordRef(word, clickable) {
-    return clickable
-      ? `<span class="wc-jump" data-jump="${esc(word)}">${esc(word)}</span>`
-      : `<span class="wc-plain">${esc(word)}</span>`;
+  function members(arr, focusWord) {
+    if (!arr || !arr.length) return "";
+    const fk = focusWord ? norm(focusWord) : null;
+    return arr.filter(m => m && m.word && (!fk || norm(m.word) !== fk)).map(m => {
+      const { pos, meaning } = splitPos(m.zh || "");
+      const head = `<div class="wc-row wc-head">`
+        + `<span class="wc-en"><span class="wc-w">${wordRef(m.word, !!m.clickable)}</span>`
+        + (pos ? ` <i class="wc-pos">${esc(pos)}</i>` : "") + `</span>`
+        + `<span class="wc-zh">${esc(meaning)}</span></div>`;
+      const phs = memberPhrases(m).slice(0, 2)
+        .map(p => row(esc(p.phrase || p.en || ""), p.phrase_zh || p.zh || "", true)).join("");
+      return `<div class="wc-item">${head}${phs}</div>`;
+    }).join("");
   }
-  // A compact entry: word + zh on one line, then ONE collocation (short).
-  function memberHTML(m) {
-    const ph = memberPhrases(m).slice(0, 1);
-    return `<div class="wc-item">
-        <div class="wc-item-head">${wordRef(m.word, !!m.clickable)}`
-      + (m.zh ? `<span class="wc-item-zh">${esc(m.zh)}</span>` : "")
-      + `</div>${phraseRows(ph, 1)}</div>`;
-  }
-  function block(title, inner) {
-    return inner
-      ? `<div class="wc-divider" aria-hidden="true"></div>
-         <section class="wc-block"><h3 class="wc-block-title">${esc(title)}</h3>${inner}</section>`
-      : "";
+  function divider(label, inner) {
+    if (!inner) return "";
+    return `<div class="wc-sep"><span class="wc-sep-line"></span>`
+         + `<span class="wc-sep-label">${esc(label)}</span>`
+         + `<span class="wc-sep-line"></span></div>`
+         + `<div class="wc-block">${inner}</div>`;
   }
 
-  function renderTitle(d, raw) {
-    const pos = raw && raw.pos && norm(raw.pos) !== norm(d.word) ? raw.pos : "";
+  function renderTitle(d) {
+    const { pos, meaning } = splitPos(d.zh || "");
     return `<div class="wc-word">${esc(d.word)}</div>`
-         + (pos ? `<div class="wc-pos">${esc(pos)}</div>` : "")
-         + (d.zh ? `<div class="wc-title-zh">${esc(d.zh)}</div>` : "");
+         + (pos ? `<div class="wc-title-pos">${esc(pos)}</div>` : "")
+         + (meaning ? `<div class="wc-title-zh">${esc(meaning)}</div>` : "");
   }
 
   function renderBody(d) {
-    // Own: up to 4 phrases + example.
-    const own = phraseRows(d.phrases, 4)
-      + (d.examples || []).slice(0, 1).map(x => {
-          const en = x.example || x.en || "", zh = x.example_zh || x.zh || "";
-          if (!en) return "";
-          return `<div class="wc-example"><span class="wc-ex-en">${esc(en)}</span>`
-               + (zh ? `<span class="wc-ex-zh">${esc(zh)}</span>` : "") + `</div>`;
-        }).join("");
-    const ownBlock = own ? `<section class="wc-block wc-own">${own}</section>` : "";
+    const ownPh = (d.phrases || []).slice(0, 4)
+      .filter(p => p.phrase || p.en)
+      .map(p => row(esc(p.phrase || p.en), p.phrase_zh || p.zh || "", true)).join("");
+    const ownEx = (d.examples || []).slice(0, 2).map(x => {
+      const en = x.example || x.en || "", zh = x.example_zh || x.zh || "";
+      if (!en) return "";
+      return `<div class="wc-ex"><div class="wc-ex-en">${esc(en)}</div>`
+           + (zh ? `<div class="wc-ex-zh">${esc(zh)}</div>` : "") + `</div>`;
+    }).join("");
+    const own = `<div class="wc-own">${ownPh}${ownEx}</div>`;
 
-    const focusKey = norm(d.word);
-    const fam = (d.family_members || []).filter(m => norm(m.word) !== focusKey).map(memberHTML).join("");
-    const grp = (d.group || []).map(memberHTML).join("");
+    const fam = members(d.family_members, d.word);
+    const grp = members(d.group, d.word);
     let kin = "";
     (d.kin_clusters || []).forEach(c => {
-      kin += (c.internal_words || []).map(memberHTML).join("");
-      kin += (c.external_words || []).map(memberHTML).join("");
+      kin += members(c.internal_words) + members(c.external_words);
     });
 
-    return ownBlock + block("Family", fam) + block("Group", grp) + block("Kin", kin);
+    return own + divider("Family", fam) + divider("Group", grp) + divider("Kin", kin);
   }
 
   function renderAction(word, loc) {
@@ -126,7 +136,7 @@ const WordCard = (function () {
       ${openBtn}`;
   }
 
-  /* ---------- drawer DOM (rebuilt per mounted page) ---------- */
+  /* ---------- drawer DOM ---------- */
   let drawerEl = null, scrimEl = null, titleZone = null, bodyZone = null, actionZone = null, hostPage = null;
 
   function ensureDrawer() {
@@ -159,15 +169,12 @@ const WordCard = (function () {
     bodyZone   = drawerEl.querySelector(".word-card-body-zone");
     actionZone = drawerEl.querySelector(".word-card-action-zone");
 
-    // Clickable Family/Group/Kin word → re-open the drawer on that word.
     bodyZone.addEventListener("click", (e) => {
       const j = e.target.closest(".wc-jump");
       if (!j) return;
       e.stopPropagation();
       openBigCard(j.dataset.jump);
     });
-    // Open Chapter (in the fixed action bar) → jump to the reading
-    // location with the word spotlit, and close the drawer.
     actionZone.addEventListener("click", (e) => {
       const o = e.target.closest("[data-go]");
       if (!o) return;
@@ -175,7 +182,6 @@ const WordCard = (function () {
       closeDrawer();
       if (typeof window.go === "function") window.go(o.dataset.go);
     });
-    // Live tick when the player has correctly written the word.
     actionZone.addEventListener("input", (e) => {
       const inp = e.target.closest(".wc-signed-input");
       if (!inp) return;
@@ -193,11 +199,10 @@ const WordCard = (function () {
     const rt = R();
     let data = null;
     try { data = rt && rt.getBigCard ? rt.getBigCard(word) : null; } catch (_) { data = null; }
-    if (!data) return;   // no big card (e.g. proper noun) → do nothing
-    const raw = rt && rt.getWordCard ? rt.getWordCard(word) : null;
+    if (!data) return;
     const loc = (ctx && ctx.chapter) ? ctx : findWordLocation(data.word || word);
 
-    titleZone.innerHTML  = renderTitle(data, raw);
+    titleZone.innerHTML  = renderTitle(data);
     bodyZone.innerHTML   = renderBody(data);
     actionZone.innerHTML = renderAction(data.word || word, loc);
     bodyZone.scrollTop   = 0;
@@ -208,7 +213,6 @@ const WordCard = (function () {
     });
   }
 
-  // Legacy alias — accepts a word string or a {word}/{id} object.
   function openDrawer(arg, ctx) {
     const word = typeof arg === "string" ? arg : (arg && (arg.word || arg.id));
     if (word) openBigCard(word, ctx);
