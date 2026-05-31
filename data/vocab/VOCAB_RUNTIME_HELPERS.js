@@ -53,6 +53,16 @@
     const key = norm(word);
     return wordCardMap.get(key) || wordCards[word] || null;
   }
+  // Best part-of-speech for a card: the `pos` field if it looks like a
+  // real POS tag (contains a dot and isn't just the word echoed back),
+  // else the leading pos tag inside the zh gloss ("v. 建立" → "v.").
+  function posOf(card) {
+    if (!card) return '';
+    const p = card.pos;
+    if (p && norm(p) !== norm(card.word || '') && /\./.test(p)) return String(p).trim();
+    const m = String(card.zh || '').match(/^\s*([A-Za-z][A-Za-z.\/\- ]*\.)\s/);
+    return m ? m[1].trim() : '';
+  }
   function getProperSmallCard(word) { return properSmallByWord.get(norm(word)) || null; }
   function getFamilyHead(word) {
     const key = norm(word);
@@ -116,6 +126,7 @@
     return {
       type: r.proper ? 'proper_or_special' : 'word',
       word: card.word || r.resolvedWord,
+      pos: posOf(card),
       zh: card.zh || '',
       phrases: normPhrases(card.phrases),
       examples: normExamples(card.examples),
@@ -125,12 +136,14 @@
     };
   }
 
+  // Internal kin words have no phrases of their own in the kin file —
+  // pull ONE collocation from the word's master card to show alongside.
   function clickableKinWord(word) {
     const card = getWordCard(word);
     if (!card || isSmallOnly(card)) return null;
     return {
-      word: card.word || word, zh: card.zh || '',
-      phrases: normPhrases(card.phrases), examples: normExamples(card.examples),
+      word: card.word || word, pos: posOf(card), zh: card.zh || '',
+      phrases: normPhrases(card.phrases).slice(0, 1), examples: [],
       clickable: true
     };
   }
@@ -152,7 +165,7 @@
       if (aw === focusKey) return -1; if (bw === focusKey) return 1;
       if (aw === familyHead) return -1; if (bw === familyHead) return 1;
       return aw.localeCompare(bw);
-    }).map(m => ({ ...m, phrases: normPhrases(m.phrases), examples: normExamples(m.examples), clickable: isClickableWord(m.word) }));
+    }).map(m => ({ ...m, pos: posOf(m), phrases: normPhrases(m.phrases), examples: normExamples(m.examples), clickable: isClickableWord(m.word) }));
 
     const kinIds = new Set(Array.isArray(focus.kin_cluster_ids) ? focus.kin_cluster_ids : []);
     if (family && Array.isArray(family.shared_kin_cluster_ids)) for (const id of family.shared_kin_cluster_ids) kinIds.add(id);
@@ -166,16 +179,17 @@
           .filter(w => norm(w) !== focusKey)
           .map(w => clickableKinWord(w) || { word: w, clickable: false });
         const external = (Array.isArray(cluster.external_words) ? cluster.external_words : [])
-          .map(e => ({ ...e, clickable: isClickableWord(e.word) }));
+          .map(e => ({ ...e, pos: posOf(e), clickable: isClickableWord(e.word) }));
         return { ...cluster, internal_words: internal, external_words: external };
       });
 
     let group = focus.group || [];
     if (group && !Array.isArray(group)) group = [group];
-    group = group.map(g => ({ ...g, phrases: normPhrases(g.phrases), clickable: isClickableWord(g.word) }));
+    group = group.map(g => ({ ...g, pos: posOf(g), phrases: normPhrases(g.phrases), clickable: isClickableWord(g.word) }));
 
     return {
       focus_word: focusWord, family_head: familyHead, word: focusWord,
+      pos: posOf(focus),
       zh: focus.zh || '', phrases: normPhrases(focus.phrases), examples: normExamples(focus.examples),
       family_members: familyMembers, group, kin_clusters: kinClusters
     };

@@ -76,7 +76,8 @@ const WordCard = (function () {
   // A word entry: word INLINE with its pos + zh; its collocations below
   // in the two-column layout.
   function memberHTML(m) {
-    const { pos, meaning } = splitPos(m.zh || "");
+    const sp = splitPos(m.zh || "");
+    const pos = m.pos || sp.pos, meaning = sp.meaning;
     const head = `<div class="wc-head"><span class="wc-w">${wordRef(m.word, !!m.clickable)}</span>`
       + (pos ? ` <i class="wc-pos">${esc(pos)}</i>` : "")
       + (meaning ? ` <span class="wc-hzh">${esc(meaning)}</span>` : "")
@@ -109,7 +110,8 @@ const WordCard = (function () {
   }
 
   function renderTitle(d) {
-    const { pos, meaning } = splitPos(d.zh || "");
+    const sp = splitPos(d.zh || "");
+    const pos = d.pos || sp.pos, meaning = sp.meaning;
     return `<div class="wc-word">${esc(d.word)}</div>`
          + (pos ? `<div class="wc-title-pos">${esc(pos)}</div>` : "")
          + (meaning ? `<div class="wc-title-zh">${esc(meaning)}</div>` : "");
