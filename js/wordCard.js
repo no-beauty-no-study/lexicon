@@ -251,6 +251,25 @@ const WordCard = (function () {
       scrimEl.classList.add("is-open");
       drawerEl.classList.add("is-open");
     });
+    // Section-by-section: show + auto-read OWN now; each tap on the body
+    // reveals + reads the next block (Family → Group → Kin).
+    cardSecs = Array.prototype.slice.call(bodyZone.querySelectorAll(".wc-sec"));
+    cardSecIdx = -1;
+    showCardSection(0);
+  }
+
+  // Reveal block i (and everything before it) and read it aloud.
+  function showCardSection(i) {
+    if (i < 0 || i >= cardSecs.length) return;
+    for (let k = 0; k <= i; k++) cardSecs[k].classList.add("is-shown");
+    cardSecIdx = i;
+    const sec = cardSecs[i];
+    try { sec.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
+    const txt = sec.getAttribute("data-speak");
+    if (txt && window.TTS && TTS.speak) { try { TTS.speak(txt); } catch (_) {} }
+  }
+  function advanceCardSection() {
+    if (cardSecIdx + 1 < cardSecs.length) showCardSection(cardSecIdx + 1);
   }
 
   function openDrawer(arg, ctx) {
@@ -263,6 +282,7 @@ const WordCard = (function () {
     drawerEl.setAttribute("aria-hidden", "true");
     scrimEl.classList.remove("is-open");
     drawerEl.classList.remove("is-open");
+    if (window.TTS && TTS.cancel) { try { TTS.cancel(); } catch (_) {} }
   }
 
   return { openBigCard, openDrawer, closeDrawer };

@@ -17,10 +17,10 @@
      re-encode step. (The earlier splash.jpg is a transcode of the
      same image; either works visually.) */
   .page.splash    { background-image: url("assets/bg/ui/C1F92DD5-F950-4011-81E4-DFD527CC8FBD.png");
-                    background-size: 108% 108%;       /* room for Ken-Burns drift */
+                    background-size: 100% 100%;       /* exact fit — no zoom/crop */
                     background-position: 50% 50%;
-                    cursor: pointer;
-                    animation: splash-breathe 22s ease-in-out infinite alternate; }
+                    background-repeat: no-repeat;
+                    cursor: pointer; }
   .page.splash::before, .page.splash::after { display: none; }
   .page.splash.is-leaving {
     transition: opacity 580ms ease-out, filter 580ms ease-out;
