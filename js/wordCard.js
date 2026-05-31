@@ -50,10 +50,10 @@ const WordCard = (function () {
   }
 
   /* ---------- render helpers ---------- */
-  // EN ｜ ZH row. enHTML is raw HTML (already escaped); zh is plain text.
-  function row(enHTML, zh, phrase) {
-    return `<div class="wc-row${phrase ? " wc-phrase" : ""}">`
-         + `<span class="wc-en">${enHTML}</span>`
+  // Two-column phrase row (EN | ZH) — used ONLY for collocations.
+  function phraseRow(en, zh) {
+    return `<div class="wc-row wc-phrase">`
+         + `<span class="wc-en">${esc(en)}</span>`
          + `<span class="wc-zh">${zh ? esc(zh) : ""}</span></div>`;
   }
   function wordRef(word, clickable) {
@@ -69,26 +69,43 @@ const WordCard = (function () {
     if (m.phrase_2) out.push({ phrase: m.phrase_2, phrase_zh: m.phrase_2_zh });
     return out;
   }
-  function members(arr, focusWord) {
-    if (!arr || !arr.length) return "";
+  function cleanMembers(arr, focusWord) {
     const fk = focusWord ? norm(focusWord) : null;
-    return arr.filter(m => m && m.word && (!fk || norm(m.word) !== fk)).map(m => {
-      const { pos, meaning } = splitPos(m.zh || "");
-      const head = `<div class="wc-row wc-head">`
-        + `<span class="wc-en"><span class="wc-w">${wordRef(m.word, !!m.clickable)}</span>`
-        + (pos ? ` <i class="wc-pos">${esc(pos)}</i>` : "") + `</span>`
-        + `<span class="wc-zh">${esc(meaning)}</span></div>`;
-      const phs = memberPhrases(m).slice(0, 2)
-        .map(p => row(esc(p.phrase || p.en || ""), p.phrase_zh || p.zh || "", true)).join("");
-      return `<div class="wc-item">${head}${phs}</div>`;
-    }).join("");
+    return (arr || []).filter(m => m && m.word && (!fk || norm(m.word) !== fk));
   }
-  function divider(label, inner) {
-    if (!inner) return "";
+  // A word entry: word INLINE with its pos + zh; its collocations below
+  // in the two-column layout.
+  function memberHTML(m) {
+    const { pos, meaning } = splitPos(m.zh || "");
+    const head = `<div class="wc-head"><span class="wc-w">${wordRef(m.word, !!m.clickable)}</span>`
+      + (pos ? ` <i class="wc-pos">${esc(pos)}</i>` : "")
+      + (meaning ? ` <span class="wc-hzh">${esc(meaning)}</span>` : "")
+      + `</div>`;
+    const phs = memberPhrases(m).slice(0, 2)
+      .map(p => phraseRow(p.phrase || p.en || "", p.phrase_zh || p.zh || "")).join("");
+    return `<div class="wc-item">${head}${phs}</div>`;
+  }
+  function membersHTML(arr, focusWord) {
+    return cleanMembers(arr, focusWord).map(memberHTML).join("");
+  }
+  // Per-section audio script: words + their collocations (English).
+  function membersSpeak(arr, focusWord) {
+    const parts = [];
+    cleanMembers(arr, focusWord).forEach(m => {
+      parts.push(m.word);
+      memberPhrases(m).slice(0, 2).forEach(p => { if (p.phrase || p.en) parts.push(p.phrase || p.en); });
+    });
+    return parts.filter(Boolean).join(". ");
+  }
+  function sepLabel(label) {
     return `<div class="wc-sep"><span class="wc-sep-line"></span>`
          + `<span class="wc-sep-label">${esc(label)}</span>`
-         + `<span class="wc-sep-line"></span></div>`
-         + `<div class="wc-block">${inner}</div>`;
+         + `<span class="wc-sep-line"></span></div>`;
+  }
+  function section(cls, label, inner, speak) {
+    if (!inner) return "";
+    return `<section class="wc-sec ${cls}" data-speak="${esc(speak || "")}">`
+         + (label ? sepLabel(label) : "") + inner + `</section>`;
   }
 
   function renderTitle(d) {
@@ -99,25 +116,31 @@ const WordCard = (function () {
   }
 
   function renderBody(d) {
+    // OWN section (no heading): the focus word's own collocations + example.
     const ownPh = (d.phrases || []).slice(0, 4)
       .filter(p => p.phrase || p.en)
-      .map(p => row(esc(p.phrase || p.en), p.phrase_zh || p.zh || "", true)).join("");
+      .map(p => phraseRow(p.phrase || p.en, p.phrase_zh || p.zh || "")).join("");
     const ownEx = (d.examples || []).slice(0, 2).map(x => {
       const en = x.example || x.en || "", zh = x.example_zh || x.zh || "";
       if (!en) return "";
       return `<div class="wc-ex"><div class="wc-ex-en">${esc(en)}</div>`
            + (zh ? `<div class="wc-ex-zh">${esc(zh)}</div>` : "") + `</div>`;
     }).join("");
-    const own = `<div class="wc-own">${ownPh}${ownEx}</div>`;
+    const ownSpeak = [d.word]
+      .concat((d.phrases || []).slice(0, 4).map(p => p.phrase || p.en))
+      .concat((d.examples || []).slice(0, 1).map(x => x.example || x.en))
+      .filter(Boolean).join(". ");
 
-    const fam = members(d.family_members, d.word);
-    const grp = members(d.group, d.word);
-    let kin = "";
+    const kinMembers = [];
     (d.kin_clusters || []).forEach(c => {
-      kin += members(c.internal_words) + members(c.external_words);
+      (c.internal_words || []).forEach(m => kinMembers.push(m));
+      (c.external_words || []).forEach(m => kinMembers.push(m));
     });
 
-    return own + divider("Family", fam) + divider("Group", grp) + divider("Kin", kin);
+    return section("wc-own", "", ownPh + ownEx, ownSpeak)
+      + section("wc-fam", "Family", membersHTML(d.family_members, d.word), membersSpeak(d.family_members, d.word))
+      + section("wc-grp", "Group",  membersHTML(d.group, d.word),          membersSpeak(d.group, d.word))
+      + section("wc-kin", "Kin",    membersHTML(kinMembers),               membersSpeak(kinMembers));
   }
 
   // Open Chapter — its own box (just under the title, above content).
@@ -138,6 +161,7 @@ const WordCard = (function () {
 
   /* ---------- drawer DOM ---------- */
   let drawerEl = null, scrimEl = null, titleZone = null, openZone = null, bodyZone = null, signZone = null, hostPage = null;
+  let cardSecs = [], cardSecIdx = -1;   // big-card section-by-section reveal
 
   function ensureDrawer() {
     const page = document.querySelector(".stage .page");
@@ -183,9 +207,10 @@ const WordCard = (function () {
 
     bodyZone.addEventListener("click", (e) => {
       const j = e.target.closest(".wc-jump");
-      if (!j) return;
+      if (j) { e.stopPropagation(); openBigCard(j.dataset.jump); return; }
+      // Otherwise: reveal + read the next block (Family → Group → Kin).
       e.stopPropagation();
-      openBigCard(j.dataset.jump);
+      advanceCardSection();
     });
     openZone.addEventListener("click", (e) => {
       const o = e.target.closest("[data-go]");
