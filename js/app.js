@@ -123,6 +123,11 @@
     fitStage();
 
     if (prev) {
+      // Suspend the sentence-block blur on BOTH pages for the duration of
+      // the slide. The blur is a per-frame raster cost on a moving layer —
+      // dropping it for ~1s turns the turn into a clean compositor-only
+      // transform, then the invisible-ink blur fades back once we land.
+      stage.classList.add("is-turning");
       // OUTGOING — class marker for animation-play-state:paused on
       // children, plus inline transition + final --tx / --ty.
       prev.classList.add("page-leaving");
@@ -147,6 +152,9 @@
 
       const dying = prev;
       setTimeout(() => { try { dying.remove(); } catch (_) {} }, 1000);
+      // Restore the blur once the slide has landed (it fades back via the
+      // sentence-block's own 0.7s filter transition — a soft "settle").
+      setTimeout(() => { try { stage.classList.remove("is-turning"); } catch (_) {} }, 980);
       // Release the compositor layer once the turn is done — otherwise every
       // reading page we land on keeps a will-change layer alive (each one
       // re-rasterising its blurred sentence spans), which piles up over a

@@ -1868,6 +1868,15 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
   .reading-art .reading-body .sentence-block,
   .reading-art .reading-body .sentence-block .w { animation: none !important; filter: none !important; }
 }
+/* DURING a page turn — drop the blur on both the leaving and entering pages
+   so the slide is a clean compositor transform instead of re-rasterising
+   ~180 blurred spans every frame (the forward-turn jank). The invisible-ink
+   blur fades back in via the .sentence-block 0.7s filter transition once the
+   stage's .is-turning flag is cleared. */
+.stage.is-turning .reading-art .reading-body .sentence-block,
+.stage.is-turning .reading-art .reading-body .sentence-block .w {
+  filter: none !important;
+}
 
 /* Right-side safety margin so the scrollbar / interaction layer never
    sits on top of the prose (user: "拖动条会挡住字"). */
