@@ -1004,11 +1004,16 @@ button.ornate-panel {
   left: 27.05%; top: 20.44%; width: 45.39%; height: 3.55%;
   display: flex; align-items: center; justify-content: center;
 }
-/* 3) Content (scrolls) */
+/* 3) Content (scrolls). Small left inset = safe bleed so text doesn't
+   touch the painted frame. */
 .word-card-body-zone {
   left: 10.25%; top: 24.13%; width: 79.51%; height: 65.15%;
   overflow-y: auto; overflow-x: hidden; text-align: left;
+  padding-left: 3.2%;
 }
+/* Section-by-section reveal: only shown blocks are visible. */
+.word-card-body-zone .wc-sec { display: none; }
+.word-card-body-zone .wc-sec.is-shown { display: block; }
 .word-card-body-zone::-webkit-scrollbar { width: 5px; }
 .word-card-body-zone::-webkit-scrollbar-thumb {
   background: rgba(167, 141, 91, 0.40); border-radius: 3px;
@@ -1072,30 +1077,33 @@ button.ornate-panel {
   line-height: 1.5;
   color: #6C5B50;
 }
-.word-card-body-zone .wc-zh:not(:empty)::before {
-  content: "｜";
-  margin-right: 0.3em;
-  color: rgba(150, 124, 82, 0.5);
-}
-/* collocation rows indent with a ✦ bullet */
+/* No ｜ separator — the column gap alone divides EN / ZH. */
+/* collocation rows indent with a SMALL, fine ✦ bullet */
 .word-card-body-zone .wc-phrase .wc-en { padding-left: 15px; }
 .word-card-body-zone .wc-phrase .wc-en::before {
   content: "✦";
-  margin-left: -15px; margin-right: 0.45em;
-  color: #A8844E;
+  margin-left: -15px; margin-right: 0.5em;
+  font-size: 10px;
+  color: #B89B63;
+  vertical-align: 0.12em;
 }
-/* headword line: word (bold, a little larger) + pos (italic) */
-.word-card-body-zone .wc-head .wc-en { font-size: 19px; }
-.word-card-body-zone .wc-head .wc-w {
-  font-weight: 700;
+/* WORD line — inline: word (bold) · pos (italic) · zh (attached). */
+.word-card-body-zone .wc-head {
+  line-height: 1.4;
+  margin: 0 0 2px;
   color: #2E241D;
 }
-.word-card-body-zone .wc-head .wc-pos {
-  font-style: italic;
-  font-size: 0.78em;
-  color: #6E6253;
+.word-card-body-zone .wc-head .wc-w {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 19px; font-weight: 700; color: #2E241D;
 }
-.word-card-body-zone .wc-head .wc-zh { font-size: 15px; color: #66574C; }
+.word-card-body-zone .wc-head .wc-pos {
+  font-style: italic; font-size: 14px; color: #6E6253;
+}
+.word-card-body-zone .wc-head .wc-hzh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: 15px; color: #66574C;
+}
 
 /* OWN block (focus word's own phrases + example, no heading) */
 .word-card-body-zone .wc-own { margin: 2px 0 0; }
