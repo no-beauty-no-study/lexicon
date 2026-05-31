@@ -665,7 +665,7 @@ const Views = (function () {
           clearCurrent(stack);
           fresh.classList.add("is-current");
           if (sc.clickableForBigCard && typeof WordCard !== "undefined") {
-            WordCard.openBigCard(sc.word);
+            WordCard.openBigCard(sc.word, { chapter: chapterId, section: sectionNum });
           }
           syncMarginaliaButtons();
         });
@@ -717,7 +717,7 @@ const Views = (function () {
             e.stopPropagation();
             clearCurrent(stack);
             fresh.classList.add("is-current");
-            if (card.clickableForBigCard && typeof WordCard !== "undefined") WordCard.openBigCard(card.word);
+            if (card.clickableForBigCard && typeof WordCard !== "undefined") WordCard.openBigCard(card.word, { chapter: chapterId, section: sectionNum });
             syncMarginaliaButtons();
           });
         });
@@ -1454,7 +1454,8 @@ const Views = (function () {
         if (!card) return;
         e.stopPropagation();
         const entry = byId[card.dataset.id];
-        if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry);
+        const scope = Storage.findScopeOf ? Storage.findScopeOf(card.dataset.id) : null;
+        if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry, scope || undefined);
       });
     },
   };

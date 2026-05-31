@@ -1001,11 +1001,10 @@ button.ornate-panel {
   position: absolute;
   top: 50%;
   right: 1.5%;
-  /* Preserve the painted card's NATIVE aspect ratio (976 × 1492).
-     Was 100% 100% stretch which subtly squashed the image; user
-     spec: '恢复图片原本的长宽比 不要四个角切掉'. */
-  height: 95%;
-  aspect-ratio: 976 / 1492;
+  /* Preserve the painted card's TRUE native aspect ratio (1024 × 1536
+     = 2:3). The old 976/1492 squashed it narrower than the art. */
+  height: 96%;
+  aspect-ratio: 1024 / 1536;
   width: auto;
   transform: translateY(-50%) translateX(120%);  /* off-screen right */
   transition: transform 360ms cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -1024,15 +1023,17 @@ button.ornate-panel {
 }
 .word-drawer.is-open { transform: translateY(-50%) translateX(0); }
 
-/* Two text boxes hand-measured by the user on frame-blank.jpg:
-   title cartouche  x 25.4%→74.2%  y 6.6%→16.8%   (centred)
-   body panel       x 13.6%→85.5%  y 18.8%→86.8%  (left-aligned) */
+/* Hand-measured boxes on frame-blank.jpg, with the body shortened so a
+   FIXED action bar fits at the bottom (Signed input + Open Chapter).
+   title  x 25.4–74.2%  y 6.6–17.2%   (centred, compact)
+   body   x 13.6–85.5%  y 18.8–69%    (scroll, left-aligned)
+   action x 13.6–85.5%  y 70–84.5%    (fixed, centred) */
 .word-card-title-zone {
   position: absolute;
   left: 25.4%;
   top: 6.6%;
   width: 48.8%;
-  height: 10.2%;
+  height: 10.6%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1047,89 +1048,119 @@ button.ornate-panel {
   left: 13.6%;
   top: 18.8%;
   width: 71.9%;
-  height: 68.0%;
+  height: 50.2%;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-gutter: stable;
   box-sizing: border-box;
-  padding: 22px 30px;
+  padding: 4px 22px 8px;
   text-align: left;
 }
 .word-card-body-zone::-webkit-scrollbar { width: 5px; }
 .word-card-body-zone::-webkit-scrollbar-thumb {
   background: rgba(167, 141, 91, 0.40); border-radius: 3px;
 }
+.word-card-action-zone {
+  position: absolute;
+  left: 13.6%;
+  top: 70%;
+  width: 71.9%;
+  height: 14.5%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 8px;
+}
 
 /* ============================================================
    BIG WORD CARD CONTENT (VocabRuntime.getBigCard)
-   Classical word-entry typography. Only the palette below — no pure
-   black, no blue, no glow, no heavy bold.
-     main EN #4A4034 · second EN #5A4D3F · zh #7A6B58 · light #8A7A67
+   Compact, sectioned, classical entry typography. Palette only:
+     main EN #4A4034 · second EN #5A4D3F · zh #7A6B58 · warm #8A775E
    ============================================================ */
 .word-card-title-zone .wc-word {
   font-family: var(--font-display), Georgia, serif;
-  font-size: 44px;
+  font-size: 40px;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  line-height: 1.05;
+  letter-spacing: 0.03em;
+  line-height: 1.04;
   color: #4A4034;
 }
-.word-card-title-zone .wc-zh {
-  margin-top: 12px;
+.word-card-title-zone .wc-pos {
+  margin-top: 2px;
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 17px;
+  color: #6E6253;
+}
+.word-card-title-zone .wc-title-zh {
+  margin-top: 3px;
   font-family: "Songti SC", "Noto Serif SC", serif;
-  font-size: 20px;
-  font-weight: 400;
+  font-size: 19px;
   line-height: 1.2;
   color: #7A6B58;
 }
 
-/* own phrases + example */
-.word-card-body-zone .wc-own { margin-bottom: 6px; }
-.word-card-body-zone .wc-phrases { margin: 0 0 4px; }
-.word-card-body-zone .wc-phrase {
-  font-family: var(--font-body), Georgia, serif;
-  line-height: 1.65;
-  margin: 0 0 2px;
+/* thin-thick-thin rule between blocks (lens: thin ends, thick middle) */
+.word-card-body-zone .wc-divider {
+  width: 80%;
+  height: 7px;
+  margin: 13px auto 11px;
+  background: radial-gradient(ellipse 52% 60% at 50% 50%,
+    rgba(150, 124, 82, 0.62) 0%,
+    rgba(150, 124, 82, 0.5) 28%,
+    transparent 72%);
 }
-.word-card-body-zone .wc-ph-en { font-size: 22px; color: #4B4135; }
-.word-card-body-zone .wc-ph-zh {
+
+/* Own block (phrases + example) — no heading. */
+.word-card-body-zone .wc-block { margin: 0; }
+.word-card-body-zone .wc-block-title {
+  margin: 0 0 5px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: #8A775E;
+}
+/* one phrase row: EN then zh, visually separated (serif EN vs songti zh) */
+.word-card-body-zone .wc-row { line-height: 1.5; margin: 0 0 2px; }
+.word-card-body-zone .wc-en {
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 19px; color: #4B4135;
+}
+.word-card-body-zone .wc-zh {
   font-family: "Songti SC", "Noto Serif SC", serif;
-  font-size: 18px; color: #7B6C59; margin-left: 0.5em;
+  font-size: 16px; color: #7B6C59;
 }
-.word-card-body-zone .wc-example {
-  margin-top: 16px;
-  font-family: var(--font-body), Georgia, serif;
+.word-card-body-zone .wc-zh::before {
+  content: "—"; margin: 0 0.4em; color: rgba(150, 124, 82, 0.6);
 }
+.word-card-body-zone .wc-example { margin-top: 9px; }
 .word-card-body-zone .wc-ex-en {
   display: block;
-  font-size: 23px; font-style: italic; line-height: 1.7; color: #5A4D3F;
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 22px; font-style: italic; line-height: 1.5; color: #5A4D3F;
 }
 .word-card-body-zone .wc-ex-zh {
   display: block;
   font-family: "Songti SC", "Noto Serif SC", serif;
-  font-size: 18px; line-height: 1.55; color: #857562; margin-top: 2px;
+  font-size: 16px; line-height: 1.45; color: #857562; margin-top: 1px;
 }
 
-/* Family / Group / Kin sections */
-.word-card-body-zone .wc-section { margin-top: 22px; }
-.word-card-body-zone .wc-section-title {
-  margin: 0 0 8px;
+/* Family / Group / Kin entries — short: word / zh / one collocation. */
+.word-card-body-zone .wc-item { margin: 0 0 9px; }
+.word-card-body-zone .wc-item-head { line-height: 1.25; }
+.word-card-body-zone .wc-item-head .wc-plain,
+.word-card-body-zone .wc-item-head .wc-jump {
   font-family: var(--font-display), Georgia, serif;
-  font-size: 18px; font-weight: 500;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: #8A775E;
+  font-size: 18px; color: #4A4034;
 }
-.word-card-body-zone .wc-member { margin: 0 0 14px; }
-.word-card-body-zone .wc-member-head { line-height: 1.3; margin-bottom: 1px; }
-.word-card-body-zone .wc-member-head .wc-plain,
-.word-card-body-zone .wc-member-head .wc-jump {
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 21px; color: #4A4034;
-}
-.word-card-body-zone .wc-member-zh {
+.word-card-body-zone .wc-item-zh {
   font-family: "Songti SC", "Noto Serif SC", serif;
-  font-size: 18px; color: #7A6B58; margin-left: 0.55em;
+  font-size: 15px; color: #7A6B58; margin-left: 0.5em;
 }
+.word-card-body-zone .wc-item .wc-en { font-size: 16px; }
+.word-card-body-zone .wc-item .wc-zh { font-size: 14px; }
 /* clickable Family/Group/Kin word → opens its own card */
 .word-card-body-zone .wc-jump {
   cursor: pointer;
@@ -1139,6 +1170,37 @@ button.ornate-panel {
   color: #2f2719;
   border-bottom-color: rgba(143, 111, 60, 0.85);
 }
+
+/* Fixed action bar: "Signed ___" copy/dictation input + Open Chapter. */
+.word-card-action-zone .wc-signed {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5em;
+}
+.word-card-action-zone .wc-signed-pre {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #8A775E;
+}
+.word-card-action-zone .wc-signed-input {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 19px; font-style: italic;
+  color: #4A4034;
+  text-align: center;
+  width: 52%; min-width: 120px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(150, 124, 82, 0.55);
+  padding: 2px 4px;
+  outline: none;
+}
+.word-card-action-zone .wc-signed-input:focus { border-bottom-color: rgba(126, 93, 42, 0.85); }
+.word-card-action-zone .wc-signed-input.is-correct {
+  color: #7a4a1f;
+  border-bottom-color: rgba(150, 110, 55, 0.9);
+}
+.word-card-action-zone .wc-open { min-width: 150px; }
 
 /* Close button — small, no modern fill on hover. */
 .word-drawer-close {
