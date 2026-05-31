@@ -167,7 +167,7 @@ const WordCard = (function () {
 
   /* ---------- drawer DOM ---------- */
   let drawerEl = null, scrimEl = null, titleZone = null, openZone = null, bodyZone = null, signZone = null, hostPage = null;
-  let cardSecs = [], cardSecIdx = -1;   // big-card section-by-section reveal
+  let cardLines = [], cardIdx = -1, cardTimer = null;   // big-card line-by-line playback
 
   function ensureDrawer() {
     const page = document.querySelector(".stage .page");
@@ -214,7 +214,7 @@ const WordCard = (function () {
     bodyZone.addEventListener("click", (e) => {
       const j = e.target.closest(".wc-jump");
       if (j) { e.stopPropagation(); openBigCard(j.dataset.jump); return; }
-      // Otherwise: reveal + read the next block (Family → Group → Kin).
+      // Otherwise: skip ahead to the next line (word / phrase / example).
       e.stopPropagation();
       advanceCardSection();
     });
@@ -255,36 +255,85 @@ const WordCard = (function () {
       scrimEl.classList.add("is-open");
       drawerEl.classList.add("is-open");
     });
-    // Section-by-section: show + auto-read OWN now; each tap on the body
-    // reveals + reads the next block (Family → Group → Kin).
-    cardSecs = Array.prototype.slice.call(bodyZone.querySelectorAll(".wc-sec"));
-    cardSecIdx = -1;
-    showCardSection(0);
+    // Line-by-line playback: the card reads ITSELF, one unit at a time —
+    // the focus word, then each collocation, then each example, then the
+    // family / group / kin words. Only the CURRENT line lights up ("在读"),
+    // and it inks in as it's reached. Tapping the body skips to the next
+    // line. This replaces the old per-SECTION reveal (whole block at once).
+    const titleWord = titleZone.querySelector(".wc-word");
+    cardLines = [];
+    if (titleWord) cardLines.push(titleWord);
+    cardLines = cardLines.concat(Array.prototype.slice.call(
+      bodyZone.querySelectorAll(".wc-sep, .wc-head, .wc-row, .wc-ex")));
+    cardIdx = -1;
+    clearTimeout(cardTimer);
+    playCardLine(0);
   }
 
-  // Reveal block i (and everything before it) and read it aloud. The
-  // newly-shown block's items (word lines / collocations / example) ink
-  // in one-by-one (staggered) instead of all at once.
-  function showCardSection(i) {
-    if (i < 0 || i >= cardSecs.length) return;
-    for (let k = 0; k <= i; k++) cardSecs[k].classList.add("is-shown");
-    cardSecIdx = i;
-    const sec = cardSecs[i];
-    const items = sec.querySelectorAll(".wc-sep, .wc-head, .wc-row, .wc-ex");
-    items.forEach((el, k) => { el.style.animationDelay = (k * 0.26) + "s"; el.classList.add("wc-ink"); });
-    try { sec.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
-    // "在读" — mark THIS block as the one currently being read so the user
-    // can see what the voice is on (warm gold rail + glow + a "● 在读" tag).
-    // It stays put as a CURRENT-block indicator until the next block is
-    // revealed or the drawer closes — NOT tied to the voice's onEnd, which
-    // can fire instantly when there are no voices and would make it vanish.
-    cardSecs.forEach(s => s.classList.remove("is-reading"));
-    sec.classList.add("is-reading");
-    const txt = sec.getAttribute("data-speak");
-    if (txt && typeof TTS !== "undefined" && TTS.speak) { try { TTS.speak(txt); } catch (_) {} }
+  // What to SPEAK for a given line — short + precise (English only): the
+  // focus word, a member headword, a collocation's EN, or an example's EN.
+  // Dividers (.wc-sep) speak nothing — they just reveal and roll onward.
+  function lineSpeakText(el) {
+    if (!el) return "";
+    if (el.classList.contains("wc-word")) return el.textContent.trim();
+    if (el.classList.contains("wc-sep"))  return "";
+    if (el.classList.contains("wc-head")) {
+      const w = el.querySelector(".wc-w"); return w ? w.textContent.trim() : "";
+    }
+    if (el.classList.contains("wc-row")) {            // collocation
+      const en = el.querySelector(".wc-en"); return en ? en.textContent.trim() : "";
+    }
+    if (el.classList.contains("wc-ex")) {             // example
+      const en = el.querySelector(".wc-ex-en"); return en ? en.textContent.trim() : "";
+    }
+    return "";
   }
+
+  // Scroll the BODY ZONE itself to bring a line into view. NEVER scrollIntoView
+  // — that bubbles up and scrolls the CSS-scaled .page, which yanked the whole
+  // reading view sideways ("reading 的文本往左边飞了").
+  function scrollCardTo(el) {
+    if (!el || !bodyZone || !bodyZone.contains(el)) return;
+    const top = el.offsetTop - bodyZone.clientHeight * 0.5 + el.offsetHeight * 0.5;
+    const y = Math.max(0, top);
+    try { bodyZone.scrollTo({ top: y, behavior: "smooth" }); }
+    catch (_) { bodyZone.scrollTop = y; }
+  }
+
+  // Reveal + (if it has text) read line i, lighting up only that line, then
+  // auto-chain to the next when the voice ends.
+  function playCardLine(i) {
+    if (i < 0 || i >= cardLines.length) return;
+    clearTimeout(cardTimer);
+    cardIdx = i;
+    const el = cardLines[i];
+    el.classList.add("wc-revealed");
+    cardLines.forEach(l => l.classList.remove("is-reading"));
+
+    const txt = lineSpeakText(el);
+    if (!txt) {                       // a divider — reveal and roll straight on
+      cardTimer = setTimeout(() => playCardLine(i + 1), 150);
+      return;
+    }
+    el.classList.add("is-reading");
+    scrollCardTo(el);
+
+    let advanced = false;
+    const onEnd = () => {
+      if (advanced || cardIdx !== i) return;
+      advanced = true;
+      cardTimer = setTimeout(() => playCardLine(i + 1), 240);
+    };
+    // Fallback in case the voice's onend never fires (no voices / muted).
+    const words = (txt.match(/\S+/g) || []).length;
+    cardTimer = setTimeout(onEnd, words * 320 + 1300);
+    if (typeof TTS !== "undefined" && TTS.speak) { try { TTS.speak(txt, { onEnd }); } catch (_) {} }
+  }
+  // Body tap → skip to the next line right away.
   function advanceCardSection() {
-    if (cardSecIdx + 1 < cardSecs.length) showCardSection(cardSecIdx + 1);
+    if (typeof TTS !== "undefined" && TTS.cancel) { try { TTS.cancel(); } catch (_) {} }
+    clearTimeout(cardTimer);
+    if (cardIdx + 1 < cardLines.length) playCardLine(cardIdx + 1);
   }
 
   function openDrawer(arg, ctx) {
@@ -294,6 +343,7 @@ const WordCard = (function () {
 
   function closeDrawer() {
     if (!drawerEl) return;
+    clearTimeout(cardTimer);
     drawerEl.setAttribute("aria-hidden", "true");
     scrimEl.classList.remove("is-open");
     drawerEl.classList.remove("is-open");
