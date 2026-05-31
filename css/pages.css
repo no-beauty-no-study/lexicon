@@ -102,24 +102,61 @@
   margin: 4px 0 18px;
 }
 
-/* Reading title alignment (reading page only — quiz keeps its centred
-   title). Right-justify the title block to the right edge of the BODY
-   column, NOT the word-list column: narrow the title zone so its right
-   edge meets the body's (30.75% + 48.00% = 78.75%) and push the stack
-   flush-right. Otherwise the centred title reads left-of-centre against
-   the full page width. (user req) */
+/* ============================================================
+   READING INTERNAL LAYOUT — global centring within the whole
+   reading region (reading page only; quiz keeps its own layout).
+   User hand-measured (page-relative %, screenshot 1320×967):
+     left 30.9%  right 94.8%  header 6.7%→20.5%  bottom 87.8%
+     global centre axis x = 62.9%   usable width = 63.9%
+   Zones are positioned relative to .master-frame (left 1.78%,
+   top 2.15%, width 96.33%, height 95.85%), so converting:
+     x_frame = (x_page − 1.78) / 96.33      y_frame = (y_page − 2.15) / 95.85
+   gives:  L=30.23%  R=96.56%  width=66.33%  centre=63.40%
+           header 4.75%→19.14% (h 14.40)    body/marg 19.14%→89.36% (h 70.21)
+   The title group is centred on the WHOLE region (axis 63.40% frame
+   = 62.85% page), NOT just the body column. Body + marginalia both
+   start at the header bottom and run down to 89.36%.
+   ============================================================ */
 [data-page="reading"] .zone-reading-title {
-  width: 48.00%;
-  align-items: flex-end;
-  text-align: right;
+  left:   30.23%;
+  top:     4.75%;
+  width:  66.33%;
+  height: 14.40%;
+  align-items: center;
+  text-align: center;
+}
+/* CHAPTER 01 + THE UNIVERSE share ONE centred line. */
+[data-page="reading"] .reading-titleline {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+}
+[data-page="reading"] .reading-titleline .reading-kicker,
+[data-page="reading"] .reading-titleline .reading-title {
+  margin: 0;
 }
 [data-page="reading"] .reading-kicker,
 [data-page="reading"] .reading-title,
 [data-page="reading"] .reading-subtitle {
-  text-align: right;
+  text-align: center;
 }
 [data-page="reading"] .zone-reading-title .antique-divider {
-  margin: 6px 0 10px auto;   /* flush-right under the title text */
+  margin: 8px auto 8px;
+}
+[data-page="reading"] .zone-reading-body {
+  left:   30.23%;
+  top:    19.14%;
+  width:  47.70%;
+  height: 70.21%;
+}
+[data-page="reading"] .zone-marginalia {
+  left:   78.71%;   /* right edge 78.71 + 17.85 = 96.56% = the region's right boundary */
+  top:    19.14%;
+  width:  17.85%;
+  height: 70.21%;
 }
 .reading-art .reading-body {
   width: 100%;
