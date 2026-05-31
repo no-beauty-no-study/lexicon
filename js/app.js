@@ -95,16 +95,34 @@
     const easing  = "cubic-bezier(0.22, 0.8, 0.22, 1)";
     const tDur    = "950ms";
 
+    // INCOMING — placed off-screen on the chosen axis (no transition yet),
+    // appended, then its content is BUILT and the scale committed — all
+    // while it is still off-screen and the old page is static. Only after
+    // that heavy work + the first layout/paint are done do we kick off the
+    // slide. Previously view.init (the ~180-span build) ran AFTER this block
+    // and `void node.offsetHeight` flushed an EMPTY page, so the first
+    // *animated* frame was where the browser first laid out, painted and
+    // rasterised all the blurred content — a single monster frame that
+    // stuttered the turn ("比别的多了几帧定格帧"). Building first turns the
+    // slide into a clean compositor-only transform.
     if (prev) {
-      // INCOMING — start off-screen on the chosen axis. No transition
-      // during setup so the initial off-screen position lands
-      // instantly. Transition then enabled on the next paint frame.
       node.style.setProperty("--tx", enterTx);
       node.style.setProperty("--ty", enterTy);
       node.style.opacity    = "0.92";
       node.style.zIndex     = "2";
       node.style.willChange = "transform, opacity";
-      stage.appendChild(node);
+    }
+    stage.appendChild(node);
+
+    const view = Views[name];
+    try {
+      if (view && typeof view.init === "function") view.init(node, params);
+    } catch (err) {
+      try { console.error("[Views." + name + "] init failed:", err); } catch (_) {}
+    }
+    fitStage();
+
+    if (prev) {
       // OUTGOING — class marker for animation-play-state:paused on
       // children, plus inline transition + final --tx / --ty.
       prev.classList.add("page-leaving");
@@ -115,10 +133,10 @@
       prev.style.opacity    = "0.6";
       prev.style.zIndex     = "1";
       prev.style.pointerEvents = "none";
-      // Force layout to commit the initial --tx/--ty before we
-      // add the transition on `node`. Without this read, Safari
-      // sometimes batches the two style mutations and skips the
-      // animation entirely.
+      // Flush layout + paint of the now FULLY-BUILT incoming page while it
+      // is still off-screen, so its layer is rasterised BEFORE the slide
+      // begins (this is also the Safari read that stops the two style
+      // mutations from batching and skipping the animation).
       void node.offsetHeight;
       requestAnimationFrame(() => {
         node.style.transition = `transform ${tDur} ${easing}, opacity 620ms ease-out`;
@@ -136,19 +154,8 @@
       // back to a normal layer until the next navigation re-promotes it.
       const settled = node;
       setTimeout(() => { try { settled.style.willChange = "auto"; } catch (_) {} }, 1050);
-    } else {
-      // First render — no slide.
-      stage.appendChild(node);
     }
 
-    const view = Views[name];
-    try {
-      if (view && typeof view.init === "function") view.init(node, params);
-    } catch (err) {
-      try { console.error("[Views." + name + "] init failed:", err); } catch (_) {}
-    }
-
-    fitStage();
     requestAnimationFrame(fitStage);
 
     // Tag body with the current view so view-specific selectors

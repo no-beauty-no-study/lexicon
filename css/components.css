@@ -1014,43 +1014,63 @@ button.ornate-panel {
 /* Section-by-section reveal: only shown blocks are visible. */
 .word-card-body-zone .wc-sec { display: none; }
 .word-card-body-zone .wc-sec.is-shown { display: block; }
-/* "在读" — the block the voice is currently reading. A warm gold rail down
-   the left edge + a soft underglow, so the user can see what's being spoken.
-   Cleared the moment the voice ends (see wordCard.js showCardSection). */
+/* "在读" — the block currently being read. A warm gold rail down the left
+   edge, a soft tint, a gentle breathe, and a "● 在读" tag pinned top-right,
+   so the user can see exactly which block the voice is on. Persists as the
+   CURRENT-block marker until the next block is revealed (see wordCard.js). */
 .word-card-body-zone .wc-sec {
   position: relative;
-  padding-left: 12px;
+  padding-left: 14px;
   border-radius: 8px;
   transition: background 0.45s ease, box-shadow 0.45s ease;
 }
 .word-card-body-zone .wc-sec::before {
   content: "";
   position: absolute;
-  left: 0; top: 8%; bottom: 8%;
-  width: 3px; border-radius: 3px;
-  background: linear-gradient(180deg, #E7C977, #B89B63);
+  left: 0; top: 6%; bottom: 6%;
+  width: 4px; border-radius: 4px;
+  background: linear-gradient(180deg, #F0D58A, #C9A24B);
   opacity: 0;
-  transform: scaleY(0.4);
+  transform: scaleY(0.35);
   transform-origin: top;
-  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.22,0.8,0.22,1);
+  transition: opacity 0.4s ease, transform 0.55s cubic-bezier(0.22,0.8,0.22,1);
 }
 .word-card-body-zone .wc-sec.is-reading {
-  background: radial-gradient(120% 100% at 0% 50%,
-              rgba(231, 201, 119, 0.16), rgba(231, 201, 119, 0) 70%);
-  box-shadow: 0 1px 0 rgba(231, 201, 119, 0.12);
+  background: linear-gradient(90deg,
+              rgba(231, 201, 119, 0.22), rgba(231, 201, 119, 0.05) 60%, rgba(231,201,119,0) 100%);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 75, 0.22);
+  animation: wc-reading-breathe 2.2s ease-in-out infinite;
 }
 .word-card-body-zone .wc-sec.is-reading::before {
   opacity: 1; transform: scaleY(1);
+  box-shadow: 0 0 10px rgba(231, 201, 119, 0.7);
 }
-.word-card-body-zone .wc-sec.is-reading {
-  animation: wc-reading-breathe 2.4s ease-in-out infinite;
+/* "● 在读" tag, top-right of the active block. */
+.word-card-body-zone .wc-sec.is-reading::after {
+  content: "● 在读";
+  position: absolute;
+  top: 4px; right: 6px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: #9A7B33;
+  background: rgba(231, 201, 119, 0.22);
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  border-radius: 999px;
+  padding: 1px 7px;
+  line-height: 1.5;
+  animation: wc-reading-dot 1.4s ease-in-out infinite;
 }
 @keyframes wc-reading-breathe {
-  0%, 100% { box-shadow: 0 0 0 rgba(231,201,119,0); }
-  50%      { box-shadow: 0 1px 14px rgba(231,201,119,0.18); }
+  0%, 100% { box-shadow: inset 0 0 0 1px rgba(201,162,75,0.18), 0 0 0 rgba(231,201,119,0); }
+  50%      { box-shadow: inset 0 0 0 1px rgba(201,162,75,0.30), 0 1px 16px rgba(231,201,119,0.22); }
+}
+@keyframes wc-reading-dot {
+  0%, 100% { opacity: 0.65; }
+  50%      { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .word-card-body-zone .wc-sec.is-reading { animation: none; }
+  .word-card-body-zone .wc-sec.is-reading,
+  .word-card-body-zone .wc-sec.is-reading::after { animation: none; }
 }
 /* When a block is revealed, its items (word lines / collocations /
    example) ink in ONE BY ONE — like the reading page, but the unit is
