@@ -63,15 +63,19 @@
 /* Typography for content INSIDE the title / body zones. Positioning
    is owned by .ui-zone (see debug.css); these rules only describe
    how text looks once it's inside its zone. */
+/* "Chapter NN" must be visually identical to the big title — same
+   size, weight, colour, tracking. The two sit on one centred line
+   (.reading-titleline), reading e.g. "CHAPTER 06  SOUTH AMERICA". */
 .reading-art .reading-kicker {
   text-align: center;
   font-family: var(--font-display);
-  font-size: 14px;
-  line-height: 1.2;
-  letter-spacing: 0.24em;
+  font-size: 36px;
+  line-height: 1.12;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #7a7467;
-  margin: 0 0 12px;
+  font-weight: 400;
+  color: #2b3b51;
+  margin: 0 0 6px;
 }
 .reading-art .reading-title {
   text-align: center;
@@ -117,7 +121,12 @@
    = 62.85% page), NOT just the body column. Body + marginalia both
    start at the header bottom and run down to 89.36%.
    ============================================================ */
-[data-page="reading"] .zone-reading-title {
+/* Title group is shared by BOTH the reading page AND the quiz page
+   (same .reading-art shell) so the two read as one continuous book —
+   identical position, single centred title line, identical tracking.
+   Using .reading-art (not [data-page="reading"]) applies it to quiz
+   too, overriding the generic debug.css zone box on both. */
+.reading-art .zone-reading-title {
   left:   30.23%;
   top:     4.75%;
   width:  66.33%;
@@ -125,8 +134,8 @@
   align-items: center;
   text-align: center;
 }
-/* CHAPTER 01 + THE UNIVERSE share ONE centred line. */
-[data-page="reading"] .reading-titleline {
+/* CHAPTER NN + THE TITLE share ONE centred line. */
+.reading-art .reading-titleline {
   display: flex;
   flex-direction: row;
   align-items: baseline;
@@ -134,16 +143,16 @@
   gap: 16px;
   width: 100%;
 }
-[data-page="reading"] .reading-titleline .reading-kicker,
-[data-page="reading"] .reading-titleline .reading-title {
+.reading-art .reading-titleline .reading-kicker,
+.reading-art .reading-titleline .reading-title {
   margin: 0;
 }
-[data-page="reading"] .reading-kicker,
-[data-page="reading"] .reading-title,
-[data-page="reading"] .reading-subtitle {
+.reading-art .reading-kicker,
+.reading-art .reading-title,
+.reading-art .reading-subtitle {
   text-align: center;
 }
-[data-page="reading"] .zone-reading-title .antique-divider {
+.reading-art .zone-reading-title .antique-divider {
   margin: 8px auto 8px;
 }
 [data-page="reading"] .zone-reading-body {
@@ -768,7 +777,16 @@
   opacity: 1;
 }
 
-/* Quiz body lives in .zone-reading-body, same slot as reading body. */
+/* Quiz body occupies the SAME reading region as the prose page so the
+   two pages of one section share an identical text frame (top + height
+   match reading body; full region width since the quiz has no
+   marginalia column). */
+[data-page="quiz"] .zone-quiz-body {
+  left:   30.23%;
+  top:    19.14%;
+  width:  66.33%;
+  height: 70.21%;
+}
 .reading-art .quiz-body {
   font-family: var(--font-body);
   width: 100%;
@@ -782,7 +800,7 @@
 /* Type bumped to match reading-body (18px / line 1.4) — the user
    reported the prior 14px was too small. Margins tightened
    accordingly so 3 questions × 4 options still fit. */
-.reading-art .quiz-item { margin: 0 0 14px; padding-left: 22px; }
+.reading-art .quiz-item { margin: 0 0 18px; padding-left: 22px; }
 .reading-art .quiz-no {
   font-family: var(--font-display);
   font-size: 12px;
@@ -791,11 +809,14 @@
   color: var(--color-subtitle);
   margin: 0 0 4px -22px;
 }
+/* Same body type as the reading prose — same font, size, line-height,
+   tracking and word-spacing — so a section's two pages read identically. */
 .reading-art .quiz-question {
   font-family: var(--font-body);
   font-size: 18px;
-  line-height: 1.4;
-  letter-spacing: 0.03em;
+  line-height: 1.82;
+  letter-spacing: 0.032em;
+  word-spacing: 0.07em;
   color: var(--color-body);
   margin: 0 0 8px -22px;
 }
@@ -821,8 +842,9 @@
   padding: 0.06em 0.4em 0.06em 0.25em;
   font-family: var(--font-body);
   font-size: 18px;               /* match reading body */
-  line-height: 1.4;
+  line-height: 1.82;             /* match reading body line-spacing */
   letter-spacing: 0.032em;
+  word-spacing: 0.07em;
   color: #3f3a31;
   cursor: pointer;
   background: transparent;
@@ -1255,7 +1277,16 @@
    to 92.30% (a small, conservative drop, still well ABOVE the old
    "too low" reading value). Kept identical across pages so the bar
    stays vertically consistent everywhere. */
-.page[data-page="reading"],
+/* Reading carries the full control bar: Auto · Prev · Back · Quiz ·
+   Next · Save · Load · Menu (8 cells), centred on the reading region's
+   axis (centre ≈ 63%). Quiz keeps its own 5-cell bar. */
+.page[data-page="reading"] {
+  --nav-count:  8;
+  --nav-left:   30.00%;
+  --nav-top:    92.30%;
+  --nav-width:  66.00%;
+  --nav-height:  6.70%;
+}
 .page[data-page="quiz"] {
   --nav-count:  5;
   --nav-left:   29.47%;
@@ -1280,10 +1311,22 @@
 .page[data-page="word-garden"] {
   --nav-count:  2;
   --nav-left:   35.00%;
-  --nav-top:    92.30%;
+  /* Lifted a little higher than the shared 92.30% so the Back / Menu
+     labels sit up off the painted bottom edge (user: "再往上一点点"). */
+  --nav-top:    91.10%;
   --nav-width:  30.00%;
   --nav-height:  6.70%;
 }
+/* AUTO (autoplay) button — while reading itself aloud it glows warm
+   gold and its glyph reads as a pause/stop; tapping again stops. */
+.ui-bottom-nav button[data-auto].is-active {
+  color: #7a4a1f;
+  text-shadow: 0 0 8px rgba(201, 162, 92, 0.45);
+}
+.ui-bottom-nav button[data-auto].is-active .nav-glyph {
+  color: rgba(150, 96, 38, 0.95);
+}
+
 /* notes / save / load have NO .master-frame, so their bottom-nav is
    positioned relative to the full .page (1086px tall) instead of the
    frame (95.85% tall, offset 2.15% from the top). With the same 92.30%

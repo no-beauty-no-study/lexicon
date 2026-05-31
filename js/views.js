@@ -515,11 +515,32 @@ const Views = (function () {
     init(host, params) {
       const chapterId  = params.chapter || "universe";
       const sectionNum = params.section || "1.1";
-      const illustrationId = params.page || null;
+      let   illustrationId = params.page || null;
       const book    = (typeof getChapterOrDefault === "function")
                        ? getChapterOrDefault(chapterId) : { number: "01", title: chapterId };
       const section = ChapterNav.findSection(chapterId, sectionNum);
       const isBrowse = params.browse === "1";
+
+      // Multi-illustration chapters (e.g. Europe's France / Empress /
+      // Alice) split their sections into N even bands by chapter count
+      // — first third → image 1, middle third → image 2, last third →
+      // image 3. Not strict ("不用那么严格"), just an even division. Only
+      // kicks in for chapters with 3+ images so single-/two-image
+      // chapters keep their default background.
+      if (!illustrationId) {
+        const key   = book.illustrationKey || chapterId;
+        const entry = (typeof CHAPTER_ILLUSTRATIONS !== "undefined")
+                      ? CHAPTER_ILLUSTRATIONS[key] : null;
+        const imgs  = (entry && entry.images) || [];
+        if (imgs.length >= 3) {
+          const list = ChapterNav.sectionsOf(chapterId);
+          const idx  = Math.max(0, list.findIndex(s => s.number === sectionNum));
+          const n    = list.length || 1;
+          const which = Math.min(imgs.length - 1,
+                                 Math.floor(idx / n * imgs.length));
+          illustrationId = imgs[which].id;
+        }
+      }
 
       if (!isBrowse) {
         try {
@@ -813,8 +834,8 @@ const Views = (function () {
           ? `${intro}. ${firstBlock.textContent}`
           : firstBlock.textContent;
       }
-      function revealNext() {
-        if (nextIdx >= blocks.length) return;
+      function revealNext(opts) {
+        if (nextIdx >= blocks.length) { if (opts && opts.onEnd) opts.onEnd(); return; }
         const b = blocks[nextIdx++];
         // Ink ripple on tap stays IMMEDIATE — feedback that the tap
         // landed. The block itself only fades up when the voice
@@ -835,12 +856,57 @@ const Views = (function () {
             host.querySelector(".zone-reading-title")?.classList.add("is-revealed");
           }
         }
-        TTS.speak(b.dataset.speakText || b.textContent, { onStart: doReveal });
+        TTS.speak(b.dataset.speakText || b.textContent, {
+          onStart: doReveal,
+          onEnd: opts && opts.onEnd,
+        });
         setTimeout(doReveal, 1400);
       }
+
+      // ---- AUTO (autoplay) ----
+      // Reads the page sentence after sentence, hands-free: each block
+      // reveals + speaks, and when the voice ends the next one starts
+      // automatically. Tapping Auto again (or tapping the page) stops.
+      let autoOn = false;
+      const autoBtn = host.querySelector("[data-auto]");
+      function syncAutoBtn() {
+        if (!autoBtn) return;
+        autoBtn.classList.toggle("is-active", autoOn);
+        const label = autoBtn.querySelector(".auto-label");
+        const glyph = autoBtn.querySelector(".auto-glyph");
+        if (label) label.textContent = autoOn ? "Stop" : "Auto";
+        if (glyph) glyph.textContent = autoOn ? "■" : "▶";
+      }
+      function autoTick() {
+        if (!autoOn || !body.isConnected) return;
+        if (nextIdx >= blocks.length) { stopAuto(); return; }
+        revealNext({ onEnd: () => { if (autoOn) setTimeout(autoTick, 350); } });
+      }
+      function startAuto() {
+        if (autoOn) return;
+        autoOn = true; syncAutoBtn();
+        autoTick();
+      }
+      function stopAuto() {
+        if (!autoOn) return;
+        autoOn = false; syncAutoBtn();
+        TTS.cancel();
+      }
+      if (autoBtn) autoBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (autoOn) stopAuto(); else startAuto();
+      });
+      // Leaving the reading view stops autoplay and silences the voice.
+      window.addEventListener("hashchange", function onLeaveReading() {
+        autoOn = false; TTS.cancel();
+      }, { once: true });
+
       host.addEventListener("click", (e) => {
         if (e.target.closest("button, a, .clickable-word, .side-note-button,"
                            + " .marginalia-card, .word-card, input, select, textarea")) return;
+        // While autoplay runs, a page tap pauses it rather than
+        // double-advancing the reveal cursor.
+        if (autoOn) { stopAuto(); return; }
         revealNext();
       });
 
@@ -854,13 +920,29 @@ const Views = (function () {
           nav.querySelectorAll(
             '[data-go="#save"], [data-go="#load"], [data-quiz]'
           ).forEach(b => b.remove());
-          // After removing Save/Load/Quiz from the 5-cell reading
-          // nav, only Next + Menu remain → 2 cells, evenly split.
-          // (Previously had --nav-count: 3, which left an empty
-          // 3rd cell and shoved Next/Menu off-centre.)
-          nav.style.setProperty("--nav-count", "2");
+          // Re-fit the grid to whatever cells remain (Auto · Prev ·
+          // Back · Next · Menu) so they split evenly with no empty cell.
+          nav.style.setProperty("--nav-count",
+            String(nav.querySelectorAll("button").length));
         }
       }
+
+      // Prev (上一章) — back to the previous section's reading page.
+      const prevBtn = host.querySelector("[data-prev]");
+      if (prevBtn) prevBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        let href = ChapterNav.prevReading(chapterId, sectionNum);
+        if (isBrowse) {
+          href += href.indexOf("?") >= 0 ? "&browse=1" : "?browse=1";
+        }
+        window.go(href);
+      });
+      // Back — return to the chapter index.
+      const toIndexBtn = host.querySelector("[data-toindex]");
+      if (toIndexBtn) toIndexBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.go(isBrowse ? "#chapters?browse=1" : "#chapters");
+      });
 
       const next = host.querySelector("[data-next]");
       if (next) next.addEventListener("click", (e) => {

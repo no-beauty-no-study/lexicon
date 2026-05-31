@@ -1381,12 +1381,12 @@ const CHAPTER_CONTENT = {
     ]
   },
   "oceans": {
-    "number": "6",
+    "number": "8",
     "title": "The Indian Ocean and the Atlantic",
     "id": "oceans",
     "sections": [
       {
-        "number": "6.1",
+        "number": "8.1",
         "title": "The Indian Ocean Monsoon",
         "blocks": [
           "In summer the sun heats the Asian landmass more rapidly than the surrounding ocean.",
@@ -1410,10 +1410,10 @@ const CHAPTER_CONTENT = {
             "a": "famine"
           }
         ],
-        "audio_prefix": "assets/audio/ch6/6.1"
+        "audio_prefix": "assets/audio/ch8/8.1"
       },
       {
-        "number": "6.2",
+        "number": "8.2",
         "title": "The Strait and the Coral Triangle",
         "blocks": [
           "Arab traders mastered the monsoon pattern long before Europe arrived.",
@@ -1437,10 +1437,10 @@ const CHAPTER_CONTENT = {
             "a": "Coral Triangle"
           }
         ],
-        "audio_prefix": "assets/audio/ch6/6.2"
+        "audio_prefix": "assets/audio/ch8/8.2"
       },
       {
-        "number": "6.3",
+        "number": "8.3",
         "title": "The Wave That Animals Heard First",
         "blocks": [
           "A long rupture in the seabed off the western coast of Sumatra abruptly lifted the entire floor of the ocean, displacing enough water to launch a chain of immense waves outward in every direction.",
@@ -1463,10 +1463,10 @@ const CHAPTER_CONTENT = {
             "a": "pressure sensor"
           }
         ],
-        "audio_prefix": "assets/audio/ch6/6.3"
+        "audio_prefix": "assets/audio/ch8/8.3"
       },
       {
-        "number": "6.4",
+        "number": "8.4",
         "title": "The River Hidden in the Atlantic",
         "blocks": [
           "A vast warm current ascends from the tropics along the eastern coast of the Americas, then traverses the Atlantic toward Europe, where it tempers the climate of the British Isles and the Scandinavian coast considerably above what their latitude alone would predict.",
@@ -1488,10 +1488,10 @@ const CHAPTER_CONTENT = {
             "a": "Sargasso Sea"
           }
         ],
-        "audio_prefix": "assets/audio/ch6/6.4"
+        "audio_prefix": "assets/audio/ch8/8.4"
       },
       {
-        "number": "6.5",
+        "number": "8.5",
         "title": "The Spine of the Atlantic",
         "blocks": [
           "Beneath the Atlantic Ocean runs a vast underwater mountain range that extends from the abyssal plain near Iceland in the north all the way to the seas near Antarctica, constituting the longest continuous spine on the planet.",
@@ -1513,10 +1513,10 @@ const CHAPTER_CONTENT = {
             "a": "magma"
           }
         ],
-        "audio_prefix": "assets/audio/ch6/6.5"
+        "audio_prefix": "assets/audio/ch8/8.5"
       },
       {
-        "number": "6.6",
+        "number": "8.6",
         "title": "The Voices in the Open Water",
         "blocks": [
           "Dolphins navigate by emitting rapid clicks and interpreting the returning echoes, mapping their underwater environment by sound the way bats map a cave.",
@@ -1540,17 +1540,17 @@ const CHAPTER_CONTENT = {
             "a": "albatross"
           }
         ],
-        "audio_prefix": "assets/audio/ch6/6.6"
+        "audio_prefix": "assets/audio/ch8/8.6"
       }
     ]
   },
   "south-america": {
-    "number": "7",
+    "number": "6",
     "title": "South America",
     "id": "south-america",
     "sections": [
       {
-        "number": "7.1",
+        "number": "6.1",
         "title": "The Andes from the Sea",
         "blocks": [
           "Across millions of years the Pacific plate has slowly subducted beneath the South American continent, lifting the entire western edge upward into a vast mountain spine we now designate the Andes.",
@@ -1571,10 +1571,10 @@ const CHAPTER_CONTENT = {
             "a": "earthquake"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.1"
+        "audio_prefix": "assets/audio/ch6/6.1"
       },
       {
-        "number": "7.2",
+        "number": "6.2",
         "title": "Darwin and the Finches",
         "blocks": [
           "The young naturalist Charles Darwin sailed aboard a British vessel called the Beagle that paused at the Galápagos Islands, a chain of volcanic outcrops drifting in the eastern Pacific.",
@@ -1597,10 +1597,10 @@ const CHAPTER_CONTENT = {
             "a": "On the Origin of Species"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.2"
+        "audio_prefix": "assets/audio/ch6/6.2"
       },
       {
-        "number": "7.3",
+        "number": "6.3",
         "title": "The Amazon Drowns the Sea",
         "blocks": [
           "The Amazon River begins as a small glacial trickle near the summit of the Andes and traverses the entire South American continent from west to east, drawing into itself more than a thousand tributary streams along the way, discharging finally into the Atlantic Ocean at a mouth so wide you cannot see the opposite shore from the middle of the channel.",
@@ -1621,10 +1621,10 @@ const CHAPTER_CONTENT = {
             "a": "mouth"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.3"
+        "audio_prefix": "assets/audio/ch6/6.3"
       },
       {
-        "number": "7.4",
+        "number": "6.4",
         "title": "The Forest of Bright Warnings",
         "blocks": [
           "The Amazon rainforest is the most thoroughly disguised landscape on the planet.",
@@ -1649,10 +1649,10 @@ const CHAPTER_CONTENT = {
             "a": "blowdart"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.4"
+        "audio_prefix": "assets/audio/ch6/6.4"
       },
       {
-        "number": "7.5",
+        "number": "6.5",
         "title": "Patagonia and the Ice-Age Giants",
         "blocks": [
           "The southernmost extremity of South America is Patagonia, a vast wind-scoured wasteland in which the constant gale from the Pacific bends the few surviving trees into permanent leeward angles.",
@@ -1674,10 +1674,10 @@ const CHAPTER_CONTENT = {
             "a": "fjord"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.5"
+        "audio_prefix": "assets/audio/ch6/6.5"
       },
       {
-        "number": "7.6",
+        "number": "6.6",
         "title": "The Driest Place on Earth",
         "blocks": [
           "The Atacama Desert occupies a narrow coastal strip along the western edge of South America, where the cold Humboldt current offshore cools the air and prevents any moisture from condensing into rain.",
@@ -1700,10 +1700,10 @@ const CHAPTER_CONTENT = {
             "a": "radio telescope"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.6"
+        "audio_prefix": "assets/audio/ch6/6.6"
       },
       {
-        "number": "7.7",
+        "number": "6.7",
         "title": "The Empire Without Writing",
         "blocks": [
           "The Inca empire occupied the entire spine of the Andes from modern Colombia to Chile without ever inventing a system of writing or constructing a single wheeled vehicle.",
@@ -1725,10 +1725,10 @@ const CHAPTER_CONTENT = {
             "a": "chaski"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.7"
+        "audio_prefix": "assets/audio/ch6/6.7"
       },
       {
-        "number": "7.8",
+        "number": "6.8",
         "title": "Machu Picchu Hidden in the Mist",
         "blocks": [
           "High along a remote Andean ridge the Incas constructed the citadel now called Machu Picchu.",
@@ -1751,10 +1751,10 @@ const CHAPTER_CONTENT = {
             "a": "conquistadors"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.8"
+        "audio_prefix": "assets/audio/ch6/6.8"
       },
       {
-        "number": "7.9",
+        "number": "6.9",
         "title": "The Microbe That Conquered an Empire",
         "blocks": [
           "A small Spanish band led by the captain Pizarro approached the Inca empire with horses, swords, and firearms, but their real weapon turned out to be invisible.",
@@ -1779,10 +1779,10 @@ const CHAPTER_CONTENT = {
             "a": "Atahualpa"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.9"
+        "audio_prefix": "assets/audio/ch6/6.9"
       },
       {
-        "number": "7.10",
+        "number": "6.10",
         "title": "The Silver Mountain at the Sky",
         "blocks": [
           "In the high thin air of the Bolivian altiplano stands a mountain called Potosí, beneath which lay one of the richest concentrations of silver ore the planet has ever yielded.",
@@ -1804,10 +1804,10 @@ const CHAPTER_CONTENT = {
             "a": "Manila"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.10"
+        "audio_prefix": "assets/audio/ch6/6.10"
       },
       {
-        "number": "7.11",
+        "number": "6.11",
         "title": "The Tubers and the Cocoa Bean",
         "blocks": [
           "The Andes had cultivated the potato for thousands of years before the Spanish encountered it, and the Spanish hauled the tubers home as a curiosity that gradually transformed into the staple food of every European peasant who could not afford bread.",
@@ -1829,10 +1829,10 @@ const CHAPTER_CONTENT = {
             "a": "cocoa bean"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.11"
+        "audio_prefix": "assets/audio/ch6/6.11"
       },
       {
-        "number": "7.12",
+        "number": "6.12",
         "title": "The Modern Reckoning",
         "blocks": [
           "The Amazon rainforest, often called the lungs of the planet, is being cleared rapidly at the present moment to make room for cattle ranches and soybean fields exporting to the global meat trade.",
@@ -1853,17 +1853,17 @@ const CHAPTER_CONTENT = {
             "a": "Maradona"
           }
         ],
-        "audio_prefix": "assets/audio/ch7/7.12"
+        "audio_prefix": "assets/audio/ch6/6.12"
       }
     ]
   },
   "asia": {
-    "number": "8",
+    "number": "7",
     "title": "Asia",
     "id": "asia",
     "sections": [
       {
-        "number": "8.1",
+        "number": "7.1",
         "title": "The Himalaya Rises",
         "blocks": [
           "The Indian tectonic plate, having drifted northward from its original position near Madagascar across tens of millions of years, eventually collided with the Eurasian plate at considerable velocity, and continues to push northward at several centimetres per year even now.",
@@ -1884,10 +1884,10 @@ const CHAPTER_CONTENT = {
             "a": "Indian plate"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.1"
+        "audio_prefix": "assets/audio/ch7/7.1"
       },
       {
-        "number": "8.2",
+        "number": "7.2",
         "title": "Three Solutions to Thin Air",
         "blocks": [
           "The Tibetan plateau, lifted into air that contains only half the oxygen of sea level, has forced its resident vertebrates to devise three quite different solutions to the same problem of oxygen scarcity.",
@@ -1909,10 +1909,10 @@ const CHAPTER_CONTENT = {
             "a": "Tibetan antelope"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.2"
+        "audio_prefix": "assets/audio/ch7/7.2"
       },
       {
-        "number": "8.3",
+        "number": "7.3",
         "title": "The Frozen Archive",
         "blocks": [
           "The permafrost of northern Siberia, which has remained continuously frozen since the last ice age, has preserved the bodies of animals so faithfully that the flesh, fur, internal organs, and DNA of long-extinct species can still be recovered from the ground today.",
@@ -1935,10 +1935,10 @@ const CHAPTER_CONTENT = {
             "a": "sable"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.3"
+        "audio_prefix": "assets/audio/ch7/7.3"
       },
       {
-        "number": "8.4",
+        "number": "7.4",
         "title": "The Rainforests of Southeast Asia",
         "blocks": [
           "The humid rainforests of Southeast Asia have generated some of the strangest organisms on the planet.",
@@ -1960,10 +1960,10 @@ const CHAPTER_CONTENT = {
             "a": "rafflesia"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.4"
+        "audio_prefix": "assets/audio/ch7/7.4"
       },
       {
-        "number": "8.5",
+        "number": "7.5",
         "title": "The Panda and the Dragon",
         "blocks": [
           "In the bamboo groves of southwestern China lives a creature that has cornered itself evolutionarily.",
@@ -1987,10 +1987,10 @@ const CHAPTER_CONTENT = {
             "a": "venom"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.5"
+        "audio_prefix": "assets/audio/ch7/7.5"
       },
       {
-        "number": "8.6",
+        "number": "7.6",
         "title": "The Monkey Who Washed the Yam",
         "blocks": [
           "On a small Japanese island, a single young female macaque was observed picking up a sweet potato that had been dropped into the sand by a researcher, carrying it down to the seashore, and washing it before consuming it.",
@@ -2015,10 +2015,10 @@ const CHAPTER_CONTENT = {
             "a": "animal culture"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.6"
+        "audio_prefix": "assets/audio/ch7/7.6"
       },
       {
-        "number": "8.7",
+        "number": "7.7",
         "title": "Rice and Silk",
         "blocks": [
           "In the marshy lowlands along the lower Yangtze River, prehistoric farmers gradually domesticated a small-grained wild grass into the rice plant that today sustains nearly half the human population on the planet.",
@@ -2040,10 +2040,10 @@ const CHAPTER_CONTENT = {
             "a": "execution"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.7"
+        "audio_prefix": "assets/audio/ch7/7.7"
       },
       {
-        "number": "8.8",
+        "number": "7.8",
         "title": "The Way That Did Not Prevail",
         "blocks": [
           "In the fifth century before the common era, an unemployed clerk named Confucius walked from one Chinese kingdom to the next, attempting to persuade princes that a state could be governed not by punishment or by armed force but by a single discipline: the patient cultivation of moral relationships between people.",
@@ -2075,10 +2075,10 @@ const CHAPTER_CONTENT = {
             "a": "imperial examination"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.8"
+        "audio_prefix": "assets/audio/ch7/7.8"
       },
       {
-        "number": "8.9",
+        "number": "7.9",
         "title": "Laozi and the Way",
         "blocks": [
           "A near contemporary of Confucius, the elder Laozi, rode westward on a buffalo through the imperial gate and disappeared into the mountains, leaving behind only a five-thousand-character manuscript we now call the Dao De Jing.",
@@ -2100,10 +2100,10 @@ const CHAPTER_CONTENT = {
             "a": "yin and yang"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.9"
+        "audio_prefix": "assets/audio/ch7/7.9"
       },
       {
-        "number": "8.10",
+        "number": "7.10",
         "title": "The First Emperor",
         "blocks": [
           "A king of the western Chinese state of Qin, named Ying Zheng, spent a decade conquering the six other warring states and unified the whole of China under a single throne, designating himself the First Emperor.",
@@ -2125,10 +2125,10 @@ const CHAPTER_CONTENT = {
             "a": "Terracotta Army"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.10"
+        "audio_prefix": "assets/audio/ch7/7.10"
       },
       {
-        "number": "8.11",
+        "number": "7.11",
         "title": "Under the Bodhi Tree",
         "blocks": [
           "A young prince in northern India, raised in the comfort of his father's palace, encountered for the first time outside its walls an aged man, a sick man, and a corpse.",
@@ -2152,10 +2152,10 @@ const CHAPTER_CONTENT = {
             "a": "Zen"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.11"
+        "audio_prefix": "assets/audio/ch7/7.11"
       },
       {
-        "number": "8.12",
+        "number": "7.12",
         "title": "The Path of Yoga",
         "blocks": [
           "Older than Buddhism itself, Hinduism has never functioned as a single religion in the European sense but rather as an entire way of life.",
@@ -2177,10 +2177,10 @@ const CHAPTER_CONTENT = {
             "a": "Gandhi"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.12"
+        "audio_prefix": "assets/audio/ch7/7.12"
       },
       {
-        "number": "8.13",
+        "number": "7.13",
         "title": "The Capital and the Four Inventions",
         "blocks": [
           "The Tang dynasty capital of Chang'an was the largest international city in the world during its century, its avenues thronged with Persian merchants, Arab envoys, Japanese student monks, and Korean painters.",
@@ -2202,10 +2202,10 @@ const CHAPTER_CONTENT = {
             "a": "compass"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.13"
+        "audio_prefix": "assets/audio/ch7/7.13"
       },
       {
-        "number": "8.14",
+        "number": "7.14",
         "title": "Print Crosses the Continent",
         "blocks": [
           "Tang dynasty Buddhist monks first carved entire sutras onto wooden blocks and printed multiple copies of each text by inking the blocks and pressing paper against them, a technique that exploded the availability of religious literature throughout East Asia.",
@@ -2227,10 +2227,10 @@ const CHAPTER_CONTENT = {
             "a": "Shen Kuo"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.14"
+        "audio_prefix": "assets/audio/ch7/7.14"
       },
       {
-        "number": "8.15",
+        "number": "7.15",
         "title": "The Road That Carried Everything",
         "blocks": [
           "The Silk Road never carried only silk.",
@@ -2252,10 +2252,10 @@ const CHAPTER_CONTENT = {
             "a": "marmot"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.15"
+        "audio_prefix": "assets/audio/ch7/7.15"
       },
       {
-        "number": "8.16",
+        "number": "7.16",
         "title": "The Mongol Horseman",
         "blocks": [
           "A poor steppe chieftain named Temujin, who would later assume the title Genghis Khan, organised the scattered Mongol tribes into the most disciplined cavalry the planet had ever seen, and across a single generation conquered the largest contiguous land empire in human history, extending from the Pacific coast all the way to the eastern edge of Europe.",
@@ -2277,10 +2277,10 @@ const CHAPTER_CONTENT = {
             "a": "Yuan"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.16"
+        "audio_prefix": "assets/audio/ch7/7.16"
       },
       {
-        "number": "8.17",
+        "number": "7.17",
         "title": "The Island Empire",
         "blocks": [
           "Separated from the Asian mainland by a narrow strait, Japan developed across centuries a culture distinct from any continental neighbour.",
@@ -2303,10 +2303,10 @@ const CHAPTER_CONTENT = {
             "a": "Hayao Miyazaki"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.17"
+        "audio_prefix": "assets/audio/ch7/7.17"
       },
       {
-        "number": "8.18",
+        "number": "7.18",
         "title": "The Leaf That Started a War",
         "blocks": [
           "In the mountains of Yunnan grows a small evergreen shrub whose dried leaves release a mild stimulant when steeped in hot water.",
@@ -2329,10 +2329,10 @@ const CHAPTER_CONTENT = {
             "a": "Hong Kong"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.18"
+        "audio_prefix": "assets/audio/ch7/7.18"
       },
       {
-        "number": "8.19",
+        "number": "7.19",
         "title": "The Mountain That Cooled the Planet",
         "blocks": [
           "The Indonesian volcano Tambora erupted with such violence that its ash cloud encircled the entire planet and reduced the solar radiation reaching the surface for an entire year, generating what later observers called the Year Without a Summer.",
@@ -2356,10 +2356,10 @@ const CHAPTER_CONTENT = {
             "a": "cholera"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.19"
+        "audio_prefix": "assets/audio/ch7/7.19"
       },
       {
-        "number": "8.20",
+        "number": "7.20",
         "title": "Reform and Opening Up",
         "blocks": [
           "After a century of foreign humiliation, civil war, and revolutionary upheaval, China entered a period of austere central planning in which private commerce was effectively eliminated and every farm and factory belonged to the collective.",
@@ -2382,10 +2382,10 @@ const CHAPTER_CONTENT = {
             "a": "socialist market economy"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.20"
+        "audio_prefix": "assets/audio/ch7/7.20"
       },
       {
-        "number": "8.21",
+        "number": "7.21",
         "title": "The Continent That Caught Up",
         "blocks": [
           "Within a generation the same continent that had been pedalling bicycles to the rice paddy was constructing the most extensive high-speed rail network on the planet, with more kilometres of track than every other country combined.",
@@ -2408,10 +2408,10 @@ const CHAPTER_CONTENT = {
             "a": "Belt and Road Initiative"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.21"
+        "audio_prefix": "assets/audio/ch7/7.21"
       },
       {
-        "number": "8.22",
+        "number": "7.22",
         "title": "sealyra",
         "blocks": [
           "To curb the demographic explosion that had accompanied the early decades of the People's Republic, the central authorities instituted what is colloquially known as the one-child policy, restricting most urban families to a single offspring under penalty of considerable administrative sanction. sealyra was born into precisely this demographic interlude, an only daughter saturated from infancy with the undivided expectations and resources of two parents and four grandparents, an entire generational pyramid converging on a single small recipient.",
@@ -2434,10 +2434,10 @@ const CHAPTER_CONTENT = {
             "a": "human-computer interaction"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.22"
+        "audio_prefix": "assets/audio/ch7/7.22"
       },
       {
-        "number": "8.23",
+        "number": "7.23",
         "title": "The Shaman and the Mammoth Hunter",
         "blocks": [
           "The paleolithic peoples of north Asia, ancestors of every indigenous community from Siberia to Alaska, organised their existence around the seasonal subsistence hunt of large mammals across treeless tundra.",
@@ -2461,7 +2461,7 @@ const CHAPTER_CONTENT = {
             "a": "totem"
           }
         ],
-        "audio_prefix": "assets/audio/ch8/8.23"
+        "audio_prefix": "assets/audio/ch7/7.23"
       }
     ]
   },
