@@ -1914,63 +1914,136 @@
 }
 
 /* ============================================================
-   READING top-right control group (zone G): BGM volume + AUTO.
-   Auto-read moved off the bottom bar to here. Classical paper /
-   thin-gold styling — no modern system controls. The global BGM
-   chip is hidden on reading so there's only one volume control.
+   READING top-right control group (zone G) — ONE slim classical
+   tool bar: ♪ · thin gold-line volume · AUTO. Cream paper fill,
+   fine gold border, faint inset shadow. No system range chrome, no
+   glowing dot, no plastic capsule. The global BGM chip is hidden on
+   reading so there's only one volume control.
    ============================================================ */
 body[data-current-view="reading"] .global-bgm-control { display: none; }
 
-.reading-art .zone-reading-controls { pointer-events: none; }
+.reading-art .zone-reading-controls {
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
 .reading-art .reading-controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16%;
-  width: 100%;
-  height: 100%;
   pointer-events: auto;
-}
-.reading-art .reading-vol {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-  justify-content: center;
-}
-.reading-art .reading-vol-glyph {
-  font-family: Georgia, serif;
-  font-size: 13px;
-  color: rgba(108, 90, 67, 0.82);
-  line-height: 1;
-}
-.reading-art .reading-bgm-vol { width: 74%; }
-.reading-art .reading-auto-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.4em;
-  padding: 4px 14px;
-  font-family: var(--font-display), Georgia, serif;
+  gap: 7px;
+  max-width: 100%;
+  padding: 4px 8px;
+  background: rgba(245, 238, 223, 0.46);
+  border: 1px solid rgba(150, 124, 82, 0.34);
+  border-radius: 2px;
+  box-shadow: inset 0 0 6px rgba(120, 92, 45, 0.07);
+}
+.reading-art .rc-note {
+  flex: 0 0 auto;
+  font-family: Georgia, serif;
   font-size: 12px;
-  letter-spacing: 0.08em;
+  line-height: 1;
+  color: rgba(108, 90, 67, 0.78);
+}
+.reading-art .rc-vol {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 56px;
+  height: 12px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.reading-art .rc-vol::-webkit-slider-runnable-track {
+  height: 1px;
+  background: rgba(150, 124, 82, 0.62);
+}
+.reading-art .rc-vol::-moz-range-track {
+  height: 1px;
+  background: rgba(150, 124, 82, 0.62);
+}
+.reading-art .rc-vol::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 7px; height: 7px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: #b9985a;
+  border: 0;
+}
+.reading-art .rc-vol::-moz-range-thumb {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #b9985a;
+  border: 0;
+}
+.reading-art .rc-auto {
+  flex: 0 0 auto;
+  padding: 1px 1px 1px 8px;
+  border: 0;
+  border-left: 1px solid rgba(150, 124, 82, 0.45);
+  background: transparent;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
   color: #6c5a43;
-  background: rgba(244, 236, 219, 0.48);
-  border: 1px solid rgba(149, 124, 84, 0.35);
-  border-radius: 18px;
   cursor: pointer;
-  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+  transition: color 160ms ease;
 }
-.reading-art .reading-auto-btn .auto-glyph {
-  font-size: 0.8em;
-  color: rgba(150, 96, 38, 0.85);
-  line-height: 1;
+.reading-art .rc-auto:hover { color: #4a3a25; }
+.reading-art .rc-auto.is-active { color: #8a5a1e; font-weight: 500; }
+
+/* ============================================================
+   READING sentences — every sentence is a tap-to-read block.
+   Unread sentences sit dim; the CURRENT (being-read) one rises,
+   glows softly at its left edge, and inks its words in one-by-one
+   (GPT-style streaming); already-read sentences stay fully visible.
+   ============================================================ */
+.reading-art .reading-body .sentence-block {
+  margin: 0 0 16px;
+  padding-left: 12px;
+  border-left: 2px solid transparent;
+  border-radius: 2px;
+  opacity: 0.38;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
 }
-.reading-art .reading-auto-btn:hover { border-color: rgba(150, 110, 55, 0.55); }
-.reading-art .reading-auto-btn.is-active {
-  color: #5a3a18;
-  border-color: rgba(150, 110, 55, 0.72);
-  background: rgba(226, 207, 158, 0.55);
+.reading-art .reading-body .sentence-block.is-read { opacity: 1; }
+.reading-art .reading-body .sentence-block.is-current {
+  opacity: 1;
+  border-left-color: rgba(170, 135, 60, 0.5);
+  background: linear-gradient(90deg,
+    rgba(201, 170, 92, 0.12) 0%,
+    rgba(201, 170, 92, 0.05) 45%,
+    transparent 80%);
+  animation: sentence-rise 0.5s cubic-bezier(0.22, 0.8, 0.22, 1) both;
+}
+@keyframes sentence-rise {
+  from { transform: translateY(8px); }
+  to   { transform: translateY(0); }
+}
+.reading-art .reading-body .sentence-block .w { transition: opacity 0.3s ease; }
+.reading-art .reading-body .sentence-block.is-current .w {
+  animation: word-ink 0.5s ease both;
+  animation-delay: calc(var(--wi, 0) * 0.05s);
+}
+@keyframes word-ink {
+  from { opacity: 0.22; }
+  to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-art .reading-body .sentence-block,
+  .reading-art .reading-body .sentence-block .w { animation: none !important; }
+}
+
+/* Right-side safety margin so the scrollbar / interaction layer never
+   sits on top of the prose (user: "拖动条会挡住字"). */
+.reading-art .reading-body {
+  box-sizing: border-box;
+  padding-right: 18px;
 }

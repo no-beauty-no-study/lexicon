@@ -815,17 +815,16 @@
         <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
         <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
       </div>
-      <!-- Top-right classical control group: BGM volume + AUTO read.
-           (Auto moved here off the bottom bar.) -->
+      <!-- Top-right control group: one slim classical tool bar holding
+           the BGM volume (thin gold line + small gilt dot) and the AUTO
+           read toggle. -->
       <div class="ui-zone zone-reading-controls" data-zone="controls">
         <div class="reading-controls">
-          <div class="reading-vol">
-            <span class="reading-vol-glyph" aria-hidden="true">♪</span>
-            <input class="bgm-vol reading-bgm-vol" type="range" min="0" max="100" value="32"
-                   aria-label="Music volume">
-          </div>
-          <button type="button" class="reading-auto-btn" data-auto aria-label="Auto read">
-            <span class="auto-glyph" aria-hidden="true">▶</span><span class="auto-label">Auto</span>
+          <span class="rc-note" aria-hidden="true">♪</span>
+          <input class="rc-vol reading-bgm-vol" type="range" min="0" max="100" value="32"
+                 aria-label="Music volume">
+          <button type="button" class="rc-auto" data-auto aria-label="Auto read">
+            <span class="auto-label">Auto</span>
           </button>
         </div>
       </div>
