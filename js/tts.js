@@ -222,8 +222,23 @@ const TTS = (function () {
       };
     }
 
+    // onEnd fires when THIS utterance finishes speaking. Autoplay
+    // (the reading view's "Auto" button) chains the next sentence
+    // from here so the page reads itself straight through.
+    const userOnEnd = opts && typeof opts.onEnd === "function" ? opts.onEnd : null;
+    if (userOnEnd) {
+      u.onend = () => { try { userOnEnd(); } catch (_) {} };
+    }
+
     try { window.speechSynthesis.speak(u); } catch (_) {}
+
   }
 
-  return { speak, pickVoice };
+  // Stop any in-progress speech (used when leaving a view or toggling
+  // autoplay off).
+  function cancel() {
+    try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (_) {}
+  }
+
+  return { speak, pickVoice, cancel };
 })();

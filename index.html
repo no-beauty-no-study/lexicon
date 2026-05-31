@@ -668,10 +668,16 @@
   .notes-layer .split-right { padding: 18px 22px; overflow-y: auto; }
   .notes-layer .word-list   { flex: 1; overflow-y: auto; }
 
+  /* Save / Load title group — centred on the WHOLE book page (x 50%),
+     NOT on reading's right-side 62.9% axis. The title band sits in the
+     y 11.4%–18.0% guide range (page-relative, since save/load have no
+     master-frame), clear of the slot grid that begins at y 18%. */
   .save-banner-title {
-    position: absolute; left: 28%; top: 5.5%;
-    width: 44%; height: 6%;
+    position: absolute; left: 0; right: 0; width: 100%;
+    top: 11.4%; height: 6.6%;
+    margin: 0;
     display: flex; align-items: center; justify-content: center;
+    text-align: center;
     pointer-events: none;
     font-family: var(--font-display);
     font-size: 28px; letter-spacing: 0.20em;
@@ -848,10 +854,13 @@
         </aside>
       </div>
       <nav class="ui-bottom-nav">
-        <button type="button" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
-        <button type="button" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
+        <button type="button" data-auto><span class="nav-glyph auto-glyph">▶</span><span class="auto-label">Auto</span></button>
+        <button type="button" data-prev><span class="nav-glyph">‹</span>Prev</button>
+        <button type="button" data-toindex><span class="nav-glyph">❖</span>Back</button>
         <button type="button" data-quiz><span class="nav-glyph">✦</span>Quiz</button>
         <button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>
+        <button type="button" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
+        <button type="button" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
         <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
       </nav>
     </div>
@@ -862,8 +871,10 @@
   <main class="page art-bg reading-art" data-page="quiz">
     <div class="master-frame">
       <div class="ui-zone zone-reading-title is-text" data-zone="quiz title">
-        <div class="reading-kicker" data-chapter-number>Chapter 01</div>
-        <h1 class="reading-title" data-chapter-title>The Universe</h1>
+        <div class="reading-titleline">
+          <span class="reading-kicker" data-chapter-number>Chapter 01</span>
+          <h1 class="reading-title" data-chapter-title>The Universe</h1>
+        </div>
         <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
         <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
       </div>

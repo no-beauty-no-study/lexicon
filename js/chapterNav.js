@@ -53,11 +53,33 @@ const ChapterNav = (function () {
     return `#reading?chapter=${enc(chapterId)}&section=${enc(sectionNum)}`;
   }
 
+  // "Prev" (上一章) on the reading bar: jump straight back to the
+  // PREVIOUS section's reading page. At a chapter's first section it
+  // steps into the previous chapter's LAST section; at the very first
+  // section of the book it returns to the chapter index.
+  function prevReading(chapterId, sectionNum) {
+    const list = sectionsOf(chapterId);
+    const i    = list.findIndex(s => s.number === sectionNum);
+    if (i > 0) {
+      return `#reading?chapter=${enc(chapterId)}&section=${enc(list[i - 1].number)}`;
+    }
+    if (typeof CHAPTERS !== "undefined") {
+      const j = CHAPTERS.findIndex(c => c.id === chapterId);
+      if (j > 0) {
+        const pb   = CHAPTERS[j - 1];
+        const pl   = sectionsOf(pb.id);
+        const sec  = pl.length ? pl[pl.length - 1].number : (pb.firstSection || "1.1");
+        return `#reading?chapter=${enc(pb.id)}&section=${enc(sec)}`;
+      }
+    }
+    return "#chapters";
+  }
+
   function enc(s) { return encodeURIComponent(s); }
 
   return {
     sectionsOf, findSection,
     nextAfterReading, nextAfterQuiz,
-    prevBeforeReading, prevBeforeQuiz,
+    prevBeforeReading, prevBeforeQuiz, prevReading,
   };
 })();
