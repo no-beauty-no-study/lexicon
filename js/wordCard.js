@@ -156,11 +156,21 @@ const WordCard = (function () {
     drawerEl = document.createElement("aside");
     drawerEl.className = "word-drawer";
     drawerEl.setAttribute("aria-hidden", "true");
+    // The card is a real <img> sized by HEIGHT with width:auto, so the
+    // browser ALWAYS preserves the image's intrinsic ratio — the
+    // container can never squash it. All text/buttons overlay the img
+    // box 1:1 (.word-card-overlay is inset:0 of the wrapper, which
+    // shrink-wraps the img).
     drawerEl.innerHTML = `
-      <button type="button" class="word-drawer-close" aria-label="Close">×</button>
-      <div class="word-card-title-zone"></div>
-      <div class="word-card-body-zone"></div>
-      <div class="word-card-action-zone"></div>`;
+      <div class="word-card-wrapper">
+        <img class="word-card-bg" src="assets/bg/ui/word-card-frame.jpg" alt="">
+        <div class="word-card-overlay">
+          <button type="button" class="word-drawer-close" aria-label="Close">×</button>
+          <div class="word-card-title-zone"></div>
+          <div class="word-card-body-zone"></div>
+          <div class="word-card-action-zone"></div>
+        </div>
+      </div>`;
     drawerEl.addEventListener("click", (e) => e.stopPropagation());
     drawerEl.querySelector(".word-drawer-close").addEventListener("click", (e) => {
       e.stopPropagation(); closeDrawer();
