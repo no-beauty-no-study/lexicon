@@ -809,40 +809,48 @@ const Views = (function () {
       const blocks = Array.from(body.querySelectorAll(".sentence-block"));
       const titleZone = host.querySelector(".zone-reading-title");
       let curIdx = -1;
+      let revealFrontier = 0;   // how many sentences have been shown so far
       let autoOn = false;
       let autoTimer = null;
 
-      // The first sentence's speech is prefixed with the chapter title +
-      // section heading, so opening a page reads "The Universe. 1.1 ·
-      // The First Light. <sentence>".
-      function introFor(i) {
-        if (i !== 0) return "";
-        const t1 = (host.querySelector("[data-chapter-title]")?.textContent || "").trim();
-        const t2 = (host.querySelector("[data-chapter-section]")?.textContent || "").trim();
-        return [t1, t2].filter(Boolean).join(". ");
+      // Speak ONE sentence. It becomes the "current" line — rises, gets a
+      // soft left mark + warm underglow, and inks its words in one-by-one
+      // — then, the moment the voice ends, that highlight is cleared and
+      // the sentence simply stays fully visible ("read"). The title is
+      // shown but NEVER spoken. opts.onEnd lets AUTO chain onward.
+      function speakSentence(i, opts) {
+        if (i < 0 || i >= blocks.length) { if (opts && opts.onEnd) opts.onEnd(); return; }
+        const b = blocks[i];
+        const prev = body.querySelector(".sentence-block.is-current");
+        if (prev && prev !== b) {
+          prev.classList.remove("is-current"); prev.classList.add("is-read");
+          clearTimeout(prev._clr);
+        }
+        if (i + 1 > revealFrontier) revealFrontier = i + 1;
+        b.classList.add("is-revealed"); b.classList.remove("is-read");
+        // Reflow so the rise + word-ink animations replay each time.
+        b.classList.remove("is-current"); void b.offsetWidth; b.classList.add("is-current");
+        titleZone && titleZone.classList.add("is-revealed");
+        try { b.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
+        curIdx = i;
+        let ended = false;
+        const done = () => {
+          if (ended) return; ended = true;
+          clearTimeout(b._clr);
+          b.classList.remove("is-current"); b.classList.add("is-read");
+          if (opts && opts.onEnd) opts.onEnd();
+        };
+        // Fallback in case the voice's onend never fires (no voices / muted).
+        const words = (b.textContent.match(/\S+/g) || []).length;
+        b._clr = setTimeout(done, words * 360 + 2500);
+        TTS.speak(b.textContent, { onEnd: done });
       }
 
-      // Read ONE sentence: mark it the current (rises up, warm underglow,
-      // words ink in one-by-one), demote the previous current to "read"
-      // (stays fully visible), reveal the title, and speak it. onEnd lets
-      // AUTO chain to the next sentence.
-      function readSentence(i, opts) {
-        if (i < 0 || i >= blocks.length) { if (opts && opts.onEnd) opts.onEnd(); return; }
-        const prev = body.querySelector(".sentence-block.is-current");
-        if (prev && prev !== blocks[i]) {
-          prev.classList.remove("is-current");
-          prev.classList.add("is-read");
-        }
-        const b = blocks[i];
-        b.classList.remove("is-read");
-        // Reflow so the rise + word-ink animations replay on re-read.
-        b.classList.remove("is-current"); void b.offsetWidth; b.classList.add("is-current");
-        b.scrollIntoView({ block: "nearest", behavior: "smooth" });
-        curIdx = i;
-        titleZone && titleZone.classList.add("is-revealed");
-        const intro = introFor(i);
-        const txt = (intro ? intro + ". " : "") + b.textContent;
-        TTS.speak(txt, { onEnd: opts && opts.onEnd });
+      // LINEAR reveal: a tap on blank page / the title / not-yet-shown
+      // text reads the NEXT sentence in 1·2·3·4 order.
+      function advanceLinear(opts) {
+        if (revealFrontier >= blocks.length) { stopAuto(); return; }
+        speakSentence(revealFrontier, opts);
       }
 
       // ---- AUTO: continuous, hands-free read straight down the page ----
@@ -853,17 +861,14 @@ const Views = (function () {
         const label = autoBtn.querySelector(".auto-label");
         if (label) label.textContent = autoOn ? "Stop" : "Auto";
       }
-      function autoChain() { if (autoOn) autoTimer = setTimeout(autoTick, 450); }
-      function autoTick() {
-        if (!autoOn || !body.isConnected) return;
-        const n = curIdx + 1;
-        if (n >= blocks.length) { stopAuto(); return; }
-        readSentence(n, { onEnd: autoChain });
+      function autoChain() {
+        if (autoOn) autoTimer = setTimeout(() => advanceLinear({ onEnd: autoChain }), 450);
       }
       function startAuto() {
         if (autoOn) return;
         autoOn = true; syncAutoBtn();
-        readSentence(curIdx < 0 ? 0 : curIdx, { onEnd: autoChain });
+        if (revealFrontier >= blocks.length) revealFrontier = 0;  // loop from the top
+        advanceLinear({ onEnd: autoChain });
       }
       function stopAuto() {
         if (!autoOn) return;
@@ -879,14 +884,26 @@ const Views = (function () {
         autoOn = false; clearTimeout(autoTimer); TTS.cancel();
       }, { once: true });
 
-      // Sentence / word interaction. Word tap = word card + speak the
-      // word (does NOT reread the sentence). Tapping anywhere else in a
-      // sentence rereads that whole sentence. During AUTO, either keeps
-      // the chain going from where you tapped.
-      body.addEventListener("click", (e) => {
+      // ONE handler for the whole page:
+      //   • word in a SHOWN sentence   → open its word card + speak it
+      //   • a SHOWN sentence (no word)  → reread that whole sentence
+      //   • anything else (blank page, title, a not-yet-shown sentence)
+      //                                  → reveal & read the next in order
+      // Unrevealed text is therefore NOT individually clickable. Chrome
+      // (nav, controls, the word column / drawer) is ignored. Any tap
+      // pauses AUTO.
+      host.addEventListener("click", (e) => {
+        if (e.target.closest(".word-card")) { setTimeout(() => syncMarginaliaButtons(), 0); return; }
+        if (e.target.closest("button, a, input, select, textarea, .ui-bottom-nav,"
+                           + " .reading-controls, .zone-marginalia, .word-drawer,"
+                           + " .word-drawer-backdrop")) return;
+
+        const sent = e.target.closest(".sentence-block");
+        const revealed = sent && sent.classList.contains("is-revealed");
         const word = e.target.closest(".clickable-word");
-        if (word) {
-          e.stopPropagation();
+        if (autoOn) stopAuto();
+
+        if (word && revealed) {
           spawnWordSparkles(e.clientX, e.clientY);
           host.querySelectorAll(".clickable-word.is-selected")
               .forEach(x => x.classList.remove("is-selected"));
@@ -898,22 +915,12 @@ const Views = (function () {
           try {
             const entry = (resolved && (resolved.clickEntry || resolved.headEntry));
             const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
-            const parts = [word.textContent, ...phrases.map(p => p.en)].filter(Boolean);
-            TTS.speak(parts.join(". "), autoOn ? { onEnd: autoChain } : undefined);
+            TTS.speak([word.textContent, ...phrases.map(p => p.en)].filter(Boolean).join(". "));
           } catch (_) {}
           return;
         }
-        const sent = e.target.closest(".sentence-block");
-        if (sent) {
-          e.stopPropagation();
-          readSentence(+sent.dataset.i, autoOn ? { onEnd: autoChain } : undefined);
-        }
-      });
-
-      host.addEventListener("click", (e) => {
-        if (e.target.closest(".word-card")) {
-          setTimeout(() => syncMarginaliaButtons(), 0);
-        }
+        if (sent && revealed) { speakSentence(+sent.dataset.i); return; }
+        advanceLinear();
       });
 
       // Two reading modes share this view but NOT the bottom bar:
@@ -1011,7 +1018,8 @@ const Views = (function () {
       // (all sentences fully visible) and spotlight the saved word on its
       // sentence for ~2s.
       if (params.word) {
-        blocks.forEach(b => b.classList.add("is-read"));
+        blocks.forEach(b => b.classList.add("is-revealed", "is-read"));
+        revealFrontier = blocks.length;     // whole section already shown
         host.querySelector(".zone-reading-title")?.classList.add("is-revealed");
         curIdx = blocks.length - 1;
         const target = host.querySelector(
@@ -1170,8 +1178,18 @@ const Views = (function () {
         ? items.map((q, i) => renderItem(q, i, pool, section.audio_prefix)).join("")
         : `<div class="empty-state">No quiz available yet for this section.</div>`;
 
+      // Scroll the question being read into view and mark it current so
+      // the player can always SEE what's being spoken (same follow-along
+      // as the reading page).
+      function focusItem(item) {
+        if (!item) return;
+        host.querySelectorAll(".quiz-item.is-current").forEach(x => x.classList.remove("is-current"));
+        item.classList.add("is-current");
+        try { item.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (_) {}
+      }
       function speakItem(item) {
         if (!item) return;
+        focusItem(item);
         const q = (item.querySelector(".quiz-question")?.textContent || "").trim();
         const opts = Array.from(item.querySelectorAll(".quiz-option-text"))
                        .map(el => el.textContent.trim()).filter(Boolean);
@@ -1179,6 +1197,12 @@ const Views = (function () {
         opts.forEach((o, i) => parts.push(`${LETTER[i]}. ${o}`));
         try { TTS.speak(parts.join(". ")); } catch (_) {}
       }
+      // Tapping a revealed question (not an option) rereads it.
+      body.addEventListener("click", (e) => {
+        if (e.target.closest(".quiz-option")) return;
+        const item = e.target.closest(".quiz-item");
+        if (item && item.classList.contains("is-shown")) speakItem(item);
+      });
       let lastSpokenIdx = -1;
       function showThrough(n) {
         const all = host.querySelectorAll(".quiz-item");
@@ -1271,6 +1295,7 @@ const Views = (function () {
         e.stopPropagation();
         const item = opt.closest(".quiz-item");
         if (item.dataset.solved === "1") return;
+        focusItem(item);   // keep the answered question in view
         const answer = item.dataset.answer.toLowerCase().trim();
         const chosen = (opt.dataset.value || "").toLowerCase().trim();
         const correct = chosen === answer;
