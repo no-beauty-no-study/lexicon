@@ -83,7 +83,7 @@ const WordCard = (function () {
     const sp = splitPos(m.zh || "");
     const pos = m.pos || sp.pos, meaning = sp.meaning;
     const head = `<div class="wc-head"><span class="wc-w">${wordRef(m.word, !!m.clickable)}</span>`
-      + (m.isHead ? ` <i class="wc-headtag">原型</i>` : "")
+      + (m.isHead ? ` <i class="wc-headtag">head</i>` : "")
       + (pos ? ` <i class="wc-pos">${esc(pos)}</i>` : "")
       + (meaning ? ` <span class="wc-hzh">${esc(meaning)}</span>` : "")
       + `</div>`;
@@ -117,12 +117,13 @@ const WordCard = (function () {
   function renderTitle(d) {
     const sp = splitPos(d.zh || "");
     const pos = d.pos || sp.pos, meaning = sp.meaning;
-    // Badge only when this card's word IS its family head (族长) — a member
-    // card opened from the maze shows its own word, not necessarily a head.
+    // Badge only when this card's word IS its learning head (族长/首脑词).
     const isHead = d.family_head && norm(d.word) === norm(d.family_head);
-    return (isHead ? `<div class="wc-head-badge">原型 · HEAD</div>` : "")
-         + `<div class="wc-word">${esc(d.word)}</div>`
-         + (pos ? `<div class="wc-title-pos">${esc(pos)}</div>` : "")
+    // POS sits INLINE next to the word (small), not on its own line — keeps
+    // the zh meaning from being clipped by the short title box.
+    return (isHead ? `<div class="wc-head-badge">HEAD · 首脑词</div>` : "")
+         + `<div class="wc-word">${esc(d.word)}`
+         + (pos ? ` <span class="wc-pos-inline">${esc(pos)}</span>` : "") + `</div>`
          + (meaning ? `<div class="wc-title-zh">${esc(meaning)}</div>` : "");
   }
 
@@ -135,6 +136,19 @@ const WordCard = (function () {
            + (zh ? `<div class="wc-ex-zh">${esc(zh)}</div>` : "") + `</div>`;
     }).join("");
   }
+  // Family-Kin routes: head → family word → that family word's own kin
+  // (state → static → ecstatic/eustatic/geostatic/antistatic).
+  function familyKinHTML(routes) {
+    return (routes || []).map(r =>
+      `<div class="wc-route">→ ${wordRef(r.via, true)} 的同族 kin</div>`
+      + (r.words || []).map(memberHTML).join("")
+    ).join("");
+  }
+  function familyKinSpeak(routes) {
+    const parts = [];
+    (routes || []).forEach(r => (r.words || []).slice(0, 3).forEach(m => { if (m.word) parts.push(m.word); }));
+    return parts.join(". ");
+  }
   function renderBody(d) {
     // OWN section (no heading): the focus word's own collocations + example.
     const ownPh = (d.phrases || []).slice(0, 4)
@@ -146,12 +160,12 @@ const WordCard = (function () {
       .concat((d.examples || []).slice(0, 1).map(x => x.example || x.en))
       .filter(Boolean).join(". ");
 
-    // The big card IS the learning head, so its OWN phrases/examples lead;
-    // then family → kin → group (user spec / V63 flow). Kin arrives already
-    // flattened (head card embeds its kin word items). Members that exist as
-    // their own reading/head card are clickable and re-open on their head.
+    // own → family (shared) → family-kin route → kin (own prefix cluster) → group.
+    const fkin = (d.family_kin && d.family_kin.length)
+      ? section("wc-fkin", "Family Kin", familyKinHTML(d.family_kin), familyKinSpeak(d.family_kin)) : "";
     return section("wc-own", "", ownPh + ownEx, ownSpeak)
       + section("wc-fam", "Family", membersHTML(d.family_members, d.word), membersSpeak(d.family_members, d.word))
+      + fkin
       + section("wc-kin", "Kin",    membersHTML(d.kin_members,    d.word), membersSpeak(d.kin_members,    d.word))
       + section("wc-grp", "Group",  membersHTML(d.group,          d.word), membersSpeak(d.group,          d.word));
   }
@@ -177,7 +191,7 @@ const WordCard = (function () {
 
   /* ---------- drawer DOM ---------- */
   let drawerEl = null, scrimEl = null, titleZone = null, openZone = null, bodyZone = null, signZone = null, hostPage = null;
-  let cardLines = [], cardIdx = -1, cardTimer = null;   // big-card line-by-line playback
+  let cardSections = [], curSec = -1, curLine = -1, cardTimer = null;   // section-by-section playback
   let cardStack = [], lastCtx = null;                   // drawer back-history (maze)
 
   function ensureDrawer() {
@@ -281,19 +295,21 @@ const WordCard = (function () {
       scrimEl.classList.add("is-open");
       drawerEl.classList.add("is-open");
     });
-    // Line-by-line playback: the card reads ITSELF, one unit at a time —
-    // the focus word, then each collocation, then each example, then the
-    // family / group / kin words. Only the CURRENT line lights up ("在读"),
-    // and it inks in as it's reached. Tapping the body skips to the next
-    // line. This replaces the old per-SECTION reveal (whole block at once).
+    // Section-by-section playback (user spec): each tap reveals ONE 区
+    // (section) and auto-reads its lines one at a time, then STOPS at the
+    // section boundary and waits for the next tap. The focus word is read
+    // first as the lead of section 0.
     const titleWord = titleZone.querySelector(".wc-word");
-    cardLines = [];
-    if (titleWord) cardLines.push(titleWord);
-    cardLines = cardLines.concat(Array.prototype.slice.call(
-      bodyZone.querySelectorAll(".wc-sep, .wc-head, .wc-row, .wc-ex")));
-    cardIdx = -1;
+    const secEls = Array.prototype.slice.call(bodyZone.querySelectorAll(".wc-sec"));
+    cardSections = secEls.map((sec, i) => {
+      const lines = Array.prototype.slice.call(sec.querySelectorAll(".wc-sep, .wc-route, .wc-head, .wc-row, .wc-ex"));
+      if (i === 0 && titleWord) lines.unshift(titleWord);
+      return { sec, lines };
+    });
+    if (!cardSections.length && titleWord) cardSections = [{ sec: null, lines: [titleWord] }];
+    curSec = -1; curLine = -1;
     clearTimeout(cardTimer);
-    playCardLine(0);
+    playSection(0);
   }
 
   // What to SPEAK for a given line — short + precise (English only): the
@@ -326,19 +342,36 @@ const WordCard = (function () {
     catch (_) { bodyZone.scrollTop = y; }
   }
 
-  // Reveal + (if it has text) read line i, lighting up only that line, then
-  // auto-chain to the next when the voice ends.
-  function playCardLine(i) {
-    if (i < 0 || i >= cardLines.length) return;
+  function clearReadingMark() {
+    if (bodyZone) bodyZone.querySelectorAll(".is-reading").forEach(x => x.classList.remove("is-reading"));
+    if (titleZone) titleZone.querySelectorAll(".is-reading").forEach(x => x.classList.remove("is-reading"));
+  }
+  // Reveal section s (display it) and start reading its lines one at a time.
+  function playSection(s) {
+    if (s < 0 || s >= cardSections.length) return;
     clearTimeout(cardTimer);
-    cardIdx = i;
-    const el = cardLines[i];
+    curSec = s;
+    const sec = cardSections[s].sec;
+    if (sec) sec.classList.add("is-shown");
+    playLine(s, 0);
+  }
+  // Reveal + (if it has text) read line j of section s, lighting up only that
+  // line, then auto-advance WITHIN the section. At the section's end it STOPS
+  // — the next 区 only appears on the next tap.
+  function playLine(s, j) {
+    const sect = cardSections[s];
+    if (!sect) return;
+    const lines = sect.lines;
+    if (j < 0 || j >= lines.length) return;   // section finished → wait for tap
+    clearTimeout(cardTimer);
+    curSec = s; curLine = j;
+    const el = lines[j];
     el.classList.add("wc-revealed");
-    cardLines.forEach(l => l.classList.remove("is-reading"));
+    clearReadingMark();
 
     const txt = lineSpeakText(el);
     if (!txt) {                       // a divider — reveal and roll straight on
-      cardTimer = setTimeout(() => playCardLine(i + 1), 150);
+      cardTimer = setTimeout(() => playLine(s, j + 1), 150);
       return;
     }
     el.classList.add("is-reading");
@@ -346,9 +379,9 @@ const WordCard = (function () {
 
     let advanced = false;
     const onEnd = () => {
-      if (advanced || cardIdx !== i) return;
+      if (advanced || curSec !== s || curLine !== j) return;
       advanced = true;
-      cardTimer = setTimeout(() => playCardLine(i + 1), 240);
+      cardTimer = setTimeout(() => playLine(s, j + 1), 240);
     };
     // Fallback in case the voice's onend never fires (no voices / muted).
     const words = (txt.match(/\S+/g) || []).length;
@@ -366,11 +399,11 @@ const WordCard = (function () {
     else closeDrawer();
   }
 
-  // Body tap → skip to the next line right away.
+  // Body tap → reveal + read the NEXT 区 (section). One tap = one section.
   function advanceCardSection() {
     if (typeof TTS !== "undefined" && TTS.cancel) { try { TTS.cancel(); } catch (_) {} }
     clearTimeout(cardTimer);
-    if (cardIdx + 1 < cardLines.length) playCardLine(cardIdx + 1);
+    if (curSec + 1 < cardSections.length) playSection(curSec + 1);
   }
 
   function openDrawer(arg, ctx) {

@@ -617,29 +617,28 @@
 /* 原型 (learning head) chip — the prefix/suffix-stripped core word. Tapping
    it opens the head's big learning card. Warm gilt pill so it reads as an
    action, not body text. */
+/* HEAD chip — same restrained classical UI as the Auto button / folded
+   locket: thin gold hairline, faint parchment fill, display font. No pill. */
 .word-card-head-chip {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 6px;
   margin-top: 10px;
-  padding: 4px 11px 5px;
-  background: linear-gradient(180deg, rgba(231, 201, 119, 0.22), rgba(201, 162, 75, 0.12));
-  border: 1px solid rgba(170, 135, 60, 0.5);
-  border-radius: 999px;
+  padding: 4px 8px;
+  border: 1px solid rgba(167, 141, 91, 0.45);
+  border-radius: 11px;
+  background: rgba(244, 222, 170, 0.18);
   cursor: pointer;
-  font-family: var(--font-body);
-  color: #6a5527;
-  transition: background 0.25s ease, transform 0.12s ease;
+  font-family: var(--font-display), Georgia, serif;
+  color: rgba(124, 95, 50, 0.92);
+  transition: background 0.2s ease, color 0.2s ease;
 }
-.word-card-head-chip:hover  { background: linear-gradient(180deg, rgba(231, 201, 119, 0.34), rgba(201, 162, 75, 0.2)); }
-.word-card-head-chip:active { transform: scale(0.97); }
+.word-card-head-chip:hover  { background: rgba(244, 222, 170, 0.34); color: #4a3a25; }
 .word-card-head-chip .wchc-label {
-  font-size: 11px; letter-spacing: 0.08em; color: #9a7b33; opacity: 0.85;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(124, 95, 50, 0.7);
 }
-.word-card-head-chip .wchc-word {
-  font-size: 17px; font-weight: 500; color: #4a3c1f; letter-spacing: 0.01em;
-}
-.word-card-head-chip .wchc-arrow { font-size: 15px; color: #9a7b33; }
+.word-card-head-chip .wchc-word { font-size: 15px; letter-spacing: 0.02em; }
+.word-card-head-chip .wchc-arrow { font-size: 13px; opacity: 0.7; }
 .marginalia-card-body {
   flex: 1;
   min-height: 0;
