@@ -1078,6 +1078,14 @@ button.ornate-panel {
    instantly distinct. EN and ZH live in two aligned columns split by ｜;
    headwords sit flush, their collocations indent below with ✦.
    ============================================================ */
+.word-card-title-zone .wc-head-badge {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: #9a7b33;
+  margin-bottom: 1px;
+  opacity: 0.9;
+}
 .word-card-title-zone .wc-word {
   font-family: var(--font-display), Georgia, serif;
   font-size: 46px;
@@ -1261,6 +1269,27 @@ button.ornate-panel {
   text-shadow: 0 0 6px rgba(201, 174, 103, 0.65);
 }
 .word-drawer-close:focus { outline: none; }
+/* ‹ Back — retrace the maze (previous word card, or back to reading). Sits
+   just left of the × in the top-right. Hidden on the entry card. */
+.word-drawer-back {
+  position: absolute;
+  top: 3%;
+  right: 11%;
+  background: transparent;
+  border: 0;
+  width: 36px;
+  height: 36px;
+  font-size: 28px;
+  line-height: 1;
+  color: rgba(90, 75, 53, 0.78);
+  cursor: pointer;
+  z-index: 2;
+}
+.word-drawer-back:hover {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.65);
+}
+.word-drawer-back:focus { outline: none; }
 .word-drawer-footer {
   position: absolute;
   bottom: 2.5%;

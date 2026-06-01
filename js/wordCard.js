@@ -116,7 +116,10 @@ const WordCard = (function () {
   function renderTitle(d) {
     const sp = splitPos(d.zh || "");
     const pos = d.pos || sp.pos, meaning = sp.meaning;
-    return `<div class="wc-word">${esc(d.word)}</div>`
+    // The whole big card IS the learning head (prefix/suffix-stripped core);
+    // badge it so it's unmistakable this is the 原型.
+    return `<div class="wc-head-badge">原型 · HEAD</div>`
+         + `<div class="wc-word">${esc(d.word)}</div>`
          + (pos ? `<div class="wc-title-pos">${esc(pos)}</div>` : "")
          + (meaning ? `<div class="wc-title-zh">${esc(meaning)}</div>` : "");
   }
@@ -152,10 +155,13 @@ const WordCard = (function () {
   }
 
   // Open Chapter — its own box (just under the title, above content).
+  // Opens in BROWSE mode (&browse=1): a free reader with Prev · Back · Next
+  // that does NOT touch story progress — so jumping to a word's chapter can
+  // never strand the reader deep in the graded story path ("回不去了").
   function renderOpen(word, loc) {
     if (!loc) return "";
     return `<button type="button" class="antique-button wc-open"
-              data-go="#reading?chapter=${encodeURIComponent(loc.chapter)}&section=${encodeURIComponent(loc.section)}&word=${encodeURIComponent(word)}">
+              data-go="#reading?chapter=${encodeURIComponent(loc.chapter)}&section=${encodeURIComponent(loc.section)}&word=${encodeURIComponent(word)}&browse=1">
         <span class="antique-button-label">Open Chapter</span>
       </button>`;
   }
@@ -170,6 +176,7 @@ const WordCard = (function () {
   /* ---------- drawer DOM ---------- */
   let drawerEl = null, scrimEl = null, titleZone = null, openZone = null, bodyZone = null, signZone = null, hostPage = null;
   let cardLines = [], cardIdx = -1, cardTimer = null;   // big-card line-by-line playback
+  let cardStack = [], lastCtx = null;                   // drawer back-history (maze)
 
   function ensureDrawer() {
     const page = document.querySelector(".stage .page");
@@ -197,6 +204,7 @@ const WordCard = (function () {
       <div class="word-card-wrapper">
         <img class="word-card-bg" src="assets/bg/ui/word-card-frame.jpg" alt="">
         <div class="word-card-overlay">
+          <button type="button" class="word-drawer-back" aria-label="Back" title="返回上一页">‹</button>
           <button type="button" class="word-drawer-close" aria-label="Close">×</button>
           <div class="word-card-title-zone"></div>
           <div class="word-card-open-zone"></div>
@@ -207,6 +215,9 @@ const WordCard = (function () {
     drawerEl.addEventListener("click", (e) => e.stopPropagation());
     drawerEl.querySelector(".word-drawer-close").addEventListener("click", (e) => {
       e.stopPropagation(); closeDrawer();
+    });
+    drawerEl.querySelector(".word-drawer-back").addEventListener("click", (e) => {
+      e.stopPropagation(); cardBack();
     });
     titleZone  = drawerEl.querySelector(".word-card-title-zone");
     openZone   = drawerEl.querySelector(".word-card-open-zone");
@@ -238,7 +249,7 @@ const WordCard = (function () {
     page.appendChild(drawerEl);
   }
 
-  function openBigCard(word, ctx) {
+  function openBigCard(word, ctx, opts) {
     ensureDrawer();
     if (!drawerEl) return;
     const rt = R();
@@ -246,6 +257,17 @@ const WordCard = (function () {
     try { data = rt && rt.getBigCard ? rt.getBigCard(word) : null; } catch (_) { data = null; }
     if (!data) return;
     const loc = (ctx && ctx.chapter) ? ctx : findWordLocation(data.word || word);
+
+    // Drawer history so the ‹ back button can retrace the maze. A FRESH open
+    // (drawer not yet on screen) starts a new trail; a jump while open pushes;
+    // a back-navigation doesn't re-push (the handler already popped).
+    if (ctx) lastCtx = ctx;
+    if (!(opts && opts.back)) {
+      if (!drawerEl.classList.contains("is-open")) cardStack = [];
+      cardStack.push(data.word || word);
+    }
+    const back = drawerEl.querySelector(".word-drawer-back");
+    if (back) back.style.visibility = cardStack.length > 1 ? "visible" : "hidden";
 
     titleZone.innerHTML = renderTitle(data);
     openZone.innerHTML  = renderOpen(data.word || word, loc);
@@ -331,6 +353,17 @@ const WordCard = (function () {
     cardTimer = setTimeout(onEnd, words * 320 + 1300);
     if (typeof TTS !== "undefined" && TTS.speak) { try { TTS.speak(txt, { onEnd }); } catch (_) {} }
   }
+  // ‹ Back — retrace the maze: pop the current word and re-open the one
+  // before it; if this was the entry card, just close back to reading.
+  function cardBack() {
+    if (typeof TTS !== "undefined" && TTS.cancel) { try { TTS.cancel(); } catch (_) {} }
+    clearTimeout(cardTimer);
+    cardStack.pop();                       // drop current
+    const prev = cardStack[cardStack.length - 1];
+    if (prev) openBigCard(prev, lastCtx, { back: true });
+    else closeDrawer();
+  }
+
   // Body tap → skip to the next line right away.
   function advanceCardSection() {
     if (typeof TTS !== "undefined" && TTS.cancel) { try { TTS.cancel(); } catch (_) {} }
@@ -346,6 +379,7 @@ const WordCard = (function () {
   function closeDrawer() {
     if (!drawerEl) return;
     clearTimeout(cardTimer);
+    cardStack = [];
     drawerEl.setAttribute("aria-hidden", "true");
     scrimEl.classList.remove("is-open");
     drawerEl.classList.remove("is-open");
