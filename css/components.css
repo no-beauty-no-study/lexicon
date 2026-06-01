@@ -1020,12 +1020,20 @@ button.ornate-panel {
    collocations, examples, dividers) start hidden and ink in ONE AT A TIME
    as the card reads itself — "一个单词、一个词组" — like the reading page's
    developing-ink, but the unit is a single word / phrase, not a block. */
-.word-card-body-zone .wc-sec { display: block; }
+/* Section gating: a 区 only appears once it's the current tap's section. */
+.word-card-body-zone .wc-sec { display: none; }
+.word-card-body-zone .wc-sec.is-shown { display: block; }
 .word-card-body-zone .wc-sep,
 .word-card-body-zone .wc-head,
 .word-card-body-zone .wc-row,
-.word-card-body-zone .wc-ex { opacity: 0; }
+.word-card-body-zone .wc-ex,
+.word-card-body-zone .wc-route { opacity: 0; }
 .word-card-body-zone .wc-revealed { animation: wc-ink-in 0.85s ease both; }
+/* Family-Kin route header (state → static 的同族 kin). */
+.word-card-body-zone .wc-route {
+  margin: 6px 0 2px; font-size: 13px; color: #8a7350; letter-spacing: 0.02em;
+}
+.word-card-body-zone .wc-route .wc-jump { color: #6a5527; border-bottom: 1px dotted rgba(170,135,60,.6); }
 @keyframes wc-ink-in {
   from { opacity: 0; transform: translateY(8px); filter: blur(2.2px); }
   to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
@@ -1088,26 +1096,34 @@ button.ornate-panel {
 }
 .word-card-title-zone .wc-word {
   font-family: var(--font-display), Georgia, serif;
-  font-size: 46px;
+  font-size: 40px;
   font-weight: 700;
   letter-spacing: 0.01em;
   line-height: 1.0;
   color: #2B211B;
   white-space: nowrap;
 }
-.word-card-title-zone .wc-title-pos {
-  margin-top: 3px;
+/* POS sits inline next to the word, small — frees vertical room so the zh
+   meaning below isn't clipped by the short title box. */
+.word-card-title-zone .wc-word .wc-pos-inline {
   font-family: var(--font-display), Georgia, serif;
   font-style: italic;
-  font-size: 20px;
+  font-weight: 400;
+  font-size: 17px;
   color: #6E5B4D;
+  margin-left: 4px;
 }
 .word-card-title-zone .wc-title-zh {
-  margin-top: 4px;
+  margin-top: 3px;
   font-family: "Songti SC", "Noto Serif SC", serif;
-  font-size: 22px;
-  line-height: 1.3;
+  font-size: 17px;
+  line-height: 1.22;
   color: #5D4D42;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ---- collocation row: ✦ EN  —  ZH (two columns, dash before ZH) ---- */

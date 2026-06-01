@@ -628,16 +628,14 @@ const Views = (function () {
             <span class="wce-en">${esc(exEn)}</span>
             ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
           </div>` : "";
-        // Learning HEAD chip — opens the big learning card. The target is the
-        // word's learning head (prefix/suffix-stripped core); when the word IS
-        // already its own head, the chip still opens its word-family card, just
-        // labelled "词族" instead of "原型 <head>".
+        // HEAD chip — opens the big learning card on the word's 首脑词 (the
+        // all-suffix-stripped core). When the word is already its own head it
+        // links to itself. Styled like the Auto / folded chips, not a pill.
         const openHead = sc.clickableForBigCard
           ? ((sc.head && sc.head.word) ? sc.head.word : (sc.word || id)) : null;
-        const headDiffers = openHead && openHead.toLowerCase() !== (sc.word || id).toLowerCase();
         const headChip = openHead ? `
             <button type="button" class="word-card-head-chip" data-open-head="${esc(openHead)}">
-              <span class="wchc-label">${headDiffers ? "原型" : "词族"}</span>${headDiffers ? `<span class="wchc-word">${esc(openHead)}</span>` : ""}<span class="wchc-arrow">›</span>
+              <span class="wchc-label">head</span><span class="wchc-word">${esc(openHead)}</span><span class="wchc-arrow">›</span>
             </button>` : "";
         return `
           <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
