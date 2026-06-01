@@ -228,7 +228,17 @@ const WordCard = (function () {
           <div class="word-card-sign-zone"></div>
         </div>
       </div>`;
-    drawerEl.addEventListener("click", (e) => e.stopPropagation());
+    // ONE tap handler for the whole card (like reading's "tap anywhere"):
+    //   • a clickable related word → open that word's card
+    //   • a control (back/close/Open Chapter/sign input) → its own handler
+    //   • anything else (blank, title, body) → reveal the NEXT 区 (section)
+    drawerEl.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const j = e.target.closest(".wc-jump");
+      if (j) { openBigCard(j.dataset.jump); return; }
+      if (e.target.closest("button, input, textarea, [data-go]")) return;
+      advanceCardSection();
+    });
     drawerEl.querySelector(".word-drawer-close").addEventListener("click", (e) => {
       e.stopPropagation(); closeDrawer();
     });
@@ -240,13 +250,6 @@ const WordCard = (function () {
     bodyZone   = drawerEl.querySelector(".word-card-body-zone");
     signZone   = drawerEl.querySelector(".word-card-sign-zone");
 
-    bodyZone.addEventListener("click", (e) => {
-      const j = e.target.closest(".wc-jump");
-      if (j) { e.stopPropagation(); openBigCard(j.dataset.jump); return; }
-      // Otherwise: skip ahead to the next line (word / phrase / example).
-      e.stopPropagation();
-      advanceCardSection();
-    });
     openZone.addEventListener("click", (e) => {
       const o = e.target.closest("[data-go]");
       if (!o) return;

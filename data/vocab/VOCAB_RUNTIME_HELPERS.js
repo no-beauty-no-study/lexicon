@@ -94,9 +94,17 @@
     for (const c of lemmaCandidates(w)) if (regMap.has(c)) return c;
     return null;
   }
+  // Reading 复数/-ing/-ed forms must open the BASE word's card, even when the
+  // inflected surface also has its own entry: prefer a de-inflected lemma
+  // that exists in the registry over the exact surface form.
+  function lemmaPrefer(w) {
+    for (const c of lemmaCandidates(w)) if (regMap.has(c)) return c;
+    if (regMap.has(w)) return w;
+    return null;
+  }
   function readingKey(w) {
-    if (readingSet.has(w) || regMap.has(w)) return regKey(w) || (readingSet.has(w) ? w : null);
-    for (const c of lemmaCandidates(w)) if (readingSet.has(c)) return regKey(c) || c;
+    if (readingSet.has(w) || regMap.has(w)) return lemmaPrefer(w) || (readingSet.has(w) ? w : null);
+    for (const c of lemmaCandidates(w)) if (readingSet.has(c)) return lemmaPrefer(c) || c;
     return null;
   }
   // learning head (族长): the reading→head map, else the family cluster head.
