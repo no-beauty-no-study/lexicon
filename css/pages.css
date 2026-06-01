@@ -977,12 +977,15 @@
    transform on individual pages anymore (it would clobber this and
    only reach one of the two pages mid-transition). */
 .stage[data-scale] .page {
-  /* Composition matters: translate is LISTED FIRST so it applies
-     LAST in the matrix (visual translation is in viewport pixels,
-     unaffected by scale magnitude). --tx / --ty are set inline by
-     app.js render() during page transitions; they default to 0
-     so this rule is identity for any page sitting in place. */
-  transform: translate(var(--tx, 0), var(--ty, 0)) scale(var(--page-scale, 1));
+  /* Composition matters. scale() is listed FIRST (applied LAST / outermost)
+     so the translate runs in the page's LOCAL, pre-scale units — which means
+     translate(100%) = the page's own 1448px width × the scale = exactly ONE
+     STAGE WIDTH on screen. (The old order, translate() then scale(), measured
+     100% as the raw 1448px regardless of scale, so on any sub-1448px display
+     the page flew >1 screen and left a gap before sliding in — the "飞到屏幕
+     外又弹回来" turn.) --tx / --ty are set inline by app.js render() during
+     page transitions; they default to 0 so this rule is identity in place. */
+  transform: scale(var(--page-scale, 1)) translate(var(--tx, 0), var(--ty, 0));
   transform-origin: top left;
 }
 
