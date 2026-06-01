@@ -628,12 +628,24 @@ const Views = (function () {
             <span class="wce-en">${esc(exEn)}</span>
             ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
           </div>` : "";
+        // Learning HEAD chip — the prefix/suffix-stripped core word. Tapping
+        // it (or the card) opens the head's big learning card. Shown only
+        // when there's a head card to open, and only when the head differs
+        // from the reading word itself (no point pointing a word at itself).
+        const head = sc.head && sc.head.openable && sc.head.word
+                     && (sc.head.word.toLowerCase() !== (sc.word || id).toLowerCase())
+                     ? sc.head.word : null;
+        const headChip = head ? `
+            <button type="button" class="word-card-head-chip" data-open-head="${esc(head)}">
+              <span class="wchc-label">原型</span><span class="wchc-word">${esc(head)}</span><span class="wchc-arrow">›</span>
+            </button>` : "";
         return `
           <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
             <div class="word-card-headword">${esc(sc.word || id)}</div>
             <div class="word-card-meaning">${esc(sc.zh || "")}</div>
             ${phraseRows}
             ${exampleRow}
+            ${headChip}
           </div>`;
       }
       function renderMarginalia(sc) {
@@ -662,8 +674,13 @@ const Views = (function () {
           e.stopPropagation();
           clearCurrent(stack);
           fresh.classList.add("is-current");
-          if (sc.clickableForBigCard && typeof WordCard !== "undefined") {
-            WordCard.openBigCard(sc.word, { chapter: chapterId, section: sectionNum });
+          // Tapping the 原型 head chip opens that head's card; tapping the
+          // card body opens the head the reading word resolves to (getBigCard
+          // maps reading word → its learning head either way).
+          const chip = e.target.closest("[data-open-head]");
+          if ((chip || sc.clickableForBigCard) && typeof WordCard !== "undefined") {
+            WordCard.openBigCard(chip ? chip.dataset.openHead : sc.word,
+                                 { chapter: chapterId, section: sectionNum });
           }
           syncMarginaliaButtons();
         });

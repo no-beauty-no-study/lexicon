@@ -1,250 +1,205 @@
+/* The Princess Lexicon — VocabRuntime (V63 learning-head model)
+   Data files (loaded as globals before this):
+     VOCAB_READING_WORD_CARDS_SIMPLE   .cards[word]          → reading small card
+     VOCAB_READING_TO_LEARNING_HEAD    .reading_to_learning_head[word].learning_head
+     VOCAB_LEARNING_HEAD_CARDS_SIMPLE  .cards[head]          → big card (own + family + kin embedded)
+     VOCAB_GROUP_CLEAN_SIMPLE          .groups[head]         → synonyms (no DNA)
+     VOCAB_PROPER_SMALL_CARDS_FINAL    .small_cards[]        → proper / small-only
+
+   Flow: reading click → small card (shows the learning HEAD as a tappable
+   chip) → tap head → big card = that head's card (own → family → kin → group).
+   Family/kin/group/head words that exist as reading or head cards are
+   clickable and re-open the drawer on their OWN head (the "maze"). */
 (function () {
-  function norm(word) { return String(word || '').trim().toLowerCase(); }
+  function norm(w) { return String(w || '').trim().toLowerCase(); }
 
-  function propsToMap(obj, keyField) {
-    const map = new Map();
-    if (!obj) return map;
-    if (Array.isArray(obj)) {
-      for (const item of obj) if (item && item[keyField]) map.set(norm(item[keyField]), item);
-    } else {
-      for (const [k, v] of Object.entries(obj)) map.set(norm(k), v);
-    }
-    return map;
+  const RW     = (window.VOCAB_READING_WORD_CARDS_SIMPLE || {}).cards || {};
+  const R2H    = (window.VOCAB_READING_TO_LEARNING_HEAD || {}).reading_to_learning_head || {};
+  const HEAD   = (window.VOCAB_LEARNING_HEAD_CARDS_SIMPLE || {}).cards || {};
+  const GROUP  = (window.VOCAB_GROUP_CLEAN_SIMPLE || {}).groups || {};
+  const PROPER = (window.VOCAB_PROPER_SMALL_CARDS_FINAL || {}).small_cards || [];
+
+  function lcMap(obj) {
+    const m = new Map();
+    if (obj) for (const k of Object.keys(obj)) m.set(norm(k), obj[k]);
+    return m;
   }
-
-  const wordMaster   = window.VOCAB_WORD_MASTER_FINAL || {};
-  const kinMaster    = window.VOCAB_KIN_CLUSTER_MASTER_FINAL || {};
-  const familyMaster = window.VOCAB_FAMILY_CONTENT_MASTER_FINAL || {};
-  const properMaster = window.VOCAB_PROPER_SMALL_CARDS_FINAL || {};
-
-  const wordCards = wordMaster.cards || {};
-  const wordCardMap = propsToMap(wordCards, 'word');
-  const wordToFamilyHead = window.VOCAB_FAMILY_HEAD_MAP_FINAL || familyMaster.word_to_family_head || {};
-  const familyByHead = propsToMap(familyMaster.families || [], 'family_head');
-  const kinById = propsToMap(kinMaster.kin_clusters || [], 'cluster_id');
-  const properSmallByWord = propsToMap(properMaster.small_cards || [], 'word');
+  const readingMap = lcMap(RW);
+  const headMap    = lcMap(HEAD);
+  const r2hMap     = lcMap(R2H);
+  const groupMap   = lcMap(GROUP);
+  const properMap  = new Map();
+  for (const c of (Array.isArray(PROPER) ? PROPER : [])) if (c && c.word) properMap.set(norm(c.word), c);
 
   const CJK = /[一-鿿]/;
 
-  // Some reading-surface cards store phrases as a FLAT array
-  // ["en","zh","en2","zh2"]; normal cards use [{phrase,phrase_zh}].
-  // Normalise both to [{phrase, phrase_zh}].
   function normPhrases(arr) {
-    if (!Array.isArray(arr) || !arr.length) return [];
-    if (typeof arr[0] === 'object') return arr.filter(Boolean);
-    const out = [];
-    for (let i = 0; i < arr.length; i += 2) {
-      const en = arr[i], zh = arr[i + 1] || '';
-      if (en) out.push({ phrase: en, phrase_zh: zh });
-    }
-    return out;
+    if (!Array.isArray(arr)) return [];
+    return arr.map(p => {
+      if (!p) return null;
+      if (typeof p === 'object') return { phrase: p.phrase || p.en || '', phrase_zh: p.phrase_zh || p.zh || '' };
+      return { phrase: String(p), phrase_zh: '' };
+    }).filter(p => p && (p.phrase || p.phrase_zh));
   }
-  // Examples: [{example,example_zh}] OR flat strings (en or zh).
   function normExamples(arr) {
-    if (!Array.isArray(arr) || !arr.length) return [];
+    if (!Array.isArray(arr)) return [];
     return arr.map(x => {
-      if (x && typeof x === 'object') return x;
-      const s = String(x || '');
+      if (!x) return null;
+      if (typeof x === 'object') return { example: x.example || x.en || '', example_zh: x.example_zh || x.zh || '' };
+      const s = String(x);
       return CJK.test(s) ? { example: '', example_zh: s } : { example: s, example_zh: '' };
-    }).filter(x => x.example || x.example_zh);
+    }).filter(x => x && (x.example || x.example_zh));
   }
-
-  function getWordCard(word) {
-    const key = norm(word);
-    return wordCardMap.get(key) || wordCards[word] || null;
-  }
-  // Best part-of-speech for a card: the `pos` field if it looks like a
-  // real POS tag (contains a dot and isn't just the word echoed back),
-  // else the leading pos tag inside the zh gloss ("v. 建立" → "v.").
-  function posOf(card) {
-    if (!card) return '';
-    const p = card.pos;
-    if (p && norm(p) !== norm(card.word || '') && /\./.test(p)) return String(p).trim();
-    const m = String(card.zh || '').match(/^\s*([A-Za-z][A-Za-z.\/\- ]*\.)\s/);
+  // Best POS tag: an explicit `pos` that looks like a tag, else the leading
+  // tag inside the zh gloss ("v. 放弃" → "v.").
+  function posOf(c) {
+    if (!c) return '';
+    const p = c.pos;
+    if (p && /\./.test(p) && norm(p) !== norm(c.word || '')) return String(p).trim();
+    const m = String(c.zh || '').match(/^\s*([A-Za-z][A-Za-z.\/\- ]*\.)\s/);
     return m ? m[1].trim() : '';
   }
-  function getProperSmallCard(word) { return properSmallByWord.get(norm(word)) || null; }
-  function getFamilyHead(word) {
-    const key = norm(word);
-    return norm(wordToFamilyHead[key] || wordToFamilyHead[word] || key);
-  }
-  // small_only / no_big_card → no drawer (proper/place/symbol/low-value).
-  function isSmallOnly(card) {
-    return !!(card && (card.no_big_card === true || card.card_scope === 'small_only'));
-  }
-  function isClickableWord(word) {
-    const c = getWordCard(word);
-    return !!c && !isSmallOnly(c);
-  }
+  // Some group glosses carry a leading POS tag inside zh ("n. 亚文化") — strip
+  // it so the meaning column stays clean (POS is shown separately).
+  function zhMeaning(zh) { return String(zh || '').replace(/^\s*[A-Za-z][A-Za-z.\/\- ]*\.\s*/, ''); }
 
-  // Inflected reading surface → base lemma candidates (regex fallback).
+  // Light inflection fallback so reading surface forms still resolve.
   function lemmaCandidates(w) {
-    const out = [], add = (x) => { if (x && x !== w && out.indexOf(x) === -1) out.push(x); };
+    const out = [], add = x => { if (x && x !== w && out.indexOf(x) < 0) out.push(x); };
     if (/ies$/.test(w))  add(w.slice(0, -3) + 'y');
     if (/es$/.test(w))   { add(w.slice(0, -2)); add(w.slice(0, -1)); }
     if (/s$/.test(w) && !/ss$/.test(w)) add(w.slice(0, -1));
     if (/ied$/.test(w))  add(w.slice(0, -3) + 'y');
-    if (/ed$/.test(w))   { add(w.slice(0, -2)); add(w.slice(0, -1)); }  // erupted→erupt, consumed→consume
-    if (/ing$/.test(w))  { add(w.slice(0, -3)); add(w.slice(0, -3) + 'e'); } // consuming→consume
-    if (/ically$/.test(w)) add(w.slice(0, -6) + 'ic');
-    if (/ally$/.test(w)) add(w.slice(0, -4) + 'al');
+    if (/ed$/.test(w))   { add(w.slice(0, -2)); add(w.slice(0, -1)); }
+    if (/ing$/.test(w))  { add(w.slice(0, -3)); add(w.slice(0, -3) + 'e'); }
     if (/ly$/.test(w))   add(w.slice(0, -2));
-    if (/est$/.test(w))  { add(w.slice(0, -3)); add(w.slice(0, -2)); }
-    if (/er$/.test(w))   { add(w.slice(0, -2)); add(w.slice(0, -1)); }
     return out;
   }
+  function cleanTok(raw) { return norm(raw).replace(/^[^a-z]+|[^a-z]+$/g, '').replace(/'s$/, ''); }
 
-  // Memo cache keyed by the CLEANED lowercase token. A reading section is
-  // ~180 words, most of them non-vocab ("the", "was", "of") that otherwise
-  // run the WHOLE fallback chain (10 regex tests + several map lookups) to
-  // a null result on EVERY build. Building a fresh section was therefore
-  // ~180 cold full-miss chains run synchronously — the jank felt on the
-  // forward page-turn (a *new* section), while turning back to an
-  // already-resolved section felt smooth. Caching collapses both to O(1).
-  const resolveCache = new Map();
-
-  // raw reading token → the card to show. Tries: inflection→base-lemma
-  // collapse (defies→defy) → exact card → regex lemma → family-head map →
-  // proper small card.
-  function resolveReadingWord(rawToken) {
-    const raw = String(rawToken || '');
-    const w = norm(raw).replace(/^[^a-z]+|[^a-z]+$/g, '').replace(/'s$/, '');
-    if (!w) return { raw, resolvedWord: w, card: null, matchType: 'none' };
-
-    const cached = resolveCache.get(w);
-    if (cached) return { ...cached, raw };
-
-    const result = resolveCore(w);
-    resolveCache.set(w, result);
-    return { ...result, raw };
+  function lookup(map, w) {
+    if (map.has(w)) return map.get(w);
+    for (const c of lemmaCandidates(w)) if (map.has(c)) return map.get(c);
+    return null;
+  }
+  function headOf(w) {
+    const e = r2hMap.get(w) || (function () {
+      for (const c of lemmaCandidates(w)) { const x = r2hMap.get(c); if (x) return x; }
+      return null;
+    })();
+    return e && e.learning_head ? norm(e.learning_head) : null;
   }
 
-  function resolveCore(w) {
-    // INFLECTION → BASE LEMMA. A plural/tense surface form (defies, studies,
-    // erupted) should pop the BASE word's card (defy, study, erupt) — even
-    // when the surface form has its own master entry. We only collapse when
-    // the family head is *also* a regex-lemma of the surface word, so true
-    // DERIVATIONS (defiance, defiant → keep their own distinct card) are
-    // left alone — their head is not among the inflection candidates.
-    const head = getFamilyHead(w);
-    if (head && head !== w) {
-      const headCard = getWordCard(head);
-      if (headCard && lemmaCandidates(w).indexOf(head) !== -1) {
-        return { resolvedWord: head, card: headCard, matchType: 'lemma_head' };
-      }
-    }
-
-    let c = getWordCard(w);
-    if (c) return { resolvedWord: w, card: c, matchType: 'exact' };
-
-    for (const cand of lemmaCandidates(w)) {
-      c = getWordCard(cand);
-      if (c) return { resolvedWord: cand, card: c, matchType: 'lemma' };
-    }
-    if (head && head !== w) {
-      c = getWordCard(head);
-      if (c) return { resolvedWord: head, card: c, matchType: 'family_head' };
-    }
-    const p = getProperSmallCard(w);
-    if (p) return { resolvedWord: w, card: p, matchType: 'proper', proper: true };
-
-    return { resolvedWord: w, card: null, matchType: 'none' };
-  }
-
+  /* ---------- small card (reading click) ---------- */
+  const smallCache = new Map();
   function getSmallCard(word) {
-    const r = resolveReadingWord(word);
-    if (!r.card) return null;
-    const card = r.card;
-    return {
-      type: r.proper ? 'proper_or_special' : 'word',
-      word: card.word || r.resolvedWord,
-      pos: posOf(card),
-      zh: card.zh || '',
-      phrases: normPhrases(card.phrases),
-      examples: normExamples(card.examples),
-      clickableForBigCard: !r.proper && !isSmallOnly(card),
-      resolvedWord: r.resolvedWord,
-      matchType: r.matchType
-    };
-  }
-
-  // Internal kin words have no phrases of their own in the kin file —
-  // pull ONE collocation from the word's master card to show alongside.
-  function clickableKinWord(word) {
-    const card = getWordCard(word);
-    if (!card || isSmallOnly(card)) return null;
-    return {
-      word: card.word || word, pos: posOf(card), zh: card.zh || '',
-      phrases: normPhrases(card.phrases).slice(0, 1), examples: [],
-      clickable: true
-    };
-  }
-
-  function getBigCard(word) {
-    const r = resolveReadingWord(word);
-    const focus = r.card;
-    if (!focus || r.proper || isSmallOnly(focus)) return null;   // no big card
-
-    const focusWord = focus.word || r.resolvedWord;
-    const familyHead = getFamilyHead(focusWord);
-    const family = familyByHead.get(familyHead) || null;
-
-    // 原型 HEAD — the prefix/suffix-stripped base word, shown as its OWN
-    // section right under the focus word's examples so prefixes can be
-    // studied. Skipped when the focus word IS the head (nothing to strip).
-    let head = null;
-    if (familyHead && norm(familyHead) !== norm(focusWord)) {
-      const hc = getWordCard(familyHead);
-      if (hc && !isSmallOnly(hc)) {
-        head = {
-          word: hc.word || familyHead, pos: posOf(hc), zh: hc.zh || '',
-          phrases: normPhrases(hc.phrases), examples: normExamples(hc.examples),
-          clickable: true
+    const w = cleanTok(word);
+    if (!w) return null;
+    if (smallCache.has(w)) return smallCache.get(w);
+    let res = null;
+    // PROPER / place / small-only first — these answer the reading meaning but
+    // never open a family/kin card, even if the surface form also exists as a
+    // reading word (e.g. "bering").
+    const pc = lookup(properMap, w);
+    if (pc) {
+      res = {
+        type: 'proper', word: pc.word || w, pos: posOf(pc), zh: pc.zh || '',
+        phrases: normPhrases(pc.phrases), examples: normExamples(pc.examples),
+        head: null, clickableForBigCard: false, proper: true, resolvedWord: pc.word || w,
+      };
+    } else {
+      const rc = lookup(readingMap, w);
+      if (rc) {
+        const h = headOf(w);
+        const hcard = h ? headMap.get(h) : null;
+        res = {
+          type: 'word', word: rc.word || w, pos: posOf(rc), zh: rc.zh || '',
+          phrases: normPhrases(rc.phrases), examples: normExamples(rc.examples),
+          head: hcard ? { word: hcard.word || h, openable: true }
+               : (h ? { word: h, openable: false } : null),
+          clickableForBigCard: !!hcard,
+          resolvedWord: rc.word || w,
         };
       }
     }
+    smallCache.set(w, res);
+    return res;
+  }
+  function isClickableWord(word) { return !!getSmallCard(word); }
 
-    let familyMembers = family ? (family.family_members || []) : (focus.family_members || []);
-    if (!Array.isArray(familyMembers)) familyMembers = [];
-    const focusKey = norm(focusWord);
-    familyMembers = [...familyMembers].sort((a, b) => {
-      const aw = norm(a.word), bw = norm(b.word);
-      if (aw === focusKey) return -1; if (bw === focusKey) return 1;
-      if (aw === familyHead) return -1; if (bw === familyHead) return 1;
-      return aw.localeCompare(bw);
-    }).map(m => ({ ...m, pos: posOf(m), phrases: normPhrases(m.phrases), examples: normExamples(m.examples), clickable: isClickableWord(m.word) }));
-
-    const kinIds = new Set(Array.isArray(focus.kin_cluster_ids) ? focus.kin_cluster_ids : []);
-    if (family && Array.isArray(family.shared_kin_cluster_ids)) for (const id of family.shared_kin_cluster_ids) kinIds.add(id);
-    const headCard = getWordCard(familyHead);
-    if (headCard && Array.isArray(headCard.kin_cluster_ids)) for (const id of headCard.kin_cluster_ids) kinIds.add(id);
-
-    const kinClusters = [...kinIds]
-      .map(id => kinById.get(norm(id)) || kinById.get(id)).filter(Boolean)
-      .map(cluster => {
-        const internal = (Array.isArray(cluster.internal_words) ? cluster.internal_words : [])
-          .filter(w => norm(w) !== focusKey)
-          .map(w => clickableKinWord(w) || { word: w, clickable: false });
-        const external = (Array.isArray(cluster.external_words) ? cluster.external_words : [])
-          .map(e => ({ ...e, pos: posOf(e), clickable: isClickableWord(e.word) }));
-        return { ...cluster, internal_words: internal, external_words: external };
-      });
-
-    let group = focus.group || [];
-    if (group && !Array.isArray(group)) group = [group];
-    group = group.map(g => ({ ...g, pos: posOf(g), phrases: normPhrases(g.phrases), clickable: isClickableWord(g.word) }));
-
+  /* ---------- big card (the learning-head card) ---------- */
+  function headCardFor(word) {
+    const w = cleanTok(word);
+    if (headMap.has(w)) return { key: w, card: headMap.get(w) };
+    const h = headOf(w);
+    if (h && headMap.has(h)) return { key: h, card: headMap.get(h) };
+    return null;
+  }
+  // A member word is clickable if it exists somewhere as its own card.
+  function memberClickable(word) {
+    const w = norm(word);
+    return readingMap.has(w) || headMap.has(w) || r2hMap.has(w);
+  }
+  function shapeMember(m) {
+    if (typeof m === 'string')
+      return { word: m, pos: '', zh: '', phrases: [], examples: [], clickable: memberClickable(m) };
     return {
-      focus_word: focusWord, family_head: familyHead, word: focusWord,
-      pos: posOf(focus),
-      zh: focus.zh || '', phrases: normPhrases(focus.phrases), examples: normExamples(focus.examples),
-      head, family_members: familyMembers, group, kin_clusters: kinClusters
+      word: m.word || '', pos: posOf(m), zh: m.zh || '',
+      phrases: normPhrases(m.phrases), examples: normExamples(m.examples),
+      clickable: memberClickable(m.word),
+    };
+  }
+  const bigCache = new Map();
+  function getBigCard(word) {
+    if (properMap.has(cleanTok(word))) return null;   // proper = small-only
+    const hit = headCardFor(word);
+    if (!hit) return null;
+    if (bigCache.has(hit.key)) return bigCache.get(hit.key);
+    const c = hit.card;
+
+    const family = (c.family_members || []).map(shapeMember)
+      .filter(m => m.word && norm(m.word) !== hit.key);
+
+    // Kin: items carrying their own content first, then any bare internal
+    // words not already represented.
+    const kin = [];
+    const seen = new Set();
+    (c.kin_internal_word_items || []).concat(c.kin_external_words || []).forEach(m => {
+      const s = shapeMember(m);
+      if (s.word && !seen.has(norm(s.word))) { seen.add(norm(s.word)); kin.push(s); }
+    });
+    (c.kin_internal_words || []).forEach(w => {
+      if (w && !seen.has(norm(w))) { seen.add(norm(w)); kin.push(shapeMember(w)); }
+    });
+    const kinMembers = kin.filter(m => m.word && norm(m.word) !== hit.key);
+
+    const group = (groupMap.get(hit.key) || []).map(g => ({
+      word: g.word || '', pos: g.pos || posOf(g), zh: zhMeaning(g.zh),
+      phrases: g.phrase ? [{ phrase: g.phrase, phrase_zh: g.phrase_zh || '' }] : [],
+      examples: [], clickable: memberClickable(g.word),
+    })).filter(g => g.word);
+
+    const out = {
+      word: c.word || hit.key, family_head: hit.key, pos: posOf(c), zh: c.zh || '',
+      phrases: normPhrases(c.phrases), examples: normExamples(c.examples),
+      head: null, family_members: family, kin_members: kinMembers, group,
+    };
+    bigCache.set(hit.key, out);
+    return out;
+  }
+
+  function getFamilyHead(word) { return headOf(cleanTok(word)) || cleanTok(word); }
+  function getWordCard(word)   { return lookup(readingMap, cleanTok(word)) || null; }
+  function resolveReadingWord(word) {
+    const sc = getSmallCard(word);
+    return {
+      raw: word, resolvedWord: sc ? sc.resolvedWord : cleanTok(word),
+      card: sc, matchType: sc ? (sc.proper ? 'proper' : 'word') : 'none',
     };
   }
 
   window.VocabRuntime = {
-    getWordCard, getProperSmallCard, getFamilyHead,
-    resolveReadingWord, getSmallCard, getBigCard, isClickableWord, isSmallOnly,
-    indexes: { wordCardMap, familyByHead, kinById, properSmallByWord }
+    getSmallCard, getBigCard, isClickableWord, getFamilyHead, getWordCard,
+    resolveReadingWord, isSmallOnly: (c) => !!(c && c.proper),
   };
 })();

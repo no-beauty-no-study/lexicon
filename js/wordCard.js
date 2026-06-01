@@ -141,31 +141,14 @@ const WordCard = (function () {
       .concat((d.examples || []).slice(0, 1).map(x => x.example || x.en))
       .filter(Boolean).join(". ");
 
-    const kinMembers = [];
-    (d.kin_clusters || []).forEach(c => {
-      (c.internal_words || []).forEach(m => kinMembers.push(m));
-      (c.external_words || []).forEach(m => kinMembers.push(m));
-    });
-
-    // 原型 HEAD — its own section, the FIRST under the focus word's examples,
-    // for studying the prefix/suffix-stripped base. Word + its collocations +
-    // its examples. Only when the focus word isn't itself the head (d.head
-    // is null in that case).
-    const headSpeak = d.head ? [d.head.word]
-      .concat((d.head.phrases || []).slice(0, 2).map(p => p.phrase || p.en))
-      .concat((d.head.examples || []).slice(0, 1).map(x => x.example || x.en))
-      .filter(Boolean).join(". ") : "";
-    const headHTML = d.head
-      ? section("wc-head-sec", "原型 · Head",
-                memberHTML(d.head) + exHTML(d.head.examples, 2), headSpeak)
-      : "";
-
-    // Order (user spec): own → head → family → kin → group.
+    // The big card IS the learning head, so its OWN phrases/examples lead;
+    // then family → kin → group (user spec / V63 flow). Kin arrives already
+    // flattened (head card embeds its kin word items). Members that exist as
+    // their own reading/head card are clickable and re-open on their head.
     return section("wc-own", "", ownPh + ownEx, ownSpeak)
-      + headHTML
       + section("wc-fam", "Family", membersHTML(d.family_members, d.word), membersSpeak(d.family_members, d.word))
-      + section("wc-kin", "Kin",    membersHTML(kinMembers),               membersSpeak(kinMembers))
-      + section("wc-grp", "Group",  membersHTML(d.group, d.word),          membersSpeak(d.group, d.word));
+      + section("wc-kin", "Kin",    membersHTML(d.kin_members,    d.word), membersSpeak(d.kin_members,    d.word))
+      + section("wc-grp", "Group",  membersHTML(d.group,          d.word), membersSpeak(d.group,          d.word));
   }
 
   // Open Chapter — its own box (just under the title, above content).
