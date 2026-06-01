@@ -93,7 +93,6 @@
     else if (dir === "up")      { enterTy = "100%";  leaveTy = "-100%"; }
     /* dir === "fade": all offsets stay 0 → only opacity animates */
     const easing  = "cubic-bezier(0.22, 0.8, 0.22, 1)";
-    const tDur    = "950ms";
 
     // INCOMING — placed off-screen on the chosen axis (no transition yet),
     // appended, then its content is BUILT and the scale committed — all
@@ -105,9 +104,17 @@
     // rasterised all the blurred content — a single monster frame that
     // stuttered the turn ("比别的多了几帧定格帧"). Building first turns the
     // slide into a clean compositor-only transform.
+    // Live page scale, baked into every keyframe below: WAAPI overrides the
+    // CSS transform while it plays, so if the scale weren't in each keyframe
+    // the page would jump to scale(1) for the whole turn.
+    const pageScale = parseFloat(getComputedStyle(stage).getPropertyValue("--page-scale"))
+                      || (stage.clientWidth / 1448) || 1;
+    const SC = `scale(${pageScale})`;
+
     if (prev) {
-      node.style.setProperty("--tx", enterTx);
-      node.style.setProperty("--ty", enterTy);
+      // Park the incoming page off-screen BEFORE it is appended/painted, so
+      // it never flashes at centre while its content builds.
+      node.style.transform  = `${SC} translate(${enterTx}, ${enterTy})`;
       node.style.opacity    = "0.92";
       node.style.zIndex     = "2";
       node.style.willChange = "transform, opacity";
@@ -123,45 +130,42 @@
     fitStage();
 
     if (prev) {
-      // Suspend the sentence-block blur on BOTH pages for the duration of
-      // the slide. The blur is a per-frame raster cost on a moving layer —
-      // dropping it for ~1s turns the turn into a clean compositor-only
-      // transform, then the invisible-ink blur fades back once we land.
+      // Suspend the sentence-block blur for the duration of the turn so the
+      // slide is a clean compositor transform (it fades back via the
+      // sentence-block's own 0.7s filter transition once we land).
       stage.classList.add("is-turning");
-      // OUTGOING — class marker for animation-play-state:paused on
-      // children, plus inline transition + final --tx / --ty.
-      prev.classList.add("page-leaving");
-      prev.style.transition = `transform ${tDur} ${easing}, opacity 620ms ease-in`;
+      prev.classList.add("page-leaving");      // pauses child animations
       prev.style.willChange = "transform, opacity";
-      prev.style.setProperty("--tx", leaveTx);
-      prev.style.setProperty("--ty", leaveTy);
-      prev.style.opacity    = "0.6";
-      prev.style.zIndex     = "1";
+      prev.style.zIndex = "1";
       prev.style.pointerEvents = "none";
-      // Flush layout + paint of the now FULLY-BUILT incoming page while it
-      // is still off-screen, so its layer is rasterised BEFORE the slide
-      // begins (this is also the Safari read that stops the two style
-      // mutations from batching and skipping the animation).
-      void node.offsetHeight;
-      requestAnimationFrame(() => {
-        node.style.transition = `transform ${tDur} ${easing}, opacity 620ms ease-out`;
-        node.style.setProperty("--tx", "0");
-        node.style.setProperty("--ty", "0");
-        node.style.opacity    = "1";
-      });
+
+      // Drive BOTH pages with the Web Animations API. This sidesteps every
+      // var()-in-transform / CSS-specificity pitfall the inline-`--tx`
+      // approach kept tripping over (the "next 飞到网页外面" turn): the full
+      // transform — scale + translate — is written out per keyframe and runs
+      // on the compositor, immune to main-thread jank and var() quirks.
+      const dur = 900;
+      const aIn = node.animate(
+        [ { transform: `${SC} translate(${enterTx}, ${enterTy})`, opacity: 0.92 },
+          { transform: `${SC} translate(0px, 0px)`,               opacity: 1    } ],
+        { duration: dur, easing, fill: "both" });
+      aIn.onfinish = () => {                   // hand the page back to the CSS rule
+        node.style.transform = "";
+        node.style.opacity = "";
+        node.style.willChange = "auto";
+        node.style.zIndex = "";
+        try { aIn.cancel(); } catch (_) {}
+      };
 
       const dying = prev;
-      setTimeout(() => { try { dying.remove(); } catch (_) {} }, 1000);
-      // Restore the blur once the slide has landed (it fades back via the
-      // sentence-block's own 0.7s filter transition — a soft "settle").
-      setTimeout(() => { try { stage.classList.remove("is-turning"); } catch (_) {} }, 980);
-      // Release the compositor layer once the turn is done — otherwise every
-      // reading page we land on keeps a will-change layer alive (each one
-      // re-rasterising its blurred sentence spans), which piles up over a
-      // long read and starves the NEXT turn. Clearing it lets the page fall
-      // back to a normal layer until the next navigation re-promotes it.
-      const settled = node;
-      setTimeout(() => { try { settled.style.willChange = "auto"; } catch (_) {} }, 1050);
+      const aOut = prev.animate(
+        [ { transform: `${SC} translate(0px, 0px)`,               opacity: 1   },
+          { transform: `${SC} translate(${leaveTx}, ${leaveTy})`, opacity: 0.5 } ],
+        { duration: dur, easing, fill: "both" });
+      aOut.onfinish = () => { try { dying.remove(); } catch (_) {} };
+
+      setTimeout(() => { try { stage.classList.remove("is-turning"); } catch (_) {} }, dur);
+      setTimeout(() => { try { dying.remove(); } catch (_) {} }, dur + 300);   // safety net
     }
 
     requestAnimationFrame(fitStage);

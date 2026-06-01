@@ -121,17 +121,21 @@ const WordCard = (function () {
          + (meaning ? `<div class="wc-title-zh">${esc(meaning)}</div>` : "");
   }
 
-  function renderBody(d) {
-    // OWN section (no heading): the focus word's own collocations + example.
-    const ownPh = (d.phrases || []).slice(0, 4)
-      .filter(p => p.phrase || p.en)
-      .map(p => phraseRow(p.phrase || p.en, p.phrase_zh || p.zh || "")).join("");
-    const ownEx = (d.examples || []).slice(0, 2).map(x => {
+  // Example rows (EN over ZH) — up to n.
+  function exHTML(arr, n) {
+    return (arr || []).slice(0, n).map(x => {
       const en = x.example || x.en || "", zh = x.example_zh || x.zh || "";
       if (!en) return "";
       return `<div class="wc-ex"><div class="wc-ex-en">${esc(en)}</div>`
            + (zh ? `<div class="wc-ex-zh">${esc(zh)}</div>` : "") + `</div>`;
     }).join("");
+  }
+  function renderBody(d) {
+    // OWN section (no heading): the focus word's own collocations + example.
+    const ownPh = (d.phrases || []).slice(0, 4)
+      .filter(p => p.phrase || p.en)
+      .map(p => phraseRow(p.phrase || p.en, p.phrase_zh || p.zh || "")).join("");
+    const ownEx = exHTML(d.examples, 2);
     const ownSpeak = [d.word]
       .concat((d.phrases || []).slice(0, 4).map(p => p.phrase || p.en))
       .concat((d.examples || []).slice(0, 1).map(x => x.example || x.en))
@@ -143,10 +147,25 @@ const WordCard = (function () {
       (c.external_words || []).forEach(m => kinMembers.push(m));
     });
 
+    // 原型 HEAD — its own section, the FIRST under the focus word's examples,
+    // for studying the prefix/suffix-stripped base. Word + its collocations +
+    // its examples. Only when the focus word isn't itself the head (d.head
+    // is null in that case).
+    const headSpeak = d.head ? [d.head.word]
+      .concat((d.head.phrases || []).slice(0, 2).map(p => p.phrase || p.en))
+      .concat((d.head.examples || []).slice(0, 1).map(x => x.example || x.en))
+      .filter(Boolean).join(". ") : "";
+    const headHTML = d.head
+      ? section("wc-head-sec", "原型 · Head",
+                memberHTML(d.head) + exHTML(d.head.examples, 2), headSpeak)
+      : "";
+
+    // Order (user spec): own → head → family → kin → group.
     return section("wc-own", "", ownPh + ownEx, ownSpeak)
+      + headHTML
       + section("wc-fam", "Family", membersHTML(d.family_members, d.word), membersSpeak(d.family_members, d.word))
-      + section("wc-grp", "Group",  membersHTML(d.group, d.word),          membersSpeak(d.group, d.word))
-      + section("wc-kin", "Kin",    membersHTML(kinMembers),               membersSpeak(kinMembers));
+      + section("wc-kin", "Kin",    membersHTML(kinMembers),               membersSpeak(kinMembers))
+      + section("wc-grp", "Group",  membersHTML(d.group, d.word),          membersSpeak(d.group, d.word));
   }
 
   // Open Chapter — its own box (just under the title, above content).
