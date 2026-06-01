@@ -614,6 +614,32 @@
   font-size: 14px;
   color: #6f6353;
 }
+/* 原型 (learning head) chip — the prefix/suffix-stripped core word. Tapping
+   it opens the head's big learning card. Warm gilt pill so it reads as an
+   action, not body text. */
+.word-card-head-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 4px 11px 5px;
+  background: linear-gradient(180deg, rgba(231, 201, 119, 0.22), rgba(201, 162, 75, 0.12));
+  border: 1px solid rgba(170, 135, 60, 0.5);
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  color: #6a5527;
+  transition: background 0.25s ease, transform 0.12s ease;
+}
+.word-card-head-chip:hover  { background: linear-gradient(180deg, rgba(231, 201, 119, 0.34), rgba(201, 162, 75, 0.2)); }
+.word-card-head-chip:active { transform: scale(0.97); }
+.word-card-head-chip .wchc-label {
+  font-size: 11px; letter-spacing: 0.08em; color: #9a7b33; opacity: 0.85;
+}
+.word-card-head-chip .wchc-word {
+  font-size: 17px; font-weight: 500; color: #4a3c1f; letter-spacing: 0.01em;
+}
+.word-card-head-chip .wchc-arrow { font-size: 15px; color: #9a7b33; }
 .marginalia-card-body {
   flex: 1;
   min-height: 0;
