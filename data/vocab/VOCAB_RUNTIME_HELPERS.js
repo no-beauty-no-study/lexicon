@@ -189,6 +189,21 @@
     const familyHead = getFamilyHead(focusWord);
     const family = familyByHead.get(familyHead) || null;
 
+    // 原型 HEAD — the prefix/suffix-stripped base word, shown as its OWN
+    // section right under the focus word's examples so prefixes can be
+    // studied. Skipped when the focus word IS the head (nothing to strip).
+    let head = null;
+    if (familyHead && norm(familyHead) !== norm(focusWord)) {
+      const hc = getWordCard(familyHead);
+      if (hc && !isSmallOnly(hc)) {
+        head = {
+          word: hc.word || familyHead, pos: posOf(hc), zh: hc.zh || '',
+          phrases: normPhrases(hc.phrases), examples: normExamples(hc.examples),
+          clickable: true
+        };
+      }
+    }
+
     let familyMembers = family ? (family.family_members || []) : (focus.family_members || []);
     if (!Array.isArray(familyMembers)) familyMembers = [];
     const focusKey = norm(focusWord);
@@ -223,7 +238,7 @@
       focus_word: focusWord, family_head: familyHead, word: focusWord,
       pos: posOf(focus),
       zh: focus.zh || '', phrases: normPhrases(focus.phrases), examples: normExamples(focus.examples),
-      family_members: familyMembers, group, kin_clusters: kinClusters
+      head, family_members: familyMembers, group, kin_clusters: kinClusters
     };
   }
 
