@@ -83,6 +83,7 @@ const WordCard = (function () {
     const sp = splitPos(m.zh || "");
     const pos = m.pos || sp.pos, meaning = sp.meaning;
     const head = `<div class="wc-head"><span class="wc-w">${wordRef(m.word, !!m.clickable)}</span>`
+      + (m.isHead ? ` <i class="wc-headtag">原型</i>` : "")
       + (pos ? ` <i class="wc-pos">${esc(pos)}</i>` : "")
       + (meaning ? ` <span class="wc-hzh">${esc(meaning)}</span>` : "")
       + `</div>`;
@@ -116,9 +117,10 @@ const WordCard = (function () {
   function renderTitle(d) {
     const sp = splitPos(d.zh || "");
     const pos = d.pos || sp.pos, meaning = sp.meaning;
-    // The whole big card IS the learning head (prefix/suffix-stripped core);
-    // badge it so it's unmistakable this is the 原型.
-    return `<div class="wc-head-badge">原型 · HEAD</div>`
+    // Badge only when this card's word IS its family head (族长) — a member
+    // card opened from the maze shows its own word, not necessarily a head.
+    const isHead = d.family_head && norm(d.word) === norm(d.family_head);
+    return (isHead ? `<div class="wc-head-badge">原型 · HEAD</div>` : "")
          + `<div class="wc-word">${esc(d.word)}</div>`
          + (pos ? `<div class="wc-title-pos">${esc(pos)}</div>` : "")
          + (meaning ? `<div class="wc-title-zh">${esc(meaning)}</div>` : "");

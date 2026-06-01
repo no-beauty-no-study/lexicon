@@ -1164,6 +1164,19 @@ button.ornate-panel {
   font-family: "Songti SC", "Noto Serif SC", serif;
   font-size: 15px; color: #66574C;
 }
+/* 族长 marker on the family head inside a cluster list. */
+.word-card-body-zone .wc-head .wc-headtag {
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #9a7b33;
+  background: rgba(231, 201, 119, 0.2);
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  border-radius: 999px;
+  padding: 0 6px;
+  margin-left: 2px;
+  vertical-align: middle;
+}
 
 /* OWN block (focus word's own phrases + example, no heading) */
 .word-card-body-zone .wc-own { margin: 2px 0 0; }
