@@ -102,11 +102,21 @@
     for (const c of lemmaCandidates(w)) if (readingSet.has(c)) return regKey(c) || c;
     return null;
   }
-  // A word's family head (族长) = its family cluster's head.
+  // A word's family head (族长) = the head of its RICHEST family cluster.
+  // A word can sit in several clusters, including junk self-singletons
+  // (head === word, one member); prefer the cluster with the most members
+  // whose head isn't the word itself, so those singletons never win.
   function familyHead(w) {
     const cs = famByWord.get(w);
-    if (cs && cs.length && cs[0].head) return norm(cs[0].head);
-    return w;
+    if (!cs || !cs.length) return w;
+    let best = null;
+    for (const c of cs) {
+      if (!best) { best = c; continue; }
+      const selfC = norm(c.head) === w, selfB = norm(best.head) === w;
+      if (selfB && !selfC) best = c;
+      else if (selfC === selfB && (c.words || []).length > (best.words || []).length) best = c;
+    }
+    return best && best.head ? norm(best.head) : w;
   }
 
   /* ---------- small card (reading click) ---------- */
