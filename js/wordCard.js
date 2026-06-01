@@ -320,7 +320,11 @@ const WordCard = (function () {
   // Dividers (.wc-sep) speak nothing — they just reveal and roll onward.
   function lineSpeakText(el) {
     if (!el) return "";
-    if (el.classList.contains("wc-word")) return el.textContent.trim();
+    if (el.classList.contains("wc-word")) {
+      const clone = el.cloneNode(true);
+      const p = clone.querySelector(".wc-pos-inline"); if (p) p.remove();
+      return clone.textContent.trim();
+    }
     if (el.classList.contains("wc-sep"))  return "";
     if (el.classList.contains("wc-head")) {
       const w = el.querySelector(".wc-w"); return w ? w.textContent.trim() : "";
@@ -349,47 +353,46 @@ const WordCard = (function () {
     if (bodyZone) bodyZone.querySelectorAll(".is-reading").forEach(x => x.classList.remove("is-reading"));
     if (titleZone) titleZone.querySelectorAll(".is-reading").forEach(x => x.classList.remove("is-reading"));
   }
-  // Reveal section s (display it) and start reading its lines one at a time.
+  // Reveal a whole 区 at once — its rows ink in one-by-one via a CSS stagger
+  // (so the reveal NEVER depends on audio) — then read the rows aloud in
+  // order, highlighting each. STOPS at the section end; next tap = next 区.
   function playSection(s) {
     if (s < 0 || s >= cardSections.length) return;
     clearTimeout(cardTimer);
     curSec = s;
-    const sec = cardSections[s].sec;
-    if (sec) sec.classList.add("is-shown");
-    playLine(s, 0);
-  }
-  // Reveal + (if it has text) read line j of section s, lighting up only that
-  // line, then auto-advance WITHIN the section. At the section's end it STOPS
-  // — the next 区 only appears on the next tap.
-  function playLine(s, j) {
     const sect = cardSections[s];
-    if (!sect) return;
+    if (sect.sec) sect.sec.classList.add("is-shown");
+    sect.lines.forEach((el, k) => {
+      el.style.animationDelay = (k * 0.18) + "s";
+      el.classList.add("wc-revealed");
+    });
+    speakSeq(s, 0);
+  }
+  // Read line j of section s aloud + light it up, then chain to the next line
+  // WITHIN this section. Reveal already happened in playSection, so a flaky
+  // voice can't stall the display.
+  function speakSeq(s, j) {
+    const sect = cardSections[s];
+    if (!sect || curSec !== s) return;
     const lines = sect.lines;
-    if (j < 0 || j >= lines.length) return;   // section finished → wait for tap
+    if (j < 0 || j >= lines.length) return;   // section read out → wait for tap
     clearTimeout(cardTimer);
-    curSec = s; curLine = j;
+    curLine = j;
     const el = lines[j];
-    el.classList.add("wc-revealed");
-    clearReadingMark();
-
     const txt = lineSpeakText(el);
-    if (!txt) {                       // a divider — reveal and roll straight on
-      cardTimer = setTimeout(() => playLine(s, j + 1), 150);
-      return;
-    }
+    if (!txt) { cardTimer = setTimeout(() => speakSeq(s, j + 1), 120); return; }
+    clearReadingMark();
     el.classList.add("is-reading");
     scrollCardTo(el);
-
     let advanced = false;
-    const onEnd = () => {
+    const next = () => {
       if (advanced || curSec !== s || curLine !== j) return;
       advanced = true;
-      cardTimer = setTimeout(() => playLine(s, j + 1), 240);
+      cardTimer = setTimeout(() => speakSeq(s, j + 1), 200);
     };
-    // Fallback in case the voice's onend never fires (no voices / muted).
     const words = (txt.match(/\S+/g) || []).length;
-    cardTimer = setTimeout(onEnd, words * 320 + 1300);
-    if (typeof TTS !== "undefined" && TTS.speak) { try { TTS.speak(txt, { onEnd }); } catch (_) {} }
+    cardTimer = setTimeout(next, words * 300 + 1200);   // fallback if voice is silent
+    if (typeof TTS !== "undefined" && TTS.speak) { try { TTS.speak(txt, { onEnd: next }); } catch (_) {} }
   }
   // ‹ Back — retrace the maze: pop the current word and re-open the one
   // before it; if this was the entry card, just close back to reading.
