@@ -5,6 +5,19 @@
    up its own behaviour. */
 (function () {
 
+  // One-shot story reset: a word-card "Open Chapter" used to jump the GRADED
+  // story path forward and strand the reader deep in a later chapter with no
+  // way back ("story 卡在后面章节回不去了"). Open Chapter is now browse-mode,
+  // but the already-polluted resume point still points deep in. Clear it once
+  // so the story starts clean again; the flag stops it from wiping progress
+  // on every load thereafter.
+  try {
+    if (!localStorage.getItem("tpl.storyResetV63")) {
+      localStorage.removeItem("tpl.lastRead");
+      localStorage.setItem("tpl.storyResetV63", "1");
+    }
+  } catch (_) {}
+
   /* ---------- viewport scaling (1448×1086 design fits the screen) ---------- */
   function fitStage() {
     const stage = document.getElementById("stage");
