@@ -117,7 +117,7 @@ const Views = (function () {
       </div></div>`;
     scrim.querySelector(".qm-continue").onclick = (e) => { e.stopPropagation(); window.go(quizContinueHref()); };
     const rb = scrim.querySelector(".qm-review");
-    if (n) rb.onclick = (e) => { e.stopPropagation(); window.go("#quiz?chapter=universe&section=1.1&stage=golden&review=1&from=menu"); };
+    if (n) rb.onclick = (e) => { e.stopPropagation(); window.__navDir = "forward"; window.go("#review?from=menu"); };
     scrim.onclick = (e) => { if (e.target === scrim) scrim.remove(); };
     requestAnimationFrame(() => scrim.classList.add("is-open"));
   }
@@ -178,7 +178,7 @@ const Views = (function () {
           setTimeout(() => {
             if (a === "resume")      window.go("#select");
             else if (a === "quiz")   window.go(quizContinueHref());
-            else if (a === "recall") window.go("#quiz?chapter=universe&section=1.1&stage=golden&review=1&from=menu");
+            else if (a === "recall") window.go("#review?from=menu");
             else                     window.go("#chapters?browse=1");
           }, 540);
         });
@@ -2191,9 +2191,259 @@ const Views = (function () {
     },
   };
 
+  /* ---------- review ----------
+     One Review = up to 8 accumulated words (most-missed first), played on
+     the 3F265 review background with three hand-measured zones:
+        WORD box  29.9% / 14.8% / 40.3% / 17.0%
+        QUESTION  21.3% / 40.4% / 57.5% / 42.7%
+        BOTTOM UI 28.4% / 90.6% / 43.2% /  7.6%
+     ROUND 1 (recognition): the WORD box shows the word and reads it once;
+     tapping it reveals the example (read once) + a group/meaning choice in
+     the QUESTION box. A right answer skips the word; a wrong one sends it to
+     ROUND 2 (dictation), where the WORD box itself becomes ONE open writing
+     line (no per-letter boxes hinting the length) and the example with a
+     blank sits below. */
+  const review = {
+    init(host, params) {
+      const BG = "assets/bg/ui/3F265BED-4DBB-4537-A6E8-97D8DED1CAE0.png";
+      try { host.style.backgroundImage = `url("${BG}")`; } catch (_) {}
+      const wordZone = host.querySelector(".rv-word");
+      const qZone    = host.querySelector(".rv-question");
+      const botZone  = host.querySelector(".rv-bottom");
+      const VR = window.VocabRuntime;
+      const fromCtx = params.from || "menu";
+      const backHref = (fromCtx === "garden") ? "#word-garden" : "#menu";
+      function rxq(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+      function say(t, cb) { try { if (typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t), cb ? { onEnd: cb } : undefined); } catch (_) {} }
+      function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+      function chord() { try { playReviewChord(); } catch (_) {} }
+
+      // ---- build up to 8 review items (need a big card + an example) ----
+      function buildSet() {
+        const src = (window.Quiz && Quiz.reviewWords) ? Quiz.reviewWords() : [];
+        const out = [], seen = new Set();
+        for (const raw of src) {
+          const w = String(raw).toLowerCase(); if (seen.has(w)) continue;
+          const sc = VR && VR.getSmallCard ? VR.getSmallCard(w) : null;
+          if (!sc || sc.proper) continue;
+          const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
+          const bc = VR && VR.getBigCard ? VR.getBigCard(ans) : null;
+          if (!bc) continue;   // owl-only — no big card, not in the pool
+          const ex = (sc.examples || []).find(e => e.example && new RegExp("\\b" + rxq(ans) + "\\b", "i").test(e.example));
+          if (!ex) continue;
+          const syns = ((bc.group) || []).filter(g => g.clickable && g.word).map(g => g.word);
+          seen.add(w); seen.add(ans);
+          out.push({ word: ans, en: ex.example, zh: ex.example_zh || "", pos: sc.pos || "", meaning: sc.zh || "", syn: syns[0] || null });
+          if (out.length >= 8) break;
+        }
+        return out;
+      }
+      const set = buildSet();
+      if (!set.length) {
+        wordZone.innerHTML = "";
+        qZone.innerHTML = `<div class="rv-empty">No accumulated words to review yet.<br>Collect some words in the Trial first.</div>`;
+        botZone.innerHTML = `<button type="button" class="rv-back" data-go="${backHref}">Back</button>`;
+        return;
+      }
+      set.forEach(q => { q.status = "todo"; });   // todo | passed | failed | sealed
+
+      // distractors are drawn from the rest of the set itself
+      function synOptions(q) {
+        const pool = [];
+        for (const o of set) if (o !== q && o.syn) pool.push(o.syn);
+        for (const o of set) if (o !== q) pool.push(o.word);
+        const out = [], used = new Set([(q.syn || "").toLowerCase(), q.word.toLowerCase()]);
+        for (const d of shuffle(pool)) { if (out.length >= 3) break; const dl = String(d).toLowerCase(); if (used.has(dl)) continue; used.add(dl); out.push(d); }
+        while (out.length < 3) out.push("—");
+        return shuffle([{ t: q.syn, correct: true }].concat(out.map(d => ({ t: d, correct: false }))));
+      }
+      function meaningOptions(q) {
+        const out = [], used = new Set([q.meaning]);
+        for (const o of shuffle(set)) { if (out.length >= 3) break; if (o === q || !o.meaning || used.has(o.meaning)) continue; used.add(o.meaning); out.push(o.meaning); }
+        while (out.length < 3) out.push("—");
+        return shuffle([{ t: q.meaning, correct: true }].concat(out.map(d => ({ t: d, correct: false }))));
+      }
+
+      const LETTER = ["A", "B", "C", "D"];
+      function renderBottom() {
+        const sealed = set.filter(q => q.status === "passed" || q.status === "sealed").length;
+        const dots = set.map(q => `<span class="rv-dot ${q.status === "passed" || q.status === "sealed" ? "is-done" : q.status === "failed" ? "is-fail" : ""}"></span>`).join("");
+        botZone.innerHTML =
+          `<button type="button" class="rv-back" data-go="${backHref}" title="Leave review">‹</button>`
+          + `<span class="rv-dots">${dots}</span>`
+          + `<span class="rv-count">${sealed} / ${set.length}</span>`;
+      }
+
+      // ============ ROUND 1 — recognition (tap word → example + choice) ============
+      let i1 = 0;
+      const failed = [];
+      function round1() {
+        if (i1 >= set.length) { startRound2(); return; }
+        const q = set[i1];
+        let revealed = false, locked = false;
+        wordZone.className = "rv-word is-show";
+        wordZone.innerHTML = `<button type="button" class="rv-wordface">
+            <span class="rv-word-en">${esc(q.word)}</span>
+            ${q.pos ? `<span class="rv-word-pos">${esc(q.pos)}</span>` : ""}
+            <span class="rv-word-tap">tap to hear the line</span>
+          </button>`;
+        qZone.innerHTML = `<div class="rv-q-hint">Listen to the word, then tap it for its sentence.</div>`;
+        renderBottom();
+        say(q.word);
+        const face = wordZone.querySelector(".rv-wordface");
+        face.addEventListener("click", () => {
+          if (revealed) { say(q.en); return; }   // tap again → replay the line
+          revealed = true;
+          wordZone.querySelector(".rv-word-tap").textContent = "↻ tap to hear again";
+          const useSyn = !!q.syn;
+          const opts = useSyn ? synOptions(q) : meaningOptions(q);
+          const sentence = esc(q.en).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), `<u class="rv-target">${esc(q.word)}</u>`);
+          qZone.innerHTML = `
+            <p class="rv-sentence">${sentence}</p>
+            <div class="rv-q-label">${useSyn ? "Which word joins its group?" : "Which meaning fits?"}</div>
+            <ul class="rv-options">
+              ${opts.map((o, n) => `<li class="rv-opt" data-correct="${o.correct ? 1 : 0}">
+                  <span class="rv-opt-l">${LETTER[n]}.</span><span class="rv-opt-t">${esc(o.t)}</span></li>`).join("")}
+            </ul>`;
+          say(q.en);
+          qZone.querySelectorAll(".rv-opt").forEach(li => {
+            li.addEventListener("click", () => {
+              if (locked) return;
+              const ok = li.dataset.correct === "1";
+              if (ok) {
+                locked = true;
+                li.classList.add("is-correct");
+                q.status = "passed";
+                if (window.Quiz) Quiz.recordWord(q.word, true);
+                chord(); renderBottom();
+                setTimeout(() => { i1 += 1; round1(); }, 850);
+              } else {
+                li.classList.add("is-wrong");
+                if (q.status !== "failed") { q.status = "failed"; failed.push(q); if (window.Quiz) Quiz.recordWord(q.word, false); }
+                renderBottom();
+                // mark the right one, then move this word to round 2
+                qZone.querySelectorAll(".rv-opt").forEach(o => { if (o.dataset.correct === "1") o.classList.add("is-correct"); });
+                locked = true;
+                setTimeout(() => { i1 += 1; round1(); }, 1100);
+              }
+            });
+          });
+        });
+        renderBottom();
+      }
+
+      // ============ ROUND 2 — dictation (word box = one open line) ============
+      let i2 = 0;
+      function startRound2() { i2 = 0; round2(); }
+      function round2() {
+        if (i2 >= failed.length) { finish(); return; }
+        const q = failed[i2];
+        let revealed = false, wrongThis = false, recordedWrong = false;
+        wordZone.className = "rv-word is-spell";
+        wordZone.innerHTML = `<div class="rv-spell">
+            <input class="rv-input" type="text" lang="en" inputmode="email"
+                   autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Spell the word">
+          </div>
+          <div class="rv-spell-label">✦ SPELL WHAT YOU HEAR ✦ <span class="rv-replay">↻</span></div>`;
+        const blank = esc(q.en).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"),
+          `<span class="rv-fill">${"_".repeat(Math.max(6, q.word.length))}</span>`);
+        qZone.innerHTML = `
+          <p class="rv-sentence">${blank}</p>
+          <div class="rv-correction" hidden></div>
+          <p class="rv-sentence-zh"></p>
+          <p class="rv-q-hint">Type the missing word, then press Enter.</p>`;
+        renderBottom();
+        const input = wordZone.querySelector(".rv-input");
+        const corr  = qZone.querySelector(".rv-correction");
+        const zhEl  = qZone.querySelector(".rv-sentence-zh");
+        const spell = wordZone.querySelector(".rv-spell");
+        setTimeout(() => { try { input.focus(); } catch (_) {} }, 80);
+        say(q.en);
+        function showCorrection(typed) {
+          const dotted = (VR && VR.dotted) ? VR.dotted(q.word) : q.word;
+          let html = "", pi = 0;
+          for (const ch of dotted) {
+            if (ch === "·") { html += `<span class="rv-c-dot">·</span>`; continue; }
+            const ok = typed[pi] && typed[pi].toLowerCase() === ch.toLowerCase();
+            html += `<span class="${ok ? "rv-c-ok" : "rv-c-bad"}">${esc(ch)}</span>`;
+            pi++;
+          }
+          corr.innerHTML = `<span class="rv-c-key">Correct spelling</span><span class="rv-c-word">${html}</span>`;
+          corr.hidden = false;
+          zhEl.textContent = q.zh || "";
+        }
+        function check() {
+          const typed = input.value.trim().toLowerCase();
+          if (!typed) { spell.classList.remove("is-shake"); void spell.offsetWidth; spell.classList.add("is-shake"); return; }
+          if (typed === q.word) {
+            const clean = !revealed && !wrongThis;
+            q.status = "sealed";
+            if (window.Quiz) { if (clean) Quiz.recordSpelled(q.word); else Quiz.recordCorrected(q.word); }
+            zhEl.textContent = q.zh || ""; say(q.en); chord(); renderBottom();
+            setTimeout(() => { i2 += 1; round2(); }, 1500);
+          } else {
+            wrongThis = true; revealed = true;
+            if (!recordedWrong && window.Quiz) { Quiz.recordWord(q.word, false); recordedWrong = true; }
+            spell.classList.remove("is-shake"); void spell.offsetWidth; spell.classList.add("is-shake");
+            showCorrection(typed); say(q.en);
+          }
+        }
+        input.addEventListener("input", () => { input.value = input.value.replace(/[^A-Za-z]/g, ""); if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; } });
+        input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); check(); } });
+        wordZone.querySelector(".rv-spell-label").addEventListener("click", () => say(q.en));
+        qZone.querySelector(".rv-sentence").addEventListener("click", () => say(q.en));
+      }
+
+      function finish() {
+        const sealed = set.filter(q => q.status === "passed" || q.status === "sealed").length;
+        wordZone.className = "rv-word is-show";
+        wordZone.innerHTML = `<div class="rv-done-mark">✦</div>`;
+        qZone.innerHTML = `<div class="rv-done">
+            <div class="rv-done-title">Review Complete</div>
+            <p class="rv-done-sub">${sealed} / ${set.length} words cleared</p>
+            <button type="button" class="rv-back rv-done-btn" data-go="${backHref}">Done</button>
+          </div>`;
+        renderBottom();
+        try { playSuccessChordGlobal(); } catch (_) {}
+      }
+
+      round1();
+    },
+  };
+
+  // bright two-note ding for a correct review answer (shared, audio-only).
+  function playReviewChord() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext; if (!Ctx) return;
+      const ctx = new Ctx(); const notes = [783.99, 1174.66]; const now = ctx.currentTime;
+      notes.forEach((f, i) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = "triangle"; o.frequency.value = f; const t0 = now + i * 0.10;
+        g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.22, t0 + 0.015);
+        g.gain.exponentialRampToValueAtTime(0.0008, t0 + 0.42);
+        o.connect(g).connect(ctx.destination); o.start(t0); o.stop(t0 + 0.5);
+      });
+      setTimeout(() => { try { ctx.close(); } catch (_) {} }, 1000);
+    } catch (_) {}
+  }
+  function playSuccessChordGlobal() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext; if (!Ctx) return;
+      const ctx = new Ctx(); const notes = [523.25, 659.25, 783.99, 1046.50]; const now = ctx.currentTime;
+      notes.forEach((f, i) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = "sine"; o.frequency.value = f; const t0 = now + i * 0.18;
+        g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.18, t0 + 0.025);
+        g.gain.exponentialRampToValueAtTime(0.0008, t0 + 1.05);
+        o.connect(g).connect(ctx.destination); o.start(t0); o.stop(t0 + 1.15);
+      });
+      setTimeout(() => { try { ctx.close(); } catch (_) {} }, 2400);
+    } catch (_) {}
+  }
+
   return {
     splash, menu, select, chapters,
-    reading, quiz, quizstatus, notes,
+    reading, quiz, quizstatus, notes, review,
     "word-garden": wordGarden,
     save, load, voices,
   };

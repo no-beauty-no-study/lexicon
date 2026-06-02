@@ -2211,3 +2211,108 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
   letter-spacing: 0.06em;
   color: rgba(124, 95, 50, 0.8);
 }
+
+/* ============================================================
+   REVIEW PAGE — 3F265 background, three hand-measured zones
+   positioned against the full 1448×1086 page (the user measured
+   on the painted image, so these are page-relative, NOT
+   master-frame-relative). Two rounds: recognition then dictation.
+   ============================================================ */
+.review-art .rv-word,
+.review-art .rv-question,
+.review-art .rv-bottom { position: absolute; box-sizing: border-box; }
+.review-art .rv-word     { left: 29.9%; top: 14.8%; width: 40.3%; height: 17.0%; }
+.review-art .rv-question { left: 21.3%; top: 40.4%; width: 57.5%; height: 42.7%; }
+.review-art .rv-bottom   { left: 28.4%; top: 90.6%; width: 43.2%; height:  7.6%; }
+
+/* WORD box */
+.review-art .rv-word {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.rv-wordface {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 100%; height: 100%; gap: 6px;
+  background: transparent; border: 0; cursor: pointer; appearance: none;
+}
+.rv-word-en {
+  font-family: var(--font-body); font-size: 52px; color: #2F3338;
+  letter-spacing: 0.01em; line-height: 1.05;
+}
+.rv-word-pos { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 18px; color: #8E7A4E; }
+.rv-word-tap { font-family: var(--font-body); font-size: 13px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #B8860B; }
+.rv-word.is-show .rv-done-mark { font-size: 54px; color: #B8860B; }
+
+/* WORD box in dictation mode — one open writing line, no cells */
+.rv-word.is-spell { gap: 8px; }
+.rv-spell { width: 86%; max-width: 360px; }
+.rv-spell.is-shake { animation: gs-shake 0.4s ease; }
+.rv-input {
+  display: block; width: 100%; box-sizing: border-box; height: 58px;
+  padding: 8px 12px; text-align: center;
+  border: 0; border-bottom: 2px solid rgba(184,160,111,0.8); border-radius: 0;
+  background: rgba(247,240,222,0.55);
+  font-family: var(--font-body); font-size: 34px; color: #2F3338; letter-spacing: 0.02em;
+}
+.rv-input:focus { outline: none; border-bottom-color: #B8860B;
+  box-shadow: inset 0 -3px 0 rgba(184,134,11,0.18); }
+.rv-spell-label { font-family: var(--font-display), Georgia, serif;
+  letter-spacing: 0.2em; font-size: 12px; text-transform: uppercase; color: #9A7A3C; cursor: pointer; }
+.rv-replay { color: #B8860B; margin-left: 4px; }
+
+/* QUESTION box */
+.review-art .rv-question {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  text-align: center; overflow-y: auto; padding: 4px 10px;
+}
+.rv-q-hint { font-family: var(--font-body); font-style: italic; font-size: 16px; color: #7B7063; margin: auto 0; }
+.rv-q-label { font-family: var(--font-display), Georgia, serif; letter-spacing: 0.14em;
+  text-transform: uppercase; font-size: 13px; color: #9A7A3C; margin: 6px 0 14px; }
+.rv-sentence { font-family: var(--font-body); font-size: 25px; line-height: 1.45;
+  color: #2F3338; margin: 8px 0 6px; cursor: pointer; }
+.rv-target { text-decoration: none; border-bottom: 2px solid #B8860B; color: #6E5A2A; padding: 0 2px; }
+.rv-fill { color: #B8A06F; letter-spacing: 0.04em; padding: 0 4px; }
+.rv-sentence-zh { font-family: "Noto Serif SC", "Songti SC", serif; font-size: 17px; color: #5D4D42; margin: 4px 0 2px; }
+.rv-options { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 460px; }
+.rv-opt {
+  display: flex; align-items: center; gap: 10px; text-align: left;
+  margin: 9px 0; padding: 12px 16px; cursor: pointer;
+  border: 1px solid rgba(184,160,111,0.5); border-radius: 6px;
+  background: rgba(247,240,222,0.5); transition: background 0.15s ease, border-color 0.15s ease;
+}
+.rv-opt:hover { background: rgba(238,229,211,0.85); }
+.rv-opt-l { font-family: var(--font-display), Georgia, serif; color: #9A7A3C; font-size: 18px; min-width: 22px; }
+.rv-opt-t { font-family: var(--font-body); font-size: 20px; color: #2F3338; }
+.rv-opt.is-correct { border-color: #2E7D52; background: rgba(120,190,150,0.28); box-shadow: 0 0 0 2px rgba(46,125,82,0.18); }
+.rv-opt.is-wrong   { border-color: #B14A3A; background: rgba(200,110,90,0.22); }
+
+/* correction (dotted spelling) */
+.rv-correction { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 6px 0; }
+.rv-c-key { font-family: var(--font-display), Georgia, serif; letter-spacing: 0.14em;
+  text-transform: uppercase; font-size: 11px; color: #9A7A3C; }
+.rv-c-word { font-family: var(--font-body); font-size: 28px; letter-spacing: 0.02em; }
+.rv-c-ok { color: #2E7D52; } .rv-c-bad { color: #C0392B; } .rv-c-dot { color: #B8A06F; }
+
+/* BOTTOM UI */
+.review-art .rv-bottom {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.rv-back {
+  font-family: var(--font-display), Georgia, serif; font-size: 18px; cursor: pointer;
+  background: rgba(247,240,222,0.6); border: 1px solid rgba(184,160,111,0.6); color: #6E5D48;
+  border-radius: 6px; padding: 6px 16px;
+}
+.rv-back:hover { background: rgba(238,229,211,0.9); }
+.rv-dots { display: inline-flex; gap: 8px; }
+.rv-dot { width: 10px; height: 10px; border-radius: 50%;
+  border: 1px solid rgba(184,160,111,0.7); background: rgba(247,240,222,0.4); }
+.rv-dot.is-done { background: #B8860B; border-color: #B8860B; }
+.rv-dot.is-fail { background: rgba(177,74,58,0.55); border-color: #B14A3A; }
+.rv-count { font-family: var(--font-display), Georgia, serif; font-size: 15px; color: #8E7A4E; letter-spacing: 0.08em; }
+
+/* empty / done states */
+.rv-empty, .rv-done { font-family: var(--font-body); color: #5D4D42; text-align: center; margin: auto; }
+.rv-empty { font-size: 18px; line-height: 1.6; font-style: italic; }
+.rv-done-title { font-family: var(--font-display), Georgia, serif; font-size: 30px; color: #2b3b51; margin-bottom: 8px; }
+.rv-done-sub { font-size: 17px; color: #6E5D48; margin-bottom: 18px; }
+.rv-done-btn { font-size: 18px; padding: 8px 26px; }
