@@ -669,22 +669,14 @@ const Views = (function () {
             <span class="wce-en">${esc(exEn)}</span>
             ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
           </div>` : "";
-        // HEAD chip — opens the big learning card on the word's 首脑词 (the
-        // all-suffix-stripped core). When the word is already its own head it
-        // links to itself. Styled like the Auto / folded chips, not a pill.
-        const openHead = sc.clickableForBigCard
-          ? ((sc.head && sc.head.word) ? sc.head.word : (sc.word || id)) : null;
-        const headChip = openHead ? `
-            <button type="button" class="word-card-head-chip" data-open-head="${esc(openHead)}">
-              <span class="wchc-label">head</span><span class="wchc-word">${esc(openHead)}</span><span class="wchc-arrow">›</span>
-            </button>` : "";
+        // (HEAD chip removed at the user's request — the head data was noisy,
+        // e.g. hold → "holey". Tapping the card body still opens the big card.)
         return `
           <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
             <div class="word-card-headword">${esc(sc.word || id)}</div>
             <div class="word-card-meaning">${esc(sc.zh || "")}</div>
             ${phraseRows}
             ${exampleRow}
-            ${headChip}
           </div>`;
       }
       function renderMarginalia(sc) {
@@ -1698,15 +1690,12 @@ const Views = (function () {
           <div class="word-card-phrase"><span class="wcp-en">${esc(p.phrase || p.en || "")}</span>
           ${(p.phrase_zh || p.zh) ? `<span class="wcp-zh">${esc(p.phrase_zh || p.zh)}</span>` : ""}</div>`).join("");
         const ex = (sc.examples || [])[0]; const exEn = ex && (ex.example || ex.en) || ""; const exZh = ex && (ex.example_zh || ex.zh) || "";
-        const head = sc.head && sc.head.word;
-        const chip = (head && sc.clickableForBigCard)
-          ? `<button type="button" class="word-card-head-chip" data-open-head="${esc(head)}"><span class="wchc-label">head</span><span class="wchc-word">${esc(head)}</span><span class="wchc-arrow">›</span></button>` : "";
         return `<div class="word-card is-current is-entering${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
           <div class="word-card-headword">${esc(sc.word || id)}</div>
           <div class="word-card-meaning">${esc(sc.zh || "")}</div>
           ${phraseRows}
           ${exEn ? `<div class="word-card-example"><span class="wce-en">${esc(exEn)}</span>${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}</div>` : ""}
-          ${chip}</div>`;
+          </div>`;
       }
       function showQuizWord(word) {
         const stack = host.querySelector(".word-card-stack");
