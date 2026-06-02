@@ -51,29 +51,31 @@ const Quiz = (function () {
     return out;
   }
 
-  function quizHref(ch, sec, stage) {
+  // `from` records the entry path (menu | story | index) so the quiz's
+  // return button knows where to go back to.
+  function quizHref(ch, sec, stage, from) {
     return "#quiz?chapter=" + encodeURIComponent(ch) + "&section=" + encodeURIComponent(sec)
-         + "&stage=" + (stage || "silver");
+         + "&stage=" + (stage || "silver") + (from ? "&from=" + from : "");
   }
   function statusHref(ch, sec) {
     return "#quizstatus?chapter=" + encodeURIComponent(ch) + "&section=" + encodeURIComponent(sec);
   }
 
   // Menu — first unfinished stage in linear order; skip completed sections.
-  function menuHref() {
+  function menuHref(from) {
+    from = from || "menu";
     for (const { chapter, section } of order()) {
       const st = sectionState(chapter, section);
-      if (st.quiz1.status !== "completed") return quizHref(chapter, section, "silver");
-      if (st.quiz2.status !== "completed") return quizHref(chapter, section, "golden");
+      if (st.quiz1.status !== "completed") return quizHref(chapter, section, "silver", from);
+      if (st.quiz2.status !== "completed") return quizHref(chapter, section, "golden", from);
     }
-    // Everything cleared → the accumulation hub.
     return "#word-garden";
   }
   // Reading — the current section's trial, resuming its open stage.
   function readingHref(ch, sec) {
     const st = sectionState(ch, sec);
-    if (st.quiz1.status !== "completed") return quizHref(ch, sec, "silver");
-    if (st.quiz2.status !== "completed") return quizHref(ch, sec, "golden");
+    if (st.quiz1.status !== "completed") return quizHref(ch, sec, "silver", "story");
+    if (st.quiz2.status !== "completed") return quizHref(ch, sec, "golden", "story");
     return statusHref(ch, sec);   // both done → status page
   }
   // Story Index — open that section's Quiz Status page (pick / redo).

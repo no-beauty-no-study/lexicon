@@ -935,6 +935,20 @@
   position: relative;
   display: inline;
 }
+/* English word revealed beside the Chinese once the option is tapped. */
+.reading-art .quiz-option-en {
+  display: none; margin-left: 0.55em;
+  font-family: var(--font-body); font-style: italic;
+  font-size: 0.82em; color: #8a6a2e; letter-spacing: 0.01em;
+}
+.reading-art .quiz-option.is-revealed .quiz-option-en { display: inline; }
+/* Satisfying glow when an option is correct. */
+.reading-art .quiz-option.is-correct { animation: qz-correct-glow 0.75s ease; }
+@keyframes qz-correct-glow {
+  0%   { text-shadow: 0 0 0 rgba(127,149,163,0); }
+  35%  { text-shadow: 0 0 14px rgba(184,160,111,0.85), 0 0 26px rgba(127,149,163,0.5); }
+  100% { text-shadow: 0 0 0 rgba(127,149,163,0); }
+}
 
 /* User-picked but not yet judged — short gold tick at the left. */
 .reading-art .quiz-option.is-selected { color: #3a3024; }
@@ -1187,6 +1201,9 @@
 .qx-actions { position: relative; z-index: 1; display: flex; gap: 14px; justify-content: center; }
 .qx-leave { color: #8A5B56; border-color: rgba(138,91,86,0.5); }
 .qx-leave:hover { background: rgba(138,91,86,0.12); color: #6e3f3a; }
+/* The guiding "Continue" — a faint denim-blue wash to draw the tap. */
+.qx-continue { background: rgba(116, 134, 151, 0.18); border-color: rgba(116, 134, 151, 0.6); color: #41515e; }
+.qx-continue:hover { background: rgba(116, 134, 151, 0.32); color: #2f3d48; }
 .gs-btn[disabled] { opacity: 0.4; cursor: default; pointer-events: none; }
 
 /* ===== Silver Trial choice quiz — three measured zones (1448×1086) ===== */
