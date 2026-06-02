@@ -1755,16 +1755,29 @@
 
 /* Row — English left / Chinese right. Thin fading rule below each
    row (matches antique-divider: thinner at ends, denser middle). */
+.wg-col-head {
+  list-style: none;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #8a7653; padding: 0 4px 6px; margin-bottom: 4px;
+  border-bottom: 1px solid rgba(184,160,111,0.35);
+}
+.wg-empty { list-style: none; color: #9a8f7c; font-style: italic; font-size: 13px; padding: 8px 4px; }
 .wg-row {
   position: relative;
   display: grid;
-  grid-template-columns: 138px 1fr;
+  grid-template-columns: 120px 1fr auto;
   align-items: center;
-  gap: 28px;
+  gap: 14px;
   height: 32px;
   padding: 0 4px;
   cursor: pointer;
   transition: background 140ms ease;
+}
+.wg-row-need {
+  font-family: var(--font-display), Georgia, serif; font-size: 12px;
+  color: #A8443B; background: rgba(168,68,59,0.12);
+  border-radius: 999px; padding: 0 7px; line-height: 1.6;
 }
 .wg-row:hover { background: rgba(167, 141, 91, 0.06); }
 .wg-row + .wg-row::before {

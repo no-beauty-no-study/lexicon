@@ -188,13 +188,17 @@
       .sort((a, b) => (b.isHead - a.isHead) || a.word.localeCompare(b.word));
 
     // KIN (current word's own clusters via the bridge) — not shared.
+    const navE = navMap.get(w) || navMap.get(head);
     const kinWords = new Set();
     (headToKin.get(w) || []).forEach(id => (clusterWords.get(norm(id)) || []).forEach(x => kinWords.add(norm(x))));
+    // V149 patch fills nav entries with expanded kin_words for words whose
+    // kin clusters weren't wired to the bridge ("missing kin" like condense).
+    if (navE && Array.isArray(navE.kin_words)) navE.kin_words.forEach(x => kinWords.add(norm(x)));
     kinWords.delete(w);
     const kin = [...kinWords].map(id => shapeMember(id, clusterHead)).sort((a, b) => a.word.localeCompare(b.word));
 
     // FAMILY-KIN routes — head → family word → that family word's own kin.
-    const navEntry = navMap.get(w) || navMap.get(head);
+    const navEntry = navE;
     const familyKin = ((navEntry && navEntry.family_kin_routes) || []).map(r => ({
       via: r.through_family_word,
       words: (r.kin_words || []).filter(x => norm(x) !== norm(r.through_family_word)).map(id => shapeMember(id, clusterHead)),
