@@ -111,10 +111,9 @@ const Views = (function () {
     const n = (window.Quiz && Quiz.reviewWords) ? Quiz.reviewWords().length : 0;
     scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ THE TRIAL ✦</div>
       <p class="qx-en">Continue the main trial,<br>or review your accumulated words.</p>
-      <p class="qx-zh">继续主线试炼，或随机复习已累计的单词。</p>
       <div class="qx-actions">
-        <button type="button" class="gs-btn qm-continue">Continue · 继续</button>
-        <button type="button" class="gs-btn qm-review"${n ? "" : " disabled"}>Review ${n ? "(" + n + ")" : ""} · 复习</button>
+        <button type="button" class="gs-btn qm-continue">Continue Trial</button>
+        <button type="button" class="gs-btn qm-review"${n ? "" : " disabled"}>Review Words${n ? " (" + n + ")" : ""}</button>
       </div></div>`;
     scrim.querySelector(".qm-continue").onclick = (e) => { e.stopPropagation(); window.go(quizContinueHref()); };
     const rb = scrim.querySelector(".qm-review");
@@ -177,9 +176,10 @@ const Views = (function () {
           // circle needed. Hold so the badge blessing and bell
           // are heard/seen before the page lifts away.
           setTimeout(() => {
-            if (a === "resume")    window.go("#select");
-            else if (a === "quiz") showQuizMenuPopup(host);
-            else                   window.go("#chapters?browse=1");
+            if (a === "resume")      window.go("#select");
+            else if (a === "quiz")   window.go(quizContinueHref());
+            else if (a === "recall") window.go("#quiz?chapter=universe&section=1.1&stage=golden&review=1");
+            else                     window.go("#chapters?browse=1");
           }, 540);
         });
         btn.addEventListener("pointerdown", () => {
@@ -1121,7 +1121,7 @@ const Views = (function () {
           if (!ex) continue;
           seen.add(w); seen.add(ans);
           out.push({ word: ans, en: ex.example, zh: ex.example_zh || "",
-                     hint: (sc.pos ? sc.pos + " " : "") + (sc.zh || "") });
+                     pos: sc.pos || "", meaning: sc.zh || "" });
           if (out.length >= 10) break;
         }
         return out;
@@ -1131,9 +1131,10 @@ const Views = (function () {
         const body = host.querySelector(".quiz-body");
         const isReview = (params.review === "1");
         if (isReview) {
+          host.style.backgroundImage = `url("assets/bg/ui/3F265BED-4DBB-4537-A6E8-97D8DED1CAE0.png")`;
           host.querySelector("[data-chapter-number]").textContent = "Review";
           host.querySelector("[data-chapter-title]").textContent  = "Accumulated Words";
-          host.querySelector("[data-chapter-section]").textContent = "随机复习 · 错得最多的优先";
+          host.querySelector("[data-chapter-section]").textContent = "Random review · most-missed first";
         }
         const set = buildGoldenSet(isReview && window.Quiz ? Quiz.reviewWords() : sectionTokens(section));
         if (!set.length) {
@@ -1199,8 +1200,8 @@ const Views = (function () {
           input.value = "";
           const q = cur();
           enEl.innerHTML = blankSentence(q.en, q.word);
-          zhEl.textContent = q.zh || "";
-          hintEl.textContent = q.hint || "";
+          zhEl.textContent = "";                  // Chinese hidden until answered
+          hintEl.textContent = q.pos || "";       // POS only — no Chinese in the prompt
           cellsEl.classList.remove("is-shake");
           renderCells(); renderDots();
           setTimeout(() => { try { input.focus(); } catch (_) {} }, 60);
@@ -1222,8 +1223,11 @@ const Views = (function () {
           corr.innerHTML = `
             <div class="gs-c-row"><span class="gs-c-key">Your answer</span><span class="gs-c-you">${esc(typed) || "—"}</span></div>
             <div class="gs-c-row"><span class="gs-c-key">Correct spelling</span><span class="gs-c-correct">${spell}</span></div>
-            <div class="gs-c-tip">Tap the writing line to try again · 点击输入线重写</div>`;
+            ${q.meaning ? `<div class="gs-c-row"><span class="gs-c-key">Meaning</span><span class="gs-c-mean">${esc(q.meaning)}</span></div>` : ""}
+            <div class="gs-c-tip">Tap the writing line to try again.</div>`;
           corr.hidden = false;
+          // Chinese only appears now that the word has been answered.
+          zhEl.textContent = q.zh || "";
         }
         function recordState() {
           if (window.Quiz && Quiz.setStageStatus) {
@@ -1252,7 +1256,7 @@ const Views = (function () {
             scrim = document.createElement("div");
             scrim.className = "qx-scrim";
             scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
-              <p class="qx-en"></p><p class="qx-zh"></p>
+              <p class="qx-en"></p>
               <div class="qx-actions">
                 <button type="button" class="gs-btn qx-stay"></button>
                 <button type="button" class="gs-btn qx-leave"></button>
@@ -1262,13 +1266,10 @@ const Views = (function () {
           const n = remaining(), total = set.length;
           scrim.querySelector(".qx-en").innerHTML =
               `Only <b class="qx-num">${n}</b> word${n === 1 ? "" : "s"} left.<br>`
-            + `Leave now, and this set will remain unsealed.<br>`
-            + `Finish them, and all ${total} words will enter your accumulated list.`;
-          scrim.querySelector(".qx-zh").innerHTML =
-              `只剩 <b class="qx-num">${n}</b> 个词。<br>现在离开，这一组仍然不会封存。<br>`
-            + `完成它们，${total} 个词才会全部进入已累计。`;
-          scrim.querySelector(".qx-stay").textContent = "Seal the Set · 封存本组";
-          scrim.querySelector(".qx-leave").textContent = "Give Up Progress · 放弃进度";
+            + `Leave now, and this set stays unsealed.<br>`
+            + `Finish them, and all ${total} words enter your accumulated list.`;
+          scrim.querySelector(".qx-stay").textContent = "Seal the Set";
+          scrim.querySelector(".qx-leave").textContent = "Give Up";
           scrim.querySelector(".qx-stay").onclick = (e) => { e.stopPropagation(); scrim.remove(); try { input.focus(); } catch (_) {} };
           scrim.querySelector(".qx-leave").onclick = (e) => { e.stopPropagation(); scrim.remove(); proceed(); };
           requestAnimationFrame(() => scrim.classList.add("is-open"));
@@ -1298,11 +1299,16 @@ const Views = (function () {
           if (typed === q.word) {
             const clean = !revealed && !wrongThis;     // un-prompted, first try this presentation
             if (clean) { q.status = "sealed"; if (window.Quiz) Quiz.recordWord(q.word, true); playSuccessChord(); }
-            else { if (q.status !== "sealed") q.status = "corrected"; queue.push(queue[pos]); } // re-queue for independent retry
+            else { if (q.status !== "sealed") q.status = "corrected"; if (window.Quiz) Quiz.recordCorrected(q.word); queue.push(queue[pos]); }
+            // NOW reveal the Chinese (only after it's answered) and hold a beat.
+            zhEl.textContent = q.zh || "";
+            hintEl.textContent = (q.pos ? q.pos + "  " : "") + (q.meaning || "");
             renderDots(); recordState();
-            pos += 1;
-            if (pos >= queue.length || sealedCount() >= set.length) return finish();
-            present();
+            setTimeout(() => {
+              pos += 1;
+              if (pos >= queue.length || sealedCount() >= set.length) return finish();
+              present();
+            }, 950);
           } else {
             wrongThis = true;
             if (q.status !== "sealed") q.status = "corrected";

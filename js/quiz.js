@@ -92,8 +92,17 @@ const Quiz = (function () {
   function recordWord(word, ok) {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
-    const e = s[k] || { w: 0, c: 0, sealed: false };
+    const e = s[k] || { w: 0, c: 0, corrected: 0, sealed: false };
     if (ok) { e.c += 1; e.sealed = true; } else { e.w += 1; }
+    s[k] = e; saveStats(s);
+  }
+  // Seen the answer then got it right → counts as a CORRECTION, never a
+  // clean correct (does not lower reviewNeed). "错了之后再写对仍算错。"
+  function recordCorrected(word) {
+    const k = String(word || "").toLowerCase(); if (!k) return;
+    const s = loadStats();
+    const e = s[k] || { w: 0, c: 0, corrected: 0, sealed: false };
+    e.corrected = (e.corrected || 0) + 1; e.sealed = true;
     s[k] = e; saveStats(s);
   }
   function score(e) { return (e.w || 0) - (e.c || 0); }
@@ -111,7 +120,7 @@ const Quiz = (function () {
   return {
     sectionState, setStageStatus, update, sectionCompleted,
     order, menuHref, readingHref, indexHref, quizHref, statusHref,
-    recordWord, reviewWords, accumulatedWords, unsealedWords, wordStat,
+    recordWord, recordCorrected, reviewWords, accumulatedWords, unsealedWords, wordStat,
   };
 })();
 window.Quiz = Quiz;
