@@ -90,7 +90,10 @@ const Quiz = (function () {
   const SKEY = "tpl.quizWordStats";
   function loadStats() { try { return JSON.parse(localStorage.getItem(SKEY) || "{}"); } catch (_) { return {}; } }
   function saveStats(s) { try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (_) {} }
-  function blankStat() { return { w: 0, rc: 0, collected: false, spelled: false }; }
+  function blankStat() { return { w: 0, rc: 0, collected: false, spelled: false, t: 0 }; }
+  // Stamp the FIRST time a word is collected, so recency can break weight ties
+  // (earlier-accumulated words get reviewed / pulled in to pad a quiz first).
+  function stampCollected(e) { e.collected = true; if (!e.t) e.t = Date.now(); }
   // A CHOICE answer (silver / golden / review group). The word is collected on
   // first sight; only a WRONG answer moves the score. A correct answer NEVER
   // subtracts (that is reserved for review).
@@ -98,7 +101,7 @@ const Quiz = (function () {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
     const e = Object.assign(blankStat(), s[k]);
-    e.collected = true;
+    stampCollected(e);
     if (!ok) e.w = (e.w || 0) + 1;
     s[k] = e; saveStats(s);
   }
@@ -107,7 +110,7 @@ const Quiz = (function () {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
     const e = Object.assign(blankStat(), s[k]);
-    e.collected = true;
+    stampCollected(e);
     s[k] = e; saveStats(s);
   }
   // A clean dictation seals the word (right column). Dictation is NOT "new
@@ -124,14 +127,14 @@ const Quiz = (function () {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
     const e = Object.assign(blankStat(), s[k]);
-    e.collected = true; e.rc = (e.rc || 0) + 1;
+    stampCollected(e); e.rc = (e.rc || 0) + 1;
     s[k] = e; saveStats(s);
   }
   function undoCorrect() { /* no-op: a normal correct never touched the score */ }
   function score(e) { return (e.w || 0) - (e.rc || 0); }
   function byScore(keys, s) {
-    return keys.map(k => ({ k, sc: score(s[k]) }))
-      .sort((a, b) => (b.sc - a.sc) || (Math.random() - 0.5))
+    return keys.map(k => ({ k, sc: score(s[k]), t: s[k].t || 0 }))
+      .sort((a, b) => (b.sc - a.sc) || (a.t - b.t) || (a.k < b.k ? -1 : 1))   // weight desc, then earliest-collected
       .map(x => x.k);
   }
   // Left column — words COLLECTED via the choice quiz, most-missed first.

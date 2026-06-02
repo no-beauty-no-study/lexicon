@@ -21,6 +21,30 @@ const Views = (function () {
     const out = t.replace(/^\s*(?:[A-Za-z]{1,6}\.\s*(?:[\/&]\s*)?)+/, "").trim();
     return out || t.trim();
   }
+  // For each vocab word, the FIRST section (linear book order) whose passage
+  // contains it. A reading word is only ever QUIZZED in that first section —
+  // codex's data repeats kindergarten words across chapters, so without this a
+  // handful of trivial words would be tested over and over. Computed once.
+  function quizFirstSectionMap() {
+    if (window.__quizFirstSection) return window.__quizFirstSection;
+    const map = {}, VR = window.VocabRuntime;
+    const order = (window.Quiz && Quiz.order) ? Quiz.order() : [];
+    for (const { chapter, section } of order) {
+      const sec = (typeof ChapterNav !== "undefined") ? ChapterNav.findSection(chapter, section) : null;
+      const key = chapter + "|" + section;
+      const toks = ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || [];
+      const seen = new Set();
+      for (const raw of toks) {
+        const w = raw.toLowerCase(); if (seen.has(w)) continue; seen.add(w);
+        const sc = VR && VR.getSmallCard ? VR.getSmallCard(w) : null;
+        if (!sc || sc.proper) continue;
+        const ans = String(sc.word || w).toLowerCase();
+        if (!(ans in map)) map[ans] = key;   // first occurrence wins
+      }
+    }
+    window.__quizFirstSection = map;
+    return map;
+  }
   // Story entry hash. Story is LINEAR: tapping Story drops the
   // reader straight into the reading view — never into the chapter
   // index (which is for previewing, see browse=1 below). If progress
@@ -1428,22 +1452,43 @@ const Views = (function () {
       // Generate reading-style choice questions from the section's vocab:
       // English word as the prompt, four CHINESE-meaning options (one correct
       // + look-alike distractors).
+      const QUIZ_TARGET = 16;
+      // A word qualifies for the quiz only if it has a meaning, a big card and a
+      // surviving example (no-example words — e.g. ones whose only example was a
+      // purged filler — are out of the quiz AND the accumulation queue).
+      function qualifyQuizWord(w) {
+        const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null;
+        if (!sc || sc.proper || !sc.zh) return null;
+        const ans = String(sc.word || w).toLowerCase();
+        if (!(window.VocabRuntime && VocabRuntime.getBigCard && VocabRuntime.getBigCard(ans))) return null;
+        if (!(sc.examples || []).some(e => e && (e.example || e.en))) return null;
+        return { word: ans, zh: stripPos(sc.zh) };
+      }
       function buildChoiceItems(sec) {
         const seen = new Set(), poolW = [];
+        const firstMap = quizFirstSectionMap();
+        const here = chapterId + "|" + sectionNum;
+        // 1) words that FIRST appear in this section — each tested only once.
         const toks = ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || [];
         for (const raw of toks) {
-          const w = raw.toLowerCase(); if (seen.has(w)) continue;
-          const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null;
-          if (!sc || sc.proper || !sc.zh) continue;
-          const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
-          seen.add(w); seen.add(ans);
-          if (!(window.VocabRuntime && VocabRuntime.getBigCard && VocabRuntime.getBigCard(ans))) continue;  // owl-only → skip
-          // No-example words (e.g. ones whose only example was a purged filler)
-          // are kicked out of the quiz AND the accumulation queue.
-          const hasEx = (sc.examples || []).some(e => e && (e.example || e.en));
-          if (!hasEx) continue;
-          poolW.push({ word: ans, zh: stripPos(sc.zh) });
-          if (poolW.length >= 16) break;
+          const w = raw.toLowerCase(); if (seen.has(w)) continue; seen.add(w);
+          const q = qualifyQuizWord(w); if (!q) continue;
+          if (seen.has(q.word)) continue; seen.add(q.word);
+          if (firstMap[q.word] && firstMap[q.word] !== here) continue;   // owned by an earlier section
+          poolW.push(q);
+          if (poolW.length >= QUIZ_TARGET) break;
+        }
+        // 2) pad a thin section up to 16 with the highest-need accumulated words
+        //    (ties broken by earliest-collected — see Quiz.byScore).
+        if (poolW.length < QUIZ_TARGET && window.Quiz && Quiz.reviewWords) {
+          for (const fw of Quiz.reviewWords()) {
+            if (poolW.length >= QUIZ_TARGET) break;
+            if (seen.has(fw)) continue;
+            const q = qualifyQuizWord(fw); if (!q) continue;
+            if (seen.has(q.word)) continue;
+            seen.add(fw); seen.add(q.word);
+            poolW.push(q);
+          }
         }
         return poolW.map(p => {
           const others = poolW.filter(o => o.word !== p.word && o.zh && o.zh !== p.zh)
@@ -1460,6 +1505,8 @@ const Views = (function () {
       // synonym. Options are English synonyms.
       function buildGroupItems(sec) {
         const seen = new Set(), cand = [];
+        const firstMap = quizFirstSectionMap();
+        const here = chapterId + "|" + sectionNum;
         const toks = ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || [];
         for (const raw of toks) {
           const w = raw.toLowerCase(); if (seen.has(w)) continue;
@@ -1467,6 +1514,7 @@ const Views = (function () {
           if (!sc || sc.proper) continue;
           const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
           seen.add(w); seen.add(ans);
+          if (firstMap[ans] && firstMap[ans] !== here) continue;   // word only quizzed in its first section
           const bc = VocabRuntime.getBigCard ? VocabRuntime.getBigCard(ans) : null;
           const syns = ((bc && bc.group) || []).filter(g => g.clickable && g.word);
           const ex = (sc.examples || []).find(e => e.example && new RegExp("\\b" + rxq(ans) + "\\b", "i").test(e.example));
