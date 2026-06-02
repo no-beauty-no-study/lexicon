@@ -91,10 +91,10 @@ const Views = (function () {
 
 
   /* ---------- menu ---------- */
-  // Menu Quiz = "continue the main trial". For now it resumes the quiz of
-  // the last-read section (tpl.lastRead); the full currentQuizPointer /
-  // next-unfinished-stage resolver lands with the Silver/Golden build.
+  // Menu Quiz = "continue the main trial" — the earliest unfinished stage in
+  // linear chapter→section order, skipping sections already cleared.
   function quizContinueHref() {
+    if (window.Quiz && Quiz.menuHref) { try { return Quiz.menuHref(); } catch (_) {} }
     try {
       const last = JSON.parse(localStorage.getItem("tpl.lastRead") || "null");
       if (last && last.chapter && last.section)
@@ -1029,7 +1029,11 @@ const Views = (function () {
       const quizBtn = host.querySelector("[data-quiz]");
       if (quizBtn) quizBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        window.go(`#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}`);
+        // Reading Quiz = the CURRENT section's trial, resuming its open stage.
+        const href = (window.Quiz && Quiz.readingHref)
+          ? Quiz.readingHref(chapterId, sectionNum)
+          : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}`;
+        window.go(href);
       });
 
       // Arrived from a Notes card "Open Chapter": show the whole section
