@@ -76,46 +76,55 @@ const Quiz = (function () {
   function indexHref(ch, sec)   { return quizHref(ch, sec, "silver", "index"); }
 
   /* ---------- per-word mistake stats (review ordering) ----------
-     Each word keeps wrong / correct counts. A "clean" un-prompted pass
-     (sealed) is the ONLY correct; a wrong answer or one written after
-     seeing the answer counts as WRONG ("错了之后再写对，这还算错"). The
-     review priority + Words Garden order is by score = wrong − correct
-     (descending) — the more a word is missed relative to nailed, the
-     higher it sits; as correct overtakes wrong it sinks. */
+     The order/priority is by ERROR COUNT and never falls because of an
+     ordinary correct answer. The rule (user's): the running need =
+       total WRONG answers (from anywhere — silver / golden / seal / review)
+       MINUS the number of REVIEW-correct answers.
+     Only a REVIEW pass can pull a word down; a plain quiz correct just marks
+     the word COLLECTED (it enters the garden the moment it is quizzed, right
+     OR wrong) and a clean dictation marks it SPELLED. Neither subtracts. */
   const SKEY = "tpl.quizWordStats";
   function loadStats() { try { return JSON.parse(localStorage.getItem(SKEY) || "{}"); } catch (_) { return {}; } }
   function saveStats(s) { try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (_) {} }
+  function blankStat() { return { w: 0, rc: 0, collected: false, spelled: false }; }
+  // A CHOICE answer (silver / golden / review group). The word is collected on
+  // first sight; only a WRONG answer moves the score. A correct answer NEVER
+  // subtracts (that is reserved for review).
   function recordWord(word, ok) {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
-    const e = s[k] || { w: 0, c: 0, corrected: 0, collected: false, spelled: false };
-    if (ok) { e.c += 1; e.collected = true; } else { e.w += 1; }
+    const e = Object.assign(blankStat(), s[k]);
+    e.collected = true;
+    if (!ok) e.w = (e.w || 0) + 1;
     s[k] = e; saveStats(s);
   }
+  // Legacy hook — kept so old call-sites stay valid; just ensures collected.
   function recordCorrected(word) {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
-    const e = s[k] || { w: 0, c: 0, corrected: 0, collected: false, spelled: false };
-    e.corrected = (e.corrected || 0) + 1; e.collected = true;
+    const e = Object.assign(blankStat(), s[k]);
+    e.collected = true;
     s[k] = e; saveStats(s);
   }
-  // Dictation (Golden) is independent of the linear quiz. A clean spelling
-  // marks the word SPELLED (the right column of the garden) and counts a
-  // correct; it never affects the linear "collected" progression.
+  // A clean dictation seals the word (right column). Dictation is NOT "new
+  // accumulation" and never changes the score — it only flags SPELLED.
   function recordSpelled(word) {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
-    const e = s[k] || { w: 0, c: 0, corrected: 0, collected: false, spelled: false };
-    e.c += 1; e.spelled = true;
+    const e = Object.assign(blankStat(), s[k]);
+    e.spelled = true;
     s[k] = e; saveStats(s);
   }
-  function undoCorrect(word) {
+  // The ONLY thing that pulls a word DOWN: a correct answer during Review.
+  function recordReviewCorrect(word) {
     const k = String(word || "").toLowerCase(); if (!k) return;
-    const s = loadStats(); const e = s[k]; if (!e) return;
-    e.c = Math.max(0, (e.c || 0) - 1);
+    const s = loadStats();
+    const e = Object.assign(blankStat(), s[k]);
+    e.collected = true; e.rc = (e.rc || 0) + 1;
     s[k] = e; saveStats(s);
   }
-  function score(e) { return (e.w || 0) - (e.c || 0); }
+  function undoCorrect() { /* no-op: a normal correct never touched the score */ }
+  function score(e) { return (e.w || 0) - (e.rc || 0); }
   function byScore(keys, s) {
     return keys.map(k => ({ k, sc: score(s[k]) }))
       .sort((a, b) => (b.sc - a.sc) || (Math.random() - 0.5))
@@ -130,12 +139,12 @@ const Quiz = (function () {
   function reviewWords() { return collectedWords(); }
   function accumulatedWords() { return collectedWords(); }
   function unsealedWords() { const s = loadStats(); return byScore(Object.keys(s).filter(k => !s[k].collected), s); }
-  function wordStat(word) { return loadStats()[String(word || "").toLowerCase()] || { w: 0, c: 0, collected: false, spelled: false }; }
+  function wordStat(word) { return Object.assign(blankStat(), loadStats()[String(word || "").toLowerCase()]); }
 
   return {
     sectionState, setStageStatus, update, sectionCompleted,
     order, menuHref, readingHref, indexHref, quizHref, statusHref,
-    recordWord, recordCorrected, recordSpelled, undoCorrect,
+    recordWord, recordCorrected, recordSpelled, recordReviewCorrect, undoCorrect,
     reviewWords, accumulatedWords, collectedWords, spelledWords, toSpellWords, unsealedWords, wordStat,
   };
 })();
