@@ -857,7 +857,7 @@ const Views = (function () {
         const prev = body.querySelector(".sentence-block.is-current");
         if (prev && prev !== b) {
           prev.classList.remove("is-current"); prev.classList.add("is-read");
-          clearTimeout(prev._clr);
+          clearTimeout(prev._clr); clearZh(prev);
         }
         if (i + 1 > revealFrontier) revealFrontier = i + 1;
         b.classList.add("is-revealed"); b.classList.remove("is-read");
@@ -871,6 +871,7 @@ const Views = (function () {
           if (ended) return; ended = true;
           clearTimeout(b._clr);
           b.classList.remove("is-current"); b.classList.add("is-read");
+          clearZh(b);                 // translation lives only while the voice plays
           if (opts && opts.onEnd) opts.onEnd();
         };
         // Fallback in case the voice's onend never fires (no voices / muted).
@@ -943,7 +944,13 @@ const Views = (function () {
           const nowT = Date.now();
           if (sent._tapT && (nowT - sent._tapT) < 380) {
             sent._tapT = 0; clearTimeout(sent._tapTimer);
-            toggleSentenceZh(sent, i);          // no stopAuto, no TTS.cancel
+            // Double-tap → flash the translation, bound to this line's audio.
+            showSentenceZh(sent, i);
+            const cur = body.querySelector(".sentence-block.is-current");
+            // If it isn't the line currently being read, start it so the zh is
+            // time-bound (and removed the moment that read ends). If it IS the
+            // current line, leave the voice running — its done() clears the zh.
+            if (cur !== sent) { if (autoOn) stopAuto(); speakSentence(i); }
           } else {
             sent._tapT = nowT;
             sent._tapTimer = setTimeout(() => { sent._tapT = 0; if (autoOn) stopAuto(); speakSentence(i); }, 240);
@@ -978,10 +985,13 @@ const Views = (function () {
         advanceLinear();
       });
 
-      // Insert / remove the Chinese translation line for a sentence.
-      function toggleSentenceZh(sent, i) {
-        const existing = sent.querySelector(".sentence-zh");
-        if (existing) { existing.remove(); return; }
+      // Show the translation line under a sentence (idempotent). It is
+      // EPHEMERAL: bound to the audio — it appears only while the line is being
+      // read and vanishes when the voice ends (clearZh, called from the
+      // playback's done()). The next playback never auto-shows it again — you
+      // must double-tap during a read to glimpse it ("制造时间压力 + 声音文本对照").
+      function showSentenceZh(sent, i) {
+        if (sent.querySelector(".sentence-zh")) return;
         const map = (window.READING_TRANSLATIONS || {})[chapterId + "|" + sectionNum];
         const zh = (map && map[i]) || "";
         const div = document.createElement("div");
@@ -991,6 +1001,7 @@ const Views = (function () {
         sent.appendChild(div);
         try { div.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
       }
+      function clearZh(block) { const z = block && block.querySelector(".sentence-zh"); if (z) z.remove(); }
 
       // Two reading modes share this view but NOT the bottom bar:
       //   • STORY (linear, the default markup): Save·Load·Quiz·Next·Menu
@@ -2618,23 +2629,64 @@ const Views = (function () {
         requestAnimationFrame(() => scrim.classList.add("is-open"));
       }
 
+      let failed = false;
+      // Reveal a CORRECTLY-answered question's Chinese (only if supplied) — the
+      // reward for getting it right. Double-tap toggles it.
+      function toggleCompZh(item, idx) {
+        const existing = item.querySelector(".comp-zh");
+        if (existing) { existing.remove(); return; }
+        const zh = (items[idx] && items[idx].zh) || "";
+        const div = document.createElement("div");
+        div.className = "comp-zh" + (zh ? "" : " is-missing");
+        div.textContent = zh || "（题目译文待补充）";
+        item.querySelector(".quiz-question").after(div);
+      }
+      function failComprehension() {
+        if (advancing) return; advancing = true;
+        let scrim = host.querySelector(".qx-scrim");
+        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
+          <p class="qx-en">That answer was wrong — no second try here.<br>Go back and read the passage again.</p>
+          <p class="qx-zh">答错了，没有第二次机会。回去把这段再读一遍。</p>
+          <div class="qx-actions"><button type="button" class="gs-btn qx-finish">Back to Reading</button></div></div>`;
+        scrim.querySelector(".qx-finish").onclick = (e) => { e.stopPropagation(); window.__navDir = "back"; window.go(returnHref); };
+        requestAnimationFrame(() => scrim.classList.add("is-open"));
+      }
+
       body.addEventListener("click", (e) => {
         const opt = e.target.closest(".quiz-option");
-        if (!opt) { const it = e.target.closest(".quiz-item"); if (it && it.classList.contains("is-shown")) speakItem(it); return; }
-        if (opt.classList.contains("is-locked")) return;
+        const itm = e.target.closest(".quiz-item");
+        if (!opt) {
+          // Double-tap a SOLVED (correct) question → its translation.
+          if (itm && itm.dataset.solved === "1") {
+            const idx = all.indexOf(itm);
+            const nowT = Date.now();
+            if (itm._tapT && (nowT - itm._tapT) < 380) { itm._tapT = 0; toggleCompZh(itm, idx); }
+            else { itm._tapT = nowT; setTimeout(() => { if (itm._tapT) { itm._tapT = 0; speakItem(itm); } }, 240); }
+          } else if (itm && itm.classList.contains("is-shown")) { speakItem(itm); }
+          return;
+        }
+        if (failed || opt.classList.contains("is-locked")) return;
         const item = opt.closest(".quiz-item");
         if (item.dataset.solved === "1") return;
         focusItem(item);
+        // One shot only — lock every option the moment one is picked, and read
+        // the question aloud (audio feedback on selection).
+        item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
+        speakItem(item);
         if (opt.dataset.correct === "1") {
-          opt.classList.add("is-correct", "is-locked");
+          opt.classList.add("is-correct");
           item.dataset.solved = "1";
-          item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
           try { playReviewChord(); } catch (_) {}
           const idx = all.indexOf(item);
-          if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 700);
-          else if (allCorrect()) setTimeout(finish, 500);
+          if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 800);
+          else if (allCorrect()) setTimeout(finish, 600);
         } else {
-          opt.classList.add("is-wrong", "is-locked");   // wrong locks out; pick again
+          // Wrong = wrong. Show the right answer, then send them back to read.
+          opt.classList.add("is-wrong");
+          item.querySelectorAll(".quiz-option").forEach(o => { if (o.dataset.correct === "1") o.classList.add("is-correct"); });
+          failed = true;
+          setTimeout(failComprehension, 1100);
         }
       });
     },
