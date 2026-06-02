@@ -76,10 +76,15 @@ const Quiz = (function () {
     const st = sectionState(ch, sec);
     if (st.quiz1.status !== "completed") return quizHref(ch, sec, "silver", "story");
     if (st.quiz2.status !== "completed") return quizHref(ch, sec, "golden", "story");
-    return statusHref(ch, sec);   // both done → status page
+    return quizHref(ch, sec, "silver", "story");   // both done → redo from the top
   }
-  // Story Index — open that section's Quiz Status page (pick / redo).
-  function indexHref(ch, sec) { return statusHref(ch, sec); }
+  // Story Index — straight into the section's open quiz stage (no start page).
+  function indexHref(ch, sec) {
+    const st = sectionState(ch, sec);
+    if (st.quiz1.status !== "completed") return quizHref(ch, sec, "silver", "index");
+    if (st.quiz2.status !== "completed") return quizHref(ch, sec, "golden", "index");
+    return quizHref(ch, sec, "silver", "index");   // both done → redo from the top
+  }
 
   /* ---------- per-word mistake stats (review ordering) ----------
      Each word keeps wrong / correct counts. A "clean" un-prompted pass

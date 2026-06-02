@@ -1148,6 +1148,7 @@ const Views = (function () {
           const ex = (sc.examples || []).find(e => e.example && new RegExp("\\b" + rxq(ans) + "\\b", "i").test(e.example));
           if (!ex) continue;
           seen.add(w); seen.add(ans);
+          if (!(window.VocabRuntime && VocabRuntime.getBigCard && VocabRuntime.getBigCard(ans))) continue;  // owl-only → skip
           out.push({ word: ans, en: ex.example, zh: ex.example_zh || "",
                      pos: sc.pos || "", meaning: sc.zh || "" });
           if (out.length >= 10) break;
@@ -1408,6 +1409,7 @@ const Views = (function () {
           if (!sc || sc.proper || !sc.zh) continue;
           const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
           seen.add(w); seen.add(ans);
+          if (!(window.VocabRuntime && VocabRuntime.getBigCard && VocabRuntime.getBigCard(ans))) continue;  // owl-only → skip
           poolW.push({ word: ans, zh: sc.zh });
           if (poolW.length >= 16) break;
         }
