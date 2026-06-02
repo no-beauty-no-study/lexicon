@@ -853,7 +853,7 @@
 /* Type bumped to match reading-body (18px / line 1.4) — the user
    reported the prior 14px was too small. Margins tightened
    accordingly so 3 questions × 4 options still fit. */
-.reading-art .quiz-item { margin: 0 0 18px; padding-left: 22px; }
+.reading-art .quiz-item { margin: 0 0 13px; padding-left: 22px; }
 .reading-art .quiz-no {
   font-family: var(--font-display);
   font-size: 12px;
@@ -862,16 +862,16 @@
   color: var(--color-subtitle);
   margin: 0 0 4px -22px;
 }
-/* Same body type as the reading prose — same font, size, line-height,
-   tracking and word-spacing — so a section's two pages read identically. */
+/* Bigger, tighter than the prose — the quiz must read large with little
+   blank space (user: "字太小、空行太大"). */
 .reading-art .quiz-question {
   font-family: var(--font-body);
-  font-size: 18px;
-  line-height: 1.82;
-  letter-spacing: 0.032em;
-  word-spacing: 0.07em;
-  color: var(--color-body);
-  margin: 0 0 8px -22px;
+  font-size: 24px;
+  line-height: 1.4;
+  letter-spacing: 0.022em;
+  word-spacing: 0.05em;
+  color: #2F3338;
+  margin: 0 0 7px -22px;
 }
 .reading-art .quiz-options {
   margin: 0;
@@ -891,14 +891,14 @@
   gap: 0.6em;
   width: fit-content;
   max-width: 100%;
-  margin: 0 0 0.32em;
-  padding: 0.06em 0.4em 0.06em 0.25em;
+  margin: 0 0 0.28em;
+  padding: 0.04em 0.4em 0.04em 0.25em;
   font-family: var(--font-body);
-  font-size: 18px;               /* match reading body */
-  line-height: 1.82;             /* match reading body line-spacing */
-  letter-spacing: 0.032em;
-  word-spacing: 0.07em;
-  color: #3f3a31;
+  font-size: 22px;               /* large + readable */
+  line-height: 1.34;             /* tight — kill the big blank gaps */
+  letter-spacing: 0.022em;
+  word-spacing: 0.05em;
+  color: #33363A;
   cursor: pointer;
   background: transparent;
   border: 0;

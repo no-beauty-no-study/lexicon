@@ -125,6 +125,28 @@
   .menu-btn:focus { outline: none; }
   .menu-btn.left  { left: 10.5%; }
   .menu-btn.right { right: 10.5%; }
+  /* Quiz entry — centred low on the cover. Smaller than the two painted
+     hero buttons (no art yet); a classical gilt plaque placeholder. Swap
+     .menu-btn-plaque for a painted menu-btn-inner bg once art exists. */
+  .menu-btn.quiz {
+    top: auto; bottom: 6%; left: 50%; transform: translateX(-50%);
+    width: 15%; aspect-ratio: 320 / 120;
+  }
+  .menu-btn-plaque {
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(184, 160, 111, 0.6);
+    border-radius: 8px;
+    background: rgba(34, 26, 16, 0.34);
+    box-shadow: inset 0 0 22px rgba(0,0,0,0.3), 0 0 0 3px rgba(184,160,111,0.18);
+  }
+  .menu-btn-label {
+    font-family: "Cinzel", "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(13px, 2vw, 20px);
+    letter-spacing: 0.28em;
+    color: #E7D6A8;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    padding-left: 0.28em;
+  }
   /* Button itself: overflow: hidden so the diagonal gleam sweep
      and unlock pulse don't bleed past the painted edge. Costs a
      small clip on the breathing translateY, so the translate is
@@ -737,6 +759,13 @@
       </button>
       <button type="button" class="menu-btn right" data-action="enter-chapters">
         <span class="menu-btn-inner"></span>
+        <span class="menu-btn-badge" aria-hidden="true"></span>
+      </button>
+      <!-- Quiz — the main-line "continue the trial" entry. Placeholder
+           classical plaque until a painted menu-button-quiz.png is added;
+           same press / chime / badge feedback as the two hero buttons. -->
+      <button type="button" class="menu-btn quiz" data-action="quiz">
+        <span class="menu-btn-inner menu-btn-plaque"><span class="menu-btn-label">QUIZ</span></span>
         <span class="menu-btn-badge" aria-hidden="true"></span>
       </button>
     </div>

@@ -91,6 +91,18 @@ const Views = (function () {
 
 
   /* ---------- menu ---------- */
+  // Menu Quiz = "continue the main trial". For now it resumes the quiz of
+  // the last-read section (tpl.lastRead); the full currentQuizPointer /
+  // next-unfinished-stage resolver lands with the Silver/Golden build.
+  function quizContinueHref() {
+    try {
+      const last = JSON.parse(localStorage.getItem("tpl.lastRead") || "null");
+      if (last && last.chapter && last.section)
+        return `#quiz?chapter=${encodeURIComponent(last.chapter)}&section=${encodeURIComponent(last.section)}`;
+    } catch (_) {}
+    return "#chapters";
+  }
+
   const menu = {
     init(host) {
       // === button click + 4-layer antique feedback ==================
@@ -145,8 +157,9 @@ const Views = (function () {
           // circle needed. Hold so the badge blessing and bell
           // are heard/seen before the page lifts away.
           setTimeout(() => {
-            if (a === "resume") window.go("#select");
-            else                window.go("#chapters?browse=1");
+            if (a === "resume")    window.go("#select");
+            else if (a === "quiz") window.go(quizContinueHref());
+            else                   window.go("#chapters?browse=1");
           }, 540);
         });
         btn.addEventListener("pointerdown", () => {
