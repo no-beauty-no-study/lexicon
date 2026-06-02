@@ -2222,6 +2222,7 @@ const Views = (function () {
       function say(t, cb) { try { if (typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t), cb ? { onEnd: cb } : undefined); } catch (_) {} }
       function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
       function chord() { try { playReviewChord(); } catch (_) {} }
+      function phon(w) { const d = (VR && VR.dotted) ? VR.dotted(w) : w; return "/" + (d || w) + "/"; }
 
       // ---- build up to 8 review items (need a big card + an example) ----
       function buildSet() {
@@ -2250,9 +2251,9 @@ const Views = (function () {
         botZone.innerHTML = `<button type="button" class="rv-back" data-go="${backHref}">Back</button>`;
         return;
       }
-      set.forEach(q => { q.status = "todo"; });   // todo | passed | failed | sealed
+      set.forEach(q => { q.passed = false; q.sealed = false; });
 
-      // distractors are drawn from the rest of the set itself
+      // distractors drawn from the rest of the set itself
       function synOptions(q) {
         const pool = [];
         for (const o of set) if (o !== q && o.syn) pool.push(o.syn);
@@ -2270,36 +2271,44 @@ const Views = (function () {
       }
 
       const LETTER = ["A", "B", "C", "D"];
-      function renderBottom() {
-        const sealed = set.filter(q => q.status === "passed" || q.status === "sealed").length;
-        const dots = set.map(q => `<span class="rv-dot ${q.status === "passed" || q.status === "sealed" ? "is-done" : q.status === "failed" ? "is-fail" : ""}"></span>`).join("");
+      function passedCount() { return set.filter(q => q.passed).length; }
+      function sealedCount() { return set.filter(q => q.sealed).length; }
+      // BOTTOM box: leave / progress dots / count. (No title anywhere — the
+      // painted background already carries the word "REVIEW".)
+      function renderBottom(label) {
+        const dots = set.map(q => `<span class="rv-dot ${q.sealed ? "is-sealed" : q.passed ? "is-done" : ""}"></span>`).join("");
         botZone.innerHTML =
-          `<button type="button" class="rv-back" data-go="${backHref}" title="Leave review">‹</button>`
+          `<button type="button" class="rv-back" data-go="${backHref}" title="Leave review">‹ Menu</button>`
           + `<span class="rv-dots">${dots}</span>`
-          + `<span class="rv-count">${sealed} / ${set.length}</span>`;
+          + `<span class="rv-count">${label || (passedCount() + " / " + set.length)}</span>`;
       }
 
-      // ============ ROUND 1 — recognition (tap word → example + choice) ============
-      let i1 = 0;
-      const failed = [];
-      function round1() {
-        if (i1 >= set.length) { startRound2(); return; }
-        const q = set[i1];
-        let revealed = false, locked = false;
+      // Word box: word + our dotted "phonetic" + pos + progress, all centred.
+      function paintWord(q, progLabel, hint) {
         wordZone.className = "rv-word is-show";
         wordZone.innerHTML = `<button type="button" class="rv-wordface">
             <span class="rv-word-en">${esc(q.word)}</span>
-            ${q.pos ? `<span class="rv-word-pos">${esc(q.pos)}</span>` : ""}
-            <span class="rv-word-tap">tap to hear the line</span>
+            <span class="rv-word-meta">${esc(phon(q.word))}${q.pos ? " · " + esc(q.pos) : ""}</span>
+            <span class="rv-word-prog">${esc(progLabel)}</span>
           </button>`;
-        qZone.innerHTML = `<div class="rv-q-hint">Listen to the word, then tap it for its sentence.</div>`;
+      }
+
+      // ============ STAGE A — Word Recall + Group Choice (default entry) ============
+      let queue = set.map((_, i) => i);   // indices still to clear; wrong ones requeue
+      function stageA() {
+        while (queue.length && set[queue[0]].passed) queue.shift();
+        if (!queue.length) { askSpelling(); return; }
+        const q = set[queue[0]];
+        let revealed = false, locked = false;
+        const prog = String(Math.min(set.length, passedCount() + 1)).padStart(2, "0") + " / " + String(set.length).padStart(2, "0");
+        paintWord(q, prog);
+        qZone.innerHTML = `<div class="rv-q-hint">Tap the word above to reveal its sentence.<br><span class="rv-q-zh">点击上方单词，进入语境选择。</span></div>`;
         renderBottom();
         say(q.word);
         const face = wordZone.querySelector(".rv-wordface");
         face.addEventListener("click", () => {
           if (revealed) { say(q.en); return; }   // tap again → replay the line
           revealed = true;
-          wordZone.querySelector(".rv-word-tap").textContent = "↻ tap to hear again";
           const useSyn = !!q.syn;
           const opts = useSyn ? synOptions(q) : meaningOptions(q);
           const sentence = esc(q.en).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), `<u class="rv-target">${esc(q.word)}</u>`);
@@ -2316,52 +2325,73 @@ const Views = (function () {
               if (locked) return;
               const ok = li.dataset.correct === "1";
               if (ok) {
-                locked = true;
-                li.classList.add("is-correct");
-                q.status = "passed";
-                if (window.Quiz) Quiz.recordWord(q.word, true);
-                chord(); renderBottom();
-                setTimeout(() => { i1 += 1; round1(); }, 850);
+                locked = true; li.classList.add("is-correct");
+                q.passed = true;
+                if (window.Quiz) {
+                  Quiz.recordWord(q.word, true);
+                  // a carded group synonym is rewarded too
+                  if (useSyn && q.syn && VR && VR.getSmallCard && VR.getSmallCard(q.syn)) Quiz.recordWord(q.syn, true);
+                }
+                chord(); queue.shift(); renderBottom();
+                setTimeout(stageA, 850);
               } else {
-                li.classList.add("is-wrong");
-                if (q.status !== "failed") { q.status = "failed"; failed.push(q); if (window.Quiz) Quiz.recordWord(q.word, false); }
-                renderBottom();
-                // mark the right one, then move this word to round 2
+                locked = true; li.classList.add("is-wrong");
+                if (window.Quiz) Quiz.recordWord(q.word, false);   // wrong → needs review more
                 qZone.querySelectorAll(".rv-opt").forEach(o => { if (o.dataset.correct === "1") o.classList.add("is-correct"); });
-                locked = true;
-                setTimeout(() => { i1 += 1; round1(); }, 1100);
+                queue.push(queue.shift());   // requeue this word to the back; not passed
+                setTimeout(stageA, 1100);
               }
             });
           });
         });
-        renderBottom();
       }
 
-      // ============ ROUND 2 — dictation (word box = one open line) ============
-      let i2 = 0;
-      function startRound2() { i2 = 0; round2(); }
-      function round2() {
-        if (i2 >= failed.length) { finish(); return; }
-        const q = failed[i2];
+      // ============ between stages — ask whether to spell ============
+      function askSpelling() {
+        renderBottom(set.length + " / " + set.length);
+        wordZone.className = "rv-word is-show";
+        wordZone.innerHTML = `<div class="rv-done-mark">✦</div>`;
+        let scrim = host.querySelector(".qx-scrim");
+        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ REVIEW CHOICE COMPLETE ✦</div>
+          <p class="qx-en">Do you want to enter spelling practice now?</p>
+          <p class="qx-zh">语境选择已完成。现在要进入默写练习吗？</p>
+          <div class="qx-actions">
+            <button type="button" class="gs-btn qx-continue qx-spell">Enter Spelling</button>
+            <button type="button" class="gs-btn qx-finish">Finish Review</button>
+          </div></div>`;
+        scrim.querySelector(".qx-spell").onclick = (e) => { e.stopPropagation(); scrim.remove(); startSpelling(); };
+        scrim.querySelector(".qx-finish").onclick = (e) => { e.stopPropagation(); window.__navDir = "back"; window.go(backHref); };
+        requestAnimationFrame(() => scrim.classList.add("is-open"));
+      }
+
+      // ============ STAGE B — Spelling (only after Enter Spelling) ============
+      let si = 0;
+      function startSpelling() { si = 0; spell(); }
+      function spell() {
+        if (si >= set.length) { finish(); return; }
+        const q = set[si];
         let revealed = false, wrongThis = false, recordedWrong = false;
+        const prog = String(si + 1).padStart(2, "0") + " / " + String(set.length).padStart(2, "0");
         wordZone.className = "rv-word is-spell";
         wordZone.innerHTML = `<div class="rv-spell">
             <input class="rv-input" type="text" lang="en" inputmode="email"
                    autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Spell the word">
           </div>
-          <div class="rv-spell-label">✦ SPELL WHAT YOU HEAR ✦ <span class="rv-replay">↻</span></div>`;
+          <div class="rv-spell-label">✦ LISTEN &amp; SPELL ✦ <span class="rv-replay">↻</span> <span class="rv-spell-prog">${esc(prog)}</span></div>`;
         const blank = esc(q.en).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"),
           `<span class="rv-fill">${"_".repeat(Math.max(6, q.word.length))}</span>`);
         qZone.innerHTML = `
+          <p class="rv-meaning">${esc(q.meaning || "")}</p>
           <p class="rv-sentence">${blank}</p>
           <div class="rv-correction" hidden></div>
           <p class="rv-sentence-zh"></p>
           <p class="rv-q-hint">Type the missing word, then press Enter.</p>`;
-        renderBottom();
+        renderBottom(sealedCount() + " / " + set.length);
         const input = wordZone.querySelector(".rv-input");
         const corr  = qZone.querySelector(".rv-correction");
         const zhEl  = qZone.querySelector(".rv-sentence-zh");
-        const spell = wordZone.querySelector(".rv-spell");
+        const spellWrap = wordZone.querySelector(".rv-spell");
         setTimeout(() => { try { input.focus(); } catch (_) {} }, 80);
         say(q.en);
         function showCorrection(typed) {
@@ -2379,17 +2409,17 @@ const Views = (function () {
         }
         function check() {
           const typed = input.value.trim().toLowerCase();
-          if (!typed) { spell.classList.remove("is-shake"); void spell.offsetWidth; spell.classList.add("is-shake"); return; }
+          if (!typed) { spellWrap.classList.remove("is-shake"); void spellWrap.offsetWidth; spellWrap.classList.add("is-shake"); return; }
           if (typed === q.word) {
             const clean = !revealed && !wrongThis;
-            q.status = "sealed";
+            q.sealed = true;
             if (window.Quiz) { if (clean) Quiz.recordSpelled(q.word); else Quiz.recordCorrected(q.word); }
-            zhEl.textContent = q.zh || ""; say(q.en); chord(); renderBottom();
-            setTimeout(() => { i2 += 1; round2(); }, 1500);
+            zhEl.textContent = q.zh || ""; say(q.en); chord(); renderBottom(sealedCount() + " / " + set.length);
+            setTimeout(() => { si += 1; spell(); }, 1500);
           } else {
             wrongThis = true; revealed = true;
             if (!recordedWrong && window.Quiz) { Quiz.recordWord(q.word, false); recordedWrong = true; }
-            spell.classList.remove("is-shake"); void spell.offsetWidth; spell.classList.add("is-shake");
+            spellWrap.classList.remove("is-shake"); void spellWrap.offsetWidth; spellWrap.classList.add("is-shake");
             showCorrection(typed); say(q.en);
           }
         }
@@ -2400,19 +2430,18 @@ const Views = (function () {
       }
 
       function finish() {
-        const sealed = set.filter(q => q.status === "passed" || q.status === "sealed").length;
         wordZone.className = "rv-word is-show";
         wordZone.innerHTML = `<div class="rv-done-mark">✦</div>`;
         qZone.innerHTML = `<div class="rv-done">
             <div class="rv-done-title">Review Complete</div>
-            <p class="rv-done-sub">${sealed} / ${set.length} words cleared</p>
+            <p class="rv-done-sub">${sealedCount()} / ${set.length} spelled</p>
             <button type="button" class="rv-back rv-done-btn" data-go="${backHref}">Done</button>
           </div>`;
-        renderBottom();
+        renderBottom(sealedCount() + " / " + set.length);
         try { playSuccessChordGlobal(); } catch (_) {}
       }
 
-      round1();
+      stageA();   // default entry = Word Recall + Group Choice, never spelling
     },
   };
 
