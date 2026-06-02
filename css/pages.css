@@ -1037,10 +1037,11 @@
   font-family: var(--font-body); font-size: 26px; line-height: 1.45;
   color: #2F3338; margin: 0 0 8px;
 }
-.gs-blank {
-  color: #B8A06F; letter-spacing: 0.06em; border-bottom: 2px solid #B8A06F;
-  padding: 0 4px; margin: 0 2px;
+.gs-blank {            /* one underline only — the underscore glyphs, no border */
+  color: #B8A06F; letter-spacing: 0.04em; padding: 0 4px; margin: 0 2px;
 }
+.gs-listen { cursor: pointer; }
+.gs-listen:hover { color: #B8860B; }
 .gs-sentence-zh {
   font-family: "Noto Serif SC", "Songti SC", serif; font-size: 17px;
   color: #5D4D42; margin: 0 0 10px;
@@ -1106,6 +1107,26 @@
 .gs-done-title { font-family: var(--font-display), Georgia, serif; font-size: 26px;
   letter-spacing: 0.1em; color: #2F3338; margin-top: 8px; }
 .gs-done-sub { font-family: var(--font-body); color: #746A5D; margin-top: 6px; }
+
+/* ---- Quiz Status (Story Index entry) ---- */
+.qs-panel {
+  margin: 6px auto 0; max-width: 70%; padding: 24px 30px;
+  border: 1px solid rgba(184,160,111,0.55); border-radius: 4px;
+  box-shadow: inset 0 0 0 4px rgba(184,160,111,0.14); text-align: center;
+}
+.qs-panel .gs-label { margin-bottom: 18px; }
+.qs-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 12px 4px; border-bottom: 1px solid rgba(184,160,111,0.28);
+  font-family: var(--font-body); font-size: 19px; color: #2F3338;
+}
+.qs-name { letter-spacing: 0.02em; }
+.qs-state { font-size: 14px; font-family: var(--font-display), Georgia, serif; letter-spacing: 0.06em; }
+.qs-state.qs-unseen { color: #8E8474; }
+.qs-state.qs-in_progress { color: #9A7A3C; }
+.qs-state.qs-completed { color: #7F95A3; }
+.qs-counts { margin: 16px 0 20px; font-family: var(--font-body); font-size: 15px; color: #746A5D; }
+.qs-actions { display: flex; gap: 16px; justify-content: center; }
 
 
 /* ----- Stage scaling for non-iPad viewports -----

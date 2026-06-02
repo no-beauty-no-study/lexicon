@@ -1123,8 +1123,7 @@ const Views = (function () {
             <span class="gs-dots"></span>
           </div>
           <div class="gs-panel">
-            <div class="gs-label">✦ LISTEN AND SPELL ✦</div>
-            <button type="button" class="gs-speaker" aria-label="Listen">🔊</button>
+            <div class="gs-label gs-listen">✦ LISTEN AND SPELL ✦</div>
             <p class="gs-sentence-en"></p>
             <p class="gs-sentence-zh"></p>
             <p class="gs-hint"></p>
@@ -1251,7 +1250,7 @@ const Views = (function () {
         input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); onCheck(); } });
         input.addEventListener("focus", retry);
         cellsEl.addEventListener("click", () => { retry(); try { input.focus(); } catch (_) {} });
-        el(".gs-speaker").addEventListener("click", () => speakWord(cur().word));
+        el(".gs-listen").addEventListener("click", () => speakWord(cur().word));   // tap label to replay
         el(".gs-check").addEventListener("click", onCheck);
         el(".gs-reveal").addEventListener("click", onReveal);
         present();
@@ -1943,9 +1942,57 @@ const Views = (function () {
   };
 
 
+  /* ---------- quiz status (Story Index entry) ---------- */
+  const quizstatus = {
+    init(host, params) {
+      const chapterId = params.chapter || "universe";
+      const sectionNum = params.section || "1.1";
+      const book = (typeof getChapterOrDefault === "function")
+        ? getChapterOrDefault(chapterId) : { number: "01", title: chapterId };
+      const section = (typeof ChapterNav !== "undefined") ? ChapterNav.findSection(chapterId, sectionNum) : null;
+      const bg = (typeof getChapterBackground === "function") ? getChapterBackground(chapterId, params.page) : null;
+      if (bg) host.style.backgroundImage = `url("${bg}")`;
+      host.querySelector("[data-chapter-number]").textContent = "Chapter " + book.number;
+      host.querySelector("[data-chapter-title]").textContent  = book.title;
+      host.querySelector("[data-chapter-section]").textContent =
+        section ? (section.number + " · " + section.title) : sectionNum;
+
+      const st = (window.Quiz && Quiz.sectionState) ? Quiz.sectionState(chapterId, sectionNum)
+        : { quiz1: { status: "unseen" }, quiz2: { status: "unseen" }, sealedWords: 0, totalWords: 0, correctedWords: [] };
+      const label = (s) => s === "completed" ? "已完成 · Completed"
+        : s === "in_progress" ? "进行中 · In progress" : "未开始 · Not started";
+      const body = host.querySelector(".qs-body");
+      body.innerHTML = `
+        <div class="qs-panel">
+          <div class="gs-label">✦ QUIZ STATUS ✦</div>
+          <div class="qs-row"><span class="qs-name">Quiz 1 · Silver Trial</span>
+            <span class="qs-state qs-${st.quiz1.status}">${label(st.quiz1.status)}</span></div>
+          <div class="qs-row"><span class="qs-name">Quiz 2 · Golden Seal</span>
+            <span class="qs-state qs-${st.quiz2.status}">${label(st.quiz2.status)}</span></div>
+          <div class="qs-counts">Sealed ${st.sealedWords || 0} / ${st.totalWords || 0}
+            &nbsp;·&nbsp; corrected ${(st.correctedWords || []).length}</div>
+          <div class="qs-actions"></div>
+        </div>`;
+
+      let main, href;
+      const q = (stage) => (window.Quiz && Quiz.quizHref)
+        ? Quiz.quizHref(chapterId, sectionNum, stage)
+        : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=${stage}`;
+      if (st.quiz1.status !== "completed") { main = st.quiz1.status === "in_progress" ? "Continue Silver Trial" : "Begin Silver Trial"; href = q("silver"); }
+      else if (st.quiz2.status !== "completed") { main = st.quiz2.status === "in_progress" ? "Continue Golden Seal" : "Begin Golden Seal"; href = q("golden"); }
+      else { main = "Redo Trial"; href = q("silver"); }
+      const actions = body.querySelector(".qs-actions");
+      actions.innerHTML = `<button type="button" class="gs-btn qs-begin">${main}</button>`
+        + (st.quiz1.status === "completed" && st.quiz2.status === "completed"
+            ? `<button type="button" class="gs-btn qs-review" data-go="#word-garden">Review Words</button>` : "");
+      const begin = actions.querySelector(".qs-begin");
+      if (begin) begin.addEventListener("click", () => { window.__navDir = "forward"; window.go(href); });
+    },
+  };
+
   return {
     splash, menu, select, chapters,
-    reading, quiz, notes,
+    reading, quiz, quizstatus, notes,
     "word-garden": wordGarden,
     save, load, voices,
   };
