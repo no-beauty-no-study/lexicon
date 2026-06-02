@@ -1102,6 +1102,9 @@ const Views = (function () {
       // per the design: seeing the answer never counts; only an independent,
       // un-prompted correct spelling on a fresh presentation SEALS the word.
       if ((params.stage || "") === "golden") { renderGoldenSeal(); return; }
+      // Two choice pages: "silver" (word → meaning) then "group" (pick the
+      // synonym that fits the example), then the Golden dictation.
+      const isGroup = (params.stage === "group");
 
 
       function rxq(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
@@ -1399,11 +1402,41 @@ const Views = (function () {
           return { word: p.word, zh: p.zh, options: shuffle([p.zh, ...distract], p.word.length || 1) };
         });
       }
+      // Group page: pick the synonym that fits the example (word underlined);
+      // each target word must have an in-example occurrence + a carded group
+      // synonym. Options are English synonyms.
+      function buildGroupItems(sec) {
+        const seen = new Set(), cand = [];
+        const toks = ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || [];
+        for (const raw of toks) {
+          const w = raw.toLowerCase(); if (seen.has(w)) continue;
+          const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null;
+          if (!sc || sc.proper) continue;
+          const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
+          seen.add(w); seen.add(ans);
+          const bc = VocabRuntime.getBigCard ? VocabRuntime.getBigCard(ans) : null;
+          const syns = ((bc && bc.group) || []).filter(g => g.clickable && g.word);
+          const ex = (sc.examples || []).find(e => e.example && new RegExp("\\b" + rxq(ans) + "\\b", "i").test(e.example));
+          if (syns.length && ex) cand.push({ word: ans, ex: ex.example, correctSyn: syns[0].word });
+          if (cand.length >= 16) break;
+        }
+        return cand.map(c => {
+          const distract = [], sd = new Set([c.correctSyn.toLowerCase(), c.word.toLowerCase()]);
+          const others = cand.filter(o => o.word !== c.word).map(o => o.correctSyn).concat(cand.map(o => o.word));
+          for (const d of others) { if (distract.length >= 3) break; const dl = d.toLowerCase(); if (sd.has(dl)) continue; sd.add(dl); distract.push(d); }
+          while (distract.length < 3) distract.push("—");
+          return { group: true, word: c.word, ex: c.ex, correctSyn: c.correctSyn, options: shuffle([c.correctSyn, ...distract], c.word.length || 1) };
+        });
+      }
       function renderItem(q, idx) {
+        const qhtml = q.group
+          ? esc(q.ex).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), `<u class="qz-target">${esc(q.word)}</u>`)
+          : esc(q.word);
+        const ans = q.group ? q.correctSyn : q.zh;
         return `
-          <article class="quiz-item" data-answer="${esc(q.zh)}" data-word="${esc(q.word)}" data-solved="0">
-            <div class="quiz-no">Question ${idx + 1}</div>
-            <p class="quiz-question">${esc(q.word)}</p>
+          <article class="quiz-item" data-answer="${esc(ans)}" data-word="${esc(q.word)}" data-group="${q.group ? 1 : 0}" data-solved="0">
+            <div class="quiz-no">${q.group ? "Synonym" : "Word"} ${idx + 1}</div>
+            <p class="quiz-question">${qhtml}</p>
             <ul class="quiz-options">
               ${q.options.map((o, i) => `
                 <li class="quiz-option" data-value="${esc(o)}">
@@ -1471,8 +1504,15 @@ const Views = (function () {
         }, ms);
       }
 
-      const items = buildChoiceItems(section);
+      const items = isGroup ? buildGroupItems(section) : buildChoiceItems(section);
       const body = host.querySelector(".quiz-body");
+      // No group questions for this section → skip straight to the dictation.
+      if (isGroup && !items.length) {
+        if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
+        window.go((window.Quiz && Quiz.quizHref) ? Quiz.quizHref(chapterId, sectionNum, "golden")
+          : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=golden`);
+        return;
+      }
       body.innerHTML = items.length
         ? items.map((q, i) => renderItem(q, i)).join("")
         : `<div class="empty-state">No quiz words for this section yet.</div>`;
@@ -1554,21 +1594,28 @@ const Views = (function () {
         const i = list.findIndex(s => s.number === sectionNum);
         return i === list.length - 1;
       }
+      const hrefFor = (st) => (window.Quiz && Quiz.quizHref)
+        ? Quiz.quizHref(chapterId, sectionNum, st)
+        : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=${st}`;
       function maybeChapterComplete() {
         if (advancing || !allCorrect()) return;
         advancing = true;
-        // Silver Trial cleared → mark Quiz 1 done and move on to the same
-        // section's Quiz 2 · Golden Seal (the spelling stage).
-        if (window.Quiz && Quiz.setStageStatus) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
-        spawnStarBurst(8);
-        showToast({ title: "Silver Trial Cleared", subtitle: "Now the Golden Seal.", ms: 0 });
-        playCorrectDing();
-        setTimeout(() => {
-          window.__navDir = "forward";
-          window.go((window.Quiz && Quiz.quizHref)
-            ? Quiz.quizHref(chapterId, sectionNum, "golden")
-            : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=golden`);
-        }, 1300);
+        spawnStarBurst(8); playCorrectDing();
+        if (isGroup) {
+          // Both choice pages cleared → Quiz 1 done → on to the Golden Seal.
+          if (window.Quiz && Quiz.setStageStatus) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
+          showToast({ title: "Synonyms Cleared", subtitle: "Now the Golden Seal.", ms: 0 });
+          setTimeout(() => { window.__navDir = "forward"; window.go(hrefFor("golden")); }, 1300);
+        } else {
+          // Word page cleared → the synonym page (skip to golden if none).
+          const hasGroup = buildGroupItems(section).length > 0;
+          showToast({ title: "Words Cleared", subtitle: hasGroup ? "Now the synonyms." : "Now the Golden Seal.", ms: 0 });
+          setTimeout(() => {
+            window.__navDir = "forward";
+            if (hasGroup) { window.go(hrefFor("group")); }
+            else { if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed"); window.go(hrefFor("golden")); }
+          }, 1300);
+        }
       }
 
       // Right-column word card (reuses the reading marginalia look). Shown
@@ -1619,15 +1666,17 @@ const Views = (function () {
         const correct = chosen === answer;
         item.querySelectorAll(".quiz-option.is-selected")
           .forEach(o => o.classList.remove("is-selected"));
+        const group = item.dataset.group === "1";
         if (correct) {
           opt.classList.add("is-correct", "is-locked");
           item.dataset.solved = "1";
           item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
           playCorrectDing();
           opt.classList.remove("is-pop"); void opt.offsetWidth; opt.classList.add("is-pop");
-          try { TTS.speak(word); } catch (_) {}                 // read the English word
-          if (window.Quiz) {                                    // clean=correct, missed=corrected
-            if (item.dataset.clean !== "0") Quiz.recordWord(word, true);
+          try { TTS.speak(group ? chosen : word); } catch (_) {}
+          if (window.Quiz) {
+            if (group) { Quiz.recordWord(word, true); Quiz.recordWord(chosen, true); }   // both the word + the synonym
+            else if (item.dataset.clean !== "0") Quiz.recordWord(word, true);            // clean recognition
             else Quiz.recordCorrected(word);
           }
           const all = Array.from(host.querySelectorAll(".quiz-item"));
@@ -1635,11 +1684,11 @@ const Views = (function () {
           if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 900);
           else maybeChapterComplete();
         } else {
-          // Wrong → the TESTED word's small card on the right (study aid);
-          // tap it for the full card. The word stays unsolved — pick again.
+          // Wrong → the TESTED word's card on the right (tap for full card);
+          // the question stays open — pick again.
           opt.classList.add("is-wrong", "is-locked");
-          item.dataset.clean = "0";                              // missed at least once
-          if (window.Quiz) Quiz.recordWord(word, false);
+          item.dataset.clean = "0";
+          if (window.Quiz) { if (group) Quiz.undoCorrect(word); else Quiz.recordWord(word, false); }  // group wrong cancels the recognition correct
           try { TTS.speak(word); } catch (_) {}
           showQuizWord(word);
         }

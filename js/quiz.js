@@ -105,6 +105,14 @@ const Quiz = (function () {
     e.corrected = (e.corrected || 0) + 1; e.sealed = true;
     s[k] = e; saveStats(s);
   }
+  // Getting a word's GROUP question wrong cancels the recognition correct it
+  // had just earned (1 → 0). Never goes below zero.
+  function undoCorrect(word) {
+    const k = String(word || "").toLowerCase(); if (!k) return;
+    const s = loadStats(); const e = s[k]; if (!e) return;
+    e.c = Math.max(0, (e.c || 0) - 1);
+    s[k] = e; saveStats(s);
+  }
   function score(e) { return (e.w || 0) - (e.c || 0); }
   function byScore(keys, s) {
     return keys.map(k => ({ k, sc: score(s[k]) }))
@@ -120,7 +128,7 @@ const Quiz = (function () {
   return {
     sectionState, setStageStatus, update, sectionCompleted,
     order, menuHref, readingHref, indexHref, quizHref, statusHref,
-    recordWord, recordCorrected, reviewWords, accumulatedWords, unsealedWords, wordStat,
+    recordWord, recordCorrected, undoCorrect, reviewWords, accumulatedWords, unsealedWords, wordStat,
   };
 })();
 window.Quiz = Quiz;
