@@ -117,7 +117,7 @@ const Views = (function () {
       </div></div>`;
     scrim.querySelector(".qm-continue").onclick = (e) => { e.stopPropagation(); window.go(quizContinueHref()); };
     const rb = scrim.querySelector(".qm-review");
-    if (n) rb.onclick = (e) => { e.stopPropagation(); window.go("#quiz?chapter=universe&section=1.1&stage=golden&review=1"); };
+    if (n) rb.onclick = (e) => { e.stopPropagation(); window.go("#quiz?chapter=universe&section=1.1&stage=golden&review=1&from=menu"); };
     scrim.onclick = (e) => { if (e.target === scrim) scrim.remove(); };
     requestAnimationFrame(() => scrim.classList.add("is-open"));
   }
@@ -178,7 +178,7 @@ const Views = (function () {
           setTimeout(() => {
             if (a === "resume")      window.go("#select");
             else if (a === "quiz")   window.go(quizContinueHref());
-            else if (a === "recall") window.go("#quiz?chapter=universe&section=1.1&stage=golden&review=1");
+            else if (a === "recall") window.go("#quiz?chapter=universe&section=1.1&stage=golden&review=1&from=menu");
             else                     window.go("#chapters?browse=1");
           }, 540);
         });
@@ -973,8 +973,15 @@ const Views = (function () {
           nav.innerHTML =
               '<button type="button" data-prev><span class="nav-glyph">‹</span>Prev</button>'
             + '<button type="button" data-toindex><span class="nav-glyph">❖</span>Back</button>'
+            + '<button type="button" data-idxquiz><span class="nav-glyph">✦</span>Quiz</button>'
             + '<button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>';
-          nav.style.setProperty("--nav-count", "3");
+          nav.style.setProperty("--nav-count", "4");
+          const iq = nav.querySelector("[data-idxquiz]");
+          if (iq) iq.addEventListener("click", (e) => {
+            e.stopPropagation(); window.__navDir = "forward";
+            window.go((window.Quiz && Quiz.indexHref) ? Quiz.indexHref(chapterId, sectionNum)
+              : `#quizstatus?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}`);
+          });
         }
       }
 
@@ -1096,6 +1103,23 @@ const Views = (function () {
       host.querySelector("[data-chapter-title]").textContent  = book.title;
       host.querySelector("[data-chapter-section]").textContent =
         section ? (section.number + " · " + section.title) : sectionNum;
+
+      // Where the bottom return button goes: a quiz opened from STORY reading
+      // goes back to that story page; from MENU or INDEX it goes back to the
+      // index's browse reader (which never touches main-line reading progress).
+      const fromCtx = params.from || "menu";
+      const encQ = (s) => encodeURIComponent(s);
+      const returnHref = (fromCtx === "story")
+        ? `#reading?chapter=${encQ(chapterId)}&section=${encQ(sectionNum)}`
+        : `#reading?chapter=${encQ(chapterId)}&section=${encQ(sectionNum)}&browse=1`;
+      const storyLabel = (fromCtx === "story")
+        ? '<span class="nav-glyph">‹</span>Back' : '<span class="nav-glyph">❖</span>Story';
+      function wireStoryBtn(guarded) {
+        const b = host.querySelector("[data-story]");
+        if (!b) return;
+        b.innerHTML = storyLabel;
+        if (!guarded) b.addEventListener("click", (e) => { e.stopPropagation(); window.__navDir = "back"; window.go(returnHref); });
+      }
 
       // ============ QUIZ 2 · GOLDEN SEAL (Spelling Practice) ============
       // Parchment "Listen and Spell" page. Correction layer + pass-judgment
@@ -1278,24 +1302,18 @@ const Views = (function () {
           scrim.querySelector(".qx-leave").onclick = (e) => { e.stopPropagation(); scrim.remove(); proceed(); };
           requestAnimationFrame(() => scrim.classList.add("is-open"));
         }
+        wireStoryBtn(true);   // label only; the guard below handles the tap
         // Capture-phase so we intercept BEFORE app.js's document-level data-go.
         host.addEventListener("click", (e) => {
           if (e.target.closest(".qx-scrim")) return;
-          const btn = e.target.closest(".ui-bottom-nav [data-go], .ui-bottom-nav [data-back]");
+          const btn = e.target.closest(".ui-bottom-nav [data-go], .ui-bottom-nav [data-story]");
           if (!btn) return;
-          const isBack = btn.hasAttribute("data-back");
-          const go = isBack ? () => { window.__navDir = "back"; window.go("#menu"); }
-                            : () => window.go(btn.getAttribute("data-go"));
+          const isStory = btn.hasAttribute("data-story");
+          const go = isStory ? () => { window.__navDir = "back"; window.go(returnHref); }
+                             : () => window.go(btn.getAttribute("data-go"));
           if (remaining() > 0) { e.preventDefault(); e.stopPropagation(); showExit(go); }
-          else if (isBack)     { e.preventDefault(); e.stopPropagation(); go(); }
+          else if (isStory)    { e.preventDefault(); e.stopPropagation(); go(); }
         }, true);
-        const gNext = host.querySelector("[data-next]");
-        if (gNext) gNext.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (pos + 1 < queue.length) { pos += 1; present(); }
-          else if (remaining() > 0) showExit(finish);
-          else finish();
-        });
         function onCheck() {
           const q = cur();
           const typed = input.value.trim().toLowerCase();
@@ -1397,9 +1415,10 @@ const Views = (function () {
           const others = poolW.filter(o => o.word !== p.word && o.zh && o.zh !== p.zh)
             .sort((a, b) => sharedPre(p.word, b.word) - sharedPre(p.word, a.word) || (Math.random() - 0.5));
           const distract = [], sd = new Set([p.zh]);
-          for (const o of others) { if (distract.length >= 3) break; if (sd.has(o.zh)) continue; sd.add(o.zh); distract.push(o.zh); }
-          while (distract.length < 3) distract.push("—");
-          return { word: p.word, zh: p.zh, options: shuffle([p.zh, ...distract], p.word.length || 1) };
+          for (const o of others) { if (distract.length >= 3) break; if (sd.has(o.zh)) continue; sd.add(o.zh); distract.push({ zh: o.zh, word: o.word }); }
+          while (distract.length < 3) distract.push({ zh: "—", word: "" });
+          const opts = shuffle([{ zh: p.zh, word: p.word, correct: true }].concat(distract.map(d => ({ zh: d.zh, word: d.word, correct: false }))), p.word.length || 1);
+          return { word: p.word, zh: p.zh, options: opts };
         });
       }
       // Group page: pick the synonym that fits the example (word underlined);
@@ -1425,23 +1444,25 @@ const Views = (function () {
           const others = cand.filter(o => o.word !== c.word).map(o => o.correctSyn).concat(cand.map(o => o.word));
           for (const d of others) { if (distract.length >= 3) break; const dl = d.toLowerCase(); if (sd.has(dl)) continue; sd.add(dl); distract.push(d); }
           while (distract.length < 3) distract.push("—");
-          return { group: true, word: c.word, ex: c.ex, correctSyn: c.correctSyn, options: shuffle([c.correctSyn, ...distract], c.word.length || 1) };
+          const opts = shuffle([{ zh: c.correctSyn, word: c.correctSyn, correct: true }]
+            .concat(distract.map(d => ({ zh: d, word: d, correct: false }))), c.word.length || 1);
+          return { group: true, word: c.word, ex: c.ex, options: opts };
         });
       }
       function renderItem(q, idx) {
         const qhtml = q.group
           ? esc(q.ex).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), `<u class="qz-target">${esc(q.word)}</u>`)
           : esc(q.word);
-        const ans = q.group ? q.correctSyn : q.zh;
         return `
-          <article class="quiz-item" data-answer="${esc(ans)}" data-word="${esc(q.word)}" data-group="${q.group ? 1 : 0}" data-solved="0">
+          <article class="quiz-item" data-word="${esc(q.word)}" data-group="${q.group ? 1 : 0}" data-solved="0">
             <div class="quiz-no">${q.group ? "Synonym" : "Word"} ${idx + 1}</div>
             <p class="quiz-question">${qhtml}</p>
             <ul class="quiz-options">
               ${q.options.map((o, i) => `
-                <li class="quiz-option" data-value="${esc(o)}">
+                <li class="quiz-option" data-word="${esc(o.word)}" data-correct="${o.correct ? 1 : 0}">
                   <span class="quiz-option-letter">${LETTER[i]}.</span>
-                  <span class="quiz-option-text">${esc(o)}</span>
+                  <span class="quiz-option-text">${esc(o.zh)}</span>
+                  ${(!q.group && o.word) ? `<span class="quiz-option-en">${esc(o.word)}</span>` : ""}
                 </li>
               `).join("")}
             </ul>
@@ -1595,27 +1616,29 @@ const Views = (function () {
         return i === list.length - 1;
       }
       const hrefFor = (st) => (window.Quiz && Quiz.quizHref)
-        ? Quiz.quizHref(chapterId, sectionNum, st)
-        : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=${st}`;
+        ? Quiz.quizHref(chapterId, sectionNum, st, fromCtx)
+        : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=${st}&from=${fromCtx}`;
       function maybeChapterComplete() {
         if (advancing || !allCorrect()) return;
         advancing = true;
-        spawnStarBurst(8); playCorrectDing();
-        if (isGroup) {
-          // Both choice pages cleared → Quiz 1 done → on to the Golden Seal.
-          if (window.Quiz && Quiz.setStageStatus) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
-          showToast({ title: "Synonyms Cleared", subtitle: "Now the Golden Seal.", ms: 0 });
-          setTimeout(() => { window.__navDir = "forward"; window.go(hrefFor("golden")); }, 1300);
-        } else {
-          // Word page cleared → the synonym page (skip to golden if none).
-          const hasGroup = buildGroupItems(section).length > 0;
-          showToast({ title: "Words Cleared", subtitle: hasGroup ? "Now the synonyms." : "Now the Golden Seal.", ms: 0 });
-          setTimeout(() => {
-            window.__navDir = "forward";
-            if (hasGroup) { window.go(hrefFor("group")); }
-            else { if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed"); window.go(hrefFor("golden")); }
-          }, 1300);
-        }
+        spawnStarBurst(8); playSuccessChord();
+        const nextStage = isGroup ? "golden" : (buildGroupItems(section).length ? "group" : "golden");
+        const title = isGroup ? "Synonyms Cleared" : "Words Cleared";
+        let scrim = host.querySelector(".qx-scrim");
+        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
+          <p class="qx-en">${title}.<br>Continue, or stay and review these words.</p>
+          <div class="qx-actions">
+            <button type="button" class="gs-btn qx-continue">Continue ›</button>
+            <button type="button" class="gs-btn qx-stay2">Stay &amp; Review</button>
+          </div></div>`;
+        scrim.querySelector(".qx-continue").onclick = (e) => {
+          e.stopPropagation();
+          if (nextStage === "golden" && window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
+          window.__navDir = "forward"; window.go(hrefFor(nextStage));
+        };
+        scrim.querySelector(".qx-stay2").onclick = (e) => { e.stopPropagation(); scrim.remove(); };
+        requestAnimationFrame(() => scrim.classList.add("is-open"));
       }
 
       // Right-column word card (reuses the reading marginalia look). Shown
@@ -1660,23 +1683,24 @@ const Views = (function () {
         const item = opt.closest(".quiz-item");
         if (item.dataset.solved === "1") return;
         focusItem(item);   // keep the answered question in view
-        const answer = (item.dataset.answer || "").trim();
-        const chosen = (opt.dataset.value || "").trim();
         const word   = item.dataset.word;
-        const correct = chosen === answer;
-        item.querySelectorAll(".quiz-option.is-selected")
-          .forEach(o => o.classList.remove("is-selected"));
+        const optWord = opt.dataset.word || "";
+        const correct = opt.dataset.correct === "1";
+        item.querySelectorAll(".quiz-option.is-selected").forEach(o => o.classList.remove("is-selected"));
+        // Every tap: speak the option's ENGLISH word and reveal it beside the
+        // Chinese (so each pick teaches which word that meaning belongs to).
+        opt.classList.add("is-revealed");
+        try { if (optWord) TTS.speak(optWord); } catch (_) {}
         const group = item.dataset.group === "1";
         if (correct) {
           opt.classList.add("is-correct", "is-locked");
           item.dataset.solved = "1";
           item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
-          playCorrectDing();
+          playCorrectDing(); spawnOptSparkle(opt);
           opt.classList.remove("is-pop"); void opt.offsetWidth; opt.classList.add("is-pop");
-          try { TTS.speak(group ? chosen : word); } catch (_) {}
           if (window.Quiz) {
-            if (group) { Quiz.recordWord(word, true); Quiz.recordWord(chosen, true); }   // both the word + the synonym
-            else if (item.dataset.clean !== "0") Quiz.recordWord(word, true);            // clean recognition
+            if (group) { Quiz.recordWord(word, true); Quiz.recordWord(optWord, true); }   // both the word + the synonym
+            else if (item.dataset.clean !== "0") Quiz.recordWord(word, true);             // clean recognition
             else Quiz.recordCorrected(word);
           }
           const all = Array.from(host.querySelectorAll(".quiz-item"));
@@ -1689,27 +1713,30 @@ const Views = (function () {
           opt.classList.add("is-wrong", "is-locked");
           item.dataset.clean = "0";
           if (window.Quiz) { if (group) Quiz.undoCorrect(word); else Quiz.recordWord(word, false); }  // group wrong cancels the recognition correct
-          try { TTS.speak(word); } catch (_) {}
           showQuizWord(word);
         }
       });
+      // A little gold sparkle burst at a correct option.
+      function spawnOptSparkle(opt) {
+        try {
+          const r = opt.getBoundingClientRect(), hr = host.getBoundingClientRect();
+          if (!hr.width) return;
+          const fx = ((r.left + r.width * 0.5 - hr.left) / hr.width) * 100;
+          const fy = ((r.top + r.height * 0.5 - hr.top) / hr.height) * 100;
+          for (let i = 0; i < 6; i++) {
+            const s = document.createElement("div");
+            s.className = "word-tap-sparkle";
+            s.style.left = fx + "%"; s.style.top = fy + "%";
+            s.style.setProperty("--ang", (Math.random() * 360) + "deg");
+            s.style.setProperty("--dist", (20 + Math.random() * 34) + "px");
+            s.style.animationDelay = (i * 22) + "ms";
+            host.appendChild(s);
+            setTimeout(() => { try { s.remove(); } catch (_) {} }, 880);
+          }
+        } catch (_) {}
+      }
 
-      const back = host.querySelector("[data-back]");
-      if (back) back.addEventListener("click", (e) => {
-        e.stopPropagation();
-        window.__navDir = "back";
-        window.go(ChapterNav.prevBeforeQuiz(chapterId, sectionNum));
-      });
-      const next = host.querySelector("[data-next]");
-      if (next) next.addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (allCorrect()) maybeChapterComplete();
-        else showToast({
-          title: "Answer the Questions",
-          subtitle: "Choose the correct option for each.",
-          ms: 1400,
-        });
-      });
+      wireStoryBtn(false);   // bottom "Story / Back" return button
     },
   };
 
@@ -2151,8 +2178,8 @@ const Views = (function () {
 
       let main, href;
       const q = (stage) => (window.Quiz && Quiz.quizHref)
-        ? Quiz.quizHref(chapterId, sectionNum, stage)
-        : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=${stage}`;
+        ? Quiz.quizHref(chapterId, sectionNum, stage, "index")
+        : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=${stage}&from=index`;
       if (st.quiz1.status !== "completed") { main = st.quiz1.status === "in_progress" ? "Continue Silver Trial" : "Begin Silver Trial"; href = q("silver"); }
       else if (st.quiz2.status !== "completed") { main = st.quiz2.status === "in_progress" ? "Continue Golden Seal" : "Begin Golden Seal"; href = q("golden"); }
       else { main = "Redo Trial"; href = q("silver"); }

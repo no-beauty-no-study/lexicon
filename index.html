@@ -138,7 +138,8 @@
   .menu-btn.recall .menu-btn-inner {
     background-size: contain; background-position: center; background-repeat: no-repeat;
     animation: none;
-    filter: drop-shadow(0 6px 16px rgba(40, 28, 12, 0.4));
+    mix-blend-mode: multiply;   /* drop the cream paper into the cover */
+    filter: drop-shadow(0 5px 13px rgba(40, 28, 12, 0.34));
   }
   .menu-btn.quiz   .menu-btn-inner { background-image: url("assets/bg/ui/C4601148-C0B7-4FBC-8B78-2DD0B958F9D5.png"); }
   .menu-btn.recall .menu-btn-inner { background-image: url("assets/bg/ui/B4C6D44A-5C31-4417-8288-FBD234721725.png"); }
@@ -914,12 +915,9 @@
           </div>
         </aside>
       </div>
-      <nav class="ui-bottom-nav">
-        <button type="button" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
-        <button type="button" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
+      <nav class="ui-bottom-nav" style="--nav-count:2">
+        <button type="button" data-story><span class="nav-glyph">❖</span>Story</button>
         <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
-        <button type="button" data-back><span class="nav-glyph">‹</span>Back</button>
-        <button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>
       </nav>
     </div>
     <div class="chapter-complete-toast" aria-hidden="true">
