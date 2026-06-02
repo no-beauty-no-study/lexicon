@@ -13,6 +13,14 @@ const Views = (function () {
     return String(s).replace(/["\\\n\r]/g, c =>
       c === '"' ? '\\"' : c === '\\' ? '\\\\' : '');
   }
+  // Strip a leading part-of-speech abbreviation chain ("n.", "v.", "n./v.",
+  // "adj. & adv.") from a gloss — the quiz shows the meaning without them
+  // (some are wrong in the data, e.g. intact marked n./v.).
+  function stripPos(s) {
+    const t = String(s == null ? "" : s);
+    const out = t.replace(/^\s*(?:[A-Za-z]{1,6}\.\s*(?:[\/&]\s*)?)+/, "").trim();
+    return out || t.trim();
+  }
   // Story entry hash. Story is LINEAR: tapping Story drops the
   // reader straight into the reading view — never into the chapter
   // index (which is for previewing, see browse=1 below). If progress
@@ -1431,7 +1439,7 @@ const Views = (function () {
           // are kicked out of the quiz AND the accumulation queue.
           const hasEx = (sc.examples || []).some(e => e && (e.example || e.en));
           if (!hasEx) continue;
-          poolW.push({ word: ans, zh: sc.zh });
+          poolW.push({ word: ans, zh: stripPos(sc.zh) });
           if (poolW.length >= 16) break;
         }
         return poolW.map(p => {
@@ -2299,7 +2307,7 @@ const Views = (function () {
           if (!ex) continue;
           const syns = ((bc.group) || []).filter(g => g.clickable && g.word).map(g => g.word);
           seen.add(w); seen.add(ans);
-          out.push({ word: ans, en: ex.example, zh: ex.example_zh || "", pos: sc.pos || "", meaning: sc.zh || "", syn: syns[0] || null });
+          out.push({ word: ans, en: ex.example, zh: ex.example_zh || "", pos: sc.pos || "", meaning: stripPos(sc.zh || ""), syn: syns[0] || null });
           if (out.length >= 8) break;
         }
         return out;
@@ -2522,7 +2530,7 @@ const Views = (function () {
       const bg = (typeof getChapterBackground === "function") ? getChapterBackground(chapterId, params.page) : null;
       if (bg) host.style.backgroundImage = `url("${bg}")`;
 
-      host.querySelector("[data-chapter-number]").textContent = "Reading Comprehension";
+      host.querySelector("[data-chapter-number]").textContent = "Chapter " + book.number;
       host.querySelector("[data-chapter-title]").textContent  = book.title;
       host.querySelector("[data-chapter-section]").textContent = section ? (section.number + " · " + section.title) : sectionNum;
 
