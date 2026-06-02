@@ -1876,31 +1876,32 @@
 .note-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 2095 / 444;
-  background: url("../assets/bg/ui/note-card.png") no-repeat center center;
+  aspect-ratio: 1990 / 622;
+  background: url("../assets/bg/ui/IMG_6778.jpeg") no-repeat center center;
   background-size: 100% 100%;
   flex: 0 0 auto;
 }
 
-/* ---- zone 1: index number ---- */
+/* ---- index number (on the blue pennant, far right) ---- */
 .note-card .note-index {
   position: absolute;
-  left: 2.39%; top: 16.44%; width: 5.11%; height: 10.81%;
-  display: flex; align-items: flex-start; justify-content: center;
+  left: 90.5%; top: 53.1%; width: 5.4%; height: 12.7%;
+  display: flex; align-items: center; justify-content: center;
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(22px, 2vw, 42px);
-  font-weight: 400; letter-spacing: 0.04em;
-  color: #5a4932; line-height: 1;
+  font-size: clamp(16px, 1.6vw, 30px);
+  font-weight: 500; letter-spacing: 0.04em;
+  color: #e9dcc0; line-height: 1;
+  text-shadow: 0 1px 2px rgba(40, 52, 74, 0.55);
   pointer-events: none;
 }
 
-/* ---- zone 2: reading quote ---- */
+/* ---- reading quote (left big; tap to hear) ---- */
 .note-card .note-quote {
   position: absolute;
-  left: 9.50%; top: 14.64%; width: 39.28%; height: 59.46%;
+  left: 9.3%; top: 14.8%; width: 38.6%; height: 62.1%;
   box-sizing: border-box;
-  padding: 3.5% 8% 4% 9%;
-  pointer-events: none;
+  padding: 3.6% 7% 4% 7%;
+  cursor: pointer;
 }
 .note-card .note-source {
   font-family: "Cormorant Garamond", Georgia, serif;
@@ -1913,11 +1914,11 @@
   font-family: "Cormorant Garamond", "EB Garamond", Georgia, serif;
   font-size: clamp(17px, 1.45vw, 31px);
   font-style: italic; font-weight: 400;
-  line-height: 1.45; letter-spacing: 0.035em;
+  line-height: 1.5; letter-spacing: 0.035em;
   color: #3f3628;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 8;
   overflow: hidden;
 }
 .note-card .quote-word {
@@ -1925,44 +1926,59 @@
   border-bottom: 1px solid rgba(143, 111, 60, 0.38);
   padding: 0 0.08em;
 }
+/* open quote top-left, close quote bottom-right of the reading box */
 .note-card .note-quote::before {
   content: "\201C";
   position: absolute;
-  left: 3.5%; top: 18%;
+  left: 0; top: 2%;
   font-family: Georgia, serif;
-  font-size: clamp(42px, 4.6vw, 86px);
-  color: rgba(132, 101, 52, 0.55);
+  font-size: clamp(36px, 3.8vw, 70px);
+  color: rgba(132, 101, 52, 0.5);
   line-height: 1;
 }
 .note-card .note-quote::after {
   content: "\201D";
   position: absolute;
-  right: 3%; bottom: 2%;
+  right: 1%; bottom: -2%;
   font-family: Georgia, serif;
-  font-size: clamp(42px, 4.6vw, 86px);
-  color: rgba(132, 101, 52, 0.55);
+  font-size: clamp(36px, 3.8vw, 70px);
+  color: rgba(132, 101, 52, 0.5);
   line-height: 1;
 }
 
-/* ---- zone 3: Open Chapter (reuses the chapters-page .antique-button) ---- */
+/* ---- OPEN banner (small ribbon, lower-left of the reading box) ---- */
 .note-card .note-open {
   position: absolute;
-  left: 31.93%; top: 76.35%; width: 16.13%; height: 14.41%;
+  left: 24.2%; top: 78.0%; width: 9.7%; height: 12.4%;
+  background: transparent; border: 0; cursor: pointer;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(12px, 1.1vw, 21px); letter-spacing: 0.22em;
+  color: #5a4932; text-transform: uppercase;
 }
-.note-card .note-open .antique-button {
-  width: 100%; height: 100%;
-  min-width: 0; padding: 0 8px;
-  font-size: clamp(9px, 0.9vw, 13px);
-}
+.note-card .note-open:hover { color: #8a6a30; }
 
-/* ---- zone 4: word preview small card ---- */
-.note-card .word-preview {
+/* ---- right-top: word / 中文 / phrases (tap to open the word card) ---- */
+.note-card .note-word {
   position: absolute;
-  left: 53.27%; top: 18.02%; width: 31.84%; height: 67.79%;
+  left: 50.2%; top: 13.3%; width: 39.4%; height: 46.3%;
   box-sizing: border-box;
-  padding: 2.6% 3.2% 2.4% 3.2%;
+  padding: 1% 2% 1% 1%;
   overflow: hidden;
   cursor: pointer;
+}
+/* ---- right-bottom: example + 中文 (tap to hear) ---- */
+.note-card .note-example {
+  position: absolute;
+  left: 50.5%; top: 64.6%; width: 39.2%; height: 27.7%;
+  box-sizing: border-box;
+  padding: 0.5% 2% 0.5% 1%;
+  overflow: hidden;
+  cursor: pointer;
+}
+.note-card .word-example-zh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: clamp(11px, 0.9vw, 17px);
+  color: #6d604b; line-height: 1.4; margin-top: 0.25em;
 }
 .note-card .word-title {
   font-family: "Cormorant Garamond", Georgia, serif;

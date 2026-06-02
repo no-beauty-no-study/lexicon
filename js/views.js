@@ -1810,34 +1810,37 @@ const Views = (function () {
         const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
         const phraseRows = phrases.map(p => `
             <span class="word-phrase">${esc(p.en)}${p.zh ? `<span class="word-phrase-zh">— ${esc(p.zh)}</span>` : ""}</span>`).join("");
-        const example = (entry && entry.example) || "";
+        const example   = (entry && entry.example) || "";
+        const exampleZh = (entry && (entry.exampleZh || entry.example_zh)) || "";
 
-        // Open Chapter → reading, located on the folded sentence with
-        // the word spotlit. Only when we know which section it came from.
+        // OPEN banner → reading, located on the folded sentence with the word
+        // spotlit. Only when we know which section it came from.
         const openBtn = (scope && scope.chapter) ? `
-          <div class="note-open">
-            <button type="button" class="antique-button"
-                    data-go="#reading?chapter=${encodeURIComponent(scope.chapter)}&section=${encodeURIComponent(scope.section || "1.1")}&word=${encodeURIComponent(id)}">
-              <span class="antique-button-label">Open Chapter</span>
-            </button>
-          </div>` : "";
+          <button type="button" class="note-open"
+                  data-go="#reading?chapter=${encodeURIComponent(scope.chapter)}&section=${encodeURIComponent(scope.section || "1.1")}&word=${encodeURIComponent(id)}">OPEN</button>` : "";
 
+        // Five zones laid out over the IMG_6778 card frame:
+        //   left big  = reading quote (tap to hear) + OPEN banner beneath it
+        //   right top = word / 中文 / phrases (tap to open the word card)
+        //   right low = example + 中文 (tap to hear)
+        //   pennant   = folded note index number
         cards.push(`
           <li class="note-card" data-id="${esc(id)}">
-            <div class="note-index">${esc(idxStr)}</div>
-            <div class="note-quote">
+            <div class="note-quote" title="Tap to hear">
               ${src ? `<div class="note-source">${esc(src)}</div>` : ""}
               <div class="note-quote-text">${highlightWord(quote, word)}</div>
             </div>
             ${openBtn}
-            <div class="word-preview">
+            <div class="note-word">
               <div class="word-title">${esc(word)}</div>
               ${entry && entry.meaning ? `<div class="word-zh">${esc(entry.meaning)}</div>` : ""}
-              <div class="word-divider"></div>
-              <div class="word-phrases">${phraseRows}</div>
-              ${example ? `<div class="word-divider"></div><div class="word-example">${esc(example)}</div>` : ""}
+              ${phraseRows ? `<div class="word-divider"></div><div class="word-phrases">${phraseRows}</div>` : ""}
             </div>
-            <div class="bookmark-open" aria-label="Open word card">Tap to Open</div>
+            <div class="note-example" title="Tap to hear">
+              ${example ? `<div class="word-example">${esc(example)}</div>` : ""}
+              ${exampleZh ? `<div class="word-example-zh">${esc(exampleZh)}</div>` : ""}
+            </div>
+            <div class="note-index">${esc(idxStr)}</div>
           </li>`);
       });
 
@@ -1845,17 +1848,22 @@ const Views = (function () {
         ? cards.join("")
         : `<li class="notes-empty">No saved words yet — fold a word while reading to keep it here.</li>`;
 
-      // Tapping the word preview or the blue bookmark opens the full
-      // drawer card. (Open Chapter uses data-go and is handled globally.)
+      // Right-top word block opens the full drawer card; the reading-quote
+      // and example blocks read their text aloud. (OPEN uses data-go, handled
+      // globally.)
       listEl.addEventListener("click", (e) => {
-        const hit = e.target.closest(".word-preview, .bookmark-open");
-        if (!hit) return;
+        if (e.target.closest(".note-open")) return;   // data-go handles it
         const card = e.target.closest(".note-card");
         if (!card) return;
-        e.stopPropagation();
-        const entry = byId[card.dataset.id];
-        const scope = Storage.findScopeOf ? Storage.findScopeOf(card.dataset.id) : null;
-        if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry, scope || undefined);
+        const speak = (t) => { try { if (t && typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t).trim()); } catch (_) {} };
+        if (e.target.closest(".note-quote"))   { e.stopPropagation(); speak(card.querySelector(".note-quote-text")?.textContent); return; }
+        if (e.target.closest(".note-example")) { e.stopPropagation(); speak(card.querySelector(".word-example")?.textContent); return; }
+        if (e.target.closest(".note-word")) {
+          e.stopPropagation();
+          const entry = byId[card.dataset.id];
+          const scope = Storage.findScopeOf ? Storage.findScopeOf(card.dataset.id) : null;
+          if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry, scope || undefined);
+        }
       });
     },
   };
