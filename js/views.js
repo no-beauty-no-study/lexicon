@@ -2641,18 +2641,6 @@ const Views = (function () {
         div.textContent = zh || "（题目译文待补充）";
         item.querySelector(".quiz-question").after(div);
       }
-      function failComprehension() {
-        if (advancing) return; advancing = true;
-        let scrim = host.querySelector(".qx-scrim");
-        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
-        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
-          <p class="qx-en">That answer was wrong — no second try here.<br>Go back and read the passage again.</p>
-          <p class="qx-zh">答错了，没有第二次机会。回去把这段再读一遍。</p>
-          <div class="qx-actions"><button type="button" class="gs-btn qx-finish">Back to Reading</button></div></div>`;
-        scrim.querySelector(".qx-finish").onclick = (e) => { e.stopPropagation(); window.__navDir = "back"; window.go(returnHref); };
-        requestAnimationFrame(() => scrim.classList.add("is-open"));
-      }
-
       body.addEventListener("click", (e) => {
         const opt = e.target.closest(".quiz-option");
         const itm = e.target.closest(".quiz-item");
@@ -2670,23 +2658,24 @@ const Views = (function () {
         const item = opt.closest(".quiz-item");
         if (item.dataset.solved === "1") return;
         focusItem(item);
-        // One shot only — lock every option the moment one is picked, and read
-        // the question aloud (audio feedback on selection).
+        // One shot only — lock every option the moment one is picked.
         item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
-        speakItem(item);
         if (opt.dataset.correct === "1") {
           opt.classList.add("is-correct");
           item.dataset.solved = "1";
+          speakItem(item);   // read the question aloud on a correct pick
           try { playReviewChord(); } catch (_) {}
           const idx = all.indexOf(item);
           if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 800);
           else if (allCorrect()) setTimeout(finish, 600);
         } else {
-          // Wrong = wrong. Show the right answer, then send them back to read.
+          // Wrong = wrong: read the wrong option aloud, then bounce to story.
           opt.classList.add("is-wrong");
-          item.querySelectorAll(".quiz-option").forEach(o => { if (o.dataset.correct === "1") o.classList.add("is-correct"); });
           failed = true;
-          setTimeout(failComprehension, 1100);
+          const optText = (opt.querySelector(".quiz-option-text") || {}).textContent || "";
+          try { TTS.speak(optText); } catch (_) {}
+          window.__navDir = "back";
+          setTimeout(() => window.go(returnHref), 1400);
         }
       });
     },
