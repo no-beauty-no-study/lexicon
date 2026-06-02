@@ -1180,26 +1180,22 @@ const Views = (function () {
             <span class="gs-dots"></span>
           </div>
           <div class="gs-panel">
-            <div class="gs-label gs-listen">✦ LISTEN AND SPELL ✦</div>
+            <div class="gs-label gs-listen">✦ LISTEN &amp; SPELL ✦ <span class="gs-replay">↻</span></div>
             <p class="gs-sentence-en"></p>
-            <p class="gs-sentence-zh"></p>
-            <p class="gs-hint"></p>
             <div class="gs-spell">
               <div class="gs-cells"></div>
-              <input class="gs-input" type="text" lang="en" inputmode="text"
+              <input class="gs-input" type="text" lang="en" inputmode="latin"
                      autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Spell the word">
             </div>
-            <p class="gs-note">If answered incorrectly, the correct spelling appears briefly,<br>then you must type it again. · 看过答案不算通过</p>
             <div class="gs-correction" hidden></div>
-            <div class="gs-actions">
-              <button type="button" class="gs-btn gs-reveal">👁 REVEAL</button>
-              <button type="button" class="gs-btn gs-check">✓ CHECK</button>
-            </div>
+            <p class="gs-sentence-zh"></p>
+            <p class="gs-note">Type what you hear, then press Enter.</p>
           </div>`;
 
         const el = (s) => body.querySelector(s);
         const cellsEl = el(".gs-cells"), input = el(".gs-input");
-        const enEl = el(".gs-sentence-en"), zhEl = el(".gs-sentence-zh"), hintEl = el(".gs-hint");
+        const enEl = el(".gs-sentence-en"), zhEl = el(".gs-sentence-zh");
+        const sayLine = () => { try { if (typeof TTS !== "undefined" && TTS.speak) TTS.speak(cur().en || cur().word); } catch (_) {} };
         const noEl = el(".gs-no"), dotsEl = el(".gs-dots"), corr = el(".gs-correction");
 
         const cur = () => set[queue[pos]];
@@ -1228,13 +1224,12 @@ const Views = (function () {
           corr.hidden = true; corr.innerHTML = "";
           input.value = "";
           const q = cur();
-          enEl.innerHTML = blankSentence(q.en, q.word);
-          zhEl.textContent = "";                  // Chinese hidden until answered
-          hintEl.textContent = q.pos || "";       // POS only — no Chinese in the prompt
+          enEl.innerHTML = blankSentence(q.en, q.word);   // sentence shown, target blanked
+          zhEl.textContent = "";                  // Chinese only appears AFTER answering
           cellsEl.classList.remove("is-shake");
           renderCells(); renderDots();
           setTimeout(() => { try { input.focus(); } catch (_) {} }, 60);
-          speakWord(q.word);
+          sayLine();                              // auto-read the whole example
         }
         function showCorrection(typed) {
           const q = cur();
@@ -1323,9 +1318,8 @@ const Views = (function () {
             const clean = !revealed && !wrongThis;     // un-prompted, first try this presentation
             if (clean) { q.status = "sealed"; if (window.Quiz) Quiz.recordWord(q.word, true); playSuccessChord(); }
             else { if (q.status !== "sealed") q.status = "corrected"; if (window.Quiz) Quiz.recordCorrected(q.word); queue.push(queue[pos]); }
-            // NOW reveal the Chinese (only after it's answered) and hold a beat.
+            // NOW reveal the Chinese translation (only after it's answered).
             zhEl.textContent = q.zh || "";
-            hintEl.textContent = (q.pos ? q.pos + "  " : "") + (q.meaning || "");
             renderDots(); recordState();
             setTimeout(() => {
               pos += 1;
@@ -1337,15 +1331,8 @@ const Views = (function () {
             if (q.status !== "sealed") q.status = "corrected";
             if (!recordedWrong && window.Quiz) { Quiz.recordWord(q.word, false); recordedWrong = true; }
             cellsEl.classList.remove("is-shake"); void cellsEl.offsetWidth; cellsEl.classList.add("is-shake");
-            showCorrection(typed); speakWord(q.word); renderDots();
+            showCorrection(typed); zhEl.textContent = q.zh || ""; sayLine(); renderDots();
           }
-        }
-        function onReveal() {
-          const q = cur();
-          revealed = true;
-          if (q.status !== "sealed") q.status = "corrected";
-          if (!recordedWrong && window.Quiz) { Quiz.recordWord(q.word, false); recordedWrong = true; }  // seeing = counts as wrong
-          showCorrection(input.value.trim().toLowerCase()); speakWord(q.word); renderDots();
         }
         function retry() { if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; input.value = ""; renderCells(); } }
 
@@ -1353,9 +1340,8 @@ const Views = (function () {
         input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); onCheck(); } });
         input.addEventListener("focus", retry);
         cellsEl.addEventListener("click", () => { retry(); try { input.focus(); } catch (_) {} });
-        el(".gs-listen").addEventListener("click", () => speakWord(cur().word));   // tap label to replay
-        el(".gs-check").addEventListener("click", onCheck);
-        el(".gs-reveal").addEventListener("click", onReveal);
+        el(".gs-listen").addEventListener("click", sayLine);          // tap label / ↻ to replay
+        enEl.addEventListener("click", sayLine);                      // tap the sentence to replay
         present();
       }
 
