@@ -1077,6 +1077,186 @@ const Views = (function () {
       host.querySelector("[data-chapter-section]").textContent =
         section ? (section.number + " · " + section.title) : sectionNum;
 
+      // ============ QUIZ 2 · GOLDEN SEAL (Spelling Practice) ============
+      // Parchment "Listen and Spell" page. Correction layer + pass-judgment
+      // per the design: seeing the answer never counts; only an independent,
+      // un-prompted correct spelling on a fresh presentation SEALS the word.
+      if ((params.stage || "") === "golden") { renderGoldenSeal(); return; }
+
+      function rxq(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+      function speakWord(w) { try { if (typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(w)); } catch (_) {} }
+      // Build the section's spelling set: clickable vocab words that have an
+      // example sentence containing the word. Up to 10 (one Word Set).
+      function buildGoldenSet(sec) {
+        const out = [], seen = new Set();
+        const toks = ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || [];
+        for (const raw of toks) {
+          const w = raw.toLowerCase();
+          if (seen.has(w)) continue;
+          const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null;
+          if (!sc || sc.proper) continue;
+          const ans = String(sc.word || w).toLowerCase();
+          if (seen.has(ans) || !/^[a-z][a-z'-]{2,}$/.test(ans)) continue;
+          const ex = (sc.examples || []).find(e => e.example && new RegExp("\\b" + rxq(ans) + "\\b", "i").test(e.example));
+          if (!ex) continue;
+          seen.add(w); seen.add(ans);
+          out.push({ word: ans, en: ex.example, zh: ex.example_zh || "",
+                     hint: (sc.pos ? sc.pos + " " : "") + (sc.zh || "") });
+          if (out.length >= 10) break;
+        }
+        return out;
+      }
+      function renderGoldenSeal() {
+        const body = host.querySelector(".quiz-body");
+        const set = buildGoldenSet(section);
+        if (!set.length) {
+          body.innerHTML = `<div class="empty-state">No spelling set available yet for this section.</div>`;
+          return;
+        }
+        set.forEach(q => { q.status = "unseen"; });   // unseen | corrected | sealed
+        let queue = set.map((_, i) => i);
+        let pos = 0, revealed = false, wrongThis = false;
+
+        body.innerHTML = `
+          <div class="gs-progress">
+            <span class="gs-no">01</span><span class="gs-slash"> / ${set.length}</span>
+            <span class="gs-dots"></span>
+          </div>
+          <div class="gs-panel">
+            <div class="gs-label">✦ LISTEN AND SPELL ✦</div>
+            <button type="button" class="gs-speaker" aria-label="Listen">🔊</button>
+            <p class="gs-sentence-en"></p>
+            <p class="gs-sentence-zh"></p>
+            <p class="gs-hint"></p>
+            <div class="gs-spell">
+              <div class="gs-cells"></div>
+              <input class="gs-input" type="text" lang="en" inputmode="text"
+                     autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Spell the word">
+            </div>
+            <p class="gs-note">If answered incorrectly, the correct spelling appears briefly,<br>then you must type it again. · 看过答案不算通过</p>
+            <div class="gs-correction" hidden></div>
+            <div class="gs-actions">
+              <button type="button" class="gs-btn gs-reveal">👁 REVEAL</button>
+              <button type="button" class="gs-btn gs-check">✓ CHECK</button>
+            </div>
+          </div>`;
+
+        const el = (s) => body.querySelector(s);
+        const cellsEl = el(".gs-cells"), input = el(".gs-input");
+        const enEl = el(".gs-sentence-en"), zhEl = el(".gs-sentence-zh"), hintEl = el(".gs-hint");
+        const noEl = el(".gs-no"), dotsEl = el(".gs-dots"), corr = el(".gs-correction");
+
+        const cur = () => set[queue[pos]];
+        const sealedCount = () => set.filter(q => q.status === "sealed").length;
+        function renderDots() {
+          dotsEl.innerHTML = set.map(q =>
+            `<span class="gs-dot ${q.status === "sealed" ? "is-sealed" : q.status === "corrected" ? "is-corrected" : ""}"></span>`).join("");
+          noEl.textContent = String(Math.min(set.length, sealedCount() + 1)).padStart(2, "0");
+        }
+        function renderCells() {
+          const q = cur(); const v = input.value.toLowerCase().slice(0, q.word.length);
+          let h = "";
+          for (let i = 0; i < q.word.length; i++) {
+            const ch = v[i] || "";
+            h += `<span class="gs-cell${i === v.length ? " is-caret" : ""}${ch ? " is-filled" : ""}">${esc(ch)}</span>`;
+          }
+          cellsEl.innerHTML = h;
+        }
+        function blankSentence(en, word) {
+          return esc(en).replace(new RegExp("\\b" + rxq(word) + "\\b", "i"),
+            `<span class="gs-blank">${"_".repeat(Math.max(6, word.length))}</span>`);
+        }
+        function present() {
+          revealed = false; wrongThis = false;
+          corr.hidden = true; corr.innerHTML = "";
+          input.value = "";
+          const q = cur();
+          enEl.innerHTML = blankSentence(q.en, q.word);
+          zhEl.textContent = q.zh || "";
+          hintEl.textContent = q.hint || "";
+          cellsEl.classList.remove("is-shake");
+          renderCells(); renderDots();
+          setTimeout(() => { try { input.focus(); } catch (_) {} }, 60);
+          speakWord(q.word);
+        }
+        function showCorrection(typed) {
+          const q = cur();
+          let spell = "";
+          for (let i = 0; i < q.word.length; i++) {
+            const ok = typed[i] && typed[i] === q.word[i];
+            spell += `<span class="${ok ? "gs-c-ok" : "gs-c-bad"}">${esc(q.word[i])}</span>`;
+          }
+          corr.innerHTML = `
+            <div class="gs-c-row"><span class="gs-c-key">Your answer</span><span class="gs-c-you">${esc(typed) || "—"}</span></div>
+            <div class="gs-c-row"><span class="gs-c-key">Correct spelling</span><span class="gs-c-correct">${spell}</span></div>
+            <div class="gs-c-tip">Tap the writing line to try again · 点击输入线重写</div>`;
+          corr.hidden = false;
+        }
+        function recordState() {
+          if (window.Quiz && Quiz.setStageStatus) {
+            const done = sealedCount() >= set.length;
+            Quiz.setStageStatus(chapterId, sectionNum, "quiz2", done ? "completed" : "in_progress", null);
+            Quiz.update(chapterId, sectionNum, { sealedWords: sealedCount(), totalWords: set.length });
+          }
+        }
+        function finish() {
+          recordState();
+          body.innerHTML = `<div class="gs-done"><div class="gs-done-mark">✦</div>
+            <div class="gs-done-title">Golden Seal Complete</div>
+            <p class="gs-done-sub">Sealed ${sealedCount()} / ${set.length} · 已封存</p>
+            <button type="button" class="gs-btn gs-continue" style="margin-top:18px">CONTINUE</button></div>`;
+          try { playSuccessChord(); } catch (_) {}
+          const go = () => window.go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref() : "#menu");
+          const c = body.querySelector(".gs-continue"); if (c) c.addEventListener("click", go);
+          setTimeout(go, 2600);
+        }
+        // Bottom-nav for the Golden stage (the choice-quiz handlers were
+        // skipped by the early return). Back leaves to Menu; Next skips ahead.
+        const gBack = host.querySelector("[data-back]");
+        if (gBack) gBack.addEventListener("click", (e) => { e.stopPropagation(); window.__navDir = "back"; window.go("#menu"); });
+        const gNext = host.querySelector("[data-next]");
+        if (gNext) gNext.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (pos + 1 < queue.length) { pos += 1; present(); }
+          else finish();
+        });
+        function onCheck() {
+          const q = cur();
+          const typed = input.value.trim().toLowerCase();
+          if (!typed) { cellsEl.classList.remove("is-shake"); void cellsEl.offsetWidth; cellsEl.classList.add("is-shake"); return; }
+          if (typed === q.word) {
+            const clean = !revealed && !wrongThis;     // un-prompted, first try this presentation
+            if (clean) { q.status = "sealed"; playSuccessChord(); }
+            else { if (q.status !== "sealed") q.status = "corrected"; queue.push(queue[pos]); } // re-queue for independent retry
+            renderDots(); recordState();
+            pos += 1;
+            if (pos >= queue.length || sealedCount() >= set.length) return finish();
+            present();
+          } else {
+            wrongThis = true;
+            if (q.status !== "sealed") q.status = "corrected";
+            cellsEl.classList.remove("is-shake"); void cellsEl.offsetWidth; cellsEl.classList.add("is-shake");
+            showCorrection(typed); speakWord(q.word); renderDots();
+          }
+        }
+        function onReveal() {
+          const q = cur();
+          revealed = true;
+          if (q.status !== "sealed") q.status = "corrected";
+          showCorrection(input.value.trim().toLowerCase()); speakWord(q.word); renderDots();
+        }
+        function retry() { if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; input.value = ""; renderCells(); } }
+
+        input.addEventListener("input", () => { input.value = input.value.replace(/[^A-Za-z]/g, ""); renderCells(); });
+        input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); onCheck(); } });
+        input.addEventListener("focus", retry);
+        cellsEl.addEventListener("click", () => { retry(); try { input.focus(); } catch (_) {} });
+        el(".gs-speaker").addEventListener("click", () => speakWord(cur().word));
+        el(".gs-check").addEventListener("click", onCheck);
+        el(".gs-reveal").addEventListener("click", onReveal);
+        present();
+      }
+
       function shuffle(arr, seed) {
         const a = arr.slice(); let s = seed;
         for (let i = a.length - 1; i > 0; i--) {
@@ -1279,36 +1459,18 @@ const Views = (function () {
       function maybeChapterComplete() {
         if (advancing || !allCorrect()) return;
         advancing = true;
-        const last = isLastSectionOfChapter();
-        // Different reward weight depending on what's being closed.
-        // A full chapter gets the 4-note chord, 16 stars, and a
-        // longer celebration window. A single section gets 8 stars
-        // and the brighter 2-note rising ding.
-        if (last) {
-          spawnStarBurst(16);
-          showToast({
-            title:    "Chapter Complete",
-            subtitle: "The next chapter opens.",
-            ms: 0,
-          });
-          playSuccessChord();
-          setTimeout(() => {
-            window.__navDir = "forward";
-            window.go(ChapterNav.nextAfterQuiz(chapterId, sectionNum));
-          }, 1900);
-        } else {
-          spawnStarBurst(8);
-          showToast({
-            title:    "Section Cleared",
-            subtitle: "Onwards to the next page.",
-            ms: 0,
-          });
-          playCorrectDing();
-          setTimeout(() => {
-            window.__navDir = "forward";
-            window.go(ChapterNav.nextAfterQuiz(chapterId, sectionNum));
-          }, 1300);
-        }
+        // Silver Trial cleared → mark Quiz 1 done and move on to the same
+        // section's Quiz 2 · Golden Seal (the spelling stage).
+        if (window.Quiz && Quiz.setStageStatus) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
+        spawnStarBurst(8);
+        showToast({ title: "Silver Trial Cleared", subtitle: "Now the Golden Seal.", ms: 0 });
+        playCorrectDing();
+        setTimeout(() => {
+          window.__navDir = "forward";
+          window.go((window.Quiz && Quiz.quizHref)
+            ? Quiz.quizHref(chapterId, sectionNum, "golden")
+            : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=golden`);
+        }, 1300);
       }
 
       body.addEventListener("click", (e) => {
