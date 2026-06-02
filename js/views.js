@@ -1437,13 +1437,14 @@ const Views = (function () {
           return { group: true, word: c.word, ex: c.ex, options: opts };
         });
       }
-      function renderItem(q, idx) {
+      function renderItem(q, idx, retry) {
         const qhtml = q.group
           ? esc(q.ex).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), `<u class="qz-target">${esc(q.word)}</u>`)
           : esc(q.word);
+        const label = retry ? "Retry" : `${q.group ? "Synonym" : "Word"} ${idx + 1}`;
         return `
           <article class="quiz-item" data-word="${esc(q.word)}" data-group="${q.group ? 1 : 0}" data-solved="0">
-            <div class="quiz-no">${q.group ? "Synonym" : "Word"} ${idx + 1}</div>
+            <div class="quiz-no">${label}</div>
             <p class="quiz-question">${qhtml}</p>
             <ul class="quiz-options">
               ${q.options.map((o, i) => `
@@ -1525,6 +1526,21 @@ const Views = (function () {
         ? items.map((q, i) => renderItem(q, i)).join("")
         : `<div class="empty-state">No quiz words for this section yet.</div>`;
 
+      // ---- recycle bookkeeping ----
+      // The stage is cleared only when EVERY distinct word has been answered
+      // correctly. A wrong answer appends a fresh "Retry" copy of that
+      // question to the end of the stack ("16 题错 2 题 → 变成 18 题"), so you
+      // cannot leave until you get them all right.
+      const qByWord = {};
+      items.forEach(q => { qByWord[String(q.word).toLowerCase()] = q; });
+      const originalWords = new Set(items.map(q => String(q.word).toLowerCase()));
+      const solvedWords = new Set();
+      function appendRetry(word) {
+        const q = qByWord[String(word).toLowerCase()];
+        if (!q) return;
+        body.insertAdjacentHTML("beforeend", renderItem(q, 0, true));
+      }
+
       // Scroll the question being read into view and mark it current so
       // the player can always SEE what's being spoken (same follow-along
       // as the reading page).
@@ -1555,30 +1571,26 @@ const Views = (function () {
           if (item.dataset.solved === "1") showQuizWord(item.dataset.word);
         }
       });
-      let lastSpokenIdx = -1;
-      function showThrough(n) {
+      // Reveal the next still-hidden question (originals first, then any
+      // appended Retry copies) and read it aloud. When none remain hidden the
+      // stage is complete.
+      function revealNext() {
         const all = host.querySelectorAll(".quiz-item");
-        all.forEach((it, i) => it.classList.toggle("is-shown", i <= n));
-        // Auto-read the newly-revealed question (and its options) so the
-        // player can start without tapping. Only re-speak if we've
-        // actually advanced past the last one we read.
-        if (n > lastSpokenIdx) {
-          lastSpokenIdx = n;
-          const item = all[n];
-          // Tiny delay so the fade-in starts before the voice kicks in
-          // — feels more like the page is reading itself to you.
-          setTimeout(() => speakItem(item), 220);
-        }
+        let next = null;
+        for (const it of all) { if (!it.classList.contains("is-shown")) { next = it; break; } }
+        if (next) { next.classList.add("is-shown"); setTimeout(() => speakItem(next), 220); }
+        else maybeChapterComplete();
       }
-      showThrough(0);
+      function showThrough() { revealNext(); }   // kept name for the first reveal
+      revealNext();   // reveal the first question
 
       let advancing = false;
       let backingOut = false;
 
+      // Stage clears only when every DISTINCT word has been answered correctly
+      // (Retry copies of wrong ones are folded back into the same stack).
       function allCorrect() {
-        const itemEls = host.querySelectorAll(".quiz-item");
-        if (!itemEls.length) return false;
-        return Array.from(itemEls).every(it => it.dataset.solved === "1");
+        return originalWords.size > 0 && solvedWords.size >= originalWords.size;
       }
       // Star-burst helper. n stars fly radially out from the
       // center; angle / distance / size / phase-delay all randomised
@@ -1693,22 +1705,27 @@ const Views = (function () {
           item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
           playCorrectDing(); spawnOptSparkle(opt);
           opt.classList.remove("is-pop"); void opt.offsetWidth; opt.classList.add("is-pop");
-          if (window.Quiz) {
-            if (group) { Quiz.recordWord(word, true); Quiz.recordWord(optWord, true); }   // both the word + the synonym
-            else if (item.dataset.clean !== "0") Quiz.recordWord(word, true);             // clean recognition
-            else Quiz.recordCorrected(word);
-          }
-          const all = Array.from(host.querySelectorAll(".quiz-item"));
-          const idx = all.indexOf(item);
-          if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 900);
-          else maybeChapterComplete();
+          // Only the TESTED word is collected — never the synonym options (that
+          // was pulling words like "longer" into the garden). A correct answer
+          // never lowers the score; it just marks the word collected.
+          if (window.Quiz) Quiz.recordWord(word, true);
+          solvedWords.add(String(word).toLowerCase());
+          if (allCorrect()) maybeChapterComplete();
+          else setTimeout(revealNext, 900);
         } else {
-          // Wrong → the TESTED word's card on the right (tap for full card);
-          // the question stays open — pick again.
+          // Wrong → log one wrong, show the right answer + the word's card, lock
+          // the question and append a fresh "Retry" copy to the end of the
+          // stack. You must answer that copy correctly to clear the stage.
           opt.classList.add("is-wrong", "is-locked");
-          item.dataset.clean = "0";
-          if (window.Quiz) { if (group) Quiz.undoCorrect(word); else Quiz.recordWord(word, false); }  // group wrong cancels the recognition correct
+          item.dataset.solved = "1";   // this copy is spent (a Retry is queued)
+          item.querySelectorAll(".quiz-option").forEach(o => {
+            o.classList.add("is-locked");
+            if (o.dataset.correct === "1") o.classList.add("is-correct");
+          });
+          if (window.Quiz) Quiz.recordWord(word, false);
           showQuizWord(word);
+          appendRetry(word);
+          setTimeout(revealNext, 1200);
         }
       });
       // A little gold sparkle burst at a correct option.
@@ -1893,8 +1910,8 @@ const Views = (function () {
         return list.filter(w => w.toLowerCase().includes(query) || glossOf(w).toLowerCase().includes(query));
       }
       function rowHTML(word) {
-        const st = (window.Quiz && Quiz.wordStat) ? Quiz.wordStat(word) : { w: 0, c: 0 };
-        const need = (st.w || 0) - (st.c || 0);
+        const st = (window.Quiz && Quiz.wordStat) ? Quiz.wordStat(word) : { w: 0, rc: 0 };
+        const need = (st.w || 0) - (st.rc || 0);
         return `<li class="wg-row" data-id="${esc(word)}">
           <span class="wg-row-en">${esc(word)}</span>
           <span class="wg-row-zh">${esc(glossOf(word))}</span>
@@ -2336,9 +2353,9 @@ const Views = (function () {
                 locked = true; li.classList.add("is-correct");
                 q.passed = true;
                 if (window.Quiz) {
-                  Quiz.recordWord(q.word, true);
-                  // a carded group synonym is rewarded too
-                  if (useSyn && q.syn && VR && VR.getSmallCard && VR.getSmallCard(q.syn)) Quiz.recordWord(q.syn, true);
+                  // REVIEW correct is the only thing that pulls a word down.
+                  Quiz.recordReviewCorrect(q.word);
+                  if (useSyn && q.syn && VR && VR.getSmallCard && VR.getSmallCard(q.syn)) Quiz.recordReviewCorrect(q.syn);
                 }
                 chord(); queue.shift(); renderBottom();
                 setTimeout(stageA, 850);
@@ -2421,7 +2438,9 @@ const Views = (function () {
           if (typed === q.word) {
             const clean = !revealed && !wrongThis;
             q.sealed = true;
-            if (window.Quiz) { if (clean) Quiz.recordSpelled(q.word); else Quiz.recordCorrected(q.word); }
+            // Spelling in REVIEW: seal it, and a clean spelling also pulls it
+            // down (it happened during review).
+            if (window.Quiz) { Quiz.recordSpelled(q.word); if (clean) Quiz.recordReviewCorrect(q.word); }
             zhEl.textContent = q.zh || ""; say(q.en); chord(); renderBottom(sealedCount() + " / " + set.length);
             setTimeout(() => { si += 1; spell(); }, 1500);
           } else {
