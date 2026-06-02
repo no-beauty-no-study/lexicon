@@ -1209,14 +1209,52 @@ const Views = (function () {
           const c = body.querySelector(".gs-continue"); if (c) c.addEventListener("click", go);
           setTimeout(go, 2600);
         }
-        // Bottom-nav for the Golden stage (the choice-quiz handlers were
-        // skipped by the early return). Back leaves to Menu; Next skips ahead.
-        const gBack = host.querySelector("[data-back]");
-        if (gBack) gBack.addEventListener("click", (e) => { e.stopPropagation(); window.__navDir = "back"; window.go("#menu"); });
+        // "临门一脚" exit prompt — leaving with words still unsealed shows the
+        // almost-there nudge (remaining count in red) before letting them go.
+        function remaining() { return set.length - sealedCount(); }
+        function showExit(proceed) {
+          let scrim = host.querySelector(".qx-scrim");
+          if (!scrim) {
+            scrim = document.createElement("div");
+            scrim.className = "qx-scrim";
+            scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
+              <p class="qx-en"></p><p class="qx-zh"></p>
+              <div class="qx-actions">
+                <button type="button" class="gs-btn qx-stay"></button>
+                <button type="button" class="gs-btn qx-leave"></button>
+              </div></div>`;
+            host.appendChild(scrim);
+          }
+          const n = remaining(), total = set.length;
+          scrim.querySelector(".qx-en").innerHTML =
+              `Only <b class="qx-num">${n}</b> word${n === 1 ? "" : "s"} left.<br>`
+            + `Leave now, and this set will remain unsealed.<br>`
+            + `Finish them, and all ${total} words will enter your accumulated list.`;
+          scrim.querySelector(".qx-zh").innerHTML =
+              `只剩 <b class="qx-num">${n}</b> 个词。<br>现在离开，这一组仍然不会封存。<br>`
+            + `完成它们，${total} 个词才会全部进入已累计。`;
+          scrim.querySelector(".qx-stay").textContent = "Seal the Set · 封存本组";
+          scrim.querySelector(".qx-leave").textContent = "Give Up Progress · 放弃进度";
+          scrim.querySelector(".qx-stay").onclick = (e) => { e.stopPropagation(); scrim.remove(); try { input.focus(); } catch (_) {} };
+          scrim.querySelector(".qx-leave").onclick = (e) => { e.stopPropagation(); scrim.remove(); proceed(); };
+          requestAnimationFrame(() => scrim.classList.add("is-open"));
+        }
+        // Capture-phase so we intercept BEFORE app.js's document-level data-go.
+        host.addEventListener("click", (e) => {
+          if (e.target.closest(".qx-scrim")) return;
+          const btn = e.target.closest(".ui-bottom-nav [data-go], .ui-bottom-nav [data-back]");
+          if (!btn) return;
+          const isBack = btn.hasAttribute("data-back");
+          const go = isBack ? () => { window.__navDir = "back"; window.go("#menu"); }
+                            : () => window.go(btn.getAttribute("data-go"));
+          if (remaining() > 0) { e.preventDefault(); e.stopPropagation(); showExit(go); }
+          else if (isBack)     { e.preventDefault(); e.stopPropagation(); go(); }
+        }, true);
         const gNext = host.querySelector("[data-next]");
         if (gNext) gNext.addEventListener("click", (e) => {
           e.stopPropagation();
           if (pos + 1 < queue.length) { pos += 1; present(); }
+          else if (remaining() > 0) showExit(finish);
           else finish();
         });
         function onCheck() {
