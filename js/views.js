@@ -1184,7 +1184,7 @@ const Views = (function () {
             <p class="gs-sentence-en"></p>
             <div class="gs-spell">
               <div class="gs-cells"></div>
-              <input class="gs-input" type="text" lang="en" inputmode="latin"
+              <input class="gs-input" type="text" lang="en" inputmode="email"
                      autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Spell the word">
             </div>
             <div class="gs-correction" hidden></div>
@@ -1318,14 +1318,15 @@ const Views = (function () {
             const clean = !revealed && !wrongThis;     // un-prompted, first try this presentation
             if (clean) { q.status = "sealed"; if (window.Quiz) Quiz.recordWord(q.word, true); playSuccessChord(); }
             else { if (q.status !== "sealed") q.status = "corrected"; if (window.Quiz) Quiz.recordCorrected(q.word); queue.push(queue[pos]); }
-            // NOW reveal the Chinese translation (only after it's answered).
+            // After submit: replay the line once + reveal the Chinese, then move on.
             zhEl.textContent = q.zh || "";
+            sayLine();
             renderDots(); recordState();
             setTimeout(() => {
               pos += 1;
               if (pos >= queue.length || sealedCount() >= set.length) return finish();
               present();
-            }, 950);
+            }, 1700);
           } else {
             wrongThis = true;
             if (q.status !== "sealed") q.status = "corrected";
