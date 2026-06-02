@@ -834,11 +834,13 @@
    two pages of one section share an identical text frame (top + height
    match reading body; full region width since the quiz has no
    marginalia column). */
-[data-page="quiz"] .zone-quiz-body {
-  left:   27.33%;
-  top:    22.64%;
-  width:  70.04%;
-  height: 66.19%;
+/* Quiz uses the SAME 3-column reading layout: middle prose column for the
+   question / spelling, right marginalia column for word cards. */
+[data-page="quiz"] .zone-reading-body {
+  left: 27.33%; top: 22.64%; width: 52.84%; height: 66.19%;
+}
+[data-page="quiz"] .zone-marginalia {
+  left: 80.89%; top: 22.64%; width: 16.49%; height: 66.19%;
 }
 .reading-art .quiz-body {
   font-family: var(--font-body);
@@ -997,7 +999,12 @@
 /* ===================== QUIZ 2 · GOLDEN SEAL ======================
    Parchment "Listen and Spell" page (copies GPT's preview). All warm
    serif + gold hairlines; no modern chrome. */
-.reading-art .quiz-body { text-align: center; }
+/* Golden Seal centres inside its own framed panel; everything else in the
+   quiz body stays LEFT-aligned like the reading prose (not page-centred). */
+.reading-art .quiz-body { text-align: left; }
+.reading-art .quiz-body .gs-progress,
+.reading-art .quiz-body .gs-panel,
+.reading-art .quiz-body .gs-done { text-align: center; }
 .gs-progress {
   font-family: var(--font-display), Georgia, serif;
   color: #746A5D; letter-spacing: 0.14em; font-size: 15px;
@@ -1014,12 +1021,13 @@
 
 .gs-panel {
   position: relative;
-  margin: 0 auto; max-width: 78%;
-  padding: 26px 30px 22px;
+  margin: 0 auto; max-width: 100%;     /* fit the middle reading column */
+  padding: 22px 22px 18px;
   border: 1px solid rgba(184,160,111,0.55);
   border-radius: 4px;
   box-shadow: inset 0 0 0 4px rgba(184,160,111,0.14);
 }
+.gs-sentence-en { font-size: 23px; }    /* a touch smaller for the narrower column */
 .gs-label {
   font-family: var(--font-display), Georgia, serif;
   letter-spacing: 0.22em; font-size: 12px; text-transform: uppercase;
@@ -1129,26 +1137,48 @@
 .qs-counts { margin: 16px 0 20px; font-family: var(--font-body); font-size: 15px; color: #746A5D; }
 .qs-actions { display: flex; gap: 16px; justify-content: center; }
 
-/* ---- "临门一脚" exit prompt (unsealed words remain) ---- */
+/* ---- "临门一脚" exit prompt — same flat-paper plaque as the Section
+   Cleared / Chapter Complete toast (translucent paper, thin gold rule,
+   broken corner ticks). ---- */
 .qx-scrim {
-  position: absolute; inset: 0; z-index: 60;
+  position: absolute; inset: 0; z-index: 80;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(40, 30, 18, 0.42);
-  opacity: 0; transition: opacity 240ms ease; pointer-events: none;
+  background: rgba(40, 30, 18, 0.34);
+  opacity: 0; transition: opacity 220ms ease; pointer-events: none;
 }
 .qx-scrim.is-open { opacity: 1; pointer-events: auto; }
 .qx-card {
-  max-width: 58%; padding: 28px 34px; text-align: center;
-  background: #EDE5D5;
-  border: 1px solid rgba(184,160,111,0.6); border-radius: 6px;
-  box-shadow: inset 0 0 0 4px rgba(184,160,111,0.16), 0 18px 50px rgba(0,0,0,0.35);
-  transform: translateY(10px); transition: transform 280ms cubic-bezier(0.22,0.8,0.22,1);
+  position: relative;
+  max-width: 38%; box-sizing: border-box;
+  padding: 2.2% 2.6%; text-align: center;
+  background: rgba(246, 238, 218, 0.94);
+  border: 1px solid rgba(143, 128, 95, 0.5);
+  color: #3f3a31; font-family: var(--font-display);
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 226, 0.24), 0 10px 34px rgba(55, 43, 28, 0.28);
+  transform: scale(0.98); transition: transform 220ms ease;
 }
-.qx-scrim.is-open .qx-card { transform: translateY(0); }
-.qx-mark { font-size: 26px; color: #B8A06F; margin-bottom: 8px; }
-.qx-en { font-family: var(--font-body); font-size: 19px; line-height: 1.5; color: #2F3338; margin: 0 0 8px; }
-.qx-zh { font-family: "Noto Serif SC", "Songti SC", serif; font-size: 15px; line-height: 1.6; color: #5D4D42; margin: 0 0 20px; }
-.qx-num { color: #A8443B; font-weight: 700; font-size: 1.15em; }
+.qx-scrim.is-open .qx-card { transform: scale(1); }
+.qx-card::before {        /* inner thin rule */
+  content: ""; position: absolute; inset: 7px; pointer-events: none;
+  border: 1px solid rgba(185, 170, 138, 0.34);
+}
+.qx-card::after {         /* broken corner ticks */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.45;
+  background:
+    linear-gradient(#9b8454,#9b8454) left 10px top 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454,#9b8454) left 10px top 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454,#9b8454) right 10px top 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454,#9b8454) right 10px top 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454,#9b8454) left 10px bottom 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454,#9b8454) left 10px bottom 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454,#9b8454) right 10px bottom 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454,#9b8454) right 10px bottom 10px / 1px 18px no-repeat;
+}
+.qx-mark { font-size: 14px; color: #a78d5b; margin-bottom: 0.65em; }
+.qx-en { font-family: var(--font-display); font-size: 16px; line-height: 1.55; letter-spacing: 0.02em; color: #4d4436; margin: 0 0 8px; }
+.qx-zh { font-family: "Noto Serif SC", "Songti SC", serif; font-size: 13px; line-height: 1.6; color: #7b6f5c; margin: 0 0 18px; }
+.qx-num { color: #A8443B; font-weight: 700; font-size: 1.25em; }
+.qx-actions { position: relative; z-index: 1; display: flex; gap: 14px; justify-content: center; }
 .qx-leave { color: #8A5B56; border-color: rgba(138,91,86,0.5); }
 .qx-leave:hover { background: rgba(138,91,86,0.12); color: #6e3f3a; }
 

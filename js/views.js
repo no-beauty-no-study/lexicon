@@ -1516,6 +1516,41 @@ const Views = (function () {
         }, 1300);
       }
 
+      // Right-column word card (reuses the reading marginalia look). Shown
+      // when a wrong option is tapped; clicking it opens the full drawer.
+      function quizSmallCardHTML(sc, id) {
+        const phraseRows = (sc.phrases || []).slice(0, 2).map(p => `
+          <div class="word-card-phrase"><span class="wcp-en">${esc(p.phrase || p.en || "")}</span>
+          ${(p.phrase_zh || p.zh) ? `<span class="wcp-zh">${esc(p.phrase_zh || p.zh)}</span>` : ""}</div>`).join("");
+        const ex = (sc.examples || [])[0]; const exEn = ex && (ex.example || ex.en) || ""; const exZh = ex && (ex.example_zh || ex.zh) || "";
+        const head = sc.head && sc.head.word;
+        const chip = (head && sc.clickableForBigCard)
+          ? `<button type="button" class="word-card-head-chip" data-open-head="${esc(head)}"><span class="wchc-label">head</span><span class="wchc-word">${esc(head)}</span><span class="wchc-arrow">›</span></button>` : "";
+        return `<div class="word-card is-current is-entering${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
+          <div class="word-card-headword">${esc(sc.word || id)}</div>
+          <div class="word-card-meaning">${esc(sc.zh || "")}</div>
+          ${phraseRows}
+          ${exEn ? `<div class="word-card-example"><span class="wce-en">${esc(exEn)}</span>${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}</div>` : ""}
+          ${chip}</div>`;
+      }
+      function showQuizWord(word) {
+        const stack = host.querySelector(".word-card-stack");
+        if (!stack) return;
+        const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(word) : null;
+        if (!sc) return;
+        stack.innerHTML = quizSmallCardHTML(sc, sc.word || word);
+        const fresh = stack.firstElementChild;
+        if (!fresh) return;
+        setTimeout(() => fresh.classList.remove("is-entering"), 600);
+        fresh.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const chip = e.target.closest("[data-open-head]");
+          if (typeof WordCard !== "undefined")
+            WordCard.openBigCard(chip ? chip.dataset.openHead : (sc.head && sc.head.word) || sc.word || word,
+                                 { chapter: chapterId, section: sectionNum });
+        });
+      }
+
       body.addEventListener("click", (e) => {
         const opt = e.target.closest(".quiz-option");
         if (!opt || opt.classList.contains("is-locked")) return;
@@ -1544,12 +1579,12 @@ const Views = (function () {
           if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 900);
           else maybeChapterComplete();
         } else {
-          if (backingOut) return;
-          backingOut = true;
-          opt.classList.add("is-wrong", "is-locked");
+          // Wrong → study aid in the right column (like reading): the chosen
+          // word's small card appears; tap it for the full card. No bounce.
+          opt.classList.add("is-wrong");
+          setTimeout(() => opt.classList.remove("is-wrong"), 1000);
           try { TTS.speak(opt.dataset.value || opt.textContent || ""); } catch (_) {}
-          const backHref = ChapterNav.prevBeforeQuiz(chapterId, sectionNum);
-          setTimeout(() => { window.__navDir = "back"; window.go(backHref); }, 1500);
+          showQuizWord(chosen);
         }
       });
 
