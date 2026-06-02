@@ -1181,6 +1181,7 @@
 .qx-actions { position: relative; z-index: 1; display: flex; gap: 14px; justify-content: center; }
 .qx-leave { color: #8A5B56; border-color: rgba(138,91,86,0.5); }
 .qx-leave:hover { background: rgba(138,91,86,0.12); color: #6e3f3a; }
+.gs-btn[disabled] { opacity: 0.4; cursor: default; pointer-events: none; }
 
 
 /* ----- Stage scaling for non-iPad viewports -----

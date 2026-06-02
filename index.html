@@ -133,9 +133,9 @@
   }
   .menu-btn.quiz .menu-btn-inner {
     background-image: url("assets/bg/ui/C66C39D1-066E-48D3-BB42-011B149DF616.jpeg");
-    background-size: contain; background-position: center;
-    mix-blend-mode: multiply;   /* drop the cream paper bg into the cover */
-    animation-delay: -1.1s;
+    background-size: contain; background-position: center; background-repeat: no-repeat;
+    animation: none;            /* no breathe — sits as a still plaque */
+    filter: drop-shadow(0 6px 16px rgba(40, 28, 12, 0.4));
   }
   /* Button itself: overflow: hidden so the diagonal gleam sweep
      and unlock pulse don't bleed past the painted edge. Costs a
