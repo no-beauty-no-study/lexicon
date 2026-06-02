@@ -67,7 +67,7 @@ const Quiz = (function () {
       if (st.quiz2.status !== "completed") return quizHref(chapter, section, "golden");
     }
     // Everything cleared → the accumulation hub.
-    return "#wordgarden";
+    return "#word-garden";
   }
   // Reading — the current section's trial, resuming its open stage.
   function readingHref(ch, sec) {

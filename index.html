@@ -133,6 +133,8 @@
   }
   .menu-btn.quiz .menu-btn-inner {
     background-image: url("assets/bg/ui/C66C39D1-066E-48D3-BB42-011B149DF616.jpeg");
+    background-size: contain; background-position: center;
+    mix-blend-mode: multiply;   /* drop the cream paper bg into the cover */
     animation-delay: -1.1s;
   }
   /* Button itself: overflow: hidden so the diagonal gleam sweep
@@ -908,6 +910,28 @@
       <div class="chapter-complete-mark">✤</div>
       <div class="chapter-complete-title">Chapter Complete</div>
       <p class="chapter-complete-subtitle">The next page opens.</p>
+    </div>
+  </main>
+</template>
+
+<template id="view-quizstatus">
+  <main class="page art-bg reading-art" data-page="quiz">
+    <div class="master-frame">
+      <div class="ui-zone zone-reading-title is-text" data-zone="status title">
+        <div class="reading-titleline">
+          <span class="reading-kicker" data-chapter-number>Chapter 01</span>
+          <h1 class="reading-title" data-chapter-title>The Universe</h1>
+        </div>
+        <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
+        <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
+      </div>
+      <div class="ui-zone zone-quiz-body is-text" data-zone="status body">
+        <div class="reading-body quiz-body qs-body"></div>
+      </div>
+      <nav class="ui-bottom-nav">
+        <button type="button" data-go="#chapters?browse=1"><span class="nav-glyph">❖</span>Back</button>
+        <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+      </nav>
     </div>
   </main>
 </template>
