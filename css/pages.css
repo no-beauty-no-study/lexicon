@@ -1184,6 +1184,46 @@
 .qx-leave:hover { background: rgba(138,91,86,0.12); color: #6e3f3a; }
 .gs-btn[disabled] { opacity: 0.4; cursor: default; pointer-events: none; }
 
+/* ===== Silver Trial choice quiz — three measured zones (1448×1086) ===== */
+.quiz-zone { position: absolute; box-sizing: border-box; }
+.quiz-wordzone {            /* 单词区 — top title box */
+  left: 30.0%; top: 14.8%; width: 40.3%; height: 17.0%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+}
+.quiz-wordzone .qz-prog { font-family: var(--font-display), Georgia, serif; font-size: 13px; letter-spacing: 0.12em; color: #8B7A62; margin-bottom: 4px; }
+.quiz-wordzone .qz-word { font-family: var(--font-body); font-size: 38px; color: #2F3338; line-height: 1.05; }
+.quiz-wordzone .qz-dotted { font-family: var(--font-body); font-size: 17px; color: #B8860B; letter-spacing: 0.04em; margin-top: 2px; }
+.quiz-wordzone .qz-pos { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 15px; color: #6E5B4D; margin-top: 1px; }
+.quiz-qzone {              /* 题目区 — main content box */
+  left: 21.7%; top: 40.4%; width: 57.5%; height: 42.7%;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 14px; overflow-y: auto; scrollbar-width: none;
+}
+.quiz-qzone::-webkit-scrollbar { width: 0; }
+.qz-ctx { font-family: var(--font-body); font-size: 19px; line-height: 1.5; color: #3f3a31; text-align: center; margin: 0; }
+.qz-ctx .qz-blank { color: #B8A06F; letter-spacing: 0.06em; }
+.qz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; width: 100%; }
+.qz-opt {
+  display: flex; align-items: center; gap: 0.6em; text-align: left;
+  padding: 12px 14px; cursor: pointer;
+  background: rgba(238, 229, 211, 0.45);
+  border: 1px solid rgba(184, 160, 111, 0.45); border-radius: 6px;
+  font-family: var(--font-body); color: #33363A;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.qz-opt:hover { border-color: #B8A06F; background: rgba(238, 229, 211, 0.7); }
+.qz-opt-letter { font-family: var(--font-display), Georgia, serif; color: #8a7653; letter-spacing: 0.12em; flex: 0 0 auto; }
+.qz-opt-zh { font-size: 19px; }
+.qz-opt.is-correct { border-color: #7F95A3; background: rgba(127, 149, 163, 0.16); color: #3a4a52; }
+.qz-opt.is-wrong { border-color: #8A5B56; background: rgba(138, 91, 86, 0.12); color: #6e3f3a; }
+.qz-opt-note { font-size: 12px; font-style: italic; color: #8A5B56; margin-top: 3px; flex-basis: 100%; }
+.qz-continue { margin-top: 6px; }
+.qz-cardov {                /* right-edge word card on a wrong answer */
+  position: absolute; left: 80.5%; top: 38%; width: 17%; z-index: 30;
+}
+
+
 
 /* ----- Stage scaling for non-iPad viewports -----
    Applied to EVERY .page child so that during a page-turn the
