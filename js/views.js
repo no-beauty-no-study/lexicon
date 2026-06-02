@@ -1886,62 +1886,52 @@ const Views = (function () {
   };
 
 
-  /* ---------- word-garden ---------- */
+  /* ---------- word-garden ----------
+     LEFT = Sealed (accumulated) words, most-missed first; RIGHT = Unsealed
+     (seen but not yet cleanly passed). Driven by the global Quiz word stats
+     (reviewNeed = wrong − correct). */
   const wordGarden = {
     init(host) {
       let query = "";
-      function allWords() {
-        // Primary source: the vocab word master (same table reading uses).
-        if (window.VOCAB_WORD_MASTER_FINAL && VOCAB_WORD_MASTER_FINAL.cards) {
-          const cards = VOCAB_WORD_MASTER_FINAL.cards;
-          return Object.keys(cards).map(k => {
-            const c = cards[k] || {};
-            return { word: c.word || k, zh: c.zh || "" };
-          }).sort((a, b) => a.word.localeCompare(b.word));
-        }
-        const seen = new Map();
-        const push = (w) => {
-          if (!w || !w.word) return;
-          const id = (w.id || w.word).toLowerCase();
-          if (!seen.has(id)) seen.set(id, w);
-        };
-        if (typeof WORDS !== "undefined") WORDS.forEach(push);
-        if (typeof WORD_LIBRARY !== "undefined") WORD_LIBRARY.forEach(push);
-        return Array.from(seen.values()).sort((a, b) => a.word.localeCompare(b.word));
-      }
-      function shortGloss(w) {
-        if (w.zh) return w.zh;
-        if (w.meaning) return w.meaning;
-        if (Array.isArray(w.kin)) {
-          for (const k of w.kin) {
-            if (k && typeof k === "object" && k.zh) return k.zh;
-            if (typeof k === "string") return k;
-          }
+      function glossOf(word) {
+        if (window.VocabRuntime) {
+          const sc = VocabRuntime.getSmallCard ? VocabRuntime.getSmallCard(word) : null;
+          if (sc && sc.zh) return sc.zh;
+          const c = VocabRuntime.getWordCard ? VocabRuntime.getWordCard(word) : null;
+          if (c && c.zh) return c.zh;
         }
         return "";
       }
-      function filtered() {
-        const all = allWords();
-        if (!query) return all;
-        return all.filter(w =>
-          w.word.toLowerCase().includes(query) ||
-          shortGloss(w).toLowerCase().includes(query)
-        );
+      const sealedList   = () => (window.Quiz && Quiz.accumulatedWords) ? Quiz.accumulatedWords() : [];
+      const unsealedList = () => (window.Quiz && Quiz.unsealedWords) ? Quiz.unsealedWords() : [];
+      function applyQuery(list) {
+        if (!query) return list;
+        return list.filter(w => w.toLowerCase().includes(query) || glossOf(w).toLowerCase().includes(query));
       }
-      function rowHTML(w) {
-        return `<li class="wg-row" data-id="${esc(w.id || w.word)}">
-          <span class="wg-row-en">${esc(w.word)}</span>
-          <span class="wg-row-zh">${esc(shortGloss(w))}</span>
+      function rowHTML(word) {
+        const st = (window.Quiz && Quiz.wordStat) ? Quiz.wordStat(word) : { w: 0, c: 0 };
+        const need = (st.w || 0) - (st.c || 0);
+        return `<li class="wg-row" data-id="${esc(word)}">
+          <span class="wg-row-en">${esc(word)}</span>
+          <span class="wg-row-zh">${esc(glossOf(word))}</span>
+          ${need > 0 ? `<span class="wg-row-need" title="needs review">${need}</span>` : ""}
         </li>`;
+      }
+      function colHTML(title, total, rows) {
+        return `<li class="wg-col-head">${title} · ${total}</li>`
+          + (rows.length ? rows.map(rowHTML).join("") : `<li class="wg-empty">— none yet —</li>`);
+      }
+      function shortGloss(w) { return glossOf(typeof w === "string" ? w : (w && w.word) || ""); }
+      function filtered() {   // union (for the A-Z nav)
+        return applyQuery(sealedList().concat(unsealedList())).map(w => ({ word: w }));
       }
       function renderTable() {
         const left  = host.querySelector("#wg-col-left");
         const right = host.querySelector("#wg-col-right");
         if (!left || !right) return;
-        const list = filtered();
-        const half = Math.ceil(list.length / 2);
-        left.innerHTML  = list.slice(0, half).map(rowHTML).join("");
-        right.innerHTML = list.slice(half).map(rowHTML).join("");
+        const sealed = sealedList(), unsealed = unsealedList();
+        left.innerHTML  = colHTML("Sealed Words", sealed.length, applyQuery(sealed));
+        right.innerHTML = colHTML("Unsealed Words", unsealed.length, applyQuery(unsealed));
         host.querySelectorAll(".wg-row").forEach(row => {
           row.addEventListener("click", () => {
             const id = row.dataset.id;
