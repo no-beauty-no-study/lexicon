@@ -2341,3 +2341,15 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .rv-done-title { font-family: var(--font-display), Georgia, serif; font-size: 30px; color: #2b3b51; margin-bottom: 8px; }
 .rv-done-sub { font-size: 17px; color: #6E5D48; margin-bottom: 18px; }
 .rv-done-btn { font-size: 18px; padding: 8px 26px; }
+
+/* Double-tap translation line under a reading sentence */
+.reading-art .sentence-block .sentence-zh {
+  display: block; margin-top: 0.35em;
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-size: 0.86em; line-height: 1.6; letter-spacing: 0.02em;
+  color: #6E5A3C;
+  padding: 0.4em 0.7em; border-left: 2px solid rgba(184,160,111,0.6);
+  background: rgba(238,229,211,0.4);
+  border-radius: 0 4px 4px 0;
+}
+.reading-art .sentence-block .sentence-zh.is-missing { font-style: italic; color: #9A8C72; }
