@@ -994,6 +994,119 @@
 }
 .reading-art .quiz-option.is-locked { pointer-events: none; }
 
+/* ===================== QUIZ 2 · GOLDEN SEAL ======================
+   Parchment "Listen and Spell" page (copies GPT's preview). All warm
+   serif + gold hairlines; no modern chrome. */
+.reading-art .quiz-body { text-align: center; }
+.gs-progress {
+  font-family: var(--font-display), Georgia, serif;
+  color: #746A5D; letter-spacing: 0.14em; font-size: 15px;
+  margin: 2px 0 14px;
+}
+.gs-progress .gs-no { color: #2F3338; font-size: 19px; font-weight: 600; }
+.gs-dots { display: inline-flex; gap: 7px; margin-left: 12px; vertical-align: middle; }
+.gs-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  border: 1px solid rgba(184,160,111,0.7); background: transparent;
+}
+.gs-dot.is-corrected { background: #9A7A3C; border-color: #9A7A3C; }
+.gs-dot.is-sealed    { background: #7F95A3; border-color: #B8A06F; box-shadow: 0 0 0 1px rgba(184,160,111,0.5); }
+
+.gs-panel {
+  position: relative;
+  margin: 0 auto; max-width: 78%;
+  padding: 26px 30px 22px;
+  border: 1px solid rgba(184,160,111,0.55);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 4px rgba(184,160,111,0.14);
+}
+.gs-label {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: 0.22em; font-size: 12px; text-transform: uppercase;
+  color: #9A7A3C; margin-bottom: 12px;
+}
+.gs-speaker {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 1px solid rgba(184,160,111,0.7); background: rgba(238,229,211,0.5);
+  color: #6E5D48; font-size: 22px; cursor: pointer; margin-bottom: 16px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.gs-speaker:hover  { background: rgba(238,229,211,0.85); }
+.gs-speaker:active { transform: scale(0.94); }
+.gs-sentence-en {
+  font-family: var(--font-body); font-size: 26px; line-height: 1.45;
+  color: #2F3338; margin: 0 0 8px;
+}
+.gs-blank {
+  color: #B8A06F; letter-spacing: 0.06em; border-bottom: 2px solid #B8A06F;
+  padding: 0 4px; margin: 0 2px;
+}
+.gs-sentence-zh {
+  font-family: "Noto Serif SC", "Songti SC", serif; font-size: 17px;
+  color: #5D4D42; margin: 0 0 10px;
+}
+.gs-hint {
+  font-family: var(--font-body); font-style: italic; font-size: 15px;
+  color: #7B7063; margin: 0 0 18px;
+}
+.gs-spell { position: relative; display: inline-block; margin: 0 auto 14px; }
+.gs-cells { display: inline-flex; gap: 8px; }
+.gs-cell {
+  width: 38px; height: 50px; line-height: 50px;
+  border: 1px solid rgba(184,160,111,0.55); border-radius: 4px;
+  background: rgba(238,229,211,0.4);
+  font-family: var(--font-body); font-size: 28px; color: #2F3338;
+  text-align: center; letter-spacing: 0;
+}
+.gs-cell.is-caret { border-color: #B8A06F; box-shadow: 0 0 0 2px rgba(184,160,111,0.28); }
+.gs-input {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; border: 0; background: transparent;
+  font-size: 16px;            /* ≥16px so iOS doesn't zoom on focus */
+  color: transparent; cursor: text;
+}
+.gs-cells.is-shake { animation: gs-shake 0.4s ease; }
+@keyframes gs-shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); } 40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); } 80% { transform: translateX(3px); }
+}
+.gs-note {
+  font-family: var(--font-body); font-style: italic; font-size: 13px;
+  color: #8E8474; line-height: 1.5; margin: 0 0 16px;
+}
+.gs-actions { display: flex; gap: 18px; justify-content: center; }
+.gs-btn {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 14px; letter-spacing: 0.12em; color: #6E5D48;
+  border: 1px solid rgba(184,160,111,0.7); border-radius: 4px;
+  background: rgba(238,229,211,0.45); padding: 9px 22px; cursor: pointer;
+  box-shadow: inset 0 0 0 3px rgba(184,160,111,0.12);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.gs-btn:hover  { background: rgba(238,229,211,0.85); color: #3a2f1d; }
+.gs-btn:active { transform: translateY(1px); }
+/* correction panel */
+.gs-correction {
+  margin: 16px auto 0; max-width: 80%; text-align: left;
+  background: rgba(238,229,211,0.72);
+  border: 1px solid rgba(184,160,111,0.45); border-radius: 4px;
+  padding: 12px 16px; color: #3C3832;
+}
+.gs-c-row { display: flex; gap: 12px; align-items: baseline; margin-bottom: 6px; font-size: 18px; }
+.gs-c-key { font-family: var(--font-display), Georgia, serif; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #8E8474; width: 110px; flex: 0 0 auto; }
+.gs-c-you { color: #8A5B56; letter-spacing: 0.04em; }
+.gs-c-correct { letter-spacing: 0.04em; }
+.gs-c-ok  { color: #7F95A3; }
+.gs-c-bad { color: #8A5B56; text-decoration: underline; }
+.gs-c-tip { font-style: italic; font-size: 13px; color: #8E8474; margin-top: 6px; }
+.gs-done { text-align: center; padding: 40px 0; }
+.gs-done-mark { font-size: 40px; color: #B8A06F; }
+.gs-done-title { font-family: var(--font-display), Georgia, serif; font-size: 26px;
+  letter-spacing: 0.1em; color: #2F3338; margin-top: 8px; }
+.gs-done-sub { font-family: var(--font-body); color: #746A5D; margin-top: 6px; }
+
 
 /* ----- Stage scaling for non-iPad viewports -----
    Applied to EVERY .page child so that during a page-turn the
