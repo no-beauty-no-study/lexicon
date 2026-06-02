@@ -927,6 +927,33 @@
   </main>
 </template>
 
+<template id="view-comprehension">
+  <main class="page art-bg reading-art" data-page="quiz">
+    <div class="master-frame">
+      <div class="ui-zone zone-reading-title is-text" data-zone="comprehension title">
+        <div class="reading-titleline">
+          <span class="reading-kicker" data-chapter-number>Chapter 01</span>
+          <h1 class="reading-title" data-chapter-title>The Universe</h1>
+        </div>
+        <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
+        <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
+      </div>
+      <div class="ui-zone zone-reading-body is-text" data-zone="comprehension body">
+        <article class="reading-body quiz-body comp-body"></article>
+      </div>
+      <nav class="ui-bottom-nav is-two">
+        <button type="button" data-story><span class="nav-glyph">‹</span>Story</button>
+        <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+      </nav>
+    </div>
+    <div class="chapter-complete-toast" aria-hidden="true">
+      <div class="chapter-complete-mark">✤</div>
+      <div class="chapter-complete-title">Chapter Complete</div>
+      <p class="chapter-complete-subtitle">The next page opens.</p>
+    </div>
+  </main>
+</template>
+
 <template id="view-review">
   <main class="page art-bg review-art" data-page="review">
     <div class="rv-word" data-zone="review word"></div>
@@ -1049,6 +1076,7 @@
 <script src="data/mockChapters.js"></script>
 <script src="data/chapterIllustrations.js"></script>
 <script src="data/readingContent.js"></script>
+<script src="data/readingComprehension.js"></script>
 <script src="data/mockWords.js"></script>
 <script src="data/wordLibrary.js"></script>
 <script src="data/wordIndex.js"></script>

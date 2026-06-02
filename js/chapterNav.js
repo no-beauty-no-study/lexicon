@@ -18,8 +18,12 @@ const ChapterNav = (function () {
     return list.find(s => s.number === sectionNum) || list[0] || null;
   }
 
+  // Reading's "next page" is the SECTION's reading-comprehension — a short
+  // multiple-choice check on the passage. Passing it advances to the next
+  // section (or chapter). The vocabulary Trial (word quiz) is a separate
+  // line reached from the Menu, NOT from the reading flow.
   function nextAfterReading(chapterId, sectionNum) {
-    return `#quiz?chapter=${enc(chapterId)}&section=${enc(sectionNum)}`;
+    return `#comprehension?chapter=${enc(chapterId)}&section=${enc(sectionNum)}`;
   }
 
   function nextAfterQuiz(chapterId, sectionNum) {

@@ -1124,14 +1124,16 @@ const Views = (function () {
         if (!guarded) b.addEventListener("click", (e) => { e.stopPropagation(); window.__navDir = "back"; window.go(returnHref); });
       }
 
-      // ============ QUIZ 2 · GOLDEN SEAL (Spelling Practice) ============
+      // ============ SEAL · dictation (Spelling Practice) ============
       // Parchment "Listen and Spell" page. Correction layer + pass-judgment
       // per the design: seeing the answer never counts; only an independent,
       // un-prompted correct spelling on a fresh presentation SEALS the word.
-      if ((params.stage || "") === "golden") { renderGoldenSeal(); return; }
-      // Two choice pages: "silver" (word → meaning) then "group" (pick the
-      // synonym that fits the example), then the Golden dictation.
-      const isGroup = (params.stage === "group");
+      // Dictation is the independent (optional) stage, reached from the Words
+      // Garden "Seal More" backlog — never part of the linear choice line.
+      if ((params.stage || "") === "seal") { renderGoldenSeal(); return; }
+      // Two CHOICE pages: SILVER (word → Chinese meaning) then GOLDEN (pick the
+      // synonym group that fits the example; the example is read aloud).
+      const isGroup = (params.stage === "golden");
 
 
       function rxq(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
@@ -1513,11 +1515,10 @@ const Views = (function () {
 
       const items = isGroup ? buildGroupItems(section) : buildChoiceItems(section);
       const body = host.querySelector(".quiz-body");
-      // No group questions for this section → skip straight to the dictation.
+      // No GOLDEN (group) questions for this section → the choice line is done.
       if (isGroup && !items.length) {
         if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
-        window.go((window.Quiz && Quiz.quizHref) ? Quiz.quizHref(chapterId, sectionNum, "golden")
-          : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=golden`);
+        window.go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu");
         return;
       }
       body.innerHTML = items.length
@@ -1536,8 +1537,12 @@ const Views = (function () {
       function speakItem(item) {
         if (!item) return;
         focusItem(item);
-        // Auto-play the ENGLISH word (Chinese options aren't spoken).
-        const w = (item.dataset.word) || (item.querySelector(".quiz-question")?.textContent || "").trim();
+        // SILVER (word page) auto-reads the English headword; GOLDEN (group
+        // page) auto-reads the whole EXAMPLE sentence so the player hears the
+        // word in context. Chinese options are never spoken.
+        const w = (item.dataset.group === "1")
+          ? (item.querySelector(".quiz-question")?.textContent || "").trim()
+          : ((item.dataset.word) || (item.querySelector(".quiz-question")?.textContent || "").trim());
         try { TTS.speak(w); } catch (_) {}
       }
       // Tapping a revealed question rereads it; once it's SOLVED, tapping the
@@ -1608,15 +1613,16 @@ const Views = (function () {
         if (advancing || !allCorrect()) return;
         advancing = true;
         spawnStarBurst(8); playSuccessChord();
-        // word page → group (if any); group page (or no-group word page) →
-        // the section's CHOICE quiz is DONE, the main line advances. Dictation
-        // is never part of this chain — it lives in Words Garden (Seal More).
+        // SILVER (word) page → GOLDEN (group), if any; GOLDEN page (or a SILVER
+        // page with no group questions) → the section's CHOICE line is DONE and
+        // the main trial advances. Dictation (SEAL) is never part of this chain
+        // — it lives in the Words Garden "Seal More" backlog.
         const sectionDone = isGroup || buildGroupItems(section).length === 0;
         if (sectionDone && window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
-        const title = isGroup ? "Synonyms Cleared" : "Words Cleared";
+        const title = isGroup ? "Golden Trial — Synonyms Cleared" : "Silver Trial — Words Cleared";
         const onContinue = sectionDone
           ? () => { window.__navDir = "forward"; window.go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu"); }
-          : () => { window.__navDir = "forward"; window.go(hrefFor("group")); };
+          : () => { window.__navDir = "forward"; window.go(hrefFor("golden")); };
         let scrim = host.querySelector(".qx-scrim");
         if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
         scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
@@ -1909,7 +1915,7 @@ const Views = (function () {
         const sm = left.querySelector(".wg-sealmore");
         if (sm && backlog) sm.addEventListener("click", (e) => {
           e.stopPropagation(); window.__navDir = "forward";
-          window.go("#quiz?chapter=universe&section=1.1&stage=golden&seal=1&from=garden");
+          window.go("#quiz?chapter=universe&section=1.1&stage=seal&seal=1&from=garden");
         });
         host.querySelectorAll(".wg-row").forEach(row => {
           row.addEventListener("click", () => {
@@ -2179,13 +2185,12 @@ const Views = (function () {
       const q = (stage) => (window.Quiz && Quiz.quizHref)
         ? Quiz.quizHref(chapterId, sectionNum, stage, "index")
         : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=${stage}&from=index`;
-      if (st.quiz1.status !== "completed") { main = st.quiz1.status === "in_progress" ? "Continue Silver Trial" : "Begin Silver Trial"; href = q("silver"); }
-      else if (st.quiz2.status !== "completed") { main = st.quiz2.status === "in_progress" ? "Continue Golden Seal" : "Begin Golden Seal"; href = q("golden"); }
-      else { main = "Redo Trial"; href = q("silver"); }
+      if (st.quiz1.status !== "completed") { main = st.quiz1.status === "in_progress" ? "Continue the Trial" : "Begin the Trial"; href = q("silver"); }
+      else { main = "Seal Words"; href = q("seal"); }
       const actions = body.querySelector(".qs-actions");
       actions.innerHTML = `<button type="button" class="gs-btn qs-begin">${main}</button>`
-        + (st.quiz1.status === "completed" && st.quiz2.status === "completed"
-            ? `<button type="button" class="gs-btn qs-review" data-go="#word-garden">Review Words</button>` : "");
+        + (st.quiz1.status === "completed"
+            ? `<button type="button" class="gs-btn qs-review" data-go="#word-garden">Words Garden</button>` : "");
       const begin = actions.querySelector(".qs-begin");
       if (begin) begin.addEventListener("click", () => { window.__navDir = "forward"; window.go(href); });
     },
@@ -2411,6 +2416,101 @@ const Views = (function () {
     },
   };
 
+  /* ---------- comprehension ----------
+     The reading page's "next page": a short multiple-choice check on the
+     SECTION's passage (questions from data/readingComprehension.js, keyed by
+     section number). Passing advances to the next section / chapter via
+     ChapterNav.nextAfterQuiz. This is the linear READING line and is wholly
+     separate from the vocabulary Trial (the word quiz reached from the Menu). */
+  const comprehension = {
+    init(host, params) {
+      const chapterId  = params.chapter || "universe";
+      const sectionNum = params.section || "1.1";
+      const book    = (typeof getChapterOrDefault === "function") ? getChapterOrDefault(chapterId) : { number: "01", title: chapterId };
+      const section = (typeof ChapterNav !== "undefined") ? ChapterNav.findSection(chapterId, sectionNum) : null;
+      const bg = (typeof getChapterBackground === "function") ? getChapterBackground(chapterId, params.page) : null;
+      if (bg) host.style.backgroundImage = `url("${bg}")`;
+
+      host.querySelector("[data-chapter-number]").textContent = "Reading Comprehension";
+      host.querySelector("[data-chapter-title]").textContent  = book.title;
+      host.querySelector("[data-chapter-section]").textContent = section ? (section.number + " · " + section.title) : sectionNum;
+
+      const body = host.querySelector(".comp-body");
+      const items = (window.READING_COMPREHENSION && READING_COMPREHENSION[sectionNum]) || [];
+      const returnHref = `#reading?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}`;
+      const storyBtn = host.querySelector("[data-story]");
+      if (storyBtn) storyBtn.addEventListener("click", (e) => { e.stopPropagation(); window.__navDir = "back"; window.go(returnHref); });
+
+      function go(href) { window.__navDir = "forward"; window.go(href); }
+      function nextHref() { return (typeof ChapterNav !== "undefined" && ChapterNav.nextAfterQuiz) ? ChapterNav.nextAfterQuiz(chapterId, sectionNum) : "#chapters"; }
+
+      // No comprehension authored for this section → let the reader move on.
+      if (!items.length) {
+        body.innerHTML = `<div class="empty-state">No comprehension for this section yet.</div>
+          <div style="text-align:center;margin-top:20px"><button type="button" class="gs-btn comp-skip">Continue ›</button></div>`;
+        body.querySelector(".comp-skip").addEventListener("click", () => go(nextHref()));
+        return;
+      }
+
+      const LETTER = ["A", "B", "C", "D"];
+      body.innerHTML = items.map((q, i) => `
+        <article class="quiz-item comp-item${i === 0 ? " is-shown" : ""}" data-solved="0">
+          <div class="quiz-no">Question ${i + 1}</div>
+          <p class="quiz-question">${esc(q.q)}</p>
+          <ul class="quiz-options">
+            ${(q.options || []).map((o, n) => `<li class="quiz-option" data-correct="${n === q.answer ? 1 : 0}">
+                <span class="quiz-option-letter">${LETTER[n]}.</span>
+                <span class="quiz-option-text">${esc(o)}</span></li>`).join("")}
+          </ul>
+        </article>`).join("");
+
+      const all = Array.from(body.querySelectorAll(".quiz-item"));
+      let lastSpoken = -1, advancing = false;
+      function speakItem(it) { try { TTS.speak((it.querySelector(".quiz-question").textContent || "").trim()); } catch (_) {} }
+      function focusItem(it) { all.forEach(x => x.classList.remove("is-current")); it.classList.add("is-current"); try { it.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (_) {} }
+      function showThrough(n) {
+        all.forEach((it, i) => it.classList.toggle("is-shown", i <= n));
+        if (n > lastSpoken) { lastSpoken = n; const it = all[n]; focusItem(it); setTimeout(() => speakItem(it), 220); }
+      }
+      showThrough(0);
+
+      function allCorrect() { return all.length && all.every(it => it.dataset.solved === "1"); }
+      function finish() {
+        if (advancing) return; advancing = true;
+        try { playSuccessChordGlobal(); } catch (_) {}
+        const list = (typeof ChapterNav !== "undefined") ? ChapterNav.sectionsOf(chapterId) : [];
+        const isLast = list.length ? (list.findIndex(s => s.number === sectionNum) === list.length - 1) : true;
+        let scrim = host.querySelector(".qx-scrim");
+        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
+          <p class="qx-en">Passage understood.<br>${isLast ? "This chapter is complete." : "On to the next page."}</p>
+          <div class="qx-actions"><button type="button" class="gs-btn qx-continue">Continue ›</button></div></div>`;
+        scrim.querySelector(".qx-continue").onclick = (e) => { e.stopPropagation(); go(nextHref()); };
+        requestAnimationFrame(() => scrim.classList.add("is-open"));
+      }
+
+      body.addEventListener("click", (e) => {
+        const opt = e.target.closest(".quiz-option");
+        if (!opt) { const it = e.target.closest(".quiz-item"); if (it && it.classList.contains("is-shown")) speakItem(it); return; }
+        if (opt.classList.contains("is-locked")) return;
+        const item = opt.closest(".quiz-item");
+        if (item.dataset.solved === "1") return;
+        focusItem(item);
+        if (opt.dataset.correct === "1") {
+          opt.classList.add("is-correct", "is-locked");
+          item.dataset.solved = "1";
+          item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
+          try { playReviewChord(); } catch (_) {}
+          const idx = all.indexOf(item);
+          if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 700);
+          else if (allCorrect()) setTimeout(finish, 500);
+        } else {
+          opt.classList.add("is-wrong", "is-locked");   // wrong locks out; pick again
+        }
+      });
+    },
+  };
+
   // bright two-note ding for a correct review answer (shared, audio-only).
   function playReviewChord() {
     try {
@@ -2443,7 +2543,7 @@ const Views = (function () {
 
   return {
     splash, menu, select, chapters,
-    reading, quiz, quizstatus, notes, review,
+    reading, quiz, quizstatus, notes, review, comprehension,
     "word-garden": wordGarden,
     save, load, voices,
   };
