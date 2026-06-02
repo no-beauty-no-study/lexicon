@@ -160,12 +160,17 @@ const WordCard = (function () {
       .concat((d.examples || []).slice(0, 1).map(x => x.example || x.en))
       .filter(Boolean).join(". ");
 
-    // own → family (shared) → family-kin route → kin (own prefix cluster) → group.
-    const fkin = (d.family_kin && d.family_kin.length)
-      ? section("wc-fkin", "Family Kin", familyKinHTML(d.family_kin), familyKinSpeak(d.family_kin)) : "";
+    // Regions (user spec): owl (the word) → head (原型) → family → kin → group.
+    // No "family-kin" region — those words are folded into Kin.
+    const headSpeak = d.head ? [d.head.word]
+      .concat((d.head.phrases || []).slice(0, 2).map(p => p.phrase || p.en))
+      .concat((d.head.examples || []).slice(0, 1).map(x => x.example || x.en))
+      .filter(Boolean).join(". ") : "";
+    const headHTML = d.head
+      ? section("wc-head-sec", "Head · 原型", memberHTML(d.head) + exHTML(d.head.examples, 1), headSpeak) : "";
     return section("wc-own", "", ownPh + ownEx, ownSpeak)
+      + headHTML
       + section("wc-fam", "Family", membersHTML(d.family_members, d.word), membersSpeak(d.family_members, d.word))
-      + fkin
       + section("wc-kin", "Kin",    membersHTML(d.kin_members,    d.word), membersSpeak(d.kin_members,    d.word))
       + section("wc-grp", "Group",  membersHTML(d.group,          d.word), membersSpeak(d.group,          d.word));
   }

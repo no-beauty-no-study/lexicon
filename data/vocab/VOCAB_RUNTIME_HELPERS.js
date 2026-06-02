@@ -148,11 +148,11 @@
       const card = rk ? regMap.get(rk) : null;
       if (card) {
         const head = learningHead(rk);
-        const headOpenable = bigSet.has(head) || regMap.has(head);
+        const hasBig = !!getBigCard(rk);   // owl-only words have no big card
         res = { type: 'word', word: card.word || rk, pos: posOf(card), zh: card.zh || '',
           phrases: normPhrases(card.phrases), examples: normExamples(card.examples),
-          head: { word: head, openable: headOpenable },
-          clickableForBigCard: bigSet.has(rk) || headOpenable, resolvedWord: card.word || rk };
+          head: hasBig ? { word: head, openable: true } : null,
+          clickableForBigCard: hasBig, resolvedWord: card.word || rk };
       }
     }
     smallCache.set(w, res);
@@ -191,18 +191,14 @@
     const navE = navMap.get(w) || navMap.get(head);
     const kinWords = new Set();
     (headToKin.get(w) || []).forEach(id => (clusterWords.get(norm(id)) || []).forEach(x => kinWords.add(norm(x))));
-    // V149 patch fills nav entries with expanded kin_words for words whose
-    // kin clusters weren't wired to the bridge ("missing kin" like condense).
+    // V149/V153 patches fill nav entries with expanded kin_words for words
+    // whose kin clusters weren't wired ("missing kin" like condense).
     if (navE && Array.isArray(navE.kin_words)) navE.kin_words.forEach(x => kinWords.add(norm(x)));
+    // family-kin routes also count as kin (no separate "family-kin" region).
+    if (navE && Array.isArray(navE.family_kin_routes))
+      navE.family_kin_routes.forEach(r => (r.kin_words || []).forEach(x => kinWords.add(norm(x))));
     kinWords.delete(w);
     const kin = [...kinWords].map(id => shapeMember(id, clusterHead)).sort((a, b) => a.word.localeCompare(b.word));
-
-    // FAMILY-KIN routes — head → family word → that family word's own kin.
-    const navEntry = navE;
-    const familyKin = ((navEntry && navEntry.family_kin_routes) || []).map(r => ({
-      via: r.through_family_word,
-      words: (r.kin_words || []).filter(x => norm(x) !== norm(r.through_family_word)).map(id => shapeMember(id, clusterHead)),
-    })).filter(r => r.words.length);
 
     // GROUP — synonyms, excluding anything already shown in family/kin.
     const shown = new Set([w, ...famWords, ...kinWords]);
@@ -210,9 +206,22 @@
     (groupMap.get(w) || []).concat(groupMap.get(head) || []).forEach(x => { if (!shown.has(norm(x))) grpWords.add(norm(x)); });
     const group = [...grpWords].map(id => shapeMember(id, clusterHead)).sort((a, b) => a.word.localeCompare(b.word));
 
+    // HEAD region (原型) — the prefix/suffix-stripped core, shown as its own
+    // region when it differs from the clicked word and has its own card.
+    let headObj = null;
+    if (head && head !== w && regMap.has(head)) {
+      const hc = regMap.get(head);
+      headObj = { word: hc.word || head, pos: posOf(hc), zh: hc.zh || '',
+        phrases: normPhrases(hc.phrases, 2), examples: normExamples(hc.examples).slice(0, 1), clickable: true };
+    }
+
+    // "owl" — a bare word with no head / family / kin / group is small-card
+    // only: no big card, never expanded, never a quiz target.
+    if (!headObj && !family.length && !kin.length && !group.length) { bigCache.set(w, null); return null; }
+
     const out = { word: c.word || w, family_head: head, pos: posOf(c), zh: c.zh || '',
-      phrases: normPhrases(c.phrases), examples: normExamples(c.examples), head: null,
-      family_members: family, kin_members: kin, family_kin: familyKin, group };
+      phrases: normPhrases(c.phrases), examples: normExamples(c.examples),
+      head: headObj, family_members: family, kin_members: kin, group };
     bigCache.set(w, out);
     return out;
   }
