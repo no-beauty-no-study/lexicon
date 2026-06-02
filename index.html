@@ -125,18 +125,23 @@
   .menu-btn:focus { outline: none; }
   .menu-btn.left  { left: 10.5%; }
   .menu-btn.right { right: 10.5%; }
-  /* Quiz entry — the painted "Begin Trial" quill plaque, centred low on
-     the cover, same painted treatment + size class as the hero buttons. */
-  .menu-btn.quiz {
-    top: auto; bottom: 3.5%; left: 50%; transform: translateX(-50%);
-    width: 19%; aspect-ratio: 594 / 649;
+  /* Two painted plaque entries low on the cover — Begin Trial (left of
+     centre) and Words Recall (right of centre). Same press/chime/badge as
+     the hero buttons; still plaques (no breathe), soft drop-shadow. */
+  .menu-btn.quiz, .menu-btn.recall {
+    top: auto; bottom: 3.5%; transform: none;
+    width: 17%; aspect-ratio: 549 / 596;
   }
-  .menu-btn.quiz .menu-btn-inner {
-    background-image: url("assets/bg/ui/C66C39D1-066E-48D3-BB42-011B149DF616.jpeg");
+  .menu-btn.quiz   { left: 31.5%; }
+  .menu-btn.recall { right: 31.5%; }
+  .menu-btn.quiz .menu-btn-inner,
+  .menu-btn.recall .menu-btn-inner {
     background-size: contain; background-position: center; background-repeat: no-repeat;
-    animation: none;            /* no breathe — sits as a still plaque */
+    animation: none;
     filter: drop-shadow(0 6px 16px rgba(40, 28, 12, 0.4));
   }
+  .menu-btn.quiz   .menu-btn-inner { background-image: url("assets/bg/ui/C4601148-C0B7-4FBC-8B78-2DD0B958F9D5.png"); }
+  .menu-btn.recall .menu-btn-inner { background-image: url("assets/bg/ui/B4C6D44A-5C31-4417-8288-FBD234721725.png"); }
   /* Button itself: overflow: hidden so the diagonal gleam sweep
      and unlock pulse don't bleed past the painted edge. Costs a
      small clip on the breathing translateY, so the translate is
@@ -751,9 +756,13 @@
         <span class="menu-btn-inner"></span>
         <span class="menu-btn-badge" aria-hidden="true"></span>
       </button>
-      <!-- Quiz — the main-line "Begin Trial" entry (painted quill plaque).
-           Same press / chime / badge feedback as the two hero buttons. -->
+      <!-- Two painted plaque entries at the foot of the cover:
+           Begin Trial → continue the main trial; Words Recall → review. -->
       <button type="button" class="menu-btn quiz" data-action="quiz">
+        <span class="menu-btn-inner"></span>
+        <span class="menu-btn-badge" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="menu-btn recall" data-action="recall">
         <span class="menu-btn-inner"></span>
         <span class="menu-btn-badge" aria-hidden="true"></span>
       </button>

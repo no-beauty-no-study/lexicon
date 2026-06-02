@@ -1110,6 +1110,7 @@
 .gs-c-ok  { color: #7F95A3; }
 .gs-c-bad { color: #8A5B56; text-decoration: underline; }
 .gs-c-dot { color: #B8A06F; padding: 0 1px; }
+.gs-c-mean { font-family: "Noto Serif SC","Songti SC",serif; color: #5D4D42; }
 .gs-c-tip { font-style: italic; font-size: 13px; color: #8E8474; margin-top: 6px; }
 .gs-done { text-align: center; padding: 40px 0; }
 .gs-done-mark { font-size: 40px; color: #B8A06F; }
