@@ -1109,10 +1109,13 @@ const Views = (function () {
       // index's browse reader (which never touches main-line reading progress).
       const fromCtx = params.from || "menu";
       const encQ = (s) => encodeURIComponent(s);
-      const returnHref = (fromCtx === "story")
+      const returnHref = (fromCtx === "garden") ? "#word-garden"
+        : (fromCtx === "story")
         ? `#reading?chapter=${encQ(chapterId)}&section=${encQ(sectionNum)}`
         : `#reading?chapter=${encQ(chapterId)}&section=${encQ(sectionNum)}&browse=1`;
-      const storyLabel = (fromCtx === "story")
+      const storyLabel = (fromCtx === "garden")
+        ? '<span class="nav-glyph">❖</span>Garden'
+        : (fromCtx === "story")
         ? '<span class="nav-glyph">‹</span>Back' : '<span class="nav-glyph">❖</span>Story';
       function wireStoryBtn(guarded) {
         const b = host.querySelector("[data-story]");
@@ -1159,13 +1162,15 @@ const Views = (function () {
       function renderGoldenSeal() {
         const body = host.querySelector(".quiz-body");
         const isReview = (params.review === "1");
-        if (isReview) {
-          host.style.backgroundImage = `url("assets/bg/ui/3F265BED-4DBB-4537-A6E8-97D8DED1CAE0.png")`;
-          host.querySelector("[data-chapter-number]").textContent = "Review";
-          host.querySelector("[data-chapter-title]").textContent  = "Accumulated Words";
-          host.querySelector("[data-chapter-section]").textContent = "Random review · most-missed first";
+        const isSeal = (params.seal === "1");   // dictation backlog from Words Garden
+        if (isReview || isSeal) {
+          host.querySelector("[data-chapter-number]").textContent = isSeal ? "Seal" : "Review";
+          host.querySelector("[data-chapter-title]").textContent  = isSeal ? "Spelling Practice" : "Accumulated Words";
+          host.querySelector("[data-chapter-section]").textContent = "most-missed first";
         }
-        const set = buildGoldenSet(isReview && window.Quiz ? Quiz.reviewWords() : sectionTokens(section));
+        const wordList = isSeal && window.Quiz ? Quiz.toSpellWords()
+                       : isReview && window.Quiz ? Quiz.reviewWords() : sectionTokens(section);
+        const set = buildGoldenSet(wordList).slice(0, (isSeal || isReview) ? 8 : 10);
         if (!set.length) {
           body.innerHTML = `<div class="empty-state">No spelling set available yet for this section.</div>`;
           return;
@@ -1183,7 +1188,6 @@ const Views = (function () {
             <div class="gs-label gs-listen">✦ LISTEN &amp; SPELL ✦ <span class="gs-replay">↻</span></div>
             <p class="gs-sentence-en"></p>
             <div class="gs-spell">
-              <div class="gs-cells"></div>
               <input class="gs-input" type="text" lang="en" inputmode="email"
                      autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Spell the word">
             </div>
@@ -1193,7 +1197,7 @@ const Views = (function () {
           </div>`;
 
         const el = (s) => body.querySelector(s);
-        const cellsEl = el(".gs-cells"), input = el(".gs-input");
+        const input = el(".gs-input"), shakeEl = el(".gs-spell");
         const enEl = el(".gs-sentence-en"), zhEl = el(".gs-sentence-zh");
         const sayLine = () => { try { if (typeof TTS !== "undefined" && TTS.speak) TTS.speak(cur().en || cur().word); } catch (_) {} };
         const noEl = el(".gs-no"), dotsEl = el(".gs-dots"), corr = el(".gs-correction");
@@ -1205,15 +1209,9 @@ const Views = (function () {
             `<span class="gs-dot ${q.status === "sealed" ? "is-sealed" : q.status === "corrected" ? "is-corrected" : ""}"></span>`).join("");
           noEl.textContent = String(Math.min(set.length, sealedCount() + 1)).padStart(2, "0");
         }
-        function renderCells() {
-          const q = cur(); const v = input.value.toLowerCase().slice(0, q.word.length);
-          let h = "";
-          for (let i = 0; i < q.word.length; i++) {
-            const ch = v[i] || "";
-            h += `<span class="gs-cell${i === v.length ? " is-caret" : ""}${ch ? " is-filled" : ""}">${esc(ch)}</span>`;
-          }
-          cellsEl.innerHTML = h;
-        }
+        // No per-letter cells — the user writes into one open line (no boxes
+        // hinting the word's length). Kept as a no-op so callers stay simple.
+        function renderCells() {}
         function blankSentence(en, word) {
           return esc(en).replace(new RegExp("\\b" + rxq(word) + "\\b", "i"),
             `<span class="gs-blank">${"_".repeat(Math.max(6, word.length))}</span>`);
@@ -1226,7 +1224,7 @@ const Views = (function () {
           const q = cur();
           enEl.innerHTML = blankSentence(q.en, q.word);   // sentence shown, target blanked
           zhEl.textContent = "";                  // Chinese only appears AFTER answering
-          cellsEl.classList.remove("is-shake");
+          shakeEl.classList.remove("is-shake");
           renderCells(); renderDots();
           setTimeout(() => { try { input.focus(); } catch (_) {} }, 60);
           sayLine();                              // auto-read the whole example
@@ -1263,13 +1261,13 @@ const Views = (function () {
         function finish() {
           recordState();
           body.innerHTML = `<div class="gs-done"><div class="gs-done-mark">✦</div>
-            <div class="gs-done-title">Golden Seal Complete</div>
-            <p class="gs-done-sub">Sealed ${sealedCount()} / ${set.length} · 已封存</p>
-            <button type="button" class="gs-btn gs-continue" style="margin-top:18px">CONTINUE</button></div>`;
+            <div class="gs-done-title">Spelling Sealed</div>
+            <p class="gs-done-sub">Spelled ${sealedCount()} / ${set.length}</p>
+            <button type="button" class="gs-btn gs-continue" style="margin-top:18px">DONE</button></div>`;
           try { playSuccessChord(); } catch (_) {}
-          const go = () => window.go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref() : "#menu");
+          const go = () => window.go("#word-garden");   // dictation returns to the garden
           const c = body.querySelector(".gs-continue"); if (c) c.addEventListener("click", go);
-          setTimeout(go, 2600);
+          setTimeout(go, 2400);
         }
         // "临门一脚" exit prompt — leaving with words still unsealed shows the
         // almost-there nudge (remaining count in red) before letting them go.
@@ -1313,10 +1311,10 @@ const Views = (function () {
         function onCheck() {
           const q = cur();
           const typed = input.value.trim().toLowerCase();
-          if (!typed) { cellsEl.classList.remove("is-shake"); void cellsEl.offsetWidth; cellsEl.classList.add("is-shake"); return; }
+          if (!typed) { shakeEl.classList.remove("is-shake"); void shakeEl.offsetWidth; shakeEl.classList.add("is-shake"); return; }
           if (typed === q.word) {
             const clean = !revealed && !wrongThis;     // un-prompted, first try this presentation
-            if (clean) { q.status = "sealed"; if (window.Quiz) Quiz.recordWord(q.word, true); playSuccessChord(); }
+            if (clean) { q.status = "sealed"; if (window.Quiz) Quiz.recordSpelled(q.word); playSuccessChord(); }
             else { if (q.status !== "sealed") q.status = "corrected"; if (window.Quiz) Quiz.recordCorrected(q.word); queue.push(queue[pos]); }
             // After submit: replay the line once + reveal the Chinese, then move on.
             zhEl.textContent = q.zh || "";
@@ -1331,16 +1329,15 @@ const Views = (function () {
             wrongThis = true;
             if (q.status !== "sealed") q.status = "corrected";
             if (!recordedWrong && window.Quiz) { Quiz.recordWord(q.word, false); recordedWrong = true; }
-            cellsEl.classList.remove("is-shake"); void cellsEl.offsetWidth; cellsEl.classList.add("is-shake");
+            shakeEl.classList.remove("is-shake"); void shakeEl.offsetWidth; shakeEl.classList.add("is-shake");
             showCorrection(typed); zhEl.textContent = q.zh || ""; sayLine(); renderDots();
           }
         }
         function retry() { if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; input.value = ""; renderCells(); } }
 
-        input.addEventListener("input", () => { input.value = input.value.replace(/[^A-Za-z]/g, ""); renderCells(); });
+        input.addEventListener("input", () => { input.value = input.value.replace(/[^A-Za-z]/g, ""); });
         input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); onCheck(); } });
         input.addEventListener("focus", retry);
-        cellsEl.addEventListener("click", () => { retry(); try { input.focus(); } catch (_) {} });
         el(".gs-listen").addEventListener("click", sayLine);          // tap label / ↻ to replay
         enEl.addEventListener("click", sayLine);                      // tap the sentence to replay
         present();
@@ -1611,8 +1608,15 @@ const Views = (function () {
         if (advancing || !allCorrect()) return;
         advancing = true;
         spawnStarBurst(8); playSuccessChord();
-        const nextStage = isGroup ? "golden" : (buildGroupItems(section).length ? "group" : "golden");
+        // word page → group (if any); group page (or no-group word page) →
+        // the section's CHOICE quiz is DONE, the main line advances. Dictation
+        // is never part of this chain — it lives in Words Garden (Seal More).
+        const sectionDone = isGroup || buildGroupItems(section).length === 0;
+        if (sectionDone && window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
         const title = isGroup ? "Synonyms Cleared" : "Words Cleared";
+        const onContinue = sectionDone
+          ? () => { window.__navDir = "forward"; window.go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu"); }
+          : () => { window.__navDir = "forward"; window.go(hrefFor("group")); };
         let scrim = host.querySelector(".qx-scrim");
         if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
         scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
@@ -1621,11 +1625,7 @@ const Views = (function () {
             <button type="button" class="gs-btn qx-continue">Continue ›</button>
             <button type="button" class="gs-btn qx-stay2">Stay &amp; Review</button>
           </div></div>`;
-        scrim.querySelector(".qx-continue").onclick = (e) => {
-          e.stopPropagation();
-          if (nextStage === "golden" && window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
-          window.__navDir = "forward"; window.go(hrefFor(nextStage));
-        };
+        scrim.querySelector(".qx-continue").onclick = (e) => { e.stopPropagation(); onContinue(); };
         scrim.querySelector(".qx-stay2").onclick = (e) => { e.stopPropagation(); scrim.remove(); };
         requestAnimationFrame(() => scrim.classList.add("is-open"));
       }
@@ -1871,8 +1871,9 @@ const Views = (function () {
         }
         return "";
       }
-      const sealedList   = () => (window.Quiz && Quiz.accumulatedWords) ? Quiz.accumulatedWords() : [];
-      const unsealedList = () => (window.Quiz && Quiz.unsealedWords) ? Quiz.unsealedWords() : [];
+      const collectedList = () => (window.Quiz && Quiz.collectedWords) ? Quiz.collectedWords() : [];
+      const spelledList   = () => (window.Quiz && Quiz.spelledWords) ? Quiz.spelledWords() : [];
+      const toSpell       = () => (window.Quiz && Quiz.toSpellWords) ? Quiz.toSpellWords() : [];
       function applyQuery(list) {
         if (!query) return list;
         return list.filter(w => w.toLowerCase().includes(query) || glossOf(w).toLowerCase().includes(query));
@@ -1892,15 +1893,24 @@ const Views = (function () {
       }
       function shortGloss(w) { return glossOf(typeof w === "string" ? w : (w && w.word) || ""); }
       function filtered() {   // union (for the A-Z nav)
-        return applyQuery(sealedList().concat(unsealedList())).map(w => ({ word: w }));
+        return applyQuery(collectedList().concat(spelledList())).map(w => ({ word: w }));
       }
       function renderTable() {
         const left  = host.querySelector("#wg-col-left");
         const right = host.querySelector("#wg-col-right");
         if (!left || !right) return;
-        const sealed = sealedList(), unsealed = unsealedList();
-        left.innerHTML  = colHTML("Sealed Words", sealed.length, applyQuery(sealed));
-        right.innerHTML = colHTML("Unsealed Words", unsealed.length, applyQuery(unsealed));
+        const collected = collectedList(), spelled = spelledList(), backlog = toSpell().length;
+        // LEFT = Collected (choice quiz) with a "Seal More" dictation button.
+        left.innerHTML = `<li class="wg-col-head wg-col-head-row"><span>Collected · ${collected.length}</span>`
+          + `<button type="button" class="wg-sealmore"${backlog ? "" : " disabled"}>Seal More${backlog ? " (" + backlog + ")" : ""}</button></li>`
+          + (applyQuery(collected).length ? applyQuery(collected).map(rowHTML).join("") : `<li class="wg-empty">— none yet —</li>`);
+        // RIGHT = Sealed (dictation).
+        right.innerHTML = colHTML("Sealed", spelled.length, applyQuery(spelled));
+        const sm = left.querySelector(".wg-sealmore");
+        if (sm && backlog) sm.addEventListener("click", (e) => {
+          e.stopPropagation(); window.__navDir = "forward";
+          window.go("#quiz?chapter=universe&section=1.1&stage=golden&seal=1&from=garden");
+        });
         host.querySelectorAll(".wg-row").forEach(row => {
           row.addEventListener("click", () => {
             const id = row.dataset.id;

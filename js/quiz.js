@@ -61,30 +61,19 @@ const Quiz = (function () {
     return "#quizstatus?chapter=" + encodeURIComponent(ch) + "&section=" + encodeURIComponent(sec);
   }
 
-  // Menu — first unfinished stage in linear order; skip completed sections.
+  // Menu — first section whose CHOICE quiz (quiz1) isn't done, linear order.
+  // Dictation (Golden) is independent and NOT part of the main line.
   function menuHref(from) {
     from = from || "menu";
     for (const { chapter, section } of order()) {
       const st = sectionState(chapter, section);
       if (st.quiz1.status !== "completed") return quizHref(chapter, section, "silver", from);
-      if (st.quiz2.status !== "completed") return quizHref(chapter, section, "golden", from);
     }
     return "#word-garden";
   }
-  // Reading — the current section's trial, resuming its open stage.
-  function readingHref(ch, sec) {
-    const st = sectionState(ch, sec);
-    if (st.quiz1.status !== "completed") return quizHref(ch, sec, "silver", "story");
-    if (st.quiz2.status !== "completed") return quizHref(ch, sec, "golden", "story");
-    return quizHref(ch, sec, "silver", "story");   // both done → redo from the top
-  }
-  // Story Index — straight into the section's open quiz stage (no start page).
-  function indexHref(ch, sec) {
-    const st = sectionState(ch, sec);
-    if (st.quiz1.status !== "completed") return quizHref(ch, sec, "silver", "index");
-    if (st.quiz2.status !== "completed") return quizHref(ch, sec, "golden", "index");
-    return quizHref(ch, sec, "silver", "index");   // both done → redo from the top
-  }
+  // Reading / Index — straight into the section's choice quiz (word → group).
+  function readingHref(ch, sec) { return quizHref(ch, sec, "silver", "story"); }
+  function indexHref(ch, sec)   { return quizHref(ch, sec, "silver", "index"); }
 
   /* ---------- per-word mistake stats (review ordering) ----------
      Each word keeps wrong / correct counts. A "clean" un-prompted pass
@@ -99,21 +88,27 @@ const Quiz = (function () {
   function recordWord(word, ok) {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
-    const e = s[k] || { w: 0, c: 0, corrected: 0, sealed: false };
-    if (ok) { e.c += 1; e.sealed = true; } else { e.w += 1; }
+    const e = s[k] || { w: 0, c: 0, corrected: 0, collected: false, spelled: false };
+    if (ok) { e.c += 1; e.collected = true; } else { e.w += 1; }
     s[k] = e; saveStats(s);
   }
-  // Seen the answer then got it right → counts as a CORRECTION, never a
-  // clean correct (does not lower reviewNeed). "错了之后再写对仍算错。"
   function recordCorrected(word) {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
-    const e = s[k] || { w: 0, c: 0, corrected: 0, sealed: false };
-    e.corrected = (e.corrected || 0) + 1; e.sealed = true;
+    const e = s[k] || { w: 0, c: 0, corrected: 0, collected: false, spelled: false };
+    e.corrected = (e.corrected || 0) + 1; e.collected = true;
     s[k] = e; saveStats(s);
   }
-  // Getting a word's GROUP question wrong cancels the recognition correct it
-  // had just earned (1 → 0). Never goes below zero.
+  // Dictation (Golden) is independent of the linear quiz. A clean spelling
+  // marks the word SPELLED (the right column of the garden) and counts a
+  // correct; it never affects the linear "collected" progression.
+  function recordSpelled(word) {
+    const k = String(word || "").toLowerCase(); if (!k) return;
+    const s = loadStats();
+    const e = s[k] || { w: 0, c: 0, corrected: 0, collected: false, spelled: false };
+    e.c += 1; e.spelled = true;
+    s[k] = e; saveStats(s);
+  }
   function undoCorrect(word) {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats(); const e = s[k]; if (!e) return;
@@ -126,16 +121,22 @@ const Quiz = (function () {
       .sort((a, b) => (b.sc - a.sc) || (Math.random() - 0.5))
       .map(x => x.k);
   }
-  // Accumulated (sealed) words, most-missed first, random within a tie.
-  function reviewWords() { const s = loadStats(); return byScore(Object.keys(s).filter(k => s[k].sealed), s); }
-  function accumulatedWords() { return reviewWords(); }
-  function unsealedWords() { const s = loadStats(); return byScore(Object.keys(s).filter(k => !s[k].sealed), s); }
-  function wordStat(word) { return loadStats()[String(word || "").toLowerCase()] || { w: 0, c: 0, sealed: false }; }
+  // Left column — words COLLECTED via the choice quiz, most-missed first.
+  function collectedWords() { const s = loadStats(); return byScore(Object.keys(s).filter(k => s[k].collected), s); }
+  // Right column — words SPELLED via dictation.
+  function spelledWords() { const s = loadStats(); return byScore(Object.keys(s).filter(k => s[k].spelled), s); }
+  // The dictation backlog — collected but not yet spelled (Seal More pool).
+  function toSpellWords() { const s = loadStats(); return byScore(Object.keys(s).filter(k => s[k].collected && !s[k].spelled), s); }
+  function reviewWords() { return collectedWords(); }
+  function accumulatedWords() { return collectedWords(); }
+  function unsealedWords() { const s = loadStats(); return byScore(Object.keys(s).filter(k => !s[k].collected), s); }
+  function wordStat(word) { return loadStats()[String(word || "").toLowerCase()] || { w: 0, c: 0, collected: false, spelled: false }; }
 
   return {
     sectionState, setStageStatus, update, sectionCompleted,
     order, menuHref, readingHref, indexHref, quizHref, statusHref,
-    recordWord, recordCorrected, undoCorrect, reviewWords, accumulatedWords, unsealedWords, wordStat,
+    recordWord, recordCorrected, recordSpelled, undoCorrect,
+    reviewWords, accumulatedWords, collectedWords, spelledWords, toSpellWords, unsealedWords, wordStat,
   };
 })();
 window.Quiz = Quiz;
