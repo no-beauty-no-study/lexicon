@@ -1453,16 +1453,62 @@ const Views = (function () {
       // English word as the prompt, four CHINESE-meaning options (one correct
       // + look-alike distractors).
       const QUIZ_TARGET = 16;
-      // A word qualifies for the quiz only if it has a meaning, a big card and a
-      // surviving example (no-example words — e.g. ones whose only example was a
-      // purged filler — are out of the quiz AND the accumulation queue).
+      const hasCJK = (s) => /[一-鿿]/.test(String(s || ""));
+      // A word qualifies for the quiz only if it has a CHINESE meaning, a big
+      // card and a surviving example (no-example or English-only-gloss words —
+      // e.g. ones whose only example/zh was purged filler — are out of the quiz
+      // AND the accumulation queue).
       function qualifyQuizWord(w) {
         const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null;
-        if (!sc || sc.proper || !sc.zh) return null;
+        if (!sc || sc.proper) return null;
+        const zh = stripPos(sc.zh || "");
+        if (!hasCJK(zh)) return null;
         const ans = String(sc.word || w).toLowerCase();
         if (!(window.VocabRuntime && VocabRuntime.getBigCard && VocabRuntime.getBigCard(ans))) return null;
         if (!(sc.examples || []).some(e => e && (e.example || e.en))) return null;
-        return { word: ans, zh: stripPos(sc.zh) };
+        return { word: ans, zh };
+      }
+      // Global distractor pool, grouped by first letter — every carded word
+      // with a Chinese gloss. Used to draw look-alike distractors (same first
+      // letter, most shared letters) so each question also drills telling apart
+      // words that LOOK alike but mean different things.
+      function quizDistractorPool() {
+        if (window.__quizDistractors) return window.__quizDistractors;
+        const REG = (window.VOCAB_WORD_CONTENT_REGISTRY_LITE || {}).cards || {};
+        const byFirst = {};
+        for (const k in REG) {
+          const c = REG[k];
+          const word = String(c.word || k).toLowerCase();
+          if (!/^[a-z][a-z'-]{1,}$/.test(word)) continue;
+          const zh = stripPos(c.zh || "");
+          if (!hasCJK(zh)) continue;
+          const f = word[0];
+          (byFirst[f] = byFirst[f] || []).push({ word, zh });
+        }
+        window.__quizDistractors = byFirst;
+        return byFirst;
+      }
+      // Letter-overlap score: shared leading letters, then total shared letters.
+      function lookAlike(a, b) {
+        let pre = 0; const n = Math.min(a.length, b.length);
+        while (pre < n && a[pre] === b[pre]) pre++;
+        const setB = {}; for (const ch of b) setB[ch] = (setB[ch] || 0) + 1;
+        let common = 0; for (const ch of a) { if (setB[ch] > 0) { common++; setB[ch]--; } }
+        return pre * 10 + common;
+      }
+      // 3 distractor meanings from OTHER words that look like `word` — prefer the
+      // same first letter, most-similar spelling; meanings must differ + be 中文.
+      function pickDistractors(word, zh) {
+        const byFirst = quizDistractorPool();
+        const usedZh = new Set([zh]), out = [];
+        function take(list) {
+          list.sort((a, b) => lookAlike(word, b.word) - lookAlike(word, a.word));
+          for (const c of list) { if (out.length >= 3) break; if (c.word === word || usedZh.has(c.zh)) continue; usedZh.add(c.zh); out.push({ zh: c.zh, word: c.word }); }
+        }
+        take((byFirst[word[0]] || []).slice());          // same first letter first
+        if (out.length < 3) take([].concat.apply([], Object.keys(byFirst).map(k => byFirst[k])));   // then anywhere
+        while (out.length < 3) out.push({ zh: "—", word: "" });
+        return out;
       }
       function buildChoiceItems(sec) {
         const seen = new Set(), poolW = [];
@@ -1491,12 +1537,9 @@ const Views = (function () {
           }
         }
         return poolW.map(p => {
-          const others = poolW.filter(o => o.word !== p.word && o.zh && o.zh !== p.zh)
-            .sort((a, b) => sharedPre(p.word, b.word) - sharedPre(p.word, a.word) || (Math.random() - 0.5));
-          const distract = [], sd = new Set([p.zh]);
-          for (const o of others) { if (distract.length >= 3) break; if (sd.has(o.zh)) continue; sd.add(o.zh); distract.push({ zh: o.zh, word: o.word }); }
-          while (distract.length < 3) distract.push({ zh: "—", word: "" });
-          const opts = shuffle([{ zh: p.zh, word: p.word, correct: true }].concat(distract.map(d => ({ zh: d.zh, word: d.word, correct: false }))), p.word.length || 1);
+          const distract = pickDistractors(p.word, p.zh);
+          const opts = shuffle([{ zh: p.zh, word: p.word, correct: true }]
+            .concat(distract.map(d => ({ zh: d.zh, word: d.word, correct: false }))), p.word.length || 1);
           return { word: p.word, zh: p.zh, options: opts };
         });
       }
@@ -2034,6 +2077,33 @@ const Views = (function () {
         if (!query) return list;
         return list.filter(w => w.toLowerCase().includes(query) || glossOf(w).toLowerCase().includes(query));
       }
+      // Flat index of EVERY carded word — so search isn't limited to words you've
+      // already accumulated ("我想看这个单词还没法看那就尴尬了"). Built once.
+      function libIndex() {
+        if (window.__gardenLibIndex) return window.__gardenLibIndex;
+        const REG = (window.VOCAB_WORD_CONTENT_REGISTRY_LITE || {}).cards || {};
+        const out = [];
+        for (const k in REG) {
+          const c = REG[k]; const w = String(c.word || k).toLowerCase();
+          if (!/^[a-z][a-z'-]+$/.test(w)) continue;
+          out.push({ word: w, zh: stripPos(c.zh || "") });
+        }
+        window.__gardenLibIndex = out;
+        return out;
+      }
+      // Full-lexicon matches for the current query that AREN'T already in your
+      // collected / sealed columns (those are shown there).
+      function libraryMatches() {
+        if (!query) return [];
+        const have = new Set(collectedList().concat(spelledList()).map(w => w.toLowerCase()));
+        const out = [];
+        for (const e of libIndex()) {
+          if (out.length >= 60) break;
+          if (have.has(e.word)) continue;
+          if (e.word.includes(query) || e.zh.toLowerCase().includes(query)) out.push(e.word);
+        }
+        return out;
+      }
       function rowHTML(word) {
         const st = (window.Quiz && Quiz.wordStat) ? Quiz.wordStat(word) : { w: 0, rc: 0 };
         const need = (st.w || 0) - (st.rc || 0);
@@ -2060,8 +2130,12 @@ const Views = (function () {
         left.innerHTML = `<li class="wg-col-head wg-col-head-row"><span>Collected · ${collected.length}</span>`
           + `<button type="button" class="wg-sealmore"${backlog ? "" : " disabled"}>Seal More${backlog ? " (" + backlog + ")" : ""}</button></li>`
           + (applyQuery(collected).length ? applyQuery(collected).map(rowHTML).join("") : `<li class="wg-empty">— none yet —</li>`);
-        // RIGHT = Sealed (dictation).
-        right.innerHTML = colHTML("Sealed", spelled.length, applyQuery(spelled));
+        // RIGHT = Sealed (dictation); while searching, the lower part becomes a
+        // full-lexicon lookup so any word can be found and opened.
+        const lib = libraryMatches();
+        right.innerHTML = colHTML("Sealed", spelled.length, applyQuery(spelled))
+          + (query ? `<li class="wg-col-head">From the Lexicon · ${lib.length}</li>`
+              + (lib.length ? lib.map(rowHTML).join("") : `<li class="wg-empty">— no match —</li>`) : "");
         const sm = left.querySelector(".wg-sealmore");
         if (sm && backlog) sm.addEventListener("click", (e) => {
           e.stopPropagation(); window.__navDir = "forward";
