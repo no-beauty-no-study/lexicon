@@ -1068,6 +1068,8 @@
 }
 .gs-listen { cursor: pointer; }
 .gs-listen:hover { color: #B8860B; }
+.gs-replay { font-size: 14px; color: #B8860B; margin-left: 4px; }
+.gs-sentence-en { cursor: pointer; }   /* tap the sentence to hear it again */
 .gs-sentence-zh {
   font-family: "Noto Serif SC", "Songti SC", serif; font-size: 17px;
   color: #5D4D42; margin: 0 0 10px;

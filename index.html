@@ -116,29 +116,28 @@
   .page.notes-art::before, .page.notes-art::after { display: none; }
 
   .menu-btn {
-    position: absolute; top: 50%; width: 21%;
+    position: absolute; top: 47%; width: 17%;
     aspect-ratio: 601 / 645;
     transform: translateY(-50%);
     background: transparent; border: 0; padding: 0;
     cursor: pointer; z-index: 8;
   }
   .menu-btn:focus { outline: none; }
-  .menu-btn.left  { left: 10.5%; }
-  .menu-btn.right { right: 10.5%; }
+  .menu-btn.left  { left: 12%; }
+  .menu-btn.right { right: 12%; }
   /* Two painted plaque entries low on the cover — Begin Trial (left of
-     centre) and Words Recall (right of centre). Same press/chime/badge as
-     the hero buttons; still plaques (no breathe), soft drop-shadow. */
+     centre) and Words Recall (right of centre), same size as the hero pair,
+     spread a little wider. Transparent margins (floodfilled), no breathe. */
   .menu-btn.quiz, .menu-btn.recall {
-    top: auto; bottom: 3.5%; transform: none;
+    top: auto; bottom: 3%; transform: none;
     width: 17%; aspect-ratio: 549 / 596;
   }
-  .menu-btn.quiz   { left: 31.5%; }
-  .menu-btn.recall { right: 31.5%; }
+  .menu-btn.quiz   { left: 23%; }
+  .menu-btn.recall { right: 23%; }
   .menu-btn.quiz .menu-btn-inner,
   .menu-btn.recall .menu-btn-inner {
     background-size: contain; background-position: center; background-repeat: no-repeat;
     animation: none;
-    mix-blend-mode: multiply;   /* drop the cream paper into the cover */
     filter: drop-shadow(0 5px 13px rgba(40, 28, 12, 0.34));
   }
   .menu-btn.quiz   .menu-btn-inner { background-image: url("assets/bg/ui/C4601148-C0B7-4FBC-8B78-2DD0B958F9D5.png"); }
