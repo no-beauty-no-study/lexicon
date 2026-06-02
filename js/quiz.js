@@ -79,9 +79,39 @@ const Quiz = (function () {
   // Story Index — open that section's Quiz Status page (pick / redo).
   function indexHref(ch, sec) { return statusHref(ch, sec); }
 
+  /* ---------- per-word mistake stats (review ordering) ----------
+     Each word keeps wrong / correct counts. A "clean" un-prompted pass
+     (sealed) is the ONLY correct; a wrong answer or one written after
+     seeing the answer counts as WRONG ("错了之后再写对，这还算错"). The
+     review priority + Words Garden order is by score = wrong − correct
+     (descending) — the more a word is missed relative to nailed, the
+     higher it sits; as correct overtakes wrong it sinks. */
+  const SKEY = "tpl.quizWordStats";
+  function loadStats() { try { return JSON.parse(localStorage.getItem(SKEY) || "{}"); } catch (_) { return {}; } }
+  function saveStats(s) { try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (_) {} }
+  function recordWord(word, ok) {
+    const k = String(word || "").toLowerCase(); if (!k) return;
+    const s = loadStats();
+    const e = s[k] || { w: 0, c: 0, sealed: false };
+    if (ok) { e.c += 1; e.sealed = true; } else { e.w += 1; }
+    s[k] = e; saveStats(s);
+  }
+  function score(e) { return (e.w || 0) - (e.c || 0); }
+  function byScore(keys, s) {
+    return keys.map(k => ({ k, sc: score(s[k]) }))
+      .sort((a, b) => (b.sc - a.sc) || (Math.random() - 0.5))
+      .map(x => x.k);
+  }
+  // Accumulated (sealed) words, most-missed first, random within a tie.
+  function reviewWords() { const s = loadStats(); return byScore(Object.keys(s).filter(k => s[k].sealed), s); }
+  function accumulatedWords() { return reviewWords(); }
+  function unsealedWords() { const s = loadStats(); return byScore(Object.keys(s).filter(k => !s[k].sealed), s); }
+  function wordStat(word) { return loadStats()[String(word || "").toLowerCase()] || { w: 0, c: 0, sealed: false }; }
+
   return {
     sectionState, setStageStatus, update, sectionCompleted,
     order, menuHref, readingHref, indexHref, quizHref, statusHref,
+    recordWord, reviewWords, accumulatedWords, unsealedWords, wordStat,
   };
 })();
 window.Quiz = Quiz;

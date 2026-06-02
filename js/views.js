@@ -103,6 +103,26 @@ const Views = (function () {
     return "#chapters";
   }
 
+  // Menu Quiz → a plaque popup: Continue the main trial, or Review the
+  // accumulated words (random, most-missed first).
+  function showQuizMenuPopup(host) {
+    let scrim = host.querySelector(".qx-scrim");
+    if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
+    const n = (window.Quiz && Quiz.reviewWords) ? Quiz.reviewWords().length : 0;
+    scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ THE TRIAL ✦</div>
+      <p class="qx-en">Continue the main trial,<br>or review your accumulated words.</p>
+      <p class="qx-zh">继续主线试炼，或随机复习已累计的单词。</p>
+      <div class="qx-actions">
+        <button type="button" class="gs-btn qm-continue">Continue · 继续</button>
+        <button type="button" class="gs-btn qm-review"${n ? "" : " disabled"}>Review ${n ? "(" + n + ")" : ""} · 复习</button>
+      </div></div>`;
+    scrim.querySelector(".qm-continue").onclick = (e) => { e.stopPropagation(); window.go(quizContinueHref()); };
+    const rb = scrim.querySelector(".qm-review");
+    if (n) rb.onclick = (e) => { e.stopPropagation(); window.go("#quiz?chapter=universe&section=1.1&stage=golden&review=1"); };
+    scrim.onclick = (e) => { if (e.target === scrim) scrim.remove(); };
+    requestAnimationFrame(() => scrim.classList.add("is-open"));
+  }
+
   const menu = {
     init(host) {
       // === button click + 4-layer antique feedback ==================
@@ -158,7 +178,7 @@ const Views = (function () {
           // are heard/seen before the page lifts away.
           setTimeout(() => {
             if (a === "resume")    window.go("#select");
-            else if (a === "quiz") window.go(quizContinueHref());
+            else if (a === "quiz") showQuizMenuPopup(host);
             else                   window.go("#chapters?browse=1");
           }, 540);
         });
@@ -1085,13 +1105,13 @@ const Views = (function () {
 
       function rxq(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
       function speakWord(w) { try { if (typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(w)); } catch (_) {} }
-      // Build the section's spelling set: clickable vocab words that have an
-      // example sentence containing the word. Up to 10 (one Word Set).
-      function buildGoldenSet(sec) {
+      // Build a spelling set from a token stream: clickable vocab words with
+      // an example sentence containing the word. Up to 10 (one Word Set).
+      // `tokens` is the section text by default, or the review word list.
+      function buildGoldenSet(tokens) {
         const out = [], seen = new Set();
-        const toks = ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || [];
-        for (const raw of toks) {
-          const w = raw.toLowerCase();
+        for (const raw of (tokens || [])) {
+          const w = String(raw).toLowerCase();
           if (seen.has(w)) continue;
           const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null;
           if (!sc || sc.proper) continue;
@@ -1106,9 +1126,16 @@ const Views = (function () {
         }
         return out;
       }
+      function sectionTokens(sec) { return ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || []; }
       function renderGoldenSeal() {
         const body = host.querySelector(".quiz-body");
-        const set = buildGoldenSet(section);
+        const isReview = (params.review === "1");
+        if (isReview) {
+          host.querySelector("[data-chapter-number]").textContent = "Review";
+          host.querySelector("[data-chapter-title]").textContent  = "Accumulated Words";
+          host.querySelector("[data-chapter-section]").textContent = "随机复习 · 错得最多的优先";
+        }
+        const set = buildGoldenSet(isReview && window.Quiz ? Quiz.reviewWords() : sectionTokens(section));
         if (!set.length) {
           body.innerHTML = `<div class="empty-state">No spelling set available yet for this section.</div>`;
           return;
@@ -1165,8 +1192,9 @@ const Views = (function () {
           return esc(en).replace(new RegExp("\\b" + rxq(word) + "\\b", "i"),
             `<span class="gs-blank">${"_".repeat(Math.max(6, word.length))}</span>`);
         }
+        let recordedWrong = false;   // count one WRONG per spoiled presentation
         function present() {
-          revealed = false; wrongThis = false;
+          revealed = false; wrongThis = false; recordedWrong = false;
           corr.hidden = true; corr.innerHTML = "";
           input.value = "";
           const q = cur();
@@ -1269,7 +1297,7 @@ const Views = (function () {
           if (!typed) { cellsEl.classList.remove("is-shake"); void cellsEl.offsetWidth; cellsEl.classList.add("is-shake"); return; }
           if (typed === q.word) {
             const clean = !revealed && !wrongThis;     // un-prompted, first try this presentation
-            if (clean) { q.status = "sealed"; playSuccessChord(); }
+            if (clean) { q.status = "sealed"; if (window.Quiz) Quiz.recordWord(q.word, true); playSuccessChord(); }
             else { if (q.status !== "sealed") q.status = "corrected"; queue.push(queue[pos]); } // re-queue for independent retry
             renderDots(); recordState();
             pos += 1;
@@ -1278,6 +1306,7 @@ const Views = (function () {
           } else {
             wrongThis = true;
             if (q.status !== "sealed") q.status = "corrected";
+            if (!recordedWrong && window.Quiz) { Quiz.recordWord(q.word, false); recordedWrong = true; }
             cellsEl.classList.remove("is-shake"); void cellsEl.offsetWidth; cellsEl.classList.add("is-shake");
             showCorrection(typed); speakWord(q.word); renderDots();
           }
@@ -1286,6 +1315,7 @@ const Views = (function () {
           const q = cur();
           revealed = true;
           if (q.status !== "sealed") q.status = "corrected";
+          if (!recordedWrong && window.Quiz) { Quiz.recordWord(q.word, false); recordedWrong = true; }  // seeing = counts as wrong
           showCorrection(input.value.trim().toLowerCase()); speakWord(q.word); renderDots();
         }
         function retry() { if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; input.value = ""; renderCells(); } }
