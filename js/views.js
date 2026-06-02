@@ -934,6 +934,23 @@ const Views = (function () {
         const sent = e.target.closest(".sentence-block");
         const revealed = sent && sent.classList.contains("is-revealed");
         const word = e.target.closest(".clickable-word");
+
+        // DOUBLE-TAP a revealed sentence (not a word) → toggle its translation
+        // WITHOUT interrupting the voice or AUTO. Handle this before stopAuto so
+        // playback continues while you read the Chinese.
+        if (sent && revealed && !word) {
+          const i = +sent.dataset.i;
+          const nowT = Date.now();
+          if (sent._tapT && (nowT - sent._tapT) < 380) {
+            sent._tapT = 0; clearTimeout(sent._tapTimer);
+            toggleSentenceZh(sent, i);          // no stopAuto, no TTS.cancel
+          } else {
+            sent._tapT = nowT;
+            sent._tapTimer = setTimeout(() => { sent._tapT = 0; if (autoOn) stopAuto(); speakSentence(i); }, 240);
+          }
+          return;
+        }
+
         if (autoOn) stopAuto();
 
         if (word && revealed) {
@@ -960,6 +977,20 @@ const Views = (function () {
         if (sent && revealed) { speakSentence(+sent.dataset.i); return; }
         advanceLinear();
       });
+
+      // Insert / remove the Chinese translation line for a sentence.
+      function toggleSentenceZh(sent, i) {
+        const existing = sent.querySelector(".sentence-zh");
+        if (existing) { existing.remove(); return; }
+        const map = (window.READING_TRANSLATIONS || {})[chapterId + "|" + sectionNum];
+        const zh = (map && map[i]) || "";
+        const div = document.createElement("div");
+        div.className = "sentence-zh";
+        div.textContent = zh || "（这一句的译文还在整理中）";
+        if (!zh) div.classList.add("is-missing");
+        sent.appendChild(div);
+        try { div.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
+      }
 
       // Two reading modes share this view but NOT the bottom bar:
       //   • STORY (linear, the default markup): Save·Load·Quiz·Next·Menu
@@ -1396,6 +1427,10 @@ const Views = (function () {
           const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
           seen.add(w); seen.add(ans);
           if (!(window.VocabRuntime && VocabRuntime.getBigCard && VocabRuntime.getBigCard(ans))) continue;  // owl-only → skip
+          // No-example words (e.g. ones whose only example was a purged filler)
+          // are kicked out of the quiz AND the accumulation queue.
+          const hasEx = (sc.examples || []).some(e => e && (e.example || e.en));
+          if (!hasEx) continue;
           poolW.push({ word: ans, zh: sc.zh });
           if (poolW.length >= 16) break;
         }
