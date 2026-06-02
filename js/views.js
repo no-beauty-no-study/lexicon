@@ -1102,122 +1102,6 @@ const Views = (function () {
       // per the design: seeing the answer never counts; only an independent,
       // un-prompted correct spelling on a fresh presentation SEALS the word.
       if ((params.stage || "") === "golden") { renderGoldenSeal(); return; }
-      // ============ QUIZ 1 · SILVER TRIAL (generated choice quiz) ============
-      // 16 questions in the three measured zones. English word → 4 Chinese
-      // options (look-alike distractors). 1st click judges; wrong → reveal +
-      // a 2nd click on that option opens the word card; missed words recycle
-      // until all pass. Accumulation is credited ONLY on a full pass.
-      renderSilver();
-      return;
-
-      function silverWords(sec) {
-        const out = [], seen = new Set();
-        const toks = ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || [];
-        for (const raw of toks) {
-          const w = raw.toLowerCase(); if (seen.has(w)) continue;
-          const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null;
-          if (!sc || sc.proper || !sc.zh) continue;
-          const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
-          seen.add(w); seen.add(ans);
-          const ex = (sc.examples || [])[0] || {};
-          out.push({ word: ans, pos: sc.pos || "", zh: sc.zh,
-                     dotted: (VocabRuntime.dotted ? VocabRuntime.dotted(ans) : ans),
-                     ex: ex.example || "", exZh: ex.example_zh || "" });
-        }
-        return out;
-      }
-      function sharedPrefix(a, b) { let s = 0; const n = Math.min(a.length, b.length); while (s < n && a[s] === b[s]) s++; return s; }
-      function makeOptions(q, pool) {
-        const others = pool.filter(p => p.word !== q.word && p.zh && p.zh !== q.zh);
-        others.sort((x, y) => sharedPrefix(q.word, y.word) - sharedPrefix(q.word, x.word) || (Math.random() - 0.5));
-        const distract = [], seenZh = new Set([q.zh]);
-        for (const o of others) { if (distract.length >= 3) break; if (seenZh.has(o.zh)) continue; seenZh.add(o.zh); distract.push(o.zh); }
-        while (distract.length < 3) distract.push("—");
-        const opts = [{ zh: q.zh, correct: true }].concat(distract.map(z => ({ zh: z, correct: false })));
-        for (let i = opts.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [opts[i], opts[j]] = [opts[j], opts[i]]; }
-        return opts;
-      }
-      function showSilverCard(word) {
-        const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(word) : null;
-        if (!sc) return;
-        let ov = host.querySelector(".qz-cardov");
-        if (!ov) { ov = document.createElement("div"); ov.className = "qz-cardov"; (host.querySelector(".master-frame") || host).appendChild(ov); }
-        ov.innerHTML = quizSmallCardHTML(sc, sc.word || word);
-        const fresh = ov.firstElementChild; if (!fresh) return;
-        fresh.addEventListener("click", (e) => {
-          e.stopPropagation();
-          const chip = e.target.closest("[data-open-head]");
-          if (typeof WordCard !== "undefined")
-            WordCard.openBigCard(chip ? chip.dataset.openHead : (sc.head && sc.head.word) || sc.word || word, { chapter: chapterId, section: sectionNum });
-        });
-      }
-      function renderSilver() {
-        ["[data-zone='quiz title']", "[data-zone='quiz body']", ".zone-marginalia"].forEach(sel => {
-          const e = host.querySelector(sel); if (e) e.style.display = "none";
-        });
-        const frame = host.querySelector(".master-frame") || host;
-        const wz = document.createElement("div"); wz.className = "quiz-zone quiz-wordzone";
-        const qz = document.createElement("div"); qz.className = "quiz-zone quiz-qzone";
-        frame.appendChild(wz); frame.appendChild(qz);
-
-        const words = silverWords(section);
-        if (!words.length) { qz.innerHTML = `<div class="empty-state">No quiz words for this section yet.</div>`; return; }
-        const N = Math.min(16, words.length);
-        const qs = words.slice(0, N).map((w, i) => ({ ...w, mode: i < 8 ? "meaning" : "group",
-          options: makeOptions(w, words), clean: true, passed: false }));
-        let queue = qs.map((_, i) => i), pos = 0, answered = false;
-        const cur = () => qs[queue[pos]];
-        const passedCount = () => qs.filter(q => q.passed).length;
-
-        function render() {
-          answered = false;
-          const q = cur();
-          wz.innerHTML = `<div class="qz-prog">${passedCount() + 1} / ${qs.length}</div>
-            <div class="qz-word">${esc(q.word)}</div>
-            ${q.dotted ? `<div class="qz-dotted">${esc(q.dotted)}</div>` : ""}
-            ${q.pos ? `<div class="qz-pos">${esc(q.pos)}</div>` : ""}`;
-          const ctx = (q.mode === "group" && q.ex)
-            ? `<p class="qz-ctx">${esc(q.ex).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), '<span class="qz-blank">______</span>')}</p>` : "";
-          qz.innerHTML = ctx + `<div class="qz-options">` + q.options.map((o, idx) =>
-            `<button type="button" class="qz-opt" data-i="${idx}"><span class="qz-opt-letter">${"ABCD"[idx]}</span><span class="qz-opt-zh">${esc(o.zh)}</span></button>`
-          ).join("") + `</div>`;
-        }
-        function advance() {
-          pos += 1;
-          if (pos >= queue.length) { return qs.every(q => q.passed) ? finishSilver() : render(); }
-          render();
-        }
-        function finishSilver() {
-          qs.forEach(q => { if (window.Quiz) { if (q.clean) Quiz.recordWord(q.word, true); else Quiz.recordCorrected(q.word); } });
-          if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
-          wz.innerHTML = "";
-          qz.innerHTML = `<div class="gs-done"><div class="gs-done-mark">✦</div>
-            <div class="gs-done-title">Silver Trial Cleared</div><p class="gs-done-sub">Now the Golden Seal.</p></div>`;
-          try { playSuccessChord(); } catch (_) {}
-          setTimeout(() => { window.__navDir = "forward"; window.go(Quiz.quizHref(chapterId, sectionNum, "golden")); }, 1600);
-        }
-        qz.addEventListener("click", (e) => {
-          const ob = e.target.closest(".qz-opt"); if (!ob) return;
-          const q = cur(); const o = q.options[+ob.dataset.i];
-          if (ob.classList.contains("is-wrong")) { showSilverCard(q.word); return; }   // 2nd click → card
-          if (answered) return;
-          if (o.correct) {
-            answered = true; ob.classList.add("is-correct"); q.passed = true;
-            try { playCorrectDing(); } catch (_) {}
-            setTimeout(advance, 800);
-          } else {
-            answered = true; ob.classList.add("is-wrong"); q.clean = false; q.passed = false;
-            qz.querySelectorAll(".qz-opt").forEach((b, i) => { if (q.options[i].correct) b.classList.add("is-correct"); });
-            if (window.Quiz) Quiz.recordWord(q.word, false);
-            queue.push(queue[pos]);                       // recycle the missed word
-            const note = document.createElement("div"); note.className = "qz-opt-note"; note.textContent = "tap again for the card →";
-            ob.appendChild(note);
-            let c = document.createElement("button"); c.type = "button"; c.className = "gs-btn qz-continue"; c.textContent = "Next ›";
-            c.onclick = (ev) => { ev.stopPropagation(); advance(); }; qz.appendChild(c);
-          }
-        });
-        render();
-      }
 
 
       function rxq(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
@@ -1490,20 +1374,38 @@ const Views = (function () {
         while (distractors.length < 3) distractors.push("—");
         return shuffle([answer, ...distractors], answer.length || 1);
       }
-      function renderItem(q, idx, pool, audioPrefix) {
-        const opts = buildOptions(q.a, pool);
-        // No .reveal-block here on purpose — earlier the class made
-        // the question text 10%-opacity warm-grey by default ("invisible
-        // ink"), so a player who hadn't tapped the page first couldn't
-        // see anything. Quiz prompts need to be readable on entry.
+      function sharedPre(a, b) { let s = 0; const n = Math.min(a.length, b.length); while (s < n && a[s] === b[s]) s++; return s; }
+      // Generate reading-style choice questions from the section's vocab:
+      // English word as the prompt, four CHINESE-meaning options (one correct
+      // + look-alike distractors).
+      function buildChoiceItems(sec) {
+        const seen = new Set(), poolW = [];
+        const toks = ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || [];
+        for (const raw of toks) {
+          const w = raw.toLowerCase(); if (seen.has(w)) continue;
+          const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null;
+          if (!sc || sc.proper || !sc.zh) continue;
+          const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
+          seen.add(w); seen.add(ans);
+          poolW.push({ word: ans, zh: sc.zh });
+          if (poolW.length >= 16) break;
+        }
+        return poolW.map(p => {
+          const others = poolW.filter(o => o.word !== p.word && o.zh && o.zh !== p.zh)
+            .sort((a, b) => sharedPre(p.word, b.word) - sharedPre(p.word, a.word) || (Math.random() - 0.5));
+          const distract = [], sd = new Set([p.zh]);
+          for (const o of others) { if (distract.length >= 3) break; if (sd.has(o.zh)) continue; sd.add(o.zh); distract.push(o.zh); }
+          while (distract.length < 3) distract.push("—");
+          return { word: p.word, zh: p.zh, options: shuffle([p.zh, ...distract], p.word.length || 1) };
+        });
+      }
+      function renderItem(q, idx) {
         return `
-          <article class="quiz-item" data-answer="${esc(q.a)}"
-                   data-solved="0"
-                   data-audio="${esc(audioPrefix)}-q${idx + 1}.mp3">
+          <article class="quiz-item" data-answer="${esc(q.zh)}" data-word="${esc(q.word)}" data-solved="0">
             <div class="quiz-no">Question ${idx + 1}</div>
-            <p class="quiz-question">${esc(q.q)}</p>
+            <p class="quiz-question">${esc(q.word)}</p>
             <ul class="quiz-options">
-              ${opts.map((o, i) => `
+              ${q.options.map((o, i) => `
                 <li class="quiz-option" data-value="${esc(o)}">
                   <span class="quiz-option-letter">${LETTER[i]}.</span>
                   <span class="quiz-option-text">${esc(o)}</span>
@@ -1569,12 +1471,11 @@ const Views = (function () {
         }, ms);
       }
 
-      const pool  = section ? poolFor(section) : [];
-      const items = (section && section.quiz) ? section.quiz : [];
+      const items = buildChoiceItems(section);
       const body = host.querySelector(".quiz-body");
       body.innerHTML = items.length
-        ? items.map((q, i) => renderItem(q, i, pool, section.audio_prefix)).join("")
-        : `<div class="empty-state">No quiz available yet for this section.</div>`;
+        ? items.map((q, i) => renderItem(q, i)).join("")
+        : `<div class="empty-state">No quiz words for this section yet.</div>`;
 
       // Scroll the question being read into view and mark it current so
       // the player can always SEE what's being spoken (same follow-along
@@ -1588,18 +1489,19 @@ const Views = (function () {
       function speakItem(item) {
         if (!item) return;
         focusItem(item);
-        const q = (item.querySelector(".quiz-question")?.textContent || "").trim();
-        const opts = Array.from(item.querySelectorAll(".quiz-option-text"))
-                       .map(el => el.textContent.trim()).filter(Boolean);
-        const parts = [q];
-        opts.forEach((o, i) => parts.push(`${LETTER[i]}. ${o}`));
-        try { TTS.speak(parts.join(". ")); } catch (_) {}
+        // Auto-play the ENGLISH word (Chinese options aren't spoken).
+        const w = (item.dataset.word) || (item.querySelector(".quiz-question")?.textContent || "").trim();
+        try { TTS.speak(w); } catch (_) {}
       }
-      // Tapping a revealed question (not an option) rereads it.
+      // Tapping a revealed question rereads it; once it's SOLVED, tapping the
+      // word also reveals its small card on the right (→ full card).
       body.addEventListener("click", (e) => {
         if (e.target.closest(".quiz-option")) return;
         const item = e.target.closest(".quiz-item");
-        if (item && item.classList.contains("is-shown")) speakItem(item);
+        if (item && item.classList.contains("is-shown")) {
+          speakItem(item);
+          if (item.dataset.solved === "1") showQuizWord(item.dataset.word);
+        }
       });
       let lastSpokenIdx = -1;
       function showThrough(n) {
@@ -1711,8 +1613,9 @@ const Views = (function () {
         const item = opt.closest(".quiz-item");
         if (item.dataset.solved === "1") return;
         focusItem(item);   // keep the answered question in view
-        const answer = item.dataset.answer.toLowerCase().trim();
-        const chosen = (opt.dataset.value || "").toLowerCase().trim();
+        const answer = (item.dataset.answer || "").trim();
+        const chosen = (opt.dataset.value || "").trim();
+        const word   = item.dataset.word;
         const correct = chosen === answer;
         item.querySelectorAll(".quiz-option.is-selected")
           .forEach(o => o.classList.remove("is-selected"));
@@ -1720,24 +1623,25 @@ const Views = (function () {
           opt.classList.add("is-correct", "is-locked");
           item.dataset.solved = "1";
           item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
-          // Happy feedback: a bright ding + a little gold sparkle on the
-          // chosen option, then read the word the player got right.
           playCorrectDing();
           opt.classList.remove("is-pop"); void opt.offsetWidth; opt.classList.add("is-pop");
-          try { TTS.speak(opt.dataset.value || opt.textContent || ""); } catch (_) {}
+          try { TTS.speak(word); } catch (_) {}                 // read the English word
+          if (window.Quiz) {                                    // clean=correct, missed=corrected
+            if (item.dataset.clean !== "0") Quiz.recordWord(word, true);
+            else Quiz.recordCorrected(word);
+          }
           const all = Array.from(host.querySelectorAll(".quiz-item"));
           const idx = all.indexOf(item);
-          // Give the spoken word a beat before sliding the next question
-          // in (which would otherwise cancel() the utterance mid-word).
           if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 900);
           else maybeChapterComplete();
         } else {
-          // Wrong → study aid in the right column (like reading): the chosen
-          // word's small card appears; tap it for the full card. No bounce.
-          opt.classList.add("is-wrong");
-          setTimeout(() => opt.classList.remove("is-wrong"), 1000);
-          try { TTS.speak(opt.dataset.value || opt.textContent || ""); } catch (_) {}
-          showQuizWord(chosen);
+          // Wrong → the TESTED word's small card on the right (study aid);
+          // tap it for the full card. The word stays unsolved — pick again.
+          opt.classList.add("is-wrong", "is-locked");
+          item.dataset.clean = "0";                              // missed at least once
+          if (window.Quiz) Quiz.recordWord(word, false);
+          try { TTS.speak(word); } catch (_) {}
+          showQuizWord(word);
         }
       });
 
