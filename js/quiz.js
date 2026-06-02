@@ -61,13 +61,17 @@ const Quiz = (function () {
     return "#quizstatus?chapter=" + encodeURIComponent(ch) + "&section=" + encodeURIComponent(sec);
   }
 
-  // Menu — first section whose CHOICE quiz (quiz1) isn't done, linear order.
-  // Dictation (Golden) is independent and NOT part of the main line.
+  // Menu — walk sections in order; within each, STAGE 1 (silver, choose the
+  // meaning) then STAGE 2 (golden, choose the group). Return the first stage
+  // that isn't completed. Each stage's completion is saved on its own, so a
+  // section you cleared from Reading/Index is skipped here and never repeats.
+  // Dictation (seal) is an OPTIONAL extra stage and never gates this line.
   function menuHref(from) {
     from = from || "menu";
     for (const { chapter, section } of order()) {
       const st = sectionState(chapter, section);
       if (st.quiz1.status !== "completed") return quizHref(chapter, section, "silver", from);
+      if (st.quiz2.status !== "completed") return quizHref(chapter, section, "golden", from);
     }
     return "#word-garden";
   }

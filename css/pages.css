@@ -2257,8 +2257,9 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
   background: transparent; border: 0; cursor: pointer; appearance: none;
 }
 .rv-word-en {
-  font-family: var(--font-body); font-size: 52px; color: #2F3338;
-  letter-spacing: 0.01em; line-height: 1.05;
+  font-family: "Cormorant Garamond", var(--font-display), Georgia, serif;
+  font-size: 54px; font-weight: 500; color: #2F3338;
+  letter-spacing: 0.04em; line-height: 1.05;
 }
 .rv-word-meta { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 18px; color: #8E7A4E; }
 .rv-word-prog { font-family: var(--font-display), Georgia, serif; font-size: 14px; letter-spacing: 0.18em;
@@ -2308,8 +2309,10 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .rv-opt:hover { background: rgba(238,229,211,0.85); }
 .rv-opt-l { font-family: var(--font-display), Georgia, serif; color: #9A7A3C; font-size: 18px; min-width: 22px; }
 .rv-opt-t { font-family: var(--font-body); font-size: 20px; color: #2F3338; }
-.rv-opt.is-correct { border-color: #2E7D52; background: rgba(120,190,150,0.28); box-shadow: 0 0 0 2px rgba(46,125,82,0.18); }
-.rv-opt.is-wrong   { border-color: #B14A3A; background: rgba(200,110,90,0.22); }
+.rv-opt.is-correct { border-color: #2E7D52; background: rgba(120,190,150,0.28); box-shadow: 0 0 0 2px rgba(46,125,82,0.18);
+  animation: qz-correct-glow 0.75s ease; }
+.rv-opt.is-wrong   { border-color: #B14A3A; background: rgba(200,110,90,0.22); animation: qz-wrong-shake 0.4s ease; }
+@keyframes qz-wrong-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 50%{transform:translateX(4px)} 75%{transform:translateX(-3px)} }
 
 /* correction (dotted spelling) */
 .rv-correction { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 6px 0; }
@@ -2318,29 +2321,46 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .rv-c-word { font-family: var(--font-body); font-size: 28px; letter-spacing: 0.02em; }
 .rv-c-ok { color: #2E7D52; } .rv-c-bad { color: #C0392B; } .rv-c-dot { color: #B8A06F; }
 
-/* BOTTOM UI */
+/* BOTTOM UI — two buttons styled like the reading bottom bar (Menu · Trial),
+   filling the painted arch zone; no Claude-default pills. */
 .review-art .rv-bottom {
-  display: flex; align-items: center; justify-content: center; gap: 16px;
+  display: grid; grid-template-columns: 1fr 1fr; align-items: center; justify-items: center;
 }
-.rv-back {
-  font-family: var(--font-display), Georgia, serif; font-size: 18px; cursor: pointer;
-  background: rgba(247,240,222,0.6); border: 1px solid rgba(184,160,111,0.6); color: #6E5D48;
-  border-radius: 6px; padding: 6px 16px;
+.rv-nav-btn {
+  display: flex; flex-direction: row; align-items: center; justify-content: center;
+  width: 100%; height: 100%; border: 0; background: transparent; cursor: pointer;
+  font-family: var(--font-display); font-size: 14px; line-height: 1;
+  letter-spacing: 0.18em; text-transform: uppercase; font-weight: 400;
+  color: rgba(75, 62, 42, 0.92);
 }
-.rv-back:hover { background: rgba(238,229,211,0.9); }
-.rv-dots { display: inline-flex; gap: 8px; }
-.rv-dot { width: 10px; height: 10px; border-radius: 50%;
-  border: 1px solid rgba(184,160,111,0.7); background: rgba(247,240,222,0.4); }
-.rv-dot.is-done { background: #B8860B; border-color: #B8860B; }
-.rv-dot.is-sealed { background: #2E7D52; border-color: #2E7D52; }
-.rv-count { font-family: var(--font-display), Georgia, serif; font-size: 15px; color: #8E7A4E; letter-spacing: 0.08em; }
+.rv-nav-btn .nav-glyph { margin-right: 0.55em; color: rgba(126,105,74,0.78); font-size: 0.82em; }
+.rv-nav-btn .nav-glyph-after { margin-left: 0.55em; color: rgba(126,105,74,0.78); font-size: 0.82em; }
+.rv-nav-btn:hover { color: #2f281f; }
+/* The "Fold" collect button on the quiz right-column small card */
+.qz-fold {
+  display: block; margin: 10px auto 0; padding: 5px 16px; cursor: pointer;
+  font-family: var(--font-display), Georgia, serif; font-size: 13px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid rgba(184,160,111,0.6); border-radius: 14px;
+  background: rgba(247,240,222,0.55); color: #6E5D48;
+}
+.qz-fold:hover { background: rgba(238,229,211,0.9); }
+.qz-fold.is-saved { background: rgba(120,190,150,0.28); border-color: #2E7D52; color: #2E7D52; }
+/* Wrong-answer feedback in Review: correct word + meaning + sentence zh */
+.rv-feedback { margin-top: 12px; text-align: center; animation: qz-correct-glow 0.6s ease; }
+.rv-fb-key { font-family: var(--font-display), Georgia, serif; font-size: 19px; color: #6E5A2A; letter-spacing: 0.02em; }
+.rv-fb-zh { font-family: "Noto Serif SC", "Songti SC", serif; font-size: 16px; color: #5D4D42; margin-top: 4px; }
 
 /* empty / done states */
 .rv-empty, .rv-done { font-family: var(--font-body); color: #5D4D42; text-align: center; margin: auto; }
 .rv-empty { font-size: 18px; line-height: 1.6; font-style: italic; }
 .rv-done-title { font-family: var(--font-display), Georgia, serif; font-size: 30px; color: #2b3b51; margin-bottom: 8px; }
 .rv-done-sub { font-size: 17px; color: #6E5D48; margin-bottom: 18px; }
-.rv-done-btn { font-size: 18px; padding: 8px 26px; }
+.rv-done-btn { font-family: var(--font-display), Georgia, serif; font-size: 16px;
+  letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+  padding: 8px 26px; border: 1px solid rgba(184,160,111,0.6); border-radius: 16px;
+  background: rgba(247,240,222,0.6); color: #6E5D48; }
+.rv-done-btn:hover { background: rgba(238,229,211,0.9); }
 
 /* Double-tap translation line under a reading sentence */
 .reading-art .sentence-block .sentence-zh {

@@ -1551,9 +1551,9 @@ const Views = (function () {
 
       const items = isGroup ? buildGroupItems(section) : buildChoiceItems(section);
       const body = host.querySelector(".quiz-body");
-      // No GOLDEN (group) questions for this section → the choice line is done.
+      // No GOLDEN (group) questions for this section → both choice stages done.
       if (isGroup && !items.length) {
-        if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
+        if (window.Quiz) { Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed"); Quiz.setStageStatus(chapterId, sectionNum, "quiz2", "completed"); }
         window.go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu");
         return;
       }
@@ -1660,27 +1660,43 @@ const Views = (function () {
         if (advancing || !allCorrect()) return;
         advancing = true;
         spawnStarBurst(8); playSuccessChord();
-        // SILVER (word) page → GOLDEN (group), if any; GOLDEN page (or a SILVER
-        // page with no group questions) → the section's CHOICE line is DONE and
-        // the main trial advances. Dictation (SEAL) is never part of this chain
-        // — it lives in the Words Garden "Seal More" backlog.
-        const sectionDone = isGroup || buildGroupItems(section).length === 0;
-        if (sectionDone && window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
-        const title = isGroup ? "Golden Trial — Synonyms Cleared" : "Silver Trial — Words Cleared";
-        const onContinue = sectionDone
-          ? () => { window.__navDir = "forward"; window.go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu"); }
-          : () => { window.__navDir = "forward"; window.go(hrefFor("golden")); };
+        const hasGolden = buildGroupItems(section).length > 0;
+        const go = (href) => { window.__navDir = "forward"; window.go(href); };
         let scrim = host.querySelector(".qx-scrim");
         if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
-        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
-          <p class="qx-en">${title}.<br>Continue, or stay and review these words.</p>
+        function popup(html, wire) { scrim.innerHTML = `<div class="qx-card">${html}</div>`; wire(); requestAnimationFrame(() => scrim.classList.add("is-open")); }
+
+        if (!isGroup) {
+          // STAGE 1 (silver) cleared — save it immediately so it never repeats.
+          if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
+          if (hasGolden) {
+            popup(`<div class="qx-mark">✦ STAGE 1 ✦</div>
+              <p class="qx-en">Words cleared.<br>On to Stage 2 — the synonym groups.</p>
+              <div class="qx-actions">
+                <button type="button" class="gs-btn qx-continue">Continue · Group ›</button>
+                <button type="button" class="gs-btn qx-finish">Later</button>
+              </div>`, () => {
+              scrim.querySelector(".qx-continue").onclick = (e) => { e.stopPropagation(); go(hrefFor("golden")); };
+              scrim.querySelector(".qx-finish").onclick = (e) => { e.stopPropagation(); go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu"); };
+            });
+            return;
+          }
+          // No group questions → Stage 2 is vacuously done too.
+          if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz2", "completed");
+        } else {
+          // STAGE 2 (golden) cleared — both choice stages of the section done.
+          if (window.Quiz) { Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed"); Quiz.setStageStatus(chapterId, sectionNum, "quiz2", "completed"); }
+        }
+        // Section's linear levels are done → continue the trek, or dictate now.
+        popup(`<div class="qx-mark">✦ SECTION CLEARED ✦</div>
+          <p class="qx-en">Both choice stages done.<br>Keep questing, or seal these words by dictation.</p>
           <div class="qx-actions">
-            <button type="button" class="gs-btn qx-continue">Continue ›</button>
-            <button type="button" class="gs-btn qx-stay2">Stay &amp; Review</button>
-          </div></div>`;
-        scrim.querySelector(".qx-continue").onclick = (e) => { e.stopPropagation(); onContinue(); };
-        scrim.querySelector(".qx-stay2").onclick = (e) => { e.stopPropagation(); scrim.remove(); };
-        requestAnimationFrame(() => scrim.classList.add("is-open"));
+            <button type="button" class="gs-btn qx-continue">Keep Questing ›</button>
+            <button type="button" class="gs-btn qx-finish">Dictation</button>
+          </div>`, () => {
+          scrim.querySelector(".qx-continue").onclick = (e) => { e.stopPropagation(); go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu"); };
+          scrim.querySelector(".qx-finish").onclick = (e) => { e.stopPropagation(); go(hrefFor("seal")); };
+        });
       }
 
       // Right-column word card (reuses the reading marginalia look). Shown
@@ -1690,11 +1706,13 @@ const Views = (function () {
           <div class="word-card-phrase"><span class="wcp-en">${esc(p.phrase || p.en || "")}</span>
           ${(p.phrase_zh || p.zh) ? `<span class="wcp-zh">${esc(p.phrase_zh || p.zh)}</span>` : ""}</div>`).join("");
         const ex = (sc.examples || [])[0]; const exEn = ex && (ex.example || ex.en) || ""; const exZh = ex && (ex.example_zh || ex.zh) || "";
+        const saved = (typeof Storage !== "undefined") && Storage.isSaved(sc.word || id, chapterId, sectionNum);
         return `<div class="word-card is-current is-entering${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
           <div class="word-card-headword">${esc(sc.word || id)}</div>
           <div class="word-card-meaning">${esc(sc.zh || "")}</div>
           ${phraseRows}
           ${exEn ? `<div class="word-card-example"><span class="wce-en">${esc(exEn)}</span>${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}</div>` : ""}
+          <button type="button" class="qz-fold${saved ? " is-saved" : ""}" data-fold>${saved ? "✦ Folded" : "❖ Fold"}</button>
           </div>`;
       }
       function showQuizWord(word) {
@@ -1706,11 +1724,27 @@ const Views = (function () {
         const fresh = stack.firstElementChild;
         if (!fresh) return;
         setTimeout(() => fresh.classList.remove("is-entering"), 600);
+        // FOLD — collect the word into Notes while you quiz ("一边考一边收藏").
+        const foldBtn = fresh.querySelector("[data-fold]");
+        if (foldBtn && typeof Storage !== "undefined") {
+          foldBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const wid = sc.word || word;
+            if (Storage.isSaved(wid, chapterId, sectionNum)) {
+              Storage.unsaveWord(wid, chapterId, sectionNum);
+              foldBtn.classList.remove("is-saved"); foldBtn.textContent = "❖ Fold";
+            } else {
+              Storage.saveWord(wid, chapterId, sectionNum);
+              foldBtn.classList.add("is-saved"); foldBtn.textContent = "✦ Folded";
+              try { playCorrectDing(); } catch (_) {}
+            }
+          });
+        }
         fresh.addEventListener("click", (e) => {
+          if (e.target.closest("[data-fold]")) return;
           e.stopPropagation();
-          const chip = e.target.closest("[data-open-head]");
           if (typeof WordCard !== "undefined")
-            WordCard.openBigCard(chip ? chip.dataset.openHead : (sc.head && sc.head.word) || sc.word || word,
+            WordCard.openBigCard((sc.head && sc.head.word) || sc.word || word,
                                  { chapter: chapterId, section: sectionNum });
         });
       }
@@ -2305,7 +2339,7 @@ const Views = (function () {
       if (!set.length) {
         wordZone.innerHTML = "";
         qZone.innerHTML = `<div class="rv-empty">No accumulated words to review yet.<br>Collect some words in the Trial first.</div>`;
-        botZone.innerHTML = `<button type="button" class="rv-back" data-go="${backHref}">Back</button>`;
+        botZone.innerHTML = `<button type="button" class="rv-nav-btn" data-go="${backHref}"><span class="nav-glyph">✤</span>Menu</button>`;
         return;
       }
       set.forEach(q => { q.passed = false; q.sealed = false; });
@@ -2330,14 +2364,15 @@ const Views = (function () {
       const LETTER = ["A", "B", "C", "D"];
       function passedCount() { return set.filter(q => q.passed).length; }
       function sealedCount() { return set.filter(q => q.sealed).length; }
-      // BOTTOM box: leave / progress dots / count. (No title anywhere — the
-      // painted background already carries the word "REVIEW".)
-      function renderBottom(label) {
-        const dots = set.map(q => `<span class="rv-dot ${q.sealed ? "is-sealed" : q.passed ? "is-done" : ""}"></span>`).join("");
+      // BOTTOM box: two nav buttons styled like the reading bottom bar — Menu
+      // and Trial. (Progress lives in the word box's NN / NN; no title anywhere,
+      // the painted background already carries the word "REVIEW".)
+      function renderBottom() {
         botZone.innerHTML =
-          `<button type="button" class="rv-back" data-go="${backHref}" title="Leave review">‹ Menu</button>`
-          + `<span class="rv-dots">${dots}</span>`
-          + `<span class="rv-count">${label || (passedCount() + " / " + set.length)}</span>`;
+          `<button type="button" class="rv-nav-btn" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>`
+          + `<button type="button" class="rv-nav-btn" data-trial>Trial<span class="nav-glyph-after">›</span></button>`;
+        const t = botZone.querySelector("[data-trial]");
+        if (t) t.onclick = (e) => { e.stopPropagation(); window.__navDir = "forward"; window.go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref("menu") : "#menu"); };
       }
 
       // Word box: word + our dotted "phonetic" + pos + progress, all centred.
@@ -2395,8 +2430,14 @@ const Views = (function () {
                 locked = true; li.classList.add("is-wrong");
                 if (window.Quiz) Quiz.recordWord(q.word, false);   // wrong → needs review more
                 qZone.querySelectorAll(".rv-opt").forEach(o => { if (o.dataset.correct === "1") o.classList.add("is-correct"); });
+                // Show the meaning + the sentence's Chinese on a miss.
+                const fb = document.createElement("div");
+                fb.className = "rv-feedback";
+                fb.innerHTML = `<div class="rv-fb-key">${esc(q.word)}${q.meaning ? " · " + esc(q.meaning) : ""}</div>`
+                  + (q.zh ? `<div class="rv-fb-zh">${esc(q.zh)}</div>` : "");
+                qZone.appendChild(fb);
                 queue.push(queue.shift());   // requeue this word to the back; not passed
-                setTimeout(stageA, 1100);
+                setTimeout(stageA, 2200);
               }
             });
           });
@@ -2494,7 +2535,7 @@ const Views = (function () {
         qZone.innerHTML = `<div class="rv-done">
             <div class="rv-done-title">Review Complete</div>
             <p class="rv-done-sub">${sealedCount()} / ${set.length} spelled</p>
-            <button type="button" class="rv-back rv-done-btn" data-go="${backHref}">Done</button>
+            <button type="button" class="rv-done-btn" data-go="${backHref}">Done</button>
           </div>`;
         renderBottom(sealedCount() + " / " + set.length);
         try { playSuccessChordGlobal(); } catch (_) {}
