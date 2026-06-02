@@ -1180,10 +1180,16 @@ const Views = (function () {
         }
         function showCorrection(typed) {
           const q = cur();
-          let spell = "";
-          for (let i = 0; i < q.word.length; i++) {
-            const ok = typed[i] && typed[i] === q.word[i];
-            spell += `<span class="${ok ? "gs-c-ok" : "gs-c-bad"}">${esc(q.word[i])}</span>`;
+          // Dotted spelling (ex·cep·tion·al); colour each LETTER by comparing
+          // it to the typed input at the matching plain position; dots are
+          // plain separators.
+          const dotted = (window.VocabRuntime && VocabRuntime.dotted) ? VocabRuntime.dotted(q.word) : q.word;
+          let spell = "", pi = 0;
+          for (const ch of dotted) {
+            if (ch === "·") { spell += `<span class="gs-c-dot">·</span>`; continue; }
+            const ok = typed[pi] && typed[pi].toLowerCase() === ch.toLowerCase();
+            spell += `<span class="${ok ? "gs-c-ok" : "gs-c-bad"}">${esc(ch)}</span>`;
+            pi++;
           }
           corr.innerHTML = `
             <div class="gs-c-row"><span class="gs-c-key">Your answer</span><span class="gs-c-you">${esc(typed) || "—"}</span></div>

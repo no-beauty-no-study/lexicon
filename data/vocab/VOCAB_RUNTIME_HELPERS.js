@@ -27,10 +27,18 @@
   const NAV    = (window.VOCAB_HEAD_TO_FAMILY_KIN_NAV_LITE || {}).head_to_family_kin || {};
   const GROUPS = (window.VOCAB_GROUP_CLEAN_LITE || {}).groups || {};
   const POLICY = window.VOCAB_WORD_ENTRY_POLICY_LITE || {};
+  const VIS    = window.VOCAB_ENTRY_VISIBILITY_POLICY_LITE || {};
+  const DOTTED = (window.VOCAB_DOTTED_LITE || {}).dotted || {};
   const PROPER = (window.VOCAB_PROPER_SMALL_CARDS_FINAL || {}).small_cards || [];
 
   const regMap = new Map();   for (const k of Object.keys(REG)) regMap.set(norm(k), REG[k]);
   const readingSet = new Set((RW.words || []).map(norm));
+  // Words demoted out of the reading layer (simple bridge heads + removed
+  // low-value exact entries like "be / come / dog / film / forty").
+  const noReading = new Set();
+  for (const w of (VIS.simple_bridge_heads_no_reading_entry || [])) noReading.add(norm(w));
+  for (const e of (VIS.removed_reading_entries || [])) if (e && e.word) noReading.add(norm(e.word));
+  const dottedMap = new Map(); for (const k of Object.keys(DOTTED)) dottedMap.set(norm(k), DOTTED[k]);
   const r2h = new Map();      const R2H = RW.reading_to_learning_head || {};
   for (const k of Object.keys(R2H)) r2h.set(norm(k), R2H[k]);
   const bigSet  = new Set((POLICY.big_card_words || []).map(norm));
@@ -103,10 +111,13 @@
     return null;
   }
   function readingKey(w) {
+    if (noReading.has(w)) return null;            // demoted out of the reading layer
     if (readingSet.has(w) || regMap.has(w)) return lemmaPrefer(w) || (readingSet.has(w) ? w : null);
     for (const c of lemmaCandidates(w)) if (readingSet.has(c)) return lemmaPrefer(c) || c;
     return null;
   }
+  // Syllable-dotted spelling (ex·cep·tion·al) for the Golden Seal reveal.
+  function dottedOf(word) { return dottedMap.get(norm(word)) || String(word || ""); }
   // learning head (族长): the reading→head map, else the family cluster head.
   function learningHead(w) {
     const e = r2h.get(w);
@@ -211,6 +222,6 @@
 
   window.VocabRuntime = {
     getSmallCard, getBigCard, isClickableWord, getFamilyHead, getWordCard,
-    resolveReadingWord, isSmallOnly: (c) => !!(c && c.proper),
+    resolveReadingWord, dotted: dottedOf, isSmallOnly: (c) => !!(c && c.proper),
   };
 })();
