@@ -1083,18 +1083,33 @@
   font-family: var(--font-body); font-style: italic; font-size: 15px;
   color: #7B7063; margin: 0 0 18px;
 }
-/* One open writing line — no per-letter cells (no length hint). */
-.gs-spell { position: relative; display: block; margin: 0 auto 14px; max-width: 360px; }
-.gs-input {
-  display: block; width: 100%; box-sizing: border-box;
-  padding: 8px 12px; height: 54px;
-  border: 0; border-bottom: 2px solid rgba(184,160,111,0.7);
-  border-radius: 0; background: rgba(238,229,211,0.4);
-  font-family: var(--font-body); font-size: 28px; color: #2F3338;
-  text-align: center; letter-spacing: 0.02em; cursor: text;
+/* Per-letter BOXES (one cell per letter). The real <input> sits invisibly on
+   top of the row capturing keystrokes, so typing always fills the boxes
+   left→right from the first one no matter which box you tapped. */
+.gs-spell { position: relative; display: block; margin: 0 auto 14px; max-width: 460px; min-height: 50px; }
+.gs-cells {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  cursor: text;
 }
-.gs-input:focus { outline: none; border-bottom-color: #B8860B;
-  box-shadow: inset 0 -3px 0 rgba(184,134,11,0.18); }
+.gs-cell {
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 48px; box-sizing: border-box;
+  border: 1.5px solid rgba(184, 160, 111, 0.7);
+  border-radius: 4px;
+  background: rgba(247, 240, 222, 0.55);
+  font-family: var(--font-body); font-size: 28px; color: #2F3338;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+.gs-cell.is-filled { background: rgba(238, 229, 211, 0.92); border-color: rgba(184, 160, 111, 0.95); }
+.gs-cell.is-caret  { border-color: #B8860B; box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.18); }
+.gs-input {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  margin: 0; padding: 0; border: 0; background: transparent;
+  opacity: 0; cursor: text;
+  font-size: 16px;                 /* ≥16 so iOS doesn't zoom on focus */
+  color: transparent; caret-color: transparent;
+}
+.gs-input:focus { outline: none; }
 .gs-spell.is-shake { animation: gs-shake 0.4s ease; }
 @keyframes gs-shake {
   0%,100% { transform: translateX(0); }
@@ -1171,34 +1186,37 @@
   opacity: 0; transition: opacity 220ms ease; pointer-events: none;
 }
 .qx-scrim.is-open { opacity: 1; pointer-events: auto; }
-/* The popup is the painted plaque art (IMG_6856) — its ornate gold corners,
-   top flourish and base knot are all in the image. We only lay text + buttons
-   on top. (Earlier I wrongly rebuilt this in CSS; the image is the design.) */
+/* The popup is the painted plaque art (IMG_6856, 875×548). We LOCK that aspect
+   ratio so the frame is never stretched, and centre the content inside it. */
 .qx-card {
   position: relative;
-  width: 560px; max-width: 60%; box-sizing: border-box;
-  padding: 12% 13% 11%; text-align: center;
+  width: 600px; max-width: 66%;
+  aspect-ratio: 875 / 548;
+  box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 6% 14%; text-align: center;
   background: url("../assets/bg/ui/IMG_6856.png") no-repeat center center;
   background-size: 100% 100%;
   border: 0;
   color: #463d2c; font-family: var(--font-display);
-  filter: drop-shadow(0 14px 30px rgba(40, 28, 12, 0.34));
+  /* tight, soft drop-shadow — a big blur traced the ornate outline as gray. */
+  filter: drop-shadow(0 4px 9px rgba(40, 28, 12, 0.30));
   transform: scale(0.98); transition: transform 220ms ease;
 }
 .qx-scrim.is-open .qx-card { transform: scale(1); }
 .qx-mark {
-  font-size: 13px; letter-spacing: 0.2em; color: #92702f;
-  text-transform: uppercase; font-weight: 500; margin: 0 0 16px;
+  font-size: 12.5px; letter-spacing: 0.2em; color: #92702f;
+  text-transform: uppercase; font-weight: 500; margin: 0 0 12px;
 }
-.qx-en { font-family: var(--font-display); font-size: 27px; line-height: 1.4; letter-spacing: 0.02em; color: #34526a; margin: 0 0 14px; }
+.qx-en { font-family: var(--font-display); font-size: 25px; line-height: 1.35; letter-spacing: 0.02em; color: #34526a; margin: 0 0 10px; }
 /* small gold diamond divider under the main line */
 .qx-en::after {
-  content: "❖"; display: block; margin: 14px auto 0;
+  content: "❖"; display: block; margin: 10px auto 0;
   font-size: 10px; color: rgba(155, 122, 74, 0.7);
 }
-.qx-zh { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.6; color: #6a5c44; margin: 0 auto 22px; max-width: 26em; }
+.qx-zh { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.5; color: #6a5c44; margin: 0 auto 18px; max-width: 24em; }
 .qx-num { color: #9A4A3C; font-weight: 700; font-size: 1.15em; }
-.qx-actions { position: relative; z-index: 1; display: flex; gap: 18px; justify-content: center; }
+.qx-actions { position: relative; z-index: 1; display: flex; gap: 16px; justify-content: center; }
 .qx-leave:hover { background: rgba(138,91,86,0.12); color: #6e3f3a; }
 /* The guiding "Continue" — a faint denim-blue wash to draw the tap. */
 .qx-continue { background: rgba(116, 134, 151, 0.18); border-color: rgba(116, 134, 151, 0.6); color: #41515e; }

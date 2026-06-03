@@ -1470,7 +1470,12 @@ const Views = (function () {
         input.addEventListener("input", () => { input.value = input.value.replace(/[^A-Za-z]/g, ""); if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; } renderCells(); });
         input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); onCheck(); } });
         input.addEventListener("focus", retry);
-        input.addEventListener("click", () => { if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; } });
+        // Re-tapping the boxes after a WRONG answer wipes it clean so you can
+        // type the whole word fresh (the input keeps focus, so focus won't
+        // re-fire — clear on the tap itself). retry() only acts when a wrong
+        // correction is showing.
+        input.addEventListener("click", retry);
+        input.addEventListener("pointerdown", retry);
         // Tap any cell → focus the (single) input; it always fills from the first.
         if (cellsEl) cellsEl.addEventListener("click", () => { try { input.focus(); } catch (_) {} });
         el(".gs-listen").addEventListener("click", sayLine);          // tap label / ↻ to replay
