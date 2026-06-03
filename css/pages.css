@@ -2445,6 +2445,15 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
   background: rgba(238,229,211,0.4); border-radius: 0 4px 4px 0;
 }
 .reading-art .comp-item .comp-zh.is-missing { font-style: italic; color: #9A8C72; }
+.reading-art .comp-item .comp-zh-q { margin: 0 0 0.35em; font-weight: 600; }
+.reading-art .comp-item .comp-zh-opts { list-style: none; margin: 0; padding: 0; }
+.reading-art .comp-item .comp-zh-opt { margin: 0.12em 0; color: #7A6A4E; }
+.reading-art .comp-item .comp-zh-opt.is-correct {
+  color: #4f6a3a; font-weight: 600;
+}
+.reading-art .comp-item .comp-zh-opt.is-correct::after {
+  content: " ✓"; color: #6f9050; font-weight: 700;
+}
 
 /* Inline stage-clear / comprehension-done row (replaces the popup) */
 .reading-art .quiz-done-row, .reading-art .comp-done-row {
