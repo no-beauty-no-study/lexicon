@@ -520,6 +520,16 @@ const Views = (function () {
   };
 
 
+  // The last section read in a chapter (story or browse), so "Open Chapter"
+  // resumes where you left off instead of restarting at 1.1.
+  function lastSectionOf(chapterId, fallback) {
+    try {
+      const ls = JSON.parse(localStorage.getItem("tpl.lastSection") || "{}");
+      if (ls[chapterId]) return ls[chapterId];
+    } catch (_) {}
+    return fallback;
+  }
+
   /* ---------- chapters ---------- */
   const chapters = {
     init(host, params) {
@@ -529,13 +539,14 @@ const Views = (function () {
       CHAPTERS.forEach((c) => {
         const text = host.querySelector(".zone-toc-" + c.number);
         const btn  = host.querySelector(".zone-toc-btn-" + c.number);
+        const resumeSec = lastSectionOf(c.id, c.firstSection || "1.1");
         if (text) text.innerHTML = `
           <div class="toc-card-text">
             <p class="toc-card-tagline">${esc(c.tagline || "")}</p>
           </div>`;
         if (btn) btn.innerHTML = `
           <button type="button" class="antique-button toc-open-btn"
-                  data-go="#reading?chapter=${encodeURIComponent(c.id)}&section=${encodeURIComponent(c.firstSection || "1.1")}${browseFlag}">
+                  data-go="#reading?chapter=${encodeURIComponent(c.id)}&section=${encodeURIComponent(resumeSec)}${browseFlag}">
             <span class="antique-button-corner tl"></span>
             <span class="antique-button-corner tr"></span>
             <span class="antique-button-corner bl"></span>
@@ -657,6 +668,13 @@ const Views = (function () {
           }));
         } catch (_) {}
       }
+      // Remember the last section read in EACH chapter (story OR browse) so the
+      // index's "Open Chapter" resumes where you left off, not always 1.1.
+      try {
+        const ls = JSON.parse(localStorage.getItem("tpl.lastSection") || "{}");
+        ls[chapterId] = sectionNum;
+        localStorage.setItem("tpl.lastSection", JSON.stringify(ls));
+      } catch (_) {}
 
       const bg = typeof getChapterBackground === "function"
                  ? getChapterBackground(chapterId, illustrationId) : null;
@@ -1967,14 +1985,55 @@ const Views = (function () {
           ${(p.phrase_zh || p.zh) ? `<span class="wcp-zh">${esc(p.phrase_zh || p.zh)}</span>` : ""}</div>`).join("");
         const ex = (sc.examples || [])[0]; const exEn = ex && (ex.example || ex.en) || ""; const exZh = ex && (ex.example_zh || ex.zh) || "";
         const saved = (typeof Storage !== "undefined") && Storage.isSaved(sc.word || id, chapterId, sectionNum);
-        return `<div class="word-card is-current is-entering${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
+        // No inline pill — folding is the shared marginalia FOLD button below.
+        return `<div class="word-card is-current is-entering${saved ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
           <div class="word-card-headword">${esc(sc.word || id)}</div>
           <div class="word-card-meaning">${esc(sc.zh || "")}</div>
           ${phraseRows}
           ${exEn ? `<div class="word-card-example"><span class="wce-en">${esc(exEn)}</span>${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}</div>` : ""}
-          <button type="button" class="qz-fold${saved ? " is-saved" : ""}" data-fold>${saved ? "✦ Folded" : "❖ Fold"}</button>
           </div>`;
       }
+      // FOLD — the SAME marginalia button + locket as reading, folding the
+      // currently-shown quiz card into Notes (so quiz folds appear in Notes
+      // exactly like reading folds).
+      function syncQuizFold() {
+        const fold = host.querySelector('.marginalia-btn[data-action="fold"]');
+        if (!fold) return;
+        const card = host.querySelector(".word-card.is-current");
+        const id = card && card.dataset.id;
+        if (!id) { fold.disabled = true; fold.classList.remove("is-active"); return; }
+        fold.disabled = false;
+        fold.classList.toggle("is-active", Storage.isSaved(id, chapterId, sectionNum));
+      }
+      function syncQuizLocket(pop) {
+        const el = host.querySelector("[data-saved-count]");
+        if (!el) return;
+        el.textContent = String(Storage.getChapterNoteCount(chapterId));
+        if (pop) { const lk = el.closest(".marginalia-locket"); if (lk) { lk.classList.remove("is-pop"); void lk.offsetWidth; lk.classList.add("is-pop"); } }
+      }
+      (function wireQuizFold() {
+        const fold = host.querySelector('.marginalia-btn[data-action="fold"]');
+        if (!fold || typeof Storage === "undefined") return;
+        fold.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const card = host.querySelector(".word-card.is-current");
+          const id = card && card.dataset.id;
+          if (!id) return;
+          if (Storage.isSaved(id, chapterId, sectionNum)) {
+            Storage.unsaveWord(id, chapterId, sectionNum);
+            card.classList.remove("is-saved");
+            window.toast && window.toast("Unfolded");
+          } else {
+            Storage.saveWord(id, chapterId, sectionNum);
+            card.classList.add("is-saved", "just-folded");
+            setTimeout(() => card.classList.remove("just-folded"), 540);
+            try { playCorrectDing(); } catch (_) {}
+            window.toast && window.toast("Folded into Notes");
+          }
+          syncQuizFold(); syncQuizLocket(true);
+        });
+        syncQuizLocket(false);
+      })();
       function showQuizWord(word) {
         const stack = host.querySelector(".word-card-stack");
         if (!stack) return;
@@ -1984,24 +2043,9 @@ const Views = (function () {
         const fresh = stack.firstElementChild;
         if (!fresh) return;
         setTimeout(() => fresh.classList.remove("is-entering"), 600);
-        // FOLD — collect the word into Notes while you quiz ("一边考一边收藏").
-        const foldBtn = fresh.querySelector("[data-fold]");
-        if (foldBtn && typeof Storage !== "undefined") {
-          foldBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const wid = sc.word || word;
-            if (Storage.isSaved(wid, chapterId, sectionNum)) {
-              Storage.unsaveWord(wid, chapterId, sectionNum);
-              foldBtn.classList.remove("is-saved"); foldBtn.textContent = "❖ Fold";
-            } else {
-              Storage.saveWord(wid, chapterId, sectionNum);
-              foldBtn.classList.add("is-saved"); foldBtn.textContent = "✦ Folded";
-              try { playCorrectDing(); } catch (_) {}
-            }
-          });
-        }
+        // The shared marginalia FOLD button now reflects/saves this card.
+        syncQuizFold();
         fresh.addEventListener("click", (e) => {
-          if (e.target.closest("[data-fold]")) return;
           e.stopPropagation();
           if (typeof WordCard !== "undefined")
             WordCard.openBigCard((sc.head && sc.head.word) || sc.word || word,

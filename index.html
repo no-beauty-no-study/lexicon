@@ -923,6 +923,18 @@
           <div class="marginalia-card-body">
             <div class="word-card-stack"><div class="word-card-empty">—</div></div>
           </div>
+          <!-- IDENTICAL fold control to the reading page (same button, same
+               locket, same effects) so words folded during the quiz land in
+               Notes exactly like reading folds. -->
+          <div class="marginalia-card-actions">
+            <button type="button" class="marginalia-btn" data-action="fold" disabled>
+              <span class="marginalia-btn-glyph">✤</span>FOLD
+            </button>
+            <div class="marginalia-locket" aria-label="Folded words">
+              <span class="marginalia-locket-glyph">❦</span>
+              <span class="marginalia-locket-count" data-saved-count>0</span>
+            </div>
+          </div>
         </aside>
       </div>
       <nav class="ui-bottom-nav is-two">
