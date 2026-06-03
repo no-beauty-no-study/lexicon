@@ -1190,11 +1190,11 @@
    ratio so the frame is never stretched, and centre the content inside it. */
 .qx-card {
   position: relative;
-  width: 600px; max-width: 66%;
+  width: 650px; max-width: 70%;
   aspect-ratio: 875 / 548;
   box-sizing: border-box;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 6% 14%; text-align: center;
+  padding: 8% 8.5%; text-align: center;
   background: url("../assets/bg/ui/IMG_6856.png") no-repeat center center;
   background-size: 100% 100%;
   border: 0;
@@ -1205,16 +1205,16 @@
 }
 .qx-scrim.is-open .qx-card { transform: scale(1); }
 .qx-mark {
-  font-size: 12.5px; letter-spacing: 0.2em; color: #92702f;
-  text-transform: uppercase; font-weight: 500; margin: 0 0 12px;
+  font-size: 13.5px; letter-spacing: 0.2em; color: #92702f;
+  text-transform: uppercase; font-weight: 500; margin: 0 0 14px;
 }
-.qx-en { font-family: var(--font-display); font-size: 25px; line-height: 1.35; letter-spacing: 0.02em; color: #34526a; margin: 0 0 10px; }
+.qx-en { font-family: var(--font-display); font-size: 29px; line-height: 1.32; letter-spacing: 0.01em; color: #34526a; margin: 0 0 12px; max-width: 100%; }
 /* small gold diamond divider under the main line */
 .qx-en::after {
-  content: "❖"; display: block; margin: 10px auto 0;
+  content: "❖"; display: block; margin: 12px auto 0;
   font-size: 10px; color: rgba(155, 122, 74, 0.7);
 }
-.qx-zh { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.5; color: #6a5c44; margin: 0 auto 18px; max-width: 24em; }
+.qx-zh { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 16.5px; line-height: 1.5; color: #6a5c44; margin: 0 auto 20px; max-width: 30em; }
 .qx-num { color: #9A4A3C; font-weight: 700; font-size: 1.15em; }
 .qx-actions { position: relative; z-index: 1; display: flex; gap: 16px; justify-content: center; }
 .qx-leave:hover { background: rgba(138,91,86,0.12); color: #6e3f3a; }
@@ -1815,7 +1815,7 @@
 .wg-row {
   position: relative;
   display: grid;
-  grid-template-columns: 120px 1fr auto;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 14px;
   height: 32px;
@@ -1823,10 +1823,10 @@
   cursor: pointer;
   transition: background 140ms ease;
 }
+/* just the red need-count, pinned to the right — no stretched pill background */
 .wg-row-need {
-  font-family: var(--font-display), Georgia, serif; font-size: 12px;
-  color: #A8443B; background: rgba(168,68,59,0.12);
-  border-radius: 999px; padding: 0 7px; line-height: 1.6;
+  font-family: var(--font-display), Georgia, serif; font-size: 14px; font-weight: 600;
+  color: #A8443B; justify-self: end; line-height: 1; letter-spacing: 0.02em;
 }
 .wg-row:hover { background: rgba(167, 141, 91, 0.06); }
 .wg-row + .wg-row::before {

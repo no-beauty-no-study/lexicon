@@ -254,6 +254,40 @@
     window.go(target);
   });
 
+  /* ---------- UI tap sound ----------
+     A soft classical "tick" on every button so taps feel responsive.
+     Nav / bottom-bar buttons get a lower, paper-turn note; other buttons
+     a brighter blip. One shared AudioContext, fixed low volume. */
+  const UISound = (function () {
+    let ctx = null;
+    function ac() { try { if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) {} return ctx; }
+    function tick(kind) {
+      const c = ac(); if (!c) return;
+      try { if (c.state === "suspended") c.resume(); } catch (_) {}
+      const now = c.currentTime;
+      const o = c.createOscillator(), g = c.createGain();
+      const f0 = kind === "nav" ? 600 : 860, f1 = kind === "nav" ? 410 : 560;
+      o.type = "triangle";
+      o.frequency.setValueAtTime(f0, now);
+      o.frequency.exponentialRampToValueAtTime(f1, now + 0.07);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(0.085, now + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0005, now + 0.12);
+      o.connect(g).connect(c.destination);
+      o.start(now); o.stop(now + 0.14);
+    }
+    return { tick };
+  })();
+  window.UISound = UISound;
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("button, .menu-btn");
+    if (!btn) return;
+    if (btn.disabled || btn.classList.contains("is-disabled")) return;
+    if (e.target.closest("input, .rc-vol, .bgm-vol")) return;   // not the sliders
+    const isNav = !!btn.closest(".ui-bottom-nav, .page-bottom-nav, .reading-controls");
+    UISound.tick(isNav ? "nav" : "btn");
+  }, true);
+
 
   /* ---------- URL param helper (legacy) ---------- */
   window.qparam = function (key, fallback) {
