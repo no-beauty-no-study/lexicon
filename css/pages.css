@@ -1897,20 +1897,14 @@
   filter: drop-shadow(0 10px 18px rgba(120,105,90,0.28))
           drop-shadow(0 22px 40px rgba(120,105,90,0.16));
 }
-/* FOLDED: show only the English word (self-test); hide everything else. */
-.note-foldword {
-  position: absolute; left: 6%; right: 6%; top: 0; height: 26%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(22px, 2.2vw, 42px); font-weight: 500; letter-spacing: 0.05em;
-  color: #3f3628; pointer-events: none;
-}
-.note-card.is-open .note-foldword { display: none; }
+/* FOLDED: show ONLY the English word — and in its REAL position (top of the
+   word zone) so it doesn't jump when the card slides open. Hide the rest. */
 .note-card:not(.is-open) .note-quote,
 .note-card:not(.is-open) .note-open,
-.note-card:not(.is-open) .note-word,
 .note-card:not(.is-open) .note-example,
-.note-card:not(.is-open) .note-index { display: none; }
+.note-card:not(.is-open) .note-index,
+.note-card:not(.is-open) .note-word .word-zh,
+.note-card:not(.is-open) .note-word .word-phrases { display: none; }
 
 /* ---- index number (on the blue pennant, far right) ---- */
 .note-card .note-index {
@@ -1935,22 +1929,24 @@
    excerpt never hugs an edge or collides with the quote marks / OPEN / chapter
    line, and every note's reading block reads at the same height. */
 .note-card .note-quote-inner {
-  position: absolute; left: 12%; right: 12%; top: 18%; bottom: 18%;
-  display: flex; flex-direction: column; justify-content: center;
+  position: absolute; left: 11%; right: 11%; top: 12%; bottom: 12%;
+  display: flex; flex-direction: column; justify-content: flex-start;
   text-align: center;
 }
+/* Chapter line pinned to the TOP of the box */
 .note-card .note-source {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(10px, 0.8vw, 15px);
+  font-size: clamp(11px, 0.9vw, 17px);
   letter-spacing: 0.08em; color: rgba(74, 61, 43, 0.72);
-  margin-bottom: 0.5em;
+  flex: 0 0 auto;
 }
+/* Excerpt centred in the space below the chapter line */
 .note-card .note-quote-text {
   font-family: "Cormorant Garamond", "EB Garamond", Georgia, serif;
-  font-size: clamp(16px, 1.35vw, 25px);
-  font-weight: 400; line-height: 1.4; letter-spacing: 0.02em;
+  font-size: clamp(18px, 1.55vw, 29px);
+  font-weight: 400; line-height: 1.42; letter-spacing: 0.02em;
   text-align: center; color: #3f3628;
-  width: 100%; max-width: none;
+  width: 100%; max-width: none; margin: auto 0;
   display: -webkit-box; -webkit-box-orient: vertical;
   -webkit-line-clamp: 5; overflow: hidden;
 }
@@ -1996,8 +1992,8 @@
 .note-card .note-word {
   position: absolute;
   left: 52%; top: 13.3%; width: 38%; height: 46.3%;
-  box-sizing: border-box; padding: 2% 3%;
-  display: flex; flex-direction: column; justify-content: center; align-items: stretch;
+  box-sizing: border-box; padding: 1% 3% 2%;
+  display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch;
   overflow: hidden; cursor: pointer; text-align: left;
 }
 /* ---- right-bottom: example + 中文 — CENTRED in its zone ---- */
