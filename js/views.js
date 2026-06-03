@@ -21,11 +21,11 @@ const Views = (function () {
     const out = t.replace(/^\s*(?:[A-Za-z]{1,6}\.\s*(?:[\/&]\s*)?)+/, "").trim();
     return out || t.trim();
   }
-  // A "gloss" that is really just an inflection label (plural / 3rd-person /
-  // tense / degree) carries no meaning — e.g. "plural/3rd 单复数/第三人称形式".
-  // Such word-forms must NOT appear as quiz answers or distractors.
+  // A "gloss" that is really just an inflection label OR one of codex's
+  // placeholder descriptions ("词族关联项", "语义相关表达", "用于连接…") carries no
+  // meaning — such cards must never appear as quiz answers or distractors.
   function isMetaGloss(zh) {
-    return /plural|singular|\b3rd\b|past tense|present participle|past participle|comparative|superlative|单复数|第三人称|复数形式|过去式|过去分词|现在分词|比较级|最高级/i.test(String(zh || ""));
+    return /plural|singular|\b3rd\b|past tense|present participle|past participle|comparative|superlative|单复数|第三人称|复数形式|过去式|过去分词|现在分词|比较级|最高级|词族关联|语义相关|用于连接|副词形式|近义词|关联项|相关表达/i.test(String(zh || ""));
   }
   // For each vocab word, the FIRST section (linear book order) whose passage
   // contains it. A reading word is only ever QUIZZED in that first section —
@@ -1495,18 +1495,18 @@ const Views = (function () {
         if (!(sc.examples || []).some(e => e && (e.example || e.en))) return null;
         return { word: ans, zh };
       }
-      // Global distractor pool, grouped by first letter — every carded word
-      // with a Chinese gloss. Used to draw look-alike distractors (same first
-      // letter, most shared letters) so each question also drills telling apart
-      // words that LOOK alike but mean different things.
+      // Distractor pool — ONLY real reading words (the legit vocabulary), never
+      // codex's flimsy external family/kin cards. Grouped by first letter.
       function quizDistractorPool() {
         if (window.__quizDistractors) return window.__quizDistractors;
         const REG = (window.VOCAB_WORD_CONTENT_REGISTRY_LITE || {}).cards || {};
+        const readingSet = new Set(((window.VOCAB_READING_WORDS_LITE || {}).words || []).map(w => String(w).toLowerCase()));
         const byFirst = {};
         for (const k in REG) {
           const c = REG[k];
           const word = String(c.word || k).toLowerCase();
           if (!/^[a-z][a-z'-]{1,}$/.test(word)) continue;
+          if (readingSet.size && !readingSet.has(word) && !readingSet.has(k.toLowerCase())) continue;  // reading vocab only
           const zh = stripPos(c.zh || "");
           if (!hasCJK(zh) || isMetaGloss(zh)) continue;
           const f = word[0];
@@ -1515,6 +1515,9 @@ const Views = (function () {
         window.__quizDistractors = byFirst;
         return byFirst;
       }
+      function zhKey(s) { return String(s || "").replace(/[^一-鿿]/g, ""); }   // CJK only
+      function sharePrefix(a, b) { let p = 0; const n = Math.min(a.length, b.length); while (p < n && a[p] === b[p]) p++; return p; }
+      function sameRoot(a, b) { const p = sharePrefix(a, b); return p >= 4 || p >= Math.min(a.length, b.length) * 0.7; }
       // Letter-overlap score: shared leading letters, then total shared letters.
       function lookAlike(a, b) {
         let pre = 0; const n = Math.min(a.length, b.length);
@@ -1538,22 +1541,26 @@ const Views = (function () {
         if (head) set.add(String(head).toLowerCase());
         return set;
       }
-      // 3 distractor meanings from OTHER, UNRELATED words that look like `word`
-      // (same first letter, most-similar spelling) — meanings differ, are 中文,
-      // and are never family/kin/synonyms/inflections of the answer.
+      // 3 distractor meanings from OTHER, UNRELATED words that look like `word`.
+      // Excludes family/kin/synonyms, same-root inflections (expand↔expansion),
+      // and any near-duplicate Chinese (扩大扩张 vs 扩大 扩张).
       function pickDistractors(word, zh) {
         const byFirst = quizDistractorPool();
         const related = relatedSet(word);
         const myHead = (window.VocabRuntime && VocabRuntime.getFamilyHead) ? String(VocabRuntime.getFamilyHead(word) || "").toLowerCase() : "";
-        const usedZh = new Set([zh]), out = [];
+        const tKey = zhKey(zh);
+        const usedKeys = new Set([tKey]), out = [];
         function take(list) {
           list.sort((a, b) => lookAlike(word, b.word) - lookAlike(word, a.word));
           for (const c of list) {
             if (out.length >= 3) break;
-            if (c.word === word || related.has(c.word) || usedZh.has(c.zh)) continue;
+            if (c.word === word || related.has(c.word) || sameRoot(word, c.word)) continue;     // same word / family / root
             if (myHead && window.VocabRuntime && VocabRuntime.getFamilyHead &&
-                String(VocabRuntime.getFamilyHead(c.word) || "").toLowerCase() === myHead) continue;  // same root
-            usedZh.add(c.zh); out.push({ zh: c.zh, word: c.word });
+                String(VocabRuntime.getFamilyHead(c.word) || "").toLowerCase() === myHead) continue;
+            const ck = zhKey(c.zh);
+            if (!ck || usedKeys.has(ck)) continue;                                              // duplicate meaning
+            if (tKey && (ck.indexOf(tKey) >= 0 || tKey.indexOf(ck) >= 0)) continue;             // near-same meaning
+            usedKeys.add(ck); out.push({ zh: c.zh, word: c.word });
           }
         }
         take((byFirst[word[0]] || []).slice());          // same first letter first
@@ -1630,19 +1637,24 @@ const Views = (function () {
         const qhtml = q.group
           ? esc(q.ex).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), `<u class="qz-target">${esc(q.word)}</u>`)
           : esc(q.word);
+        function optMeaning(w) { const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null; return sc ? stripPos(sc.zh || "") : ""; }
         const label = retry ? "Retry" : `${q.group ? "Synonym" : "Word"} ${idx + 1}`;
         return `
           <article class="quiz-item" data-word="${esc(q.word)}" data-group="${q.group ? 1 : 0}" data-solved="0">
             <div class="quiz-no">${label}</div>
             <p class="quiz-question">${qhtml}</p>
             <ul class="quiz-options">
-              ${q.options.map((o, i) => `
-                <li class="quiz-option" data-word="${esc(o.word)}" data-correct="${o.correct ? 1 : 0}">
+              ${q.options.map((o, i) => {
+                const en = o.word || "";
+                // SILVER shows the Chinese meaning; GOLDEN shows the English
+                // synonym. Both store the other form for the tap-to-flip study.
+                const zh = q.group ? optMeaning(en) : (o.zh || "");
+                const shown = q.group ? en : zh;
+                return `<li class="quiz-option" data-word="${esc(en)}" data-en="${esc(en)}" data-zh="${esc(zh)}" data-correct="${o.correct ? 1 : 0}">
                   <span class="quiz-option-letter">${LETTER[i]}.</span>
-                  <span class="quiz-option-text">${esc(o.zh)}</span>
-                  ${(!q.group && o.word) ? `<span class="quiz-option-en">${esc(o.word)}</span>` : ""}
-                </li>
-              `).join("")}
+                  <span class="quiz-option-text">${esc(shown)}</span>
+                </li>`;
+              }).join("")}
             </ul>
           </article>`;
       }
@@ -1912,12 +1924,20 @@ const Views = (function () {
         e.stopPropagation();
         const item = opt.closest(".quiz-item");
         // EXPLORE — once the question is answered, EVERY option is tappable to
-        // study it: reveal its English + show that word's small card on the
+        // study it: tapping FLIPS the option between its Chinese meaning and the
+        // English word (slide), reads the word, and shows its small card on the
         // right (even the wrong options are worth learning).
         if (item.dataset.solved === "1") {
-          opt.classList.add("is-revealed");
-          const ow = opt.dataset.word;
-          if (ow) { try { TTS.speak(ow); } catch (_) {} showQuizWord(ow); }
+          const text = opt.querySelector(".quiz-option-text");
+          const en = opt.dataset.en || "", zh = opt.dataset.zh || "";
+          const toEn = !opt.classList.contains("opt-en");
+          opt.classList.add("opt-flip");
+          setTimeout(() => {
+            if (text) text.textContent = toEn ? (en || zh) : (zh || en);
+            opt.classList.toggle("opt-en", toEn);
+            opt.classList.remove("opt-flip");
+          }, 130);
+          if (en) { try { TTS.speak(en); } catch (_) {} showQuizWord(en); }
           return;
         }
         focusItem(item);   // keep the answered question in view
