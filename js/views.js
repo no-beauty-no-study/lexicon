@@ -2531,11 +2531,16 @@ const Views = (function () {
           e.stopPropagation(); window.__navDir = "forward";
           window.go("#quiz?chapter=universe&section=1.1&stage=seal&seal=1&from=garden");
         });
-        host.querySelectorAll(".wg-row").forEach(row => {
-          row.addEventListener("click", () => {
-            const id = row.dataset.id;
-            if (typeof WordCard !== "undefined") WordCard.openBigCard(id, { from: "garden" });
-          });
+      }
+      // Delegated, bound once on the page — survives every re-render (search,
+      // A-Z), so tapping any word row always opens its card.
+      if (!host._wgRowBound) {
+        host._wgRowBound = true;
+        host.addEventListener("click", (e) => {
+          const row = e.target.closest(".wg-row");
+          if (!row || !host.contains(row)) return;
+          const id = row.dataset.id;
+          if (id && typeof WordCard !== "undefined") WordCard.openBigCard(id, { from: "garden" });
         });
       }
       function renderAZ() {
@@ -2959,9 +2964,14 @@ const Views = (function () {
           queue.push(queue.shift());   // requeue to the back
         }
         renderBottom();
+        // The sentence translation belongs right under the English sentence
+        // (same as a reading line), not buried in the feedback block.
+        const sentEl = qZone.querySelector(".rv-sentence");
+        if (sentEl && q.zh && !(sentEl.nextElementSibling && sentEl.nextElementSibling.classList.contains("rv-sentence-zh"))) {
+          const zd = document.createElement("div"); zd.className = "rv-sentence-zh"; zd.textContent = q.zh; sentEl.after(zd);
+        }
         const fb = document.createElement("div"); fb.className = "rv-feedback";
         fb.innerHTML = `<div class="rv-fb-key">${esc(q.word)}${q.meaning ? " · " + esc(q.meaning) : ""}</div>`
-          + (q.zh ? `<div class="rv-fb-zh">${esc(q.zh)}</div>` : "")
           + `<div class="rv-fb-tip">Tap an option to flip · tap anywhere to continue ›</div>`;
         qZone.appendChild(fb);
         say(q.en);
@@ -3232,46 +3242,53 @@ const Views = (function () {
         });
         return (bestI >= 0 && trans[bestI]) || "";
       }
-      // Double-tap a correctly-answered question to reveal its 中文. The
-      // translation is mapped PER LINE — the zh question sits under the English
-      // question, and each option's zh sits directly under that option — rather
-      // than dumping the whole block beneath the question. Falls back to the
-      // passage-sentence match when no authored zh exists.
-      function toggleCompZh(item, idx) {
-        const injected = item.querySelectorAll(".comp-zh, .comp-zh-opt-line");
-        if (injected.length) { injected.forEach(n => n.remove()); return; }
-        const q = items[idx] || {};
+      // Reveal/hide the 中文 for ONE line (the question, or a single option),
+      // shown directly under that line in the SAME style as a reading sentence
+      // translation. Toggles off if already shown.
+      function toggleLineZh(target, zh, isOption) {
+        const existing = isOption
+          ? target.querySelector(":scope > .comp-line-zh")
+          : (target.nextElementSibling && target.nextElementSibling.classList.contains("comp-line-zh") ? target.nextElementSibling : null);
+        if (existing) { existing.remove(); return; }
+        const div = document.createElement("div");
+        div.className = "comp-line-zh" + (zh ? "" : " is-missing");
+        div.textContent = zh || "(translation coming)";
+        if (isOption) target.appendChild(div); else target.after(div);
+        try { div.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
+      }
+      // The zh for a given line of a solved question (idx). lineKey: "q" or an
+      // option index. Falls back to the passage-sentence match for the question.
+      function lineZh(idx, isOption, optN) {
         const zq = zhItems && zhItems[idx];
-        if (zq && zq.q) {
-          const qd = document.createElement("div");
-          qd.className = "comp-zh comp-zh-q-line";
-          qd.textContent = zq.q;
-          item.querySelector(".quiz-question").after(qd);
-          const optEls = item.querySelectorAll(".quiz-option");
-          (zq.options || []).forEach((o, n) => {
-            const li = optEls[n]; if (!li) return;
-            const od = document.createElement("div");
-            od.className = "comp-zh-opt-line" + (n === q.answer ? " is-correct" : "");
-            od.textContent = o;
-            li.appendChild(od);
-          });
-        } else {
-          const div = document.createElement("div");
-          if (/[一-鿿]/.test(q.q || "")) { div.className = "comp-zh is-missing"; div.textContent = "（题目本身即中文）"; }
-          else { const zh = questionZhFallback(idx); div.className = "comp-zh" + (zh ? "" : " is-missing"); div.textContent = zh || "(translation coming)"; }
-          item.querySelector(".quiz-question").after(div);
-        }
+        if (isOption) return (zq && zq.options && zq.options[optN]) || "";
+        if (zq && zq.q) return zq.q;
+        const q = items[idx] || {};
+        if (/[一-鿿]/.test(q.q || "")) return "";
+        return questionZhFallback(idx);
       }
       body.addEventListener("click", (e) => {
         const itm = e.target.closest(".quiz-item");
-        // A SOLVED item: single tap reads the line, double-tap toggles the
-        // translation. This works wherever the tap lands (options are locked
-        // once solved), so double-tapping an option reveals its 中文 too.
+        // A SOLVED item behaves exactly like a reading line: single-tap reads
+        // THAT line aloud, double-tap toggles THAT line's translation beneath
+        // it (the question, or whichever option you tapped — not all of them).
         if (itm && itm.dataset.solved === "1") {
           const idx = all.indexOf(itm);
+          const optEl = e.target.closest(".quiz-option");
+          const isOption = !!optEl;
+          const target = optEl || itm.querySelector(".quiz-question");
+          if (!target) return;
+          const optN = isOption ? Array.from(itm.querySelectorAll(".quiz-option")).indexOf(optEl) : -1;
+          const text = isOption ? ((optEl.querySelector(".quiz-option-text") || {}).textContent || "")
+                                : (itm.querySelector(".quiz-question").textContent || "");
           const nowT = Date.now();
-          if (itm._tapT && (nowT - itm._tapT) < 380) { itm._tapT = 0; toggleCompZh(itm, idx); }
-          else { itm._tapT = nowT; setTimeout(() => { if (itm._tapT) { itm._tapT = 0; speakItem(itm); } }, 240); }
+          if (target._tapT && (nowT - target._tapT) < 380) {
+            target._tapT = 0; clearTimeout(target._tapTimer);
+            toggleLineZh(target, lineZh(idx, isOption, optN), isOption);
+            try { TTS.speak(text); } catch (_) {}
+          } else {
+            target._tapT = nowT;
+            target._tapTimer = setTimeout(() => { target._tapT = 0; try { TTS.speak(text); } catch (_) {} }, 240);
+          }
           return;
         }
         const opt = e.target.closest(".quiz-option");

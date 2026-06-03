@@ -945,7 +945,7 @@
 }
 .reading-art .quiz-option.is-revealed .quiz-option-en { display: inline; }
 /* Satisfying glow when an option is correct. */
-.reading-art .quiz-option.is-correct { animation: qz-correct-glow 0.75s ease; }
+:is(.reading-art, .review-art) .quiz-option.is-correct { animation: qz-correct-glow 0.75s ease; }
 @keyframes qz-correct-glow {
   0%   { text-shadow: 0 0 0 rgba(127,149,163,0); }
   35%  { text-shadow: 0 0 14px rgba(184,160,111,0.85), 0 0 26px rgba(127,149,163,0.5); }
@@ -968,8 +968,8 @@
    option's actual line-box height. (Prior version inherited 1.32
    line-height from the base ::before rule, so the glyph drifted up
    visually — the bug the user reported as "标识错位".) */
-.reading-art .quiz-option.is-correct { color: #5d4d2f; }
-.reading-art .quiz-option.is-correct::before {
+:is(.reading-art, .review-art) .quiz-option.is-correct { color: #5d4d2f; }
+:is(.reading-art, .review-art) .quiz-option.is-correct::before {
   content: "✤";
   left: -1.4em;
   top: 50%;
@@ -982,16 +982,16 @@
   font-size: 0.95em;
   border-radius: 0;
 }
-.reading-art .quiz-option.is-correct .quiz-option-text {
+:is(.reading-art, .review-art) .quiz-option.is-correct .quiz-option-text {
   background: linear-gradient(180deg, transparent 58%, rgba(201, 174, 103, 0.22) 58%);
 }
 
 /* Wrong answer — red-brown × in the margin + strikethrough line. */
-.reading-art .quiz-option.is-wrong {
+:is(.reading-art, .review-art) .quiz-option.is-wrong {
   color: #7a5048;
   opacity: 0.72;
 }
-.reading-art .quiz-option.is-wrong::before {
+:is(.reading-art, .review-art) .quiz-option.is-wrong::before {
   content: "×";
   left: -1.2em;
   top: 50%;
@@ -1004,7 +1004,7 @@
   font-size: 1.05em;
   border-radius: 0;
 }
-.reading-art .quiz-option.is-wrong .quiz-option-text::after {
+:is(.reading-art, .review-art) .quiz-option.is-wrong .quiz-option-text::after {
   content: "";
   position: absolute;
   left: -0.08em;
@@ -2445,16 +2445,18 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
   background: rgba(238,229,211,0.4); border-radius: 0 4px 4px 0;
 }
 .reading-art .comp-item .comp-zh.is-missing { font-style: italic; color: #9A8C72; }
-/* Per-line translation: question zh under the question, each option's zh
-   directly under that option (mapped to each sentence, not dumped as a block). */
-.reading-art .comp-item .comp-zh-q-line { font-weight: 600; }
-.reading-art .comp-item .comp-zh-opt-line {
-  display: block; margin: 3px 0 1px;
+/* One-line translation under a question/option — identical look to a reading
+   sentence's double-tap translation. */
+.reading-art .comp-item .comp-line-zh {
+  display: block; margin: 0.35em 0 0.1em;
   font-family: "Noto Serif SC", "Songti SC", serif;
-  font-size: 0.86em; line-height: 1.55; color: #8A7A5C;
+  font-size: 0.86em; line-height: 1.6; letter-spacing: 0.02em;
+  color: #6E5A3C;
+  padding: 0.4em 0.7em; border-left: 2px solid rgba(184,160,111,0.6);
+  background: rgba(238,229,211,0.4);
+  border-radius: 0 4px 4px 0;
 }
-.reading-art .comp-item .comp-zh-opt-line.is-correct { color: #4f6a3a; font-weight: 600; }
-.reading-art .comp-item .comp-zh-opt-line.is-correct::after { content: " ✓"; color: #6f9050; font-weight: 700; }
+.reading-art .comp-item .comp-line-zh.is-missing { font-style: italic; color: #9A8C72; }
 
 /* Inline stage-clear / comprehension-done row (replaces the popup) */
 .reading-art .quiz-done-row, .reading-art .comp-done-row {
@@ -2481,8 +2483,8 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 }
 .review-art .quiz-option:hover { color: #2f281f; }
 .review-art .quiz-option-letter { width: 1.85em; color: #8a7653; letter-spacing: 0.12em; flex: 0 0 auto; }
-.review-art .quiz-option.is-correct { color: #7F95A3; animation: qz-correct-glow 0.75s ease; }
-.review-art .quiz-option.is-wrong   { color: #b14a3a; }
+/* correct/wrong visual is shared with the reading quiz via :is(.reading-art,
+   .review-art) above — same ✤ / × markers, underline, strike and colours. */
 
 /* Dictation: the blank carries the word's 中文 meaning (not underscores) */
 .gs-blank-zh {
@@ -2495,14 +2497,15 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 /* Quiz option study-flip (Chinese ↔ English) */
 .quiz-option-text { display: inline-block; transition: transform 130ms ease, opacity 130ms ease; }
 .quiz-option.opt-flip .quiz-option-text { opacity: 0; transform: translateX(10px); }
-/* Flipped-to-English word: plain dark ink (the gold was hard to read). */
-.quiz-option.opt-en .quiz-option-text { font-style: normal; color: #2F3338; }
-/* The answer feedback CARRIES onto the English word as a warning: a correct
-   option keeps its highlight; a wrong one turns red and stays struck through. */
+/* Flipped-to-English word keeps the option's CURRENT colour, so the word reads
+   in exactly the same ink as the 中文 it replaced (no jarring new colour). */
+.quiz-option.opt-en .quiz-option-text { font-style: normal; color: inherit; }
+/* A correct option keeps its gold highlight; a wrong one keeps its struck-out
+   look — both inherit the option's own colour rather than a separate red. */
 .quiz-option.is-correct.opt-en .quiz-option-text {
-  background: rgba(201, 174, 103, 0.38); border-radius: 3px; padding: 0 0.28em; color: #4a3d22;
+  background: rgba(201, 174, 103, 0.38); border-radius: 3px; padding: 0 0.28em; color: inherit;
 }
-.quiz-option.is-wrong.opt-en .quiz-option-text { color: #C0392B; }
+.quiz-option.is-wrong.opt-en .quiz-option-text { color: inherit; }
 /* reading-art draws the strike via ::after (recolour it red); review-art has no
    ::after, so use a plain line-through there. */
 .reading-art .quiz-option.is-wrong.opt-en .quiz-option-text::after { background: rgba(192, 57, 43, 0.85); }
