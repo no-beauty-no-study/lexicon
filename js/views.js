@@ -1837,11 +1837,35 @@ const Views = (function () {
       // Reveal the next still-hidden question (originals first, then any
       // appended Retry copies) and read it aloud. When none remain hidden the
       // stage is complete.
+      let firstReveal = true;
       function revealNext() {
         const all = host.querySelectorAll(".quiz-item");
         let next = null;
         for (const it of all) { if (!it.classList.contains("is-shown")) { next = it; break; } }
-        if (next) { next.classList.add("is-shown"); setTimeout(() => speakItem(next), 220); }
+        if (next) {
+          next.classList.add("is-shown");
+          // The VERY first question often falls before the speech voice list
+          // has loaded (later questions speak fine because it's ready by then).
+          // Give it a longer beat, and if voices still aren't ready, retry once
+          // when they arrive — so question 1 always reads aloud.
+          if (firstReveal) {
+            firstReveal = false;
+            let fired = false;
+            const sayFirst = () => { if (fired) return; fired = true; speakItem(next); };
+            const voicesReady = window.speechSynthesis && window.speechSynthesis.getVoices().length;
+            if (voicesReady) {
+              setTimeout(sayFirst, 420);
+            } else if (window.speechSynthesis) {
+              // wait for the voice list, then speak (with a safety fallback)
+              try { window.speechSynthesis.addEventListener("voiceschanged", () => setTimeout(sayFirst, 80), { once: true }); } catch (_) {}
+              setTimeout(sayFirst, 900);
+            } else {
+              setTimeout(sayFirst, 420);
+            }
+          } else {
+            setTimeout(() => speakItem(next), 220);
+          }
+        }
         else maybeChapterComplete();
       }
       function showThrough() { revealNext(); }   // kept name for the first reveal
