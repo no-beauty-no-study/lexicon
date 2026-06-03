@@ -142,11 +142,14 @@
   }
   .menu-btn.quiz   .menu-btn-inner { background-image: url("assets/bg/ui/C4601148-C0B7-4FBC-8B78-2DD0B958F9D5.png"); }
   .menu-btn.recall .menu-btn-inner { background-image: url("assets/bg/ui/B4C6D44A-5C31-4417-8288-FBD234721725.png"); }
-  /* Button itself: overflow: hidden so the diagonal gleam sweep
-     and unlock pulse don't bleed past the painted edge. Costs a
-     small clip on the breathing translateY, so the translate is
-     limited to 3px (was 7) — barely shaved, still visibly alive. */
-  .menu-btn { overflow: hidden; }
+  /* NOTE: this used to be `overflow: hidden` to contain an old diagonal
+     gleam-sweep pseudo-element — but that sweep no longer exists, and the
+     clip was instead cropping the hover lift and the click-glow drop-shadow
+     into a hard rectangle ("框"). Worse, the top pair fills its box edge-to-
+     edge (background-size:100% 100%) so its lift/glow was clipped to nothing,
+     while the bottom pair (background-size:contain) had inner margin to show
+     it — hence "only the bottom two had the effect". Let it overflow. */
+  .menu-btn { overflow: visible; }
   .menu-btn-inner {
     display: block; width: 100%; height: 100%;
     background-size: 100% 100%; background-repeat: no-repeat;
