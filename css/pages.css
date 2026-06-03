@@ -2482,3 +2482,7 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .gs-sentence-en { transition: opacity 150ms ease, transform 150ms ease; }
 .gs-sentence-en.gs-swap { opacity: 0; transform: translateX(10px); }
 .gs-filled { color: #8a5a1e; font-weight: 600; padding: 0 4px; border-bottom: 2px solid rgba(184,160,111,0.7); }
+
+/* Review post-answer hint */
+.rv-fb-tip { margin-top: 8px; font-family: var(--font-display), Georgia, serif; font-size: 12px;
+  letter-spacing: 0.12em; color: rgba(124,95,50,0.85); }
