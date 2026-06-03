@@ -610,7 +610,9 @@ button.ornate-panel {
   58%      { transform: translateX(4px);  background: transparent; }
   74%      { transform: translateX(-2px); }
 }
-.quiz-option.is-locked { pointer-events: none; }
+/* Locked = can't RE-answer, but stays tappable so you can study any option
+   after the question is solved (handler gates re-answering via data-solved). */
+.quiz-option.is-locked { pointer-events: auto; }
 
 /* Celebratory pop on the option the player just got right: a quick
    gold lift + halo, plus a burst of little gold sparkles via ::after. */
