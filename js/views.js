@@ -1080,12 +1080,22 @@ const Views = (function () {
         window.go(href);
       });
       // Back — return to the chapter index (soft crossfade, not a turn).
+      // Browse "Back" returns to WHERE you came from: the Words Garden, the
+      // Notes deck, or the chapter index — never the story path.
+      const fromOrigin = params.from || "";
+      const browseBackHref = fromOrigin === "garden" ? "#word-garden"
+        : fromOrigin === "note" ? "#notes"
+        : "#chapters?browse=1";
       const toIndexBtn = host.querySelector("[data-toindex]");
-      if (toIndexBtn) toIndexBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        window.__navDir = "fade";
-        window.go(isBrowse ? "#chapters?browse=1" : "#chapters");
-      });
+      if (toIndexBtn) {
+        if (fromOrigin === "garden") toIndexBtn.innerHTML = '<span class="nav-glyph">❖</span>Garden';
+        else if (fromOrigin === "note") toIndexBtn.innerHTML = '<span class="nav-glyph">❖</span>Notes';
+        toIndexBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          window.__navDir = (fromOrigin === "garden" || fromOrigin === "note") ? "up" : "fade";
+          window.go(isBrowse ? browseBackHref : "#chapters");
+        });
+      }
 
       const next = host.querySelector("[data-next]");
       if (next) next.addEventListener("click", (e) => {
@@ -1293,9 +1303,12 @@ const Views = (function () {
         // No per-letter cells — the user writes into one open line (no boxes
         // hinting the word's length). Kept as a no-op so callers stay simple.
         function renderCells() {}
-        function blankSentence(en, word) {
-          return esc(en).replace(new RegExp("\\b" + rxq(word) + "\\b", "i"),
-            `<span class="gs-blank">${"_".repeat(Math.max(6, word.length))}</span>`);
+        // The blank now carries the word's CHINESE meaning, so you know which
+        // word to spell from its sense (not its letters).
+        function blankSentence(en, word, zh) {
+          const fill = zh ? `<span class="gs-blank gs-blank-zh">${esc(zh)}</span>`
+                          : `<span class="gs-blank">${"_".repeat(Math.max(6, word.length))}</span>`;
+          return esc(en).replace(new RegExp("\\b" + rxq(word) + "\\b", "i"), fill);
         }
         let recordedWrong = false;   // count one WRONG per spoiled presentation
         function present() {
@@ -1303,7 +1316,7 @@ const Views = (function () {
           corr.hidden = true; corr.innerHTML = "";
           input.value = "";
           const q = cur();
-          enEl.innerHTML = blankSentence(q.en, q.word);   // sentence shown, target blanked
+          enEl.innerHTML = blankSentence(q.en, q.word, q.meaning);   // blank shows the 中文 meaning
           zhEl.textContent = "";                  // Chinese only appears AFTER answering
           shakeEl.classList.remove("is-shake");
           renderCells(); renderDots();
@@ -1951,7 +1964,32 @@ const Views = (function () {
         } catch (_) {}
       }
 
-      wireStoryBtn(false);   // bottom "Story / Back" return button
+      // Leaving a stage before it's cleared shows an exit nudge (finish first).
+      function showQuizExit(proceed) {
+        let scrim = host.querySelector(".qx-scrim");
+        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
+        const left = Math.max(0, originalWords.size - solvedWords.size);
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
+          <p class="qx-en"><b class="qx-num">${left}</b> question${left === 1 ? "" : "s"} left.<br>Finish this stage before you leave.</p>
+          <div class="qx-actions">
+            <button type="button" class="gs-btn qx-stay">Keep Going</button>
+            <button type="button" class="gs-btn qx-leave">Leave</button>
+          </div></div>`;
+        scrim.querySelector(".qx-stay").onclick = (e) => { e.stopPropagation(); scrim.remove(); };
+        scrim.querySelector(".qx-leave").onclick = (e) => { e.stopPropagation(); scrim.remove(); proceed(); };
+        requestAnimationFrame(() => scrim.classList.add("is-open"));
+      }
+      wireStoryBtn(true);   // label only; the guard below handles the tap
+      host.addEventListener("click", (e) => {
+        if (e.target.closest(".qx-scrim")) return;
+        const btn = e.target.closest(".ui-bottom-nav [data-go], .ui-bottom-nav [data-story]");
+        if (!btn) return;
+        const isStory = btn.hasAttribute("data-story");
+        const proceed = isStory ? () => { window.__navDir = "back"; window.go(returnHref); }
+                                : () => window.go(btn.getAttribute("data-go"));
+        if (!advancing && !allCorrect()) { e.preventDefault(); e.stopPropagation(); showQuizExit(proceed); }
+        else if (isStory) { e.preventDefault(); e.stopPropagation(); proceed(); }
+      }, true);
     },
   };
 
@@ -2094,7 +2132,7 @@ const Views = (function () {
           const exampleZh = (entry && (entry.exampleZh || entry.example_zh)) || "";
           const openBtn = (scope && scope.chapter) ? `
             <button type="button" class="note-open"
-                    data-go="#reading?chapter=${encodeURIComponent(scope.chapter)}&section=${encodeURIComponent(scope.section || "1.1")}&word=${encodeURIComponent(id)}">OPEN</button>` : "";
+                    data-go="#reading?chapter=${encodeURIComponent(scope.chapter)}&section=${encodeURIComponent(scope.section || "1.1")}&word=${encodeURIComponent(id)}&browse=1&from=note">OPEN</button>` : "";
           cards.push(`
             <li class="note-card" data-id="${esc(id)}">
               <div class="note-quote" title="Tap to hear">
@@ -2153,7 +2191,7 @@ const Views = (function () {
           e.stopPropagation();
           const entry = byId[card.dataset.id];
           const scope = Storage.findScopeOf ? Storage.findScopeOf(card.dataset.id) : null;
-          if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry, scope || undefined);
+          if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry, Object.assign({ from: "note" }, scope || {}));
         }
       });
     },
@@ -2253,7 +2291,7 @@ const Views = (function () {
         host.querySelectorAll(".wg-row").forEach(row => {
           row.addEventListener("click", () => {
             const id = row.dataset.id;
-            if (typeof WordCard !== "undefined") WordCard.openBigCard(id);
+            if (typeof WordCard !== "undefined") WordCard.openBigCard(id, { from: "garden" });
           });
         });
       }
@@ -2649,12 +2687,12 @@ const Views = (function () {
           qZone.innerHTML = `
             <p class="rv-sentence">${sentence}</p>
             <div class="rv-q-label">${useSyn ? "Which word joins its group?" : "Which meaning fits?"}</div>
-            <ul class="rv-options">
-              ${opts.map((o, n) => `<li class="rv-opt" data-correct="${o.correct ? 1 : 0}">
-                  <span class="rv-opt-l">${LETTER[n]}.</span><span class="rv-opt-t">${esc(o.t)}</span></li>`).join("")}
+            <ul class="quiz-options rv-quiz-options">
+              ${opts.map((o, n) => `<li class="quiz-option" data-correct="${o.correct ? 1 : 0}">
+                  <span class="quiz-option-letter">${LETTER[n]}.</span><span class="quiz-option-text">${esc(o.t)}</span></li>`).join("")}
             </ul>`;
           say(q.en);
-          qZone.querySelectorAll(".rv-opt").forEach(li => {
+          qZone.querySelectorAll(".quiz-option").forEach(li => {
             li.addEventListener("click", () => {
               if (locked) return;
               const ok = li.dataset.correct === "1";
@@ -2671,7 +2709,7 @@ const Views = (function () {
               } else {
                 locked = true; li.classList.add("is-wrong");
                 if (window.Quiz) Quiz.recordWord(q.word, false);   // wrong → needs review more
-                qZone.querySelectorAll(".rv-opt").forEach(o => { if (o.dataset.correct === "1") o.classList.add("is-correct"); });
+                qZone.querySelectorAll(".quiz-option").forEach(o => { if (o.dataset.correct === "1") o.classList.add("is-correct"); });
                 // Show the meaning + the sentence's Chinese on a miss.
                 const fb = document.createElement("div");
                 fb.className = "rv-feedback";

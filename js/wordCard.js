@@ -44,13 +44,23 @@ const WordCard = (function () {
   function findWordLocation(word) {
     if (typeof CHAPTER_CONTENT === "undefined") return null;
     const re = new RegExp("\\b" + rx(word) + "\\b", "i");
+    const VR = window.VocabRuntime; const lw = String(word).toLowerCase();
+    let fallback = null;
     for (const chId of Object.keys(CHAPTER_CONTENT)) {
       const sections = (CHAPTER_CONTENT[chId] && CHAPTER_CONTENT[chId].sections) || [];
       for (const s of sections) {
-        if ((s.blocks || []).some(b => re.test(b))) return { chapter: chId, section: s.number };
+        const blocks = s.blocks || [];
+        if (blocks.some(b => re.test(b))) return { chapter: chId, section: s.number };
+        // inflected surface form (studies → study): resolve tokens to the word
+        if (!fallback && VR && VR.getSmallCard) {
+          for (const b of blocks) {
+            const toks = b.match(/\b[A-Za-z][A-Za-z'-]+\b/g) || [];
+            if (toks.some(t => { const sc = VR.getSmallCard(t.toLowerCase()); return sc && String(sc.word || "").toLowerCase() === lw; })) { fallback = { chapter: chId, section: s.number }; break; }
+          }
+        }
       }
     }
-    return null;
+    return fallback;
   }
 
   /* ---------- render helpers ---------- */
@@ -173,10 +183,11 @@ const WordCard = (function () {
   // Opens in BROWSE mode (&browse=1): a free reader with Prev · Back · Next
   // that does NOT touch story progress — so jumping to a word's chapter can
   // never strand the reader deep in the graded story path ("回不去了").
-  function renderOpen(word, loc) {
+  function renderOpen(word, loc, from) {
     if (!loc) return "";
+    const f = from ? "&from=" + encodeURIComponent(from) : "";
     return `<button type="button" class="antique-button wc-open"
-              data-go="#reading?chapter=${encodeURIComponent(loc.chapter)}&section=${encodeURIComponent(loc.section)}&word=${encodeURIComponent(word)}&browse=1">
+              data-go="#reading?chapter=${encodeURIComponent(loc.chapter)}&section=${encodeURIComponent(loc.section)}&word=${encodeURIComponent(word)}&browse=1${f}">
         <span class="antique-button-label">Open Chapter</span>
       </button>`;
   }
@@ -288,7 +299,7 @@ const WordCard = (function () {
     if (back) back.style.visibility = cardStack.length > 1 ? "visible" : "hidden";
 
     titleZone.innerHTML = renderTitle(data);
-    openZone.innerHTML  = renderOpen(data.word || word, loc);
+    openZone.innerHTML  = renderOpen(data.word || word, loc, (ctx && ctx.from) || (lastCtx && lastCtx.from));
     bodyZone.innerHTML  = renderBody(data);
     signZone.innerHTML  = renderSign(data.word || word);
     bodyZone.scrollTop   = 0;
