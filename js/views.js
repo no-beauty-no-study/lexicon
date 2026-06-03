@@ -1380,11 +1380,11 @@ const Views = (function () {
               </div></div>`;
             host.appendChild(scrim);
           }
-          const n = remaining(), total = set.length;
+          const n = remaining();
+          const mark = scrim.querySelector(".qx-mark"); if (mark) mark.textContent = "✦ ALMOST SEALED ✦";
           scrim.querySelector(".qx-en").innerHTML =
-              `Only <b class="qx-num">${n}</b> word${n === 1 ? "" : "s"} left.<br>`
-            + `Leave now, and this set stays unsealed.<br>`
-            + `Finish them, and all ${total} words enter your accumulated list.`;
+              `Only <b class="qx-num">${n}</b> left to seal, your Highness.`
+            + `<span class="qx-zh" style="display:block;margin-top:12px">写完这几个，它们才算真正刻进本子里——都到这儿了，别半途而废嘛～</span>`;
           scrim.querySelector(".qx-stay").textContent = "Seal the Set";
           scrim.querySelector(".qx-leave").textContent = "Give Up";
           scrim.querySelector(".qx-stay").onclick = (e) => { e.stopPropagation(); scrim.remove(); try { input.focus(); } catch (_) {} };
@@ -2007,8 +2007,9 @@ const Views = (function () {
         let scrim = host.querySelector(".qx-scrim");
         if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
         const left = Math.max(0, originalWords.size - solvedWords.size);
-        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
-          <p class="qx-en"><b class="qx-num">${left}</b> question${left === 1 ? "" : "s"} left.<br>Finish this stage before you leave.</p>
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ WAIT, YOUR HIGHNESS ✦</div>
+          <p class="qx-en">Just <b class="qx-num">${left}</b> more and the stage is yours.</p>
+          <p class="qx-zh">现在走的话，这一关的单词可就进不了你的花园啦——殿下，再点几下就到手了哦。</p>
           <div class="qx-actions">
             <button type="button" class="gs-btn qx-stay">Keep Going</button>
             <button type="button" class="gs-btn qx-leave">Leave</button>
@@ -2881,8 +2882,9 @@ const Views = (function () {
         let scrim = host.querySelector(".qx-scrim");
         if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
         const left = Math.max(0, set.length - passedCount());
-        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
-          <p class="qx-en"><b class="qx-num">${left}</b> word${left === 1 ? "" : "s"} left to review.<br>Finish the round before you leave.</p>
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ ONE MOMENT, YOUR HIGHNESS ✦</div>
+          <p class="qx-en">Only <b class="qx-num">${left}</b> left to revisit today.</p>
+          <p class="qx-zh">这些都是你最容易忘的词呀——陪它们走完这一轮，它们才会乖乖沉下去哦。</p>
           <div class="qx-actions">
             <button type="button" class="gs-btn qx-stay">Keep Going</button>
             <button type="button" class="gs-btn qx-leave">Leave</button>
@@ -3060,8 +3062,9 @@ const Views = (function () {
         let scrim = host.querySelector(".qx-scrim");
         if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
         const left = all.filter(it => it.dataset.solved !== "1").length;
-        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
-          <p class="qx-en"><b class="qx-num">${left}</b> question${left === 1 ? "" : "s"} left.<br>Finish the comprehension before you leave.</p>
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ STAY A LINE LONGER ✦</div>
+          <p class="qx-en">Just <b class="qx-num">${left}</b> question${left === 1 ? "" : "s"} between you and the next page.</p>
+          <p class="qx-zh">读都读到这儿了，殿下——把这几道做完，下一章就为你翻开啦。</p>
           <div class="qx-actions">
             <button type="button" class="gs-btn qx-stay">Keep Reading</button>
             <button type="button" class="gs-btn qx-leave">Leave</button>
