@@ -1509,14 +1509,38 @@ const Views = (function () {
         let common = 0; for (const ch of a) { if (setB[ch] > 0) { common++; setB[ch]--; } }
         return pre * 10 + common;
       }
-      // 3 distractor meanings from OTHER words that look like `word` — prefer the
-      // same first letter, most-similar spelling; meanings must differ + be 中文.
+      // Words RELATED to the target (same family / kin / synonym group, and
+      // inflections) — these must NEVER be distractors, or all four options end
+      // up meaning the same thing ("四个选项一个意思").
+      function relatedSet(word) {
+        const set = new Set([String(word).toLowerCase()]);
+        const VR = window.VocabRuntime;
+        const bc = VR && VR.getBigCard ? VR.getBigCard(word) : null;
+        if (bc) {
+          [].concat(bc.family_members || [], bc.kin_members || [], bc.group || [])
+            .forEach(m => { if (m && m.word) set.add(String(m.word).toLowerCase()); });
+        }
+        const head = VR && VR.getFamilyHead ? VR.getFamilyHead(word) : null;
+        if (head) set.add(String(head).toLowerCase());
+        return set;
+      }
+      // 3 distractor meanings from OTHER, UNRELATED words that look like `word`
+      // (same first letter, most-similar spelling) — meanings differ, are 中文,
+      // and are never family/kin/synonyms/inflections of the answer.
       function pickDistractors(word, zh) {
         const byFirst = quizDistractorPool();
+        const related = relatedSet(word);
+        const myHead = (window.VocabRuntime && VocabRuntime.getFamilyHead) ? String(VocabRuntime.getFamilyHead(word) || "").toLowerCase() : "";
         const usedZh = new Set([zh]), out = [];
         function take(list) {
           list.sort((a, b) => lookAlike(word, b.word) - lookAlike(word, a.word));
-          for (const c of list) { if (out.length >= 3) break; if (c.word === word || usedZh.has(c.zh)) continue; usedZh.add(c.zh); out.push({ zh: c.zh, word: c.word }); }
+          for (const c of list) {
+            if (out.length >= 3) break;
+            if (c.word === word || related.has(c.word) || usedZh.has(c.zh)) continue;
+            if (myHead && window.VocabRuntime && VocabRuntime.getFamilyHead &&
+                String(VocabRuntime.getFamilyHead(c.word) || "").toLowerCase() === myHead) continue;  // same root
+            usedZh.add(c.zh); out.push({ zh: c.zh, word: c.word });
+          }
         }
         take((byFirst[word[0]] || []).slice());          // same first letter first
         if (out.length < 3) take([].concat.apply([], Object.keys(byFirst).map(k => byFirst[k])));   // then anywhere
@@ -1771,47 +1795,40 @@ const Views = (function () {
       const hrefFor = (st) => (window.Quiz && Quiz.quizHref)
         ? Quiz.quizHref(chapterId, sectionNum, st, fromCtx)
         : `#quiz?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(sectionNum)}&stage=${st}&from=${fromCtx}`;
+      // Stage clear is an INLINE button row appended under the questions (no
+      // blocking popup) so you can still tap the last question's options to
+      // study them ("错误选项也值得学习") before moving on.
       function maybeChapterComplete() {
         if (advancing || !allCorrect()) return;
         advancing = true;
         spawnStarBurst(8); playSuccessChord();
-        const hasGolden = buildGroupItems(section).length > 0;
         const go = (href) => { window.__navDir = "forward"; window.go(href); };
-        let scrim = host.querySelector(".qx-scrim");
-        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
-        function popup(html, wire) { scrim.innerHTML = `<div class="qx-card">${html}</div>`; wire(); requestAnimationFrame(() => scrim.classList.add("is-open")); }
-
+        const menuNext = () => go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu");
+        let title, btns;
         if (!isGroup) {
-          // STAGE 1 (silver) cleared — save it immediately so it never repeats.
           if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed");
-          if (hasGolden) {
-            popup(`<div class="qx-mark">✦ STAGE 1 ✦</div>
-              <p class="qx-en">Words cleared.<br>On to Stage 2 — the synonym groups.</p>
-              <div class="qx-actions">
-                <button type="button" class="gs-btn qx-continue">Continue · Group ›</button>
-                <button type="button" class="gs-btn qx-finish">Later</button>
-              </div>`, () => {
-              scrim.querySelector(".qx-continue").onclick = (e) => { e.stopPropagation(); go(hrefFor("golden")); };
-              scrim.querySelector(".qx-finish").onclick = (e) => { e.stopPropagation(); go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu"); };
-            });
-            return;
+          if (buildGroupItems(section).length > 0) {
+            title = "Stage 1 cleared — study any option, then continue.";
+            btns = [["Continue · Group ›", () => go(hrefFor("golden"))], ["Later", menuNext]];
+          } else {
+            if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz2", "completed");
+            title = "Section cleared — study any option, then choose.";
+            btns = [["Keep Questing ›", menuNext], ["Dictation", () => go(hrefFor("seal"))]];
           }
-          // No group questions → Stage 2 is vacuously done too.
-          if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz2", "completed");
         } else {
-          // STAGE 2 (golden) cleared — both choice stages of the section done.
           if (window.Quiz) { Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed"); Quiz.setStageStatus(chapterId, sectionNum, "quiz2", "completed"); }
+          title = "Section cleared — study any option, then choose.";
+          btns = [["Keep Questing ›", menuNext], ["Dictation", () => go(hrefFor("seal"))]];
         }
-        // Section's linear levels are done → continue the trek, or dictate now.
-        popup(`<div class="qx-mark">✦ SECTION CLEARED ✦</div>
-          <p class="qx-en">Both choice stages done.<br>Keep questing, or seal these words by dictation.</p>
-          <div class="qx-actions">
-            <button type="button" class="gs-btn qx-continue">Keep Questing ›</button>
-            <button type="button" class="gs-btn qx-finish">Dictation</button>
-          </div>`, () => {
-          scrim.querySelector(".qx-continue").onclick = (e) => { e.stopPropagation(); go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref(fromCtx) : "#menu"); };
-          scrim.querySelector(".qx-finish").onclick = (e) => { e.stopPropagation(); go(hrefFor("seal")); };
-        });
+        const row = document.createElement("div");
+        row.className = "quiz-done-row";
+        row.innerHTML = `<p class="quiz-done-title">${esc(title)}</p>`
+          + `<div class="quiz-done-actions">`
+          + btns.map((b, i) => `<button type="button" class="gs-btn qd-btn" data-qd="${i}">${esc(b[0])}</button>`).join("")
+          + `</div>`;
+        body.appendChild(row);
+        btns.forEach((b, i) => { const el = row.querySelector(`[data-qd="${i}"]`); if (el) el.onclick = (e) => { e.stopPropagation(); b[1](); }; });
+        try { row.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (_) {}
       }
 
       // Right-column word card (reuses the reading marginalia look). Shown
@@ -1866,32 +1883,37 @@ const Views = (function () {
 
       body.addEventListener("click", (e) => {
         const opt = e.target.closest(".quiz-option");
-        if (!opt || opt.classList.contains("is-locked")) return;
+        if (!opt) return;
         e.stopPropagation();
         const item = opt.closest(".quiz-item");
-        if (item.dataset.solved === "1") return;
+        // EXPLORE — once the question is answered, EVERY option is tappable to
+        // study it: reveal its English + show that word's small card on the
+        // right (even the wrong options are worth learning).
+        if (item.dataset.solved === "1") {
+          opt.classList.add("is-revealed");
+          const ow = opt.dataset.word;
+          if (ow) { try { TTS.speak(ow); } catch (_) {} showQuizWord(ow); }
+          return;
+        }
         focusItem(item);   // keep the answered question in view
         const word   = item.dataset.word;
         const optWord = opt.dataset.word || "";
         const correct = opt.dataset.correct === "1";
         item.querySelectorAll(".quiz-option.is-selected").forEach(o => o.classList.remove("is-selected"));
-        // Every tap: speak the option's ENGLISH word and reveal it beside the
-        // Chinese (so each pick teaches which word that meaning belongs to).
+        // The answer is only revealed AFTER you pick — speak the chosen option's
+        // English and reveal it beside the Chinese.
         opt.classList.add("is-revealed");
         try { if (optWord) TTS.speak(optWord); } catch (_) {}
-        const group = item.dataset.group === "1";
         if (correct) {
           opt.classList.add("is-correct", "is-locked");
           item.dataset.solved = "1";
           item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
           playCorrectDing(); spawnOptSparkle(opt);
           opt.classList.remove("is-pop"); void opt.offsetWidth; opt.classList.add("is-pop");
-          // Only the TESTED word is collected — never the synonym options (that
-          // was pulling words like "longer" into the garden). A correct answer
-          // never lowers the score; it just marks the word collected.
           if (window.Quiz) Quiz.recordWord(word, true);
           solvedWords.add(String(word).toLowerCase());
-          if (allCorrect()) maybeChapterComplete();
+          showQuizWord(word);   // card on the right so you can fold it
+          if (allCorrect()) maybeChapterComplete();   // inline row (non-blocking)
           else setTimeout(revealNext, 900);
         } else {
           // Wrong → log one wrong, show the right answer + the word's card, lock
@@ -2040,65 +2062,69 @@ const Views = (function () {
     init(host) {
       const listEl = host.querySelector(".note-cards");
       if (!listEl) return;
-      const ids = Storage.getNotes();
       const byId = {};
-      const cards = [];
+      let lastCard = null;
 
-      ids.forEach((id, i) => {
-        const entry = resolveWordEntry(id);
-        const word  = (entry && entry.word) || id;
-        byId[id] = entry || { word: id };
+      // Display order is persisted so PINNED words (tap a note's number) jump to
+      // the front and stay there — keeping the weakest words on top.
+      function loadOrder() { try { return JSON.parse(localStorage.getItem("tpl.noteOrder") || "[]"); } catch (_) { return []; } }
+      function saveOrder(o) { try { localStorage.setItem("tpl.noteOrder", JSON.stringify(o)); } catch (_) {} }
+      function orderedIds() {
+        const ids = Storage.getNotes();
+        const ord = loadOrder().filter(id => ids.indexOf(id) >= 0);
+        return ord.concat(ids.filter(id => ord.indexOf(id) < 0));
+      }
+      function pinToTop(id) {
+        const ord = loadOrder().filter(x => x !== id); ord.unshift(id); saveOrder(ord); render();
+      }
 
-        const scope = Storage.findScopeOf ? Storage.findScopeOf(id) : null;
-        const src   = sourceLabel(scope);
-        const idxStr = (i + 1 < 10 ? "0" : "") + (i + 1);
-
-        const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
-        const phraseRows = phrases.map(p => `
-            <div class="word-phrase"><span class="wp-en">${esc(p.en)}</span>${p.zh ? `<span class="wp-zh">${esc(p.zh)}</span>` : ""}</div>`).join("");
-        const example   = (entry && entry.example) || "";
-        const exampleZh = (entry && (entry.exampleZh || entry.example_zh)) || "";
-
-        // OPEN banner → reading, located on the folded sentence with the word
-        // spotlit. Only when we know which section it came from.
-        const openBtn = (scope && scope.chapter) ? `
-          <button type="button" class="note-open"
-                  data-go="#reading?chapter=${encodeURIComponent(scope.chapter)}&section=${encodeURIComponent(scope.section || "1.1")}&word=${encodeURIComponent(id)}">OPEN</button>` : "";
-
-        // Five zones over the IMG_6778 card frame. Cards are STACKED so each
-        // shows only its top until tapped — see CSS .note-card overlap.
-        cards.push(`
-          <li class="note-card" data-id="${esc(id)}">
-            <div class="note-quote" title="Tap to hear">
-              <div class="note-quote-inner">
-                ${src ? `<div class="note-source">${esc(src)}</div>` : ""}
-                <div class="note-quote-text">${highlightWord(readingExcerpt(entry, scope), word)}</div>
+      function render() {
+        const cards = [];
+        orderedIds().forEach((id, i) => {
+          const entry = resolveWordEntry(id);
+          const word  = (entry && entry.word) || id;
+          byId[id] = entry || { word: id };
+          const scope = Storage.findScopeOf ? Storage.findScopeOf(id) : null;
+          const src   = sourceLabel(scope);
+          const idxStr = (i + 1 < 10 ? "0" : "") + (i + 1);
+          const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
+          const phraseRows = phrases.map(p => `
+              <div class="word-phrase"><span class="wp-en">${esc(p.en)}</span>${p.zh ? `<span class="wp-zh">${esc(p.zh)}</span>` : ""}</div>`).join("");
+          const example   = (entry && entry.example) || "";
+          const exampleZh = (entry && (entry.exampleZh || entry.example_zh)) || "";
+          const openBtn = (scope && scope.chapter) ? `
+            <button type="button" class="note-open"
+                    data-go="#reading?chapter=${encodeURIComponent(scope.chapter)}&section=${encodeURIComponent(scope.section || "1.1")}&word=${encodeURIComponent(id)}">OPEN</button>` : "";
+          cards.push(`
+            <li class="note-card" data-id="${esc(id)}">
+              <div class="note-quote" title="Tap to hear">
+                <div class="note-quote-inner">
+                  ${src ? `<div class="note-source">${esc(src)}</div>` : ""}
+                  <div class="note-quote-text">${highlightWord(readingExcerpt(entry, scope), word)}</div>
+                </div>
               </div>
-            </div>
-            ${openBtn}
-            <div class="note-word">
-              <div class="word-title">${esc(word)}</div>
-              ${entry && entry.meaning ? `<div class="word-zh">${esc(entry.meaning)}</div>` : ""}
-              ${phraseRows ? `<div class="word-phrases">${phraseRows}</div>` : ""}
-            </div>
-            <div class="note-example" title="Tap to hear">
-              ${example ? `<div class="word-example">${esc(example)}</div>` : ""}
-              ${exampleZh ? `<div class="word-example-zh">${esc(exampleZh)}</div>` : ""}
-            </div>
-            <div class="note-index">${esc(idxStr)}</div>
-          </li>`);
-      });
-
-      listEl.innerHTML = cards.length
-        ? cards.join("")
-        : `<li class="notes-empty">No saved words yet — fold a word while reading to keep it here.</li>`;
-      // Stack depth: later cards paint over earlier ones (deck look).
-      const allCards = Array.from(listEl.querySelectorAll(".note-card"));
-      allCards.forEach((c, i) => { c.style.zIndex = i + 1; });
-      // The bottom card is fully in view (nothing overlaps it), so show it open
-      // by default — otherwise the last card reads as a blank sheet.
-      const lastCard = allCards[allCards.length - 1];
-      if (lastCard) lastCard.classList.add("is-open");
+              ${openBtn}
+              <div class="note-word">
+                <div class="word-title">${esc(word)}</div>
+                ${entry && entry.meaning ? `<div class="word-zh">${esc(entry.meaning)}</div>` : ""}
+                ${phraseRows ? `<div class="word-phrases">${phraseRows}</div>` : ""}
+              </div>
+              <div class="note-example" title="Tap to hear">
+                ${example ? `<div class="word-example">${esc(example)}</div>` : ""}
+                ${exampleZh ? `<div class="word-example-zh">${esc(exampleZh)}</div>` : ""}
+              </div>
+              <div class="note-index" title="Tap to pin to top">${esc(idxStr)}</div>
+            </li>`);
+        });
+        listEl.innerHTML = cards.length ? cards.join("")
+          : `<li class="notes-empty">No saved words yet — fold a word while reading to keep it here.</li>`;
+        const allCards = Array.from(listEl.querySelectorAll(".note-card"));
+        allCards.forEach((c, i) => { c.style.zIndex = i + 1; });
+        // Bottom card is fully in view, so show it open (else it reads blank).
+        lastCard = allCards[allCards.length - 1] || null;
+        if (lastCard) lastCard.classList.add("is-open");
+      }
+      render();
 
       const speak = (t, cb) => { try { if (t && typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t).trim(), cb ? { onEnd: cb } : undefined); } catch (_) {} };
       // Folded by default: tap a card → it slides fully out (others fold back)
@@ -2108,6 +2134,8 @@ const Views = (function () {
         if (e.target.closest(".note-open")) return;   // data-go handles it
         const card = e.target.closest(".note-card");
         if (!card) return;
+        // Tap the index number → pin this word to the top (and leave it folded).
+        if (e.target.closest(".note-index")) { e.stopPropagation(); pinToTop(card.dataset.id); return; }
         if (!card.classList.contains("is-open")) {
           e.stopPropagation();
           listEl.querySelectorAll(".note-card.is-open").forEach(c => c.classList.remove("is-open"));
@@ -2212,8 +2240,11 @@ const Views = (function () {
         // full-lexicon lookup so any word can be found and opened.
         const lib = libraryMatches();
         right.innerHTML = colHTML("Sealed", spelled.length, applyQuery(spelled))
-          + (query ? `<li class="wg-col-head">From the Lexicon · ${lib.length}</li>`
+          + (query ? `<li class="wg-col-head wg-lex-head">From the Lexicon · ${lib.length}</li>`
               + (lib.length ? lib.map(rowHTML).join("") : `<li class="wg-empty">— no match —</li>`) : "");
+        // When searching, jump the right column to the lexicon results so the
+        // sealed list above doesn't hide them.
+        if (query) { const lh = right.querySelector(".wg-lex-head"); if (lh) try { lh.scrollIntoView({ block: "start", behavior: "smooth" }); } catch (_) {} }
         const sm = left.querySelector(".wg-sealmore");
         if (sm && backlog) sm.addEventListener("click", (e) => {
           e.stopPropagation(); window.__navDir = "forward";
@@ -2815,18 +2846,23 @@ const Views = (function () {
       showThrough(0);
 
       function allCorrect() { return all.length && all.every(it => it.dataset.solved === "1"); }
+      // Done = an INLINE row (no popup) so you can still double-tap the
+      // questions to check their translations — especially the last one you
+      // might have guessed — before leaving.
       function finish() {
         if (advancing) return; advancing = true;
         try { playSuccessChordGlobal(); } catch (_) {}
-        const list = (typeof ChapterNav !== "undefined") ? ChapterNav.sectionsOf(chapterId) : [];
-        const isLast = list.length ? (list.findIndex(s => s.number === sectionNum) === list.length - 1) : true;
-        let scrim = host.querySelector(".qx-scrim");
-        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
-        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
-          <p class="qx-en">Passage understood.<br>${isLast ? "This chapter is complete." : "On to the next page."}</p>
-          <div class="qx-actions"><button type="button" class="gs-btn qx-continue">Continue ›</button></div></div>`;
-        scrim.querySelector(".qx-continue").onclick = (e) => { e.stopPropagation(); go(nextHref()); };
-        requestAnimationFrame(() => scrim.classList.add("is-open"));
+        const row = document.createElement("div");
+        row.className = "comp-done-row";
+        row.innerHTML = `<p class="comp-done-title">Passage understood — double-tap any question for its translation.</p>
+          <div class="comp-done-actions">
+            <button type="button" class="gs-btn cd-next">Next ›</button>
+            <button type="button" class="gs-btn cd-notes">Notes ✦</button>
+          </div>`;
+        body.appendChild(row);
+        row.querySelector(".cd-next").onclick = (e) => { e.stopPropagation(); go(nextHref()); };
+        row.querySelector(".cd-notes").onclick = (e) => { e.stopPropagation(); window.__navDir = "up"; window.go("#notes"); };
+        try { row.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (_) {}
       }
 
       let failed = false;
