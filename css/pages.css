@@ -1190,11 +1190,12 @@
    ratio so the frame is never stretched, and centre the content inside it. */
 .qx-card {
   position: relative;
-  width: 650px; max-width: 70%;
-  aspect-ratio: 875 / 548;
-  box-sizing: border-box;
+  /* FIXED to the image's 875×548 ratio (650/1.5967 ≈ 407) so content can never
+     stretch the frame. The stage scales uniformly, so fixed px is safe. */
+  width: 650px; height: 407px;
+  box-sizing: border-box; overflow: hidden;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 8% 8.5%; text-align: center;
+  padding: 7% 8.5%; text-align: center;
   background: url("../assets/bg/ui/IMG_6856.png") no-repeat center center;
   background-size: 100% 100%;
   border: 0;
@@ -1929,12 +1930,12 @@
   display: flex; align-items: center; justify-content: center;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(16px, 1.6vw, 30px);
-  font-weight: 500; letter-spacing: 0.04em;
-  color: #e9dcc0; line-height: 1;
-  text-shadow: 0 1px 2px rgba(40, 52, 74, 0.55);
+  font-weight: 600; letter-spacing: 0.04em;
+  color: #2f4a63; line-height: 1;          /* blue ink — white was invisible on the paper strip */
+  text-shadow: 0 1px 1px rgba(255, 250, 240, 0.4);
   cursor: pointer;
 }
-.note-card .note-index:hover { color: #ffffff; }
+.note-card .note-index:hover { color: #20374d; }
 
 /* ---- reading EXCERPT (left big; wider; tap to hear) ---- */
 .note-card .note-quote {
