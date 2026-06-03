@@ -160,6 +160,17 @@
     0%   { transform: translateY(0)    scale(1);     filter: brightness(1); }
     100% { transform: translateY(-3px) scale(1.012); filter: brightness(1.05); }
   }
+  /* HOVER — the painted button lifts + warms (pauses the idle breathe), so
+     pointing at it reads as "this is alive and pressable". */
+  .menu-btn:hover .menu-btn-inner {
+    animation-play-state: paused;
+    transform: translateY(-6px) scale(1.05);
+    filter: brightness(1.12) drop-shadow(0 12px 22px rgba(40, 28, 12, 0.34));
+  }
+  .menu-btn.quiz:hover .menu-btn-inner,
+  .menu-btn.recall:hover .menu-btn-inner {
+    filter: brightness(1.12) drop-shadow(0 12px 22px rgba(40, 28, 12, 0.42));
+  }
   /* Layer 2 — press sink: REAL "I'm being pressed" feel.
      translateY(5px) is much more visible than the prior 2px;
      scale 0.93 fully smacks the button into the painting; the

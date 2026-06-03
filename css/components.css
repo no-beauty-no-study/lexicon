@@ -1793,15 +1793,21 @@ button.ornate-panel {
     transparent 100%);
   pointer-events: none;
 }
+.ui-bottom-nav button,
+.page-bottom-nav button { transition: color 150ms ease, transform 90ms ease, text-shadow 150ms ease; }
 .ui-bottom-nav button:hover,
 .page-bottom-nav button:hover {
   color: #4a3a1f;
   text-shadow: 0 0 6px rgba(167, 141, 91, 0.24);
+  transform: translateY(-1px);
 }
 .ui-bottom-nav button:hover .nav-glyph,
 .ui-bottom-nav button:hover .nav-glyph-after,
 .page-bottom-nav button:hover .nav-glyph,
 .page-bottom-nav button:hover .nav-glyph-after { color: rgba(124, 95, 50, 0.95); }
+/* pressed — sink slightly so every nav tap has tactile feedback */
+.ui-bottom-nav button:active,
+.page-bottom-nav button:active { transform: translateY(1px); color: #382c16; text-shadow: none; }
 .ui-bottom-nav button:focus,
 .page-bottom-nav button:focus { outline: none; }
 .ui-bottom-nav button[disabled],
