@@ -27,6 +27,18 @@ const Views = (function () {
   function isMetaGloss(zh) {
     return /plural|singular|\b3rd\b|past tense|present participle|past participle|comparative|superlative|单复数|第三人称|复数形式|过去式|过去分词|现在分词|比较级|最高级|词族关联|语义相关|用于连接|副词形式|近义词|关联项|相关表达/i.test(String(zh || ""));
   }
+  // Exit-popup wording. Showing "only N left" when N is large reads as a CHORE
+  // ("还剩30个" → 畏难). So: when ≤5 remain, frame it as the home stretch
+  // ("only N left"); otherwise frame it as PROGRESS already made ("you've done
+  // X of Y") — encouraging, not daunting. Returns { mark, en, zh }.
+  const FEW_LEFT = 5;
+  function coaxCopy(done, total, c) {
+    const left = Math.max(0, total - done);
+    if (left > 0 && left <= FEW_LEFT) {
+      return { mark: c.fewMark, en: c.fewEn(left), zh: c.fewZh };
+    }
+    return { mark: c.startMark, en: c.startEn(Math.max(0, done), total), zh: c.startZh };
+  }
   // For each vocab word, the FIRST section (linear book order) whose passage
   // contains it. A reading word is only ever QUIZZED in that first section —
   // codex's data repeats kindergarten words across chapters, so without this a
@@ -1392,11 +1404,18 @@ const Views = (function () {
               </div></div>`;
             host.appendChild(scrim);
           }
-          const n = remaining();
-          const mark = scrim.querySelector(".qx-mark"); if (mark) mark.textContent = "✦ ALMOST SEALED ✦";
+          const c = coaxCopy(sealedCount(), set.length, {
+            fewMark: "✦ ALMOST SEALED ✦",
+            fewEn: (left) => `Only <b class="qx-num">${left}</b> left to seal, your Highness.`,
+            fewZh: "Spell these last few and the whole set is etched into your book — don't stop on the doorstep.",
+            startMark: "✦ A FINE START ✦",
+            startEn: (done, total) => `You've already sealed <b class="qx-num">${done}</b> of ${total}, your Highness.`,
+            startZh: "Each one you spell is one truly yours — stay a little and watch the set fill up.",
+          });
+          const mark = scrim.querySelector(".qx-mark"); if (mark) mark.textContent = c.mark;
           scrim.querySelector(".qx-en").innerHTML =
-              `Only <b class="qx-num">${n}</b> left to seal, your Highness.`
-            + `<span class="qx-zh" style="display:block;margin-top:12px">Spell these and they're truly etched into your book — don't stop halfway.</span>`;
+              c.en
+            + `<span class="qx-zh" style="display:block;margin-top:12px">${c.zh}</span>`;
           scrim.querySelector(".qx-stay").textContent = "Seal the Set";
           scrim.querySelector(".qx-leave").textContent = "Give Up";
           scrim.querySelector(".qx-stay").onclick = (e) => { e.stopPropagation(); scrim.remove(); try { input.focus(); } catch (_) {} };
@@ -2044,10 +2063,17 @@ const Views = (function () {
       function showQuizExit(proceed) {
         let scrim = host.querySelector(".qx-scrim");
         if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
-        const left = Math.max(0, originalWords.size - solvedWords.size);
-        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ WAIT, YOUR HIGHNESS ✦</div>
-          <p class="qx-en">Just <b class="qx-num">${left}</b> more and the stage is yours.</p>
-          <p class="qx-zh">Slip away now and the words you've gathered won't reach your garden — shall we finish them?</p>
+        const c = coaxCopy(solvedWords.size, originalWords.size, {
+          fewMark: "✦ WAIT, YOUR HIGHNESS ✦",
+          fewEn: (left) => `Just <b class="qx-num">${left}</b> more and the stage is yours.`,
+          fewZh: "Slip away now and the words you've gathered won't reach your garden — shall we finish them?",
+          startMark: "✦ WELL BEGUN ✦",
+          startEn: (done, total) => `You've already cleared <b class="qx-num">${done}</b> of ${total}.`,
+          startZh: "They only reach your garden once the whole stage is done — you're well on your way, let's keep it.",
+        });
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">${c.mark}</div>
+          <p class="qx-en">${c.en}</p>
+          <p class="qx-zh">${c.zh}</p>
           <div class="qx-actions">
             <button type="button" class="gs-btn qx-stay">Keep Going</button>
             <button type="button" class="gs-btn qx-leave">Leave</button>
@@ -2921,10 +2947,17 @@ const Views = (function () {
       function showReviewExit(proceed) {
         let scrim = host.querySelector(".qx-scrim");
         if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
-        const left = Math.max(0, set.length - passedCount());
-        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ ONE MOMENT, YOUR HIGHNESS ✦</div>
-          <p class="qx-en">Only <b class="qx-num">${left}</b> left to revisit today.</p>
-          <p class="qx-zh">These are the words you forget most — walk them through this round and they'll finally settle.</p>
+        const c = coaxCopy(passedCount(), set.length, {
+          fewMark: "✦ ONE MOMENT, YOUR HIGHNESS ✦",
+          fewEn: (left) => `Only <b class="qx-num">${left}</b> left to revisit today.`,
+          fewZh: "These are the words you forget most — walk these last few through and they'll finally settle.",
+          startMark: "✦ ONE MOMENT, YOUR HIGHNESS ✦",
+          startEn: (done, total) => `You've already revisited <b class="qx-num">${done}</b> of ${total} today.`,
+          startZh: "These are the words you forget most — a few more passes and they'll finally settle.",
+        });
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">${c.mark}</div>
+          <p class="qx-en">${c.en}</p>
+          <p class="qx-zh">${c.zh}</p>
           <div class="qx-actions">
             <button type="button" class="gs-btn qx-stay">Keep Going</button>
             <button type="button" class="gs-btn qx-leave">Leave</button>
@@ -3101,10 +3134,18 @@ const Views = (function () {
       function showCompExit(proceed) {
         let scrim = host.querySelector(".qx-scrim");
         if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
-        const left = all.filter(it => it.dataset.solved !== "1").length;
-        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ STAY A LINE LONGER ✦</div>
-          <p class="qx-en">Just <b class="qx-num">${left}</b> question${left === 1 ? "" : "s"} between you and the next page.</p>
-          <p class="qx-zh">You've read this far, your Highness — answer these and the next chapter opens for you.</p>
+        const solvedN = all.filter(it => it.dataset.solved === "1").length;
+        const c = coaxCopy(solvedN, all.length, {
+          fewMark: "✦ STAY A LINE LONGER ✦",
+          fewEn: (left) => `Just <b class="qx-num">${left}</b> question${left === 1 ? "" : "s"} between you and the next page.`,
+          fewZh: "You've read this far, your Highness — answer these and the next chapter opens for you.",
+          startMark: "✦ STAY A LINE LONGER ✦",
+          startEn: (done, total) => `You've already answered <b class="qx-num">${done}</b> of ${total}.`,
+          startZh: "You've read this far, your Highness — see them through and the next chapter opens for you.",
+        });
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">${c.mark}</div>
+          <p class="qx-en">${c.en}</p>
+          <p class="qx-zh">${c.zh}</p>
           <div class="qx-actions">
             <button type="button" class="gs-btn qx-stay">Keep Reading</button>
             <button type="button" class="gs-btn qx-leave">Leave</button>
