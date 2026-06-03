@@ -21,6 +21,12 @@ const Views = (function () {
     const out = t.replace(/^\s*(?:[A-Za-z]{1,6}\.\s*(?:[\/&]\s*)?)+/, "").trim();
     return out || t.trim();
   }
+  // A "gloss" that is really just an inflection label (plural / 3rd-person /
+  // tense / degree) carries no meaning — e.g. "plural/3rd 单复数/第三人称形式".
+  // Such word-forms must NOT appear as quiz answers or distractors.
+  function isMetaGloss(zh) {
+    return /plural|singular|\b3rd\b|past tense|present participle|past participle|comparative|superlative|单复数|第三人称|复数形式|过去式|过去分词|现在分词|比较级|最高级/i.test(String(zh || ""));
+  }
   // For each vocab word, the FIRST section (linear book order) whose passage
   // contains it. A reading word is only ever QUIZZED in that first section —
   // codex's data repeats kindergarten words across chapters, so without this a
@@ -1137,9 +1143,16 @@ const Views = (function () {
         revealFrontier = blocks.length;     // whole section already shown
         host.querySelector(".zone-reading-title")?.classList.add("is-revealed");
         curIdx = blocks.length - 1;
-        const target = host.querySelector(
-          `.clickable-word[data-word="${cssEsc(params.word)}"]`);
+        // Find the clicked word — exact surface match first, else the token
+        // that RESOLVES to it (the passage may hold an inflected form).
+        let target = host.querySelector(`.clickable-word[data-word="${cssEsc(params.word)}"]`);
+        if (!target) {
+          const lw = String(params.word).toLowerCase();
+          target = Array.from(host.querySelectorAll(".clickable-word")).find(el => resolvesTo(el.dataset.word, lw)) || null;
+        }
         if (target) {
+          // Stays lit in the reading click colour (is-selected persists); the
+          // spotlight pulse just draws the eye for a moment.
           target.classList.add("is-selected", "is-spotlight");
           setTimeout(() => {
             try { target.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (_) {}
@@ -1462,7 +1475,7 @@ const Views = (function () {
         const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w) : null;
         if (!sc || sc.proper) return null;
         const zh = stripPos(sc.zh || "");
-        if (!hasCJK(zh)) return null;
+        if (!hasCJK(zh) || isMetaGloss(zh)) return null;   // skip inflection-label "meanings"
         const ans = String(sc.word || w).toLowerCase();
         if (!(window.VocabRuntime && VocabRuntime.getBigCard && VocabRuntime.getBigCard(ans))) return null;
         if (!(sc.examples || []).some(e => e && (e.example || e.en))) return null;
@@ -1481,7 +1494,7 @@ const Views = (function () {
           const word = String(c.word || k).toLowerCase();
           if (!/^[a-z][a-z'-]{1,}$/.test(word)) continue;
           const zh = stripPos(c.zh || "");
-          if (!hasCJK(zh)) continue;
+          if (!hasCJK(zh) || isMetaGloss(zh)) continue;
           const f = word[0];
           (byFirst[f] = byFirst[f] || []).push({ word, zh });
         }
@@ -1946,13 +1959,23 @@ const Views = (function () {
         || (typeof WORDS        !== "undefined" && WORDS.find(w        => (w.id || w.word) === id))
         || null;
   }
+  function rgx(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  function resolvesTo(token, word) {
+    const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(String(token).toLowerCase()) : null;
+    return !!sc && String(sc.word || "").toLowerCase() === String(word).toLowerCase();
+  }
+  // The reading sentence a folded word came from. The word in the passage may
+  // be an INFLECTED surface form (studies → study), so if the headword isn't a
+  // literal match we look for a token that RESOLVES to it. Only falls back to
+  // the example/meaning if the section truly doesn't contain the word.
   function quoteForNote(entry, scope) {
     const word = (entry && entry.word) || "";
     if (scope && scope.chapter && scope.section && typeof ChapterNav !== "undefined") {
       const sec = ChapterNav.findSection(scope.chapter, scope.section);
       if (sec && Array.isArray(sec.blocks) && word) {
-        const re = new RegExp("\\b" + word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "i");
-        const hit = sec.blocks.find(b => re.test(b));
+        const re = new RegExp("\\b" + rgx(word) + "\\b", "i");
+        let hit = sec.blocks.find(b => re.test(b));
+        if (!hit) hit = sec.blocks.find(b => (b.match(/\b[A-Za-z][A-Za-z'-]+\b/g) || []).some(t => resolvesTo(t, word)));
         if (hit) return hit;
       }
     }
@@ -1961,8 +1984,12 @@ const Views = (function () {
   function highlightWord(text, word) {
     const safe = esc(text);
     if (!word) return safe;
-    const re = new RegExp("(" + word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
-    return safe.replace(re, '<span class="quote-word">$1</span>');
+    if (new RegExp("\\b" + rgx(word) + "\\b", "i").test(text)) {
+      return safe.replace(new RegExp("\\b(" + rgx(word) + ")\\b", "ig"), '<span class="quote-word">$1</span>');
+    }
+    // inflected form — highlight whichever token resolves to the headword
+    return safe.replace(/[A-Za-z][A-Za-z'-]+/g, (tok) =>
+      resolvesTo(tok, word) ? '<span class="quote-word">' + tok + '</span>' : tok);
   }
   function sourceLabel(scope) {
     if (!scope || !scope.chapter) return "";
