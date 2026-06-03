@@ -1911,37 +1911,40 @@
   pointer-events: none;
 }
 
-/* ---- reading quote (left big; tap to hear) ---- */
+/* ---- reading EXCERPT (left big; wider; tap to hear) ---- */
 .note-card .note-quote {
   position: absolute;
-  left: 9.3%; top: 14.8%; width: 38.6%; height: 62.1%;
+  left: 7.5%; top: 13%; width: 44%; height: 66%;   /* wider — ~52% of content */
   box-sizing: border-box; overflow: hidden; cursor: pointer;
 }
-/* The text fills the zone (NO narrow centred column). Quote marks are pure
-   decoration (::before/::after, absolute) and don't squeeze the text. */
+/* A STABLE, centred safe-area box (even top/bottom + left/right padding) so the
+   excerpt never hugs an edge or collides with the quote marks / OPEN / chapter
+   line, and every note's reading block reads at the same height. */
 .note-card .note-quote-inner {
-  position: absolute; inset: 6% 7% 6% 7%;
-  display: flex; flex-direction: column;
+  position: absolute; left: 12%; right: 12%; top: 18%; bottom: 18%;
+  display: flex; flex-direction: column; justify-content: center;
+  text-align: center;
 }
 .note-card .note-source {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(10px, 0.8vw, 15px);
-  letter-spacing: 0.08em; color: rgba(74, 61, 43, 0.78);
-  margin-bottom: 0.35em;
+  letter-spacing: 0.08em; color: rgba(74, 61, 43, 0.72);
+  margin-bottom: 0.5em;
 }
 .note-card .note-quote-text {
   font-family: "Cormorant Garamond", "EB Garamond", Georgia, serif;
-  font-size: clamp(14px, 1.18vw, 22px);
-  font-weight: 400; line-height: 1.34; letter-spacing: 0.02em;
-  text-align: left; color: #3f3628;
+  font-size: clamp(16px, 1.35vw, 25px);
+  font-weight: 400; line-height: 1.4; letter-spacing: 0.02em;
+  text-align: center; color: #3f3628;
   width: 100%; max-width: none;
   display: -webkit-box; -webkit-box-orient: vertical;
   -webkit-line-clamp: 5; overflow: hidden;
 }
+/* target word — low-saturation light gold, classical and restrained */
 .note-card .quote-word {
-  background: rgba(191, 165, 103, 0.16);
-  border-bottom: 1px solid rgba(143, 111, 60, 0.38);
-  padding: 0 0.08em;
+  color: #9a7b32;
+  background: rgba(199, 173, 110, 0.14);
+  padding: 0 0.1em; border-radius: 2px;
 }
 /* open quote top-left, close quote bottom-right of the reading box */
 .note-card .note-quote::before {
@@ -1977,7 +1980,7 @@
 /* ---- right-top: word / 中文 / phrases (tap to open the word card) ---- */
 .note-card .note-word {
   position: absolute;
-  left: 50.2%; top: 13.3%; width: 39.4%; height: 46.3%;
+  left: 52.5%; top: 13.3%; width: 37%; height: 46.3%;
   box-sizing: border-box;
   padding: 1% 2% 1% 1%;
   overflow: hidden;
@@ -1986,7 +1989,7 @@
 /* ---- right-bottom: example + 中文 (tap to hear) ---- */
 .note-card .note-example {
   position: absolute;
-  left: 50.5%; top: 64.6%; width: 39.2%; height: 27.7%;
+  left: 52.5%; top: 64.6%; width: 37%; height: 27.7%;
   box-sizing: border-box;
   padding: 0.5% 2% 0.5% 1%;
   overflow: hidden;

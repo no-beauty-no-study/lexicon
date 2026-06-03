@@ -1991,6 +1991,41 @@ const Views = (function () {
     return safe.replace(/[A-Za-z][A-Za-z'-]+/g, (tok) =>
       resolvesTo(tok, word) ? '<span class="quote-word">' + tok + '</span>' : tok);
   }
+  // The actual surface token of `word` as it appears in the sentence.
+  function surfaceFormIn(sentence, word) {
+    const lw = String(word).toLowerCase();
+    const toks = String(sentence).match(/\b[A-Za-z][A-Za-z'-]+\b/g) || [];
+    for (const t of toks) if (t.toLowerCase() === lw || resolvesTo(t, lw)) return t;
+    return null;
+  }
+  // A fixed-length EXCERPT centred on the target word (≈ targetLen chars, snapped
+  // to word boundaries), with a leading/trailing … when either side is cut. Keeps
+  // the left reading block a stable, tidy quote instead of a whole long sentence.
+  function excerptAround(sentence, word, targetLen) {
+    sentence = String(sentence).replace(/\s+/g, " ").trim();
+    targetLen = targetLen || 80;
+    if (sentence.length <= targetLen + 12) return sentence;
+    const surf = surfaceFormIn(sentence, word) || word;
+    const idx = sentence.toLowerCase().indexOf(String(surf).toLowerCase());
+    if (idx < 0) {
+      let ex = sentence.slice(0, targetLen); const sp = ex.lastIndexOf(" ");
+      if (sp > 40) ex = ex.slice(0, sp);
+      return ex + " …";
+    }
+    const half = Math.max(12, Math.floor((targetLen - surf.length) / 2));
+    let start = idx - half, end = idx + surf.length + half;
+    if (start < 0) { end += -start; start = 0; }
+    if (end > sentence.length) { start -= (end - sentence.length); end = sentence.length; if (start < 0) start = 0; }
+    if (start > 0) { const sp = sentence.indexOf(" ", start); if (sp >= 0 && sp < idx) start = sp + 1; }
+    if (end < sentence.length) { const sp = sentence.lastIndexOf(" ", end); if (sp > idx + surf.length) end = sp; }
+    let ex = sentence.slice(start, end).trim();
+    if (start > 0) ex = "… " + ex;
+    if (end < sentence.length) ex = ex + " …";
+    return ex;
+  }
+  function readingExcerpt(entry, scope) {
+    return excerptAround(quoteForNote(entry, scope), (entry && entry.word) || "", 80);
+  }
   function sourceLabel(scope) {
     if (!scope || !scope.chapter) return "";
     const ch  = (typeof getChapter === "function" && getChapter(scope.chapter)) || null;
@@ -2015,7 +2050,6 @@ const Views = (function () {
         byId[id] = entry || { word: id };
 
         const scope = Storage.findScopeOf ? Storage.findScopeOf(id) : null;
-        const quote = quoteForNote(entry, scope);
         const src   = sourceLabel(scope);
         const idxStr = (i + 1 < 10 ? "0" : "") + (i + 1);
 
@@ -2038,7 +2072,7 @@ const Views = (function () {
             <div class="note-quote" title="Tap to hear">
               <div class="note-quote-inner">
                 ${src ? `<div class="note-source">${esc(src)}</div>` : ""}
-                <div class="note-quote-text">${highlightWord(quote, word)}</div>
+                <div class="note-quote-text">${highlightWord(readingExcerpt(entry, scope), word)}</div>
               </div>
             </div>
             ${openBtn}
