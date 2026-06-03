@@ -2386,7 +2386,7 @@ const Views = (function () {
         // No translation shown — tempt the reader to tap and recall it (一考自己).
         return `<li class="wg-row" data-id="${esc(word)}">
           <span class="wg-row-en">${esc(word)}</span>
-          ${need > 0 ? `<span class="wg-row-need" title="needs review">${need}</span>` : ""}
+          <span class="wg-row-need" title="needs review">${need > 0 ? need : ""}</span>
         </li>`;
       }
       function colHTML(title, total, rows) {

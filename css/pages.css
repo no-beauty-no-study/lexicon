@@ -1815,18 +1815,19 @@
 .wg-row {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 2.6em;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   height: 32px;
   padding: 0 4px;
   cursor: pointer;
   transition: background 140ms ease;
 }
-/* just the red need-count, pinned to the right — no stretched pill background */
+/* dedicated fixed-width count column (always present so every row's number
+   lines up like a table column), right-aligned, no background. */
 .wg-row-need {
   font-family: var(--font-display), Georgia, serif; font-size: 14px; font-weight: 600;
-  color: #A8443B; justify-self: end; line-height: 1; letter-spacing: 0.02em;
+  color: #A8443B; text-align: right; line-height: 1; letter-spacing: 0.02em;
 }
 .wg-row:hover { background: rgba(167, 141, 91, 0.06); }
 .wg-row + .wg-row::before {
