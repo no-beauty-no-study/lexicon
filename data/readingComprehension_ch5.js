@@ -1,56 +1,13 @@
-/* Chapter 5 (Australia & the Pacific) reading-comprehension questions.
-   These were missing from the original question bank; supplied by the user in
-   Chinese. Merged into READING_COMPREHENSION, keyed by section number. */
-(function () {
-  var CH5 = {
-    "5.1": [
-      { q: "澳大利亚很早从被称为什么的超大陆撕裂开来？", options: ["盘古大陆。", "劳亚古陆。", "冈瓦纳古陆。", "罗迪尼亚古陆。"], answer: 2 },
-      { q: "占据隔离的澳大利亚森林的树是", options: ["金合欢树。", "猴面包树。", "桉树。", "雪松。"], answer: 2 },
-      { q: "在数千万年间，澳大利亚几乎没有接收到什么？", options: ["爬行动物。", "不会飞的鸟。", "有胎盘哺乳动物。", "开花植物。"], answer: 2 }
-    ],
-    "5.2": [
-      { q: "在没有有胎盘哺乳动物的情况下，澳大利亚的每一个生态位都被什么占据？", options: ["单孔类动物。", "有袋类动物。", "爬行动物。", "有胎盘啮齿动物。"], answer: 1 },
-      { q: "其整个新陈代谢专门用于消化有毒桉树叶的有袋动物是", options: ["袋熊。", "考拉。", "袋鼹鼠。", "袋鼠。"], answer: 1 },
-      { q: "弹簧般的腿使什么能够以低能量消耗在内陆进行广阔穿越？", options: ["大袋鼠。", "鸭嘴兽。", "袋鼠。", "袋狼。"], answer: 2 }
-    ],
-    "5.3": [
-      { q: "澳大利亚那种有蹼脚、鸭嘴状喙和有毒脚踝刺的哺乳动物是", options: ["袋熊。", "考拉。", "鸭嘴兽。", "针鼹。"], answer: 2 },
-      { q: "唯一幸存的仍然通过产卵繁殖的哺乳动物目是", options: ["有袋目。", "胎盘目。", "单孔目。", "啮齿目。"], answer: 2 },
-      { q: "当第一个保存的鸭嘴兽到达伦敦时，欧洲生物学家认为它是", options: ["一个以前灭绝的物种。", "一个用不相关的身体部位缝合起来的骗局。", "一只鼻子受伤的幼年海狸。", "一种完全正常的、不值得关注的哺乳动物。"], answer: 1 }
-    ],
-    "5.4": [
-      { q: "澳大利亚原住民将整个大陆的地形、每一个水源和每一条安全山脊编码成歌唱的导航图，称为", options: ["梦幻时光。", "徒步旅行。", "歌之径。", "科罗博里。"], answer: 2 },
-      { q: "澳大利亚原住民在什么时候乘坐竹筏首次穿越到这片大陆？", options: ["青铜时代。", "冰河时代，当时海平面较低。", "中世纪暖期。", "欧洲殖民时代。"], answer: 1 },
-      { q: "世界上延续时间最长的现存文化属于", options: ["波利尼西亚人。", "毛利人。", "澳大利亚原住民。", "因纽特人。"], answer: 2 }
-    ],
-    "5.5": [
-      { q: "在没有指南针或精密计时器的情况下殖民了几乎所有可居住岛屿的太平洋民族是", options: ["仅毛利人。", "澳大利亚原住民。", "波利尼西亚人。"], answer: 2 },
-      { q: "他们在什么船上驾驶着穿越数千公里的开放海洋？", options: ["竹筏。", "阿拉伯三角帆船。", "舷外支架独木舟。", "中国帆船。"], answer: 2 },
-      { q: "新西兰的波利尼西亚语名称是", options: ["拉帕努伊。", "奥特亚罗瓦。", "哈瓦基。", "纽埃。"], answer: 1 }
-    ],
-    "5.6": [
-      { q: "在复活节岛上被拖过火山地形到达沿海平台的巨大石像被称为", options: ["图腾柱。", "摩艾。", "石棚。", "方尖碑。"], answer: 1 },
-      { q: "随着最后一棵树倒下，岛民失去了建造任何进一步的什么的能力？", options: ["房屋。", "炊火。", "用于近海捕鱼或迁徙的独木舟。", "仪式平台。"], answer: 2 },
-      { q: "因此，复活节岛构成了什么的最干净的有记录样本？", options: ["入侵崩溃。", "火山灾难。", "生态自杀。", "瘟疫灭绝。"], answer: 2 }
-    ],
-    "5.7": [
-      { q: "库克以什么英国海军军衔绘制了澳大利亚东海岸的地图？", options: ["海军上将。", "准将。", "船长。", "中尉。"], answer: 2 },
-      { q: "被归类为害兽并被猎杀至灭绝的塔斯马尼亚有袋捕食者是", options: ["澳洲野狗。", "袋獾。", "袋狼。", "袋鼬。"], answer: 2 },
-      { q: "英国将澳大利亚变成了一个什么样的露天场所？", options: ["贸易殖民地。", "传教殖民地。", "囚犯被送去的刑事殖民地。", "商业领地。"], answer: 2 }
-    ],
-    "5.8": [
-      { q: "为运动而放归、在澳大利亚由于没有天敌而数量爆炸式增长的欧洲动物是", options: ["猪。", "狐狸。", "兔子。", "山羊。"], answer: 2 },
-      { q: "当局在大陆西半部数千公里的范围内修建了一道什么样的围栏，但未能拦住它们？", options: ["防兔围栏。", "毒饵墙。", "训练有素的澳洲野狗环。", "沿着沙漠边缘挖的壕沟。"], answer: 0 },
-      { q: "为了控制甘蔗害虫而从夏威夷引进、毒死了吃掉它的每一种本土捕食者的两栖动物是", options: ["牛蛙。", "海蟾蜍。", "树蛙。", "巨型蝾螈。"], answer: 1 }
-    ],
-    "5.9": [
-      { q: "这个星球有史以来产生的最大单一活体结构，在低地球轨道上可见，是", options: ["马尾藻海。", "珊瑚三角区。", "大堡礁。", "马里亚纳海沟。"], answer: 2 },
-      { q: "当海水变暖几度时，珊瑚会排出它们的藻类伙伴，失去颜色并饿死。这个过程被称为", options: ["珊瑚白化。", "珊瑚礁侵蚀。", "潮汐剥离。", "光合作用崩溃。"], answer: 0 },
-      { q: "随着海平面上升，现在正在准备集体撤离的低洼太平洋国家是", options: ["斐济。", "图瓦卢。", "萨摩亚。", "瓦努阿图。"], answer: 1 }
-    ]
-  };
+/* Chapter 5 (Australia & the Pacific) reading-comprehension questions, in
+   ENGLISH — parsed from 空白 3.txt to match every other chapter (the Chinese
+   that used to live here is now the double-tap translation in
+   data/readingComprehensionZh.js). Merged into READING_COMPREHENSION. */
+(function(){
+  var CH5 = {"5.1":[{"q":"Australia tore loose very early from the supercontinent called","options":["Pangaea.","Laurasia.","Gondwana.","Rodinia."],"answer":2},{"q":"The tree that came to fill the isolated Australian forests is the","options":["acacia.","baobab.","eucalyptus.","cedar."],"answer":2},{"q":"Across tens of millions of years Australia received almost no","options":["reptiles.","flightless birds.","placental mammals.","flowering plants."],"answer":2}],"5.2":[{"q":"In the absence of placental mammals every ecological niche in Australia was filled by","options":["monotremes.","marsupials.","reptiles.","placental rodents."],"answer":1},{"q":"The pouched mammal whose entire metabolism is specialised to digest toxic eucalyptus leaves is the","options":["wombat.","koala.","marsupial mole.","kangaroo."],"answer":1},{"q":"Spring-like legs allow vast low-energy traversal of the outback for the","options":["wallaroo.","platypus.","kangaroo.","thylacine."],"answer":2}],"5.3":[{"q":"The Australian mammal with webbed feet, a duck-like bill and a venomous ankle spur is the","options":["wombat.","koala.","platypus.","echidna."],"answer":2},{"q":"The only surviving order of mammals that still reproduce by laying eggs is the","options":["marsupial.","placental.","monotreme.","rodent."],"answer":2},{"q":"When the first preserved platypus arrived in London, European biologists assumed it was","options":["a previously extinct species.","a hoax stitched together from unrelated body parts.","a juvenile beaver with an injured snout.","a perfectly normal mammal of no interest."],"answer":1}],"5.4":[{"q":"Aboriginal Australians encode the terrain of the entire continent, every water source and every safe ridge, into sung navigational charts called","options":["dreamings.","walkabouts.","songlines.","corroborees."],"answer":2},{"q":"Aboriginal Australians first crossed onto the continent on bamboo rafts during","options":["the Bronze Age.","the Ice Age, when sea levels were lower.","the medieval warm period.","the era of European colonisation."],"answer":1},{"q":"The world's longest continuously living culture is held by the","options":["Polynesians.","Maori.","Aboriginal Australians.","Inuit."],"answer":2}],"5.5":[{"q":"The Pacific people who colonised nearly every habitable island without compass or chronometer were the","options":["Maori alone.","Aboriginal Australians.","Polynesians.","Melanesians."],"answer":2},{"q":"They steered across thousands of kilometres of open ocean in","options":["bamboo rafts.","Arab dhows.","outrigger canoes.","Chinese junks."],"answer":2},{"q":"The Polynesian name for New Zealand is","options":["Rapa Nui.","Aotearoa.","Hawaiki.","Niue."],"answer":1}],"5.6":[{"q":"The giant stone heads dragged across the volcanic terrain to coastal platforms on Easter Island are called","options":["totems.","moai.","dolmens.","obelisks."],"answer":1},{"q":"As the last tree fell, the islanders lost the ability to build any further","options":["houses.","cooking fires.","canoes for offshore fishing or migration.","ceremonial platforms."],"answer":2},{"q":"Easter Island therefore constitutes the cleanest documented sample of an","options":["invasion collapse.","volcanic catastrophe.","ecological suicide.","plague extinction."],"answer":2}],"5.7":[{"q":"Cook charted the eastern coast of Australia holding the British naval rank of","options":["admiral.","commodore.","captain.","lieutenant."],"answer":2},{"q":"The Tasmanian marsupial predator classified as vermin and hunted to extinction was the","options":["dingo.","Tasmanian devil.","thylacine.","quoll."],"answer":2},{"q":"Britain made Australia an open-air","options":["trading colony.","mission colony.","penal colony into which convicts were deposited.","commercial dominion."],"answer":2}],"5.8":[{"q":"The European animal released for sport that exploded across Australia in the absence of predators was the","options":["pig.","fox.","rabbit.","goat."],"answer":2},{"q":"Across thousands of kilometres of the western half of the continent the authorities erected a","options":["rabbit-proof fence which failed to contain them.","wall of poisoned bait.","ring of trained dingoes.","moat dug along the desert margin."],"answer":0},{"q":"Introduced from Hawaii to control sugarcane pests, the amphibian that poisoned every native predator that ate it was the","options":["bullfrog.","cane toad.","tree frog.","giant salamander."],"answer":1}],"5.9":[{"q":"The largest single living structure ever produced on the planet, visible from low Earth orbit, is the","options":["Sargasso Sea.","Coral Triangle.","Great Barrier Reef.","Mariana Trench."],"answer":2},{"q":"When seawater warms a few degrees, corals expel their algal partners, lose their colour and starve. The process is called","options":["coral bleaching.","reef erosion.","tidal stripping.","photosynthetic collapse."],"answer":0},{"q":"The low-lying Pacific nation now preparing for collective evacuation as the sea rises is","options":["Fiji.","Tuvalu.","Samoa.","Vanuatu."],"answer":1}]};
   try {
-    window.READING_COMPREHENSION = window.READING_COMPREHENSION || {};
-    for (var k in CH5) window.READING_COMPREHENSION[k] = CH5[k];
+    if (typeof window !== "undefined") {
+      window.READING_COMPREHENSION = window.READING_COMPREHENSION || {};
+      for (var k in CH5) window.READING_COMPREHENSION[k] = CH5[k];
+    }
   } catch (e) {}
 })();
