@@ -2623,6 +2623,7 @@ const Views = (function () {
         return;
       }
       set.forEach(q => { q.passed = false; q.sealed = false; });
+      let choiceDone = false;   // true once the recall+group round is cleared
 
       // distractors drawn from the rest of the set itself
       function synOptions(q) {
@@ -2726,6 +2727,7 @@ const Views = (function () {
 
       // ============ between stages — ask whether to spell ============
       function askSpelling() {
+        choiceDone = true;   // recall + group choices all passed → exit allowed
         renderBottom(set.length + " / " + set.length);
         wordZone.className = "rv-word is-show";
         wordZone.innerHTML = `<div class="rv-done-mark">✦</div>`;
@@ -2820,6 +2822,33 @@ const Views = (function () {
         renderBottom(sealedCount() + " / " + set.length);
         try { playSuccessChordGlobal(); } catch (_) {}
       }
+
+      // Leaving Review before the recall+group round is cleared shows the same
+      // finish-first nudge as the other quizzes.
+      function showReviewExit(proceed) {
+        let scrim = host.querySelector(".qx-scrim");
+        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
+        const left = Math.max(0, set.length - passedCount());
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
+          <p class="qx-en"><b class="qx-num">${left}</b> word${left === 1 ? "" : "s"} left to review.<br>Finish the round before you leave.</p>
+          <div class="qx-actions">
+            <button type="button" class="gs-btn qx-stay">Keep Going</button>
+            <button type="button" class="gs-btn qx-leave">Leave</button>
+          </div></div>`;
+        scrim.querySelector(".qx-stay").onclick = (e) => { e.stopPropagation(); scrim.remove(); };
+        scrim.querySelector(".qx-leave").onclick = (e) => { e.stopPropagation(); scrim.remove(); proceed(); };
+        requestAnimationFrame(() => scrim.classList.add("is-open"));
+      }
+      host.addEventListener("click", (e) => {
+        if (e.target.closest(".qx-scrim")) return;
+        const btn = e.target.closest(".rv-nav-btn");
+        if (!btn || choiceDone) return;
+        e.preventDefault(); e.stopPropagation();
+        const trial = btn.hasAttribute("data-trial");
+        showReviewExit(trial
+          ? () => { window.__navDir = "forward"; window.go((window.Quiz && Quiz.menuHref) ? Quiz.menuHref("menu") : "#menu"); }
+          : () => window.go(btn.getAttribute("data-go") || backHref));
+      }, true);
 
       stageA();   // default entry = Word Recall + Group Choice, never spelling
     },
@@ -2952,6 +2981,32 @@ const Views = (function () {
           setTimeout(() => window.go(returnHref), 1400);
         }
       });
+
+      // Leaving the comprehension before it's done shows the same finish-first
+      // nudge as the quizzes (unified exit guard across all three paths).
+      function showCompExit(proceed) {
+        let scrim = host.querySelector(".qx-scrim");
+        if (!scrim) { scrim = document.createElement("div"); scrim.className = "qx-scrim"; host.appendChild(scrim); }
+        const left = all.filter(it => it.dataset.solved !== "1").length;
+        scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦</div>
+          <p class="qx-en"><b class="qx-num">${left}</b> question${left === 1 ? "" : "s"} left.<br>Finish the comprehension before you leave.</p>
+          <div class="qx-actions">
+            <button type="button" class="gs-btn qx-stay">Keep Reading</button>
+            <button type="button" class="gs-btn qx-leave">Leave</button>
+          </div></div>`;
+        scrim.querySelector(".qx-stay").onclick = (e) => { e.stopPropagation(); scrim.remove(); };
+        scrim.querySelector(".qx-leave").onclick = (e) => { e.stopPropagation(); scrim.remove(); proceed(); };
+        requestAnimationFrame(() => scrim.classList.add("is-open"));
+      }
+      host.addEventListener("click", (e) => {
+        if (e.target.closest(".qx-scrim") || e.target.closest(".comp-done-row")) return;
+        const btn = e.target.closest(".ui-bottom-nav [data-go], .ui-bottom-nav [data-story]");
+        if (!btn || advancing || failed || allCorrect()) return;
+        e.preventDefault(); e.stopPropagation();
+        const isStory = btn.hasAttribute("data-story");
+        showCompExit(isStory ? () => { window.__navDir = "back"; window.go(returnHref); }
+                             : () => window.go(btn.getAttribute("data-go")));
+      }, true);
     },
   };
 
