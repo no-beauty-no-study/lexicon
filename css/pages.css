@@ -1014,7 +1014,10 @@
   background: rgba(122, 80, 72, 0.58);
   transform: rotate(-1.5deg);
 }
-.reading-art .quiz-option.is-locked { pointer-events: none; }
+/* Locked = can't change the answer, but STILL tappable so each option can be
+   flipped 中文↔英文 for study after the question is solved (the JS solved-branch
+   flips instead of re-answering). */
+.reading-art .quiz-option.is-locked { pointer-events: auto; }
 
 /* ===================== QUIZ 2 · GOLDEN SEAL ======================
    Parchment "Listen and Spell" page (copies GPT's preview). All warm
@@ -1168,33 +1171,48 @@
   opacity: 0; transition: opacity 220ms ease; pointer-events: none;
 }
 .qx-scrim.is-open { opacity: 1; pointer-events: auto; }
+/* A floating PAPER PLAQUE from this classical world — NOT a modern modal.
+   Pure CSS (no image, so no baked-in gray corners): warm aged-paper fill,
+   a DOUBLE frame (darker gray-gold outer + lighter cream-gold inner), small
+   corner ticks + a bottom knot. Padding is tight so the content reads as one
+   compact block, not floating in empty space. */
 .qx-card {
   position: relative;
-  max-width: 44%; box-sizing: border-box;
-  padding: 9.5% 9% 8.5%; text-align: center;     /* content sunk below the top ornament */
-  background: url("../assets/bg/ui/IMG_6856.png") no-repeat center center;
-  background-size: 100% 100%;
-  border: 0;
+  width: 460px; max-width: 86%; box-sizing: border-box;
+  padding: 5.5% 7% 5%; text-align: center;
+  background-color: #E5D8C4;
+  background-image:
+    radial-gradient(150% 95% at 50% -12%, rgba(255,251,242,0.6), transparent 55%),
+    radial-gradient(150% 95% at 50% 112%, rgba(120,96,60,0.14), transparent 55%),
+    radial-gradient(60% 70% at 22% 30%, rgba(120,96,60,0.05), transparent 60%);
+  border: 2px solid #9A7A48;
+  border-radius: 3px;
   color: #463d2c; font-family: var(--font-display);
-  box-shadow: 0 18px 44px rgba(40, 28, 12, 0.4);
+  box-shadow:
+    0 2px 0 rgba(120, 96, 60, 0.28),                 /* paper thickness */
+    0 14px 30px rgba(40, 28, 12, 0.34);
   transform: scale(0.98); transition: transform 220ms ease;
 }
 .qx-scrim.is-open .qx-card { transform: scale(1); }
-/* thin gold footer rule + small knot (so the base isn't a bare modern card) */
+/* INNER cream-gold frame line (the second, lighter border) + corner ticks */
 .qx-card::before {
-  content: ""; position: absolute; left: 34%; right: 34%; bottom: 6.2%; height: 1px;
-  background: linear-gradient(to right, transparent, rgba(155,122,74,0.5), transparent);
+  content: ""; position: absolute; inset: 6px;
+  border: 1px solid rgba(196, 168, 110, 0.72);
+  border-radius: 2px; pointer-events: none;
 }
+/* small knot ornament at the base */
 .qx-card::after {
-  content: "❖"; position: absolute; left: 0; right: 0; bottom: 4%;
-  text-align: center; font-size: 12px; color: rgba(155,122,74,0.6);
+  content: "❖"; position: absolute; left: 0; right: 0; bottom: 2.6%;
+  text-align: center; font-size: 12px; color: rgba(155, 122, 74, 0.72);
 }
-.qx-mark { font-size: 15px; letter-spacing: 0.16em; color: #8a6c34; margin-bottom: 1.1em; }
-.qx-en { font-family: var(--font-display); font-size: 21px; line-height: 1.7; letter-spacing: 0.02em; color: #3f3526; margin: 0 0 12px; }
-.qx-zh { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.7; color: #6a5c44; margin: 0 0 22px; }
-.qx-num { color: #A8443B; font-weight: 700; font-size: 1.25em; }
-.qx-actions { position: relative; z-index: 1; display: flex; gap: 14px; justify-content: center; }
-.qx-leave { color: #8A5B56; border-color: rgba(138,91,86,0.5); }
+.qx-mark {
+  font-size: 13.5px; letter-spacing: 0.2em; color: #92702f;
+  text-transform: uppercase; font-weight: 500; margin: 0 0 20px;
+}
+.qx-en { font-family: var(--font-display); font-size: 23px; line-height: 1.5; letter-spacing: 0.02em; color: #3a3021; margin: 0 0 15px; }
+.qx-zh { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 15.5px; line-height: 1.62; color: #685a42; margin: 0 auto 24px; max-width: 28em; }
+.qx-num { color: #9A4A3C; font-weight: 700; font-size: 1.2em; }
+.qx-actions { position: relative; z-index: 1; display: flex; gap: 16px; justify-content: center; }
 .qx-leave:hover { background: rgba(138,91,86,0.12); color: #6e3f3a; }
 /* The guiding "Continue" — a faint denim-blue wash to draw the tap. */
 .qx-continue { background: rgba(116, 134, 151, 0.18); border-color: rgba(116, 134, 151, 0.6); color: #41515e; }
@@ -2495,36 +2513,61 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .rv-fb-tip { margin-top: 8px; font-family: var(--font-display), Georgia, serif; font-size: 12px;
   letter-spacing: 0.12em; color: rgba(124,95,50,0.85); }
 
-/* Popup actions — classical paper buttons (NOT modern modal). Primary = denim
-   plaque that draws the tap; secondary = quiet outline. */
-.qx-actions { gap: 22px !important; margin-top: 6px; }
+/* Popup buttons — CLASSICAL PLAQUE BUTTONS, native to this world, NOT modern
+   form buttons. Each has a visible OUTER edge AND an INNER inset line (the
+   double-edge that reads as an engraved plaque), a soft vertical press, serif
+   small-caps. Both buttons are close in width (~equal weight). No glow / bright
+   modern hover — only a small darkening. */
+.qx-actions { gap: 16px !important; margin-top: 4px; }
+/* PRIMARY — muted ribbon gray-blue (not bright), the plaque that draws the tap */
 .qx-stay, .qx-continue, .qx-spell {
-  background: #5F7480 !important;
-  background-image: linear-gradient(160deg, #6a7f8a 0%, #566c77 58%, #4f646e 100%) !important;
-  border: 1px solid rgba(155, 122, 74, 0.55) !important;
-  color: #F4ECDD !important;
-  box-shadow: inset 0 0 0 1px rgba(244,236,221,0.20), 0 4px 10px rgba(50,45,38,0.18) !important;
-  text-shadow: 0 1px 1px rgba(24,30,34,0.4);
-  padding: 11px 26px !important; min-width: 170px;
-  transition: background-color 150ms ease, transform 120ms ease, box-shadow 150ms ease;
+  flex: 0 1 auto; min-width: 150px;
+  background-color: #5C707A !important;
+  background-image: linear-gradient(180deg, #6c818b 0%, #566a74 54%, #4b5f69 100%) !important;
+  border: 1.5px solid #3f4e56 !important;
+  border-radius: 2px !important;
+  color: #F3EAD8 !important;
+  box-shadow:
+    inset 0 0 0 1.5px rgba(243, 234, 217, 0.30),    /* INNER cream line */
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 2px 4px rgba(35, 28, 16, 0.30) !important;
+  text-shadow: 0 1px 1px rgba(20, 28, 32, 0.45);
+  font-family: var(--font-display), Georgia, serif !important;
+  font-size: 12px !important; letter-spacing: 0.16em !important;
+  text-transform: uppercase !important; font-weight: 500 !important;
+  padding: 12px 22px !important;
+  transition: background-color 150ms ease, box-shadow 150ms ease, transform 120ms ease;
 }
 .qx-stay:hover, .qx-continue:hover, .qx-spell:hover {
-  background-image: linear-gradient(160deg, #586c77, #46596333) !important;
-  background-color: #4E626C !important; color: #F8F2E6 !important;
-  transform: translateY(-1px);
-  box-shadow: inset 0 0 0 1px rgba(244,236,221,0.22), 0 6px 14px rgba(50,45,38,0.26) !important;
+  background-image: linear-gradient(180deg, #5f737d, #475b65) !important;
+  background-color: #4a5e68 !important; color: #F8F1E2 !important;
+  box-shadow: inset 0 0 0 1.5px rgba(243,234,217,0.34), inset 0 1px 0 rgba(255,255,255,0.12), 0 3px 6px rgba(35,28,16,0.34) !important;
 }
-.qx-stay:active, .qx-continue:active, .qx-spell:active { transform: translateY(1px); box-shadow: inset 0 0 0 1px rgba(244,236,221,0.18), 0 2px 5px rgba(50,45,38,0.18) !important; }
+.qx-stay:active, .qx-continue:active, .qx-spell:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 0 0 1.5px rgba(243,234,217,0.28), 0 1px 2px rgba(35,28,16,0.28) !important;
+}
+/* SECONDARY — paper plaque, lighter than primary but still a real button */
 .qx-leave, .qx-finish {
-  background: rgba(247,240,222,0.18) !important;
-  border: 1px solid rgba(155,122,74,0.38) !important;
-  color: #6F675E !important; box-shadow: none !important;
-  padding: 11px 24px !important; min-width: 150px;
-  transition: background-color 150ms ease, transform 120ms ease, border-color 150ms ease, color 150ms ease;
+  flex: 0 1 auto; min-width: 140px;
+  background-color: #E1D4BE !important;
+  background-image: linear-gradient(180deg, #ece0cc 0%, #ddcfb5 100%) !important;
+  border: 1.5px solid rgba(124, 95, 50, 0.52) !important;
+  border-radius: 2px !important;
+  color: #6E5A3E !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(124, 95, 50, 0.24),        /* INNER line */
+    0 2px 4px rgba(35, 28, 16, 0.16) !important;
+  text-shadow: none;
+  font-family: var(--font-display), Georgia, serif !important;
+  font-size: 12px !important; letter-spacing: 0.16em !important;
+  text-transform: uppercase !important; font-weight: 500 !important;
+  padding: 12px 20px !important;
+  transition: border-color 150ms ease, background-color 150ms ease, transform 120ms ease;
 }
 .qx-leave:hover, .qx-finish:hover {
-  background: rgba(155,122,74,0.08) !important;
-  border-color: rgba(155,122,74,0.55) !important; color: #574f44 !important; text-shadow: none;
+  background-image: linear-gradient(180deg, #e8dcc7, #d6c8ac) !important;
+  border-color: rgba(124, 95, 50, 0.82) !important; color: #574734 !important;
 }
 .qx-leave:active, .qx-finish:active { transform: translateY(1px); }
 
