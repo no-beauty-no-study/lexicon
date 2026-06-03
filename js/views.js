@@ -2704,68 +2704,81 @@ const Views = (function () {
           </button>`;
       }
 
-      // ============ STAGE A — Word Recall + Group Choice (default entry) ============
-      let queue = set.map((_, i) => i);   // indices still to clear; wrong ones requeue
+      // ============ STAGE A — Word Recall + Group Choice ============
+      // Flow (mirrors the quiz): word shown → tap ANYWHERE to reveal the
+      // sentence + options → pick an option → options stay for study (tap to
+      // flip 中文↔英文) → tap ANYWHERE (not an option) to go to the next word.
+      let queue = set.map((_, i) => i);
+      let phase = "word", cur = null, useSyn = false;
+      function optMeaningRv(w) { const sc = VR && VR.getSmallCard ? VR.getSmallCard(w) : null; return sc ? stripPos(sc.zh || "") : ""; }
+      function optEl(o, n) {
+        const en = useSyn ? (o.t || "") : "";
+        const zh = useSyn ? optMeaningRv(o.t) : (o.t || "");
+        const shown = useSyn ? (en || zh) : zh;
+        return `<li class="quiz-option" data-en="${esc(en)}" data-zh="${esc(zh)}" data-correct="${o.correct ? 1 : 0}">
+          <span class="quiz-option-letter">${LETTER[n]}.</span><span class="quiz-option-text">${esc(shown)}</span></li>`;
+      }
       function stageA() {
         while (queue.length && set[queue[0]].passed) queue.shift();
         if (!queue.length) { askSpelling(); return; }
-        const q = set[queue[0]];
-        let revealed = false, locked = false;
+        cur = set[queue[0]]; phase = "word";
         const prog = String(Math.min(set.length, passedCount() + 1)).padStart(2, "0") + " / " + String(set.length).padStart(2, "0");
-        paintWord(q, prog);
-        qZone.innerHTML = `<div class="rv-q-hint">Tap the word above to reveal its sentence.<br><span class="rv-q-zh">点击上方单词，进入语境选择。</span></div>`;
+        paintWord(cur, prog);
+        qZone.innerHTML = `<div class="rv-q-hint">Tap anywhere to reveal the sentence.<br><span class="rv-q-zh">点击任意处，进入语境选择。</span></div>`;
         renderBottom();
-        say(q.word);
-        const face = wordZone.querySelector(".rv-wordface");
-        face.addEventListener("click", () => {
-          if (revealed) { say(q.en); return; }   // tap again → replay the line
-          revealed = true;
-          const useSyn = !!q.syn;
-          const opts = useSyn ? synOptions(q) : meaningOptions(q);
-          const sentence = esc(q.en).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), `<u class="rv-target">${esc(q.word)}</u>`);
-          qZone.innerHTML = `
-            <p class="rv-sentence">${sentence}</p>
-            <div class="rv-q-label">${useSyn ? "Which word joins its group?" : "Which meaning fits?"}</div>
-            <ul class="quiz-options rv-quiz-options">
-              ${opts.map((o, n) => `<li class="quiz-option" data-correct="${o.correct ? 1 : 0}">
-                  <span class="quiz-option-letter">${LETTER[n]}.</span><span class="quiz-option-text">${esc(o.t)}</span></li>`).join("")}
-            </ul>`;
-          say(q.en);
-          qZone.querySelectorAll(".quiz-option").forEach(li => {
-            li.addEventListener("click", () => {
-              if (locked) return;
-              const ok = li.dataset.correct === "1";
-              if (ok) {
-                locked = true; li.classList.add("is-correct");
-                q.passed = true;
-                if (window.Quiz) {
-                  // REVIEW correct is the only thing that pulls a word down.
-                  Quiz.recordReviewCorrect(q.word);
-                  if (useSyn && q.syn && VR && VR.getSmallCard && VR.getSmallCard(q.syn)) Quiz.recordReviewCorrect(q.syn);
-                }
-                chord(); queue.shift(); renderBottom();
-                setTimeout(stageA, 850);
-              } else {
-                locked = true; li.classList.add("is-wrong");
-                if (window.Quiz) Quiz.recordWord(q.word, false);   // wrong → needs review more
-                qZone.querySelectorAll(".quiz-option").forEach(o => { if (o.dataset.correct === "1") o.classList.add("is-correct"); });
-                // Show the meaning + the sentence's Chinese on a miss.
-                const fb = document.createElement("div");
-                fb.className = "rv-feedback";
-                fb.innerHTML = `<div class="rv-fb-key">${esc(q.word)}${q.meaning ? " · " + esc(q.meaning) : ""}</div>`
-                  + (q.zh ? `<div class="rv-fb-zh">${esc(q.zh)}</div>` : "");
-                qZone.appendChild(fb);
-                queue.push(queue.shift());   // requeue this word to the back; not passed
-                setTimeout(stageA, 2200);
-              }
-            });
-          });
-        });
+        say(cur.word);
       }
+      function revealQ() {
+        phase = "choosing";
+        const q = cur; useSyn = !!q.syn;
+        q._opts = useSyn ? synOptions(q) : meaningOptions(q);
+        const sentence = esc(q.en).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), `<u class="rv-target">${esc(q.word)}</u>`);
+        qZone.innerHTML = `<p class="rv-sentence">${sentence}</p>
+          <div class="rv-q-label">${useSyn ? "Which word joins its group?" : "Which meaning fits?"}</div>
+          <ul class="quiz-options rv-quiz-options">${q._opts.map(optEl).join("")}</ul>`;
+        say(q.en);
+      }
+      function answerReview(li) {
+        const q = cur; const ok = li.dataset.correct === "1";
+        phase = "answered";
+        if (ok) {
+          li.classList.add("is-correct"); q.passed = true;
+          if (window.Quiz) { Quiz.recordReviewCorrect(q.word); if (useSyn && q.syn && VR && VR.getSmallCard && VR.getSmallCard(q.syn)) Quiz.recordReviewCorrect(q.syn); }
+          chord();
+        } else {
+          li.classList.add("is-wrong");
+          if (window.Quiz) Quiz.recordWord(q.word, false);
+          qZone.querySelectorAll(".quiz-option").forEach(o => { if (o.dataset.correct === "1") o.classList.add("is-correct"); });
+          queue.push(queue.shift());   // requeue to the back
+        }
+        renderBottom();
+        const fb = document.createElement("div"); fb.className = "rv-feedback";
+        fb.innerHTML = `<div class="rv-fb-key">${esc(q.word)}${q.meaning ? " · " + esc(q.meaning) : ""}</div>`
+          + (q.zh ? `<div class="rv-fb-zh">${esc(q.zh)}</div>` : "")
+          + `<div class="rv-fb-tip">点击选项翻看 · 点击任意处继续 ›</div>`;
+        qZone.appendChild(fb);
+        say(q.en);
+      }
+      function studyFlip(opt) {
+        const text = opt.querySelector(".quiz-option-text");
+        const en = opt.dataset.en || "", zh = opt.dataset.zh || "";
+        const toEn = !opt.classList.contains("opt-en");
+        opt.classList.add("opt-flip");
+        setTimeout(() => { if (text) text.textContent = toEn ? (en || zh) : (zh || en); opt.classList.toggle("opt-en", toEn); opt.classList.remove("opt-flip"); }, 130);
+        if (en) { try { TTS.speak(en); } catch (_) {} }
+      }
+      // One click handler drives the whole stage by phase. Nav / popups bail out.
+      host.addEventListener("click", (e) => {
+        if (e.target.closest(".rv-bottom") || e.target.closest(".qx-scrim")) return;
+        if (phase === "word") { revealQ(); return; }
+        const opt = e.target.closest(".quiz-option");
+        if (phase === "choosing") { if (opt) answerReview(opt); return; }
+        if (phase === "answered") { if (opt) studyFlip(opt); else stageA(); return; }
+      });
 
       // ============ between stages — ask whether to spell ============
       function askSpelling() {
-        choiceDone = true;   // recall + group choices all passed → exit allowed
+        choiceDone = true; phase = "spell";   // recall + group choices all passed → exit allowed
         renderBottom(set.length + " / " + set.length);
         wordZone.className = "rv-word is-show";
         wordZone.innerHTML = `<div class="rv-done-mark">✦</div>`;
