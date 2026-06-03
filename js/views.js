@@ -549,61 +549,72 @@ const Views = (function () {
         const resumeSec = lastSectionOf(c.id, c.firstSection || (secs[0] && secs[0].number) || "1.1");
         let sel = Math.max(0, secs.findIndex(s => String(s.number) === String(resumeSec)));
         if (sel < 0) sel = 0;
-        // sub-number shown in the picker (1.3 → "3"); falls back to full label.
-        const subNum = (n) => { const m = String(n).match(/\.(\d+)$/); return m ? m[1] : String(n); };
+        const multi = secs.length > 1;
 
         btn.innerHTML = `
-          <div class="toc-open-wrap">
-            <button type="button" class="antique-button toc-open-btn">
-              <span class="antique-button-corner tl"></span>
-              <span class="antique-button-corner tr"></span>
-              <span class="antique-button-corner bl"></span>
-              <span class="antique-button-corner br"></span>
-              <span class="antique-button-label">Open Chapter</span>
-            </button>
-            ${secs.length > 1 ? `
-            <div class="toc-sec-picker" title="Slide up / down to pick a section">
-              <button type="button" class="toc-sec-step" data-step="-1" aria-label="Previous section">▲</button>
-              <span class="toc-sec-num">${esc(subNum(secs[sel] && secs[sel].number))}</span>
-              <button type="button" class="toc-sec-step" data-step="1" aria-label="Next section">▼</button>
-            </div>` : ""}
-          </div>`;
+          <button type="button" class="antique-button toc-open-btn" data-mode="label">
+            <span class="antique-button-corner tl"></span>
+            <span class="antique-button-corner tr"></span>
+            <span class="antique-button-corner bl"></span>
+            <span class="antique-button-corner br"></span>
+            <span class="antique-button-label">
+              <span class="toc-btn-open">Open Chapter</span>
+              <span class="toc-btn-sel" aria-hidden="true">
+                <span class="toc-sel-arrow up">▲</span>
+                <span class="toc-sel-num">${esc(String(secs[sel] && secs[sel].number || resumeSec))}</span>
+                <span class="toc-sel-arrow dn">▼</span>
+                <span class="toc-sel-go">tap to open</span>
+              </span>
+            </span>
+          </button>`;
 
         const openBtn = btn.querySelector(".toc-open-btn");
-        const numEl   = btn.querySelector(".toc-sec-num");
-        const picker  = btn.querySelector(".toc-sec-picker");
+        const numEl   = btn.querySelector(".toc-sel-num");
         function targetSec() { return (secs[sel] && secs[sel].number) || resumeSec; }
+        function setSel(i) {
+          sel = Math.max(0, Math.min(secs.length - 1, i));
+          if (numEl) numEl.textContent = String(secs[sel].number);
+        }
         function go() {
           window.__navDir = "forward";
           window.go(`#reading?chapter=${encodeURIComponent(c.id)}&section=${encodeURIComponent(targetSec())}${browseFlag}`);
         }
-        openBtn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); go(); });
 
-        if (picker && secs.length > 1) {
-          function setSel(i) {
-            sel = Math.max(0, Math.min(secs.length - 1, i));
-            if (numEl) numEl.textContent = subNum(secs[sel].number);
-          }
-          // ▲ previous · ▼ next
-          picker.querySelectorAll(".toc-sec-step").forEach(b => {
-            b.addEventListener("click", (e) => { e.stopPropagation(); setSel(sel + (+b.dataset.step)); });
-          });
-          // tap the number → advance one (wraps), so a plain tap cycles through.
-          if (numEl) numEl.addEventListener("click", (e) => { e.stopPropagation(); setSel((sel + 1) % secs.length); });
-          // wheel + vertical drag = "slide up/down".
-          picker.addEventListener("wheel", (e) => { e.preventDefault(); setSel(sel + (e.deltaY > 0 ? 1 : -1)); }, { passive: false });
-          let dragY = null, acc = 0;
-          picker.addEventListener("pointerdown", (e) => { dragY = e.clientY; acc = 0; try { picker.setPointerCapture(e.pointerId); } catch (_) {} });
-          picker.addEventListener("pointermove", (e) => {
-            if (dragY == null) return;
-            acc += (e.clientY - dragY); dragY = e.clientY;
-            while (acc >= 24) { acc -= 24; setSel(sel + 1); }     // drag down → later section
-            while (acc <= -24) { acc += 24; setSel(sel - 1); }    // drag up → earlier section
-          });
-          const endDrag = () => { dragY = null; };
-          picker.addEventListener("pointerup", endDrag);
-          picker.addEventListener("pointercancel", endDrag);
+        // Single section → behave like a plain Open Chapter button.
+        if (!multi) {
+          openBtn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); go(); });
+          return;
         }
+
+        // First tap morphs "Open Chapter" into a slidable section number; slide
+        // it up/down (drag / wheel / ▲▼) to choose, then tap again to enter.
+        let mode = "label", downY = 0, downX = 0, moved = 0, dragY = null, acc = 0;
+        openBtn.addEventListener("pointerdown", (e) => {
+          downY = e.clientY; downX = e.clientX; moved = 0;
+          if (mode === "select") { dragY = e.clientY; acc = 0; try { openBtn.setPointerCapture(e.pointerId); } catch (_) {} }
+        });
+        openBtn.addEventListener("pointermove", (e) => {
+          moved = Math.max(moved, Math.abs(e.clientY - downY) + Math.abs(e.clientX - downX));
+          if (mode === "select" && dragY != null) {
+            acc += (e.clientY - dragY); dragY = e.clientY;
+            while (acc >= 22) { acc -= 22; setSel(sel + 1); }   // drag down → later
+            while (acc <= -22) { acc += 22; setSel(sel - 1); }  // drag up → earlier
+          }
+        });
+        openBtn.addEventListener("pointerup", (e) => {
+          const wasDrag = moved > 8;
+          dragY = null;
+          if (mode === "label") { mode = "select"; openBtn.dataset.mode = "select"; return; }
+          // select mode
+          const up = e.target.closest(".toc-sel-arrow.up");
+          const dn = e.target.closest(".toc-sel-arrow.dn");
+          if (up) { setSel(sel - 1); return; }
+          if (dn) { setSel(sel + 1); return; }
+          if (!wasDrag) go();
+        });
+        openBtn.addEventListener("wheel", (e) => {
+          if (mode === "select") { e.preventDefault(); setSel(sel + (e.deltaY > 0 ? 1 : -1)); }
+        }, { passive: false });
       });
     },
   };
