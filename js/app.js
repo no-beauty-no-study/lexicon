@@ -265,16 +265,30 @@
       const c = ac(); if (!c) return;
       try { if (c.state === "suspended") c.resume(); } catch (_) {}
       const now = c.currentTime;
-      const o = c.createOscillator(), g = c.createGain();
-      const f0 = kind === "nav" ? 600 : 860, f1 = kind === "nav" ? 410 : 560;
-      o.type = "triangle";
-      o.frequency.setValueAtTime(f0, now);
-      o.frequency.exponentialRampToValueAtTime(f1, now + 0.07);
-      g.gain.setValueAtTime(0.0001, now);
-      g.gain.exponentialRampToValueAtTime(0.085, now + 0.008);
-      g.gain.exponentialRampToValueAtTime(0.0005, now + 0.12);
-      o.connect(g).connect(c.destination);
-      o.start(now); o.stop(now + 0.14);
+      // A light, glassy little chime instead of the old laser-y blip: pure
+      // sine partials (fundamental + soft octave + faint upper sparkle), no
+      // pitch glide, rounded by a gentle low-pass so it stays soft and airy.
+      const base = kind === "nav" ? 784 : 1175;        // nav G5 · button D6
+      const filter = c.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(5000, now);
+      filter.Q.value = 0.4;
+      filter.connect(c.destination);
+      // [harmonic, peak gain, decay seconds] — higher partials fade quicker,
+      // the way a real little bell rings.
+      const partials = kind === "nav"
+        ? [[1, 0.10, 0.26], [2, 0.045, 0.18], [3, 0.018, 0.10]]
+        : [[1, 0.095, 0.24], [2, 0.05, 0.17], [3, 0.022, 0.11], [4, 0.012, 0.07]];
+      partials.forEach(([mult, amp, dur]) => {
+        const o = c.createOscillator(), g = c.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(base * mult, now);
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(amp, now + 0.010);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+        o.connect(g).connect(filter);
+        o.start(now); o.stop(now + dur + 0.03);
+      });
     }
     return { tick };
   })();

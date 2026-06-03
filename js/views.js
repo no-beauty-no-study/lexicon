@@ -3206,13 +3206,14 @@ const Views = (function () {
       }
 
       let failed = false;
-      // A question has no stored translation, so we surface the translation of
-      // the PASSAGE SENTENCE it's testing — the section's reading-translation
+      // Exact, authored Chinese for THIS section's questions (parallel order),
+      // from data/readingComprehensionZh.js — the real translation.
+      const zhItems = (window.READING_COMPREHENSION_ZH && READING_COMPREHENSION_ZH[sectionNum]) || null;
+      // Fallback when no authored zh exists: surface the translation of the
+      // PASSAGE SENTENCE the question tests — the section's reading-translation
       // for whichever block best overlaps the question + its correct answer.
-      function questionZh(idx) {
+      function questionZhFallback(idx) {
         const q = items[idx]; if (!q) return "";
-        if (q.zh) return q.zh;
-        if (/[一-鿿]/.test(q.q || "")) return "";   // ch5 questions are already Chinese
         const sec = (typeof ChapterNav !== "undefined") ? ChapterNav.findSection(chapterId, sectionNum) : null;
         const blocks = (sec && sec.blocks) || [];
         const trans = (window.READING_TRANSLATIONS || {})[chapterId + "|" + sectionNum] || [];
@@ -3226,14 +3227,28 @@ const Views = (function () {
         });
         return (bestI >= 0 && trans[bestI]) || "";
       }
-      // Double-tap a correctly-answered question to reveal its 中文.
+      // Double-tap a correctly-answered question to reveal its 中文. Prefer the
+      // authored question + options translation (correct option marked via the
+      // English answer index); else fall back to the passage-sentence match.
       function toggleCompZh(item, idx) {
         const existing = item.querySelector(".comp-zh");
         if (existing) { existing.remove(); return; }
-        const zh = questionZh(idx);
+        const q = items[idx] || {};
+        const zq = zhItems && zhItems[idx];
         const div = document.createElement("div");
-        div.className = "comp-zh" + (zh ? "" : " is-missing");
-        div.textContent = zh || "(translation coming)";
+        div.className = "comp-zh";
+        if (zq && zq.q) {
+          const opts = (zq.options || []).map((o, n) =>
+            `<li class="comp-zh-opt${n === q.answer ? " is-correct" : ""}">${esc(LETTER[n] || "")}. ${esc(o)}</li>`).join("");
+          div.innerHTML = `<p class="comp-zh-q">${esc(zq.q)}</p>` + (opts ? `<ul class="comp-zh-opts">${opts}</ul>` : "");
+        } else if (/[一-鿿]/.test(q.q || "")) {
+          div.classList.add("is-missing");
+          div.textContent = "（题目本身即中文）";
+        } else {
+          const zh = questionZhFallback(idx);
+          if (!zh) div.classList.add("is-missing");
+          div.textContent = zh || "(translation coming)";
+        }
         item.querySelector(".quiz-question").after(div);
       }
       body.addEventListener("click", (e) => {
