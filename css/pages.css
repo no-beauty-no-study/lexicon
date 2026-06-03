@@ -200,6 +200,30 @@
   /* Stay tappable inside reveal.js's container click handler. */
   -webkit-overflow-scrolling: touch;
 }
+/* BROWSE section "circles" — small classical dots pinned at the top of the
+   reading (one per section); tap to jump straight into a section. */
+.reading-art .section-dots {
+  position: sticky; top: 0; z-index: 6;
+  display: flex; flex-wrap: wrap; gap: 9px; justify-content: center;
+  margin: -2px 0 18px; padding: 8px 0 10px;
+  background: linear-gradient(to bottom,
+    rgba(244, 237, 222, 0.94) 0%, rgba(244, 237, 222, 0.94) 62%, rgba(244, 237, 222, 0) 100%);
+}
+.reading-art .section-dot {
+  width: 30px; height: 30px; flex: 0 0 auto; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1.5px solid rgba(150, 124, 82, 0.5);
+  background: rgba(247, 240, 222, 0.6);
+  font-family: var(--font-display), Georgia, serif; font-size: 13px; font-weight: 500;
+  color: #6c5a43; cursor: pointer; padding: 0;
+  transition: transform 120ms ease, background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+.reading-art .section-dot:hover { transform: translateY(-2px); border-color: rgba(124, 95, 50, 0.85); color: #3a2e18; }
+.reading-art .section-dot:active { transform: translateY(0); }
+.reading-art .section-dot.is-current {
+  background: #b9985a; border-color: #9a7a48; color: #fbf4e4;
+  box-shadow: 0 0 0 2px rgba(184, 160, 111, 0.25);
+}
 /* Book-style flush justification: paragraphs flow normally and the
    browser stretches the inter-word spacing on each line so both edges
    line up (no fixed word-spacing, no manual line breaks). The last
