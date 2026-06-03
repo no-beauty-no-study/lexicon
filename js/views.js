@@ -3167,6 +3167,16 @@ const Views = (function () {
       const all = Array.from(body.querySelectorAll(".quiz-item"));
       let lastSpoken = -1, advancing = false;
       function speakItem(it) { try { TTS.speak((it.querySelector(".quiz-question").textContent || "").trim()); } catch (_) {} }
+      // Speak some text and run `cb` only AFTER it finishes — so advancing to the
+      // next question never cuts off the current one. A length-based fallback
+      // covers the case where onEnd never fires (no voice / silent synthesis).
+      function speakThen(text, cb) {
+        const t = String(text || "").trim();
+        let done = false;
+        const fire = () => { if (done) return; done = true; try { cb && cb(); } catch (_) {} };
+        try { TTS.speak(t, { onEnd: fire }); } catch (_) { fire(); return; }
+        setTimeout(fire, Math.min(9000, Math.max(1600, t.length * 60)));
+      }
       function focusItem(it) { all.forEach(x => x.classList.remove("is-current")); it.classList.add("is-current"); try { it.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (_) {} }
       function showThrough(n) {
         all.forEach((it, i) => it.classList.toggle("is-shown", i <= n));
@@ -3242,17 +3252,20 @@ const Views = (function () {
         if (failed || opt.classList.contains("is-locked")) return;
         const item = opt.closest(".quiz-item");
         if (item.dataset.solved === "1") return;
+        try { window.UISound && UISound.tick("btn"); } catch (_) {}   // tap feedback on options
         focusItem(item);
         // One shot only — lock every option the moment one is picked.
         item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
         if (opt.dataset.correct === "1") {
           opt.classList.add("is-correct");
           item.dataset.solved = "1";
-          speakItem(item);   // read the question aloud on a correct pick
           try { playReviewChord(); } catch (_) {}
           const idx = all.indexOf(item);
-          if (idx + 1 < all.length) setTimeout(() => showThrough(idx + 1), 800);
-          else if (allCorrect()) setTimeout(finish, 600);
+          // Read the question aloud, and only advance once it has finished.
+          speakThen((item.querySelector(".quiz-question").textContent || "").trim(), () => {
+            if (idx + 1 < all.length) showThrough(idx + 1);
+            else if (allCorrect()) finish();
+          });
         } else {
           // Wrong = wrong: read the wrong option aloud, then bounce to story.
           opt.classList.add("is-wrong");
