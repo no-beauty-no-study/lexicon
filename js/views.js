@@ -1359,6 +1359,7 @@ const Views = (function () {
             <p class="gs-done-sub">Spelled ${sealedCount()} / ${set.length}</p>
             <button type="button" class="gs-btn gs-continue" style="margin-top:18px">DONE</button></div>`;
           try { playSuccessChord(); } catch (_) {}
+          spawnCelebration(host, 9);
           const go = () => window.go("#word-garden");   // dictation returns to the garden
           const c = body.querySelector(".gs-continue"); if (c) c.addEventListener("click", go);
           setTimeout(go, 2400);
@@ -1837,7 +1838,7 @@ const Views = (function () {
         row.className = "quiz-done-row";
         row.innerHTML = `<p class="quiz-done-title">${esc(title)}</p>`
           + `<div class="quiz-done-actions">`
-          + btns.map((b, i) => `<button type="button" class="gs-btn qd-btn" data-qd="${i}">${esc(b[0])}</button>`).join("")
+          + btns.map((b, i) => `<button type="button" class="antique-button qd-btn" data-qd="${i}"><span class="antique-button-label">${esc(b[0])}</span></button>`).join("")
           + `</div>`;
         body.appendChild(row);
         btns.forEach((b, i) => { const el = row.querySelector(`[data-qd="${i}"]`); if (el) el.onclick = (e) => { e.stopPropagation(); b[1](); }; });
@@ -2821,6 +2822,7 @@ const Views = (function () {
           </div>`;
         renderBottom(sealedCount() + " / " + set.length);
         try { playSuccessChordGlobal(); } catch (_) {}
+        spawnCelebration(host, 9);
       }
 
       // Leaving Review before the recall+group round is cleared shows the same
@@ -2919,12 +2921,13 @@ const Views = (function () {
       function finish() {
         if (advancing) return; advancing = true;
         try { playSuccessChordGlobal(); } catch (_) {}
+        spawnCelebration(host, 9);
         const row = document.createElement("div");
         row.className = "comp-done-row";
         row.innerHTML = `<p class="comp-done-title">Passage understood — double-tap any question for its translation.</p>
           <div class="comp-done-actions">
-            <button type="button" class="gs-btn cd-next">Next ›</button>
-            <button type="button" class="gs-btn cd-notes">Notes ✦</button>
+            <button type="button" class="antique-button cd-next"><span class="antique-button-label">Next ›</span></button>
+            <button type="button" class="antique-button cd-notes"><span class="antique-button-label">Notes ✦</span></button>
           </div>`;
         body.appendChild(row);
         row.querySelector(".cd-next").onclick = (e) => { e.stopPropagation(); go(nextHref()); };
@@ -2933,15 +2936,34 @@ const Views = (function () {
       }
 
       let failed = false;
-      // Reveal a CORRECTLY-answered question's Chinese (only if supplied) — the
-      // reward for getting it right. Double-tap toggles it.
+      // A question has no stored translation, so we surface the translation of
+      // the PASSAGE SENTENCE it's testing — the section's reading-translation
+      // for whichever block best overlaps the question + its correct answer.
+      function questionZh(idx) {
+        const q = items[idx]; if (!q) return "";
+        if (q.zh) return q.zh;
+        if (/[一-鿿]/.test(q.q || "")) return "";   // ch5 questions are already Chinese
+        const sec = (typeof ChapterNav !== "undefined") ? ChapterNav.findSection(chapterId, sectionNum) : null;
+        const blocks = (sec && sec.blocks) || [];
+        const trans = (window.READING_TRANSLATIONS || {})[chapterId + "|" + sectionNum] || [];
+        if (!blocks.length || !trans.length) return "";
+        const target = ((q.q || "") + " " + ((q.options || [])[q.answer] || "")).toLowerCase();
+        const tw = new Set(target.match(/[a-z]{4,}/g) || []);
+        let best = -1, bestI = -1;
+        blocks.forEach((b, i) => {
+          let ov = 0; for (const w of (b.toLowerCase().match(/[a-z]{4,}/g) || [])) if (tw.has(w)) ov++;
+          if (ov > best) { best = ov; bestI = i; }
+        });
+        return (bestI >= 0 && trans[bestI]) || "";
+      }
+      // Double-tap a correctly-answered question to reveal its 中文.
       function toggleCompZh(item, idx) {
         const existing = item.querySelector(".comp-zh");
         if (existing) { existing.remove(); return; }
-        const zh = (items[idx] && items[idx].zh) || "";
+        const zh = questionZh(idx);
         const div = document.createElement("div");
         div.className = "comp-zh" + (zh ? "" : " is-missing");
-        div.textContent = zh || "（题目译文待补充）";
+        div.textContent = zh || "（这道题对应原文的译文暂缺）";
         item.querySelector(".quiz-question").after(div);
       }
       body.addEventListener("click", (e) => {
@@ -3009,6 +3031,27 @@ const Views = (function () {
       }, true);
     },
   };
+
+  // Shared completion celebration — the star-burst + halo the user loves, fired
+  // on EVERY page/stage clear (comprehension, review, dictation, quiz).
+  function spawnCelebration(host, n) {
+    if (!host) return;
+    n = n || 9;
+    for (let i = 0; i < n; i++) {
+      const s = document.createElement("div");
+      s.className = "chapter-star";
+      s.style.setProperty("--ang", (Math.random() * 360) + "deg");
+      s.style.setProperty("--dist", (160 + Math.random() * 240) + "px");
+      s.style.setProperty("--sz", (8 + Math.random() * 10) + "px");
+      s.style.animationDelay = (Math.random() * 220) + "ms";
+      host.appendChild(s);
+      setTimeout(() => { try { s.remove(); } catch (_) {} }, 1700);
+    }
+    const halo = document.createElement("div");
+    halo.className = "chapter-halo";
+    host.appendChild(halo);
+    setTimeout(() => { try { halo.remove(); } catch (_) {} }, 1450);
+  }
 
   // bright two-note ding for a correct review answer (shared, audio-only).
   function playReviewChord() {
