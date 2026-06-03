@@ -1026,7 +1026,7 @@ const Views = (function () {
         const zh = (map && map[i]) || "";
         const div = document.createElement("div");
         div.className = "sentence-zh";
-        div.textContent = zh || "（这一句的译文还在整理中）";
+        div.textContent = zh || "(translation coming)";
         if (!zh) div.classList.add("is-missing");
         sent.appendChild(div);
         try { div.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
@@ -1279,6 +1279,7 @@ const Views = (function () {
             <div class="gs-label gs-listen">✦ LISTEN &amp; SPELL ✦ <span class="gs-replay">↻</span></div>
             <p class="gs-sentence-en"></p>
             <div class="gs-spell">
+              <div class="gs-cells"></div>
               <input class="gs-input" type="text" lang="en" inputmode="email"
                      autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Spell the word">
             </div>
@@ -1288,7 +1289,7 @@ const Views = (function () {
           </div>`;
 
         const el = (s) => body.querySelector(s);
-        const input = el(".gs-input"), shakeEl = el(".gs-spell");
+        const input = el(".gs-input"), shakeEl = el(".gs-spell"), cellsEl = el(".gs-cells");
         const enEl = el(".gs-sentence-en"), zhEl = el(".gs-sentence-zh");
         const sayLine = () => { try { if (typeof TTS !== "undefined" && TTS.speak) TTS.speak(cur().en || cur().word); } catch (_) {} };
         const noEl = el(".gs-no"), dotsEl = el(".gs-dots"), corr = el(".gs-correction");
@@ -1302,7 +1303,18 @@ const Views = (function () {
         }
         // No per-letter cells — the user writes into one open line (no boxes
         // hinting the word's length). Kept as a no-op so callers stay simple.
-        function renderCells() {}
+        // Per-letter boxes (one cell per letter of the answer). A single input
+        // backs them, so typing always fills left→right from the first box no
+        // matter which cell you tapped.
+        function renderCells() {
+          const q = cur(); const v = (input.value || "").toLowerCase().slice(0, q.word.length);
+          let h = "";
+          for (let i = 0; i < q.word.length; i++) {
+            const ch = v[i] || "";
+            h += `<span class="gs-cell${i === v.length ? " is-caret" : ""}${ch ? " is-filled" : ""}">${esc(ch)}</span>`;
+          }
+          if (cellsEl) cellsEl.innerHTML = h;
+        }
         // The blank now carries the word's CHINESE meaning, so you know which
         // word to spell from its sense (not its letters).
         function blankSentence(en, word, zh) {
@@ -1384,7 +1396,7 @@ const Views = (function () {
           const mark = scrim.querySelector(".qx-mark"); if (mark) mark.textContent = "✦ ALMOST SEALED ✦";
           scrim.querySelector(".qx-en").innerHTML =
               `Only <b class="qx-num">${n}</b> left to seal, your Highness.`
-            + `<span class="qx-zh" style="display:block;margin-top:12px">写完这几个，它们才算真正刻进本子里——都到这儿了，别半途而废嘛～</span>`;
+            + `<span class="qx-zh" style="display:block;margin-top:12px">Spell these and they're truly etched into your book — don't stop halfway.</span>`;
           scrim.querySelector(".qx-stay").textContent = "Seal the Set";
           scrim.querySelector(".qx-leave").textContent = "Give Up";
           scrim.querySelector(".qx-stay").onclick = (e) => { e.stopPropagation(); scrim.remove(); try { input.focus(); } catch (_) {} };
@@ -1418,27 +1430,30 @@ const Views = (function () {
             enEl.classList.add("gs-swap");
             setTimeout(() => { enEl.innerHTML = filled; enEl.classList.remove("gs-swap"); }, 150);
             zhEl.textContent = q.zh || "";
-            sayLine();
             renderDots(); recordState();
-            setTimeout(() => {
-              pos += 1;
-              if (pos >= queue.length || sealedCount() >= set.length) return finish();
-              present();
-            }, 1700);
+            // Advance only AFTER the line finishes reading (don't cut it off).
+            let advanced = false;
+            const next = () => { if (advanced) return; advanced = true; pos += 1; if (pos >= queue.length || sealedCount() >= set.length) return finish(); present(); };
+            try { TTS.speak(q.en || q.word, { onEnd: next }); } catch (_) { setTimeout(next, 1700); }
+            setTimeout(next, Math.max(2200, (q.en || q.word).length * 90));   // safety net if onEnd never fires
           } else {
             wrongThis = true;
             if (q.status !== "sealed") q.status = "corrected";
             if (!recordedWrong && window.Quiz) { Quiz.recordWord(q.word, false); recordedWrong = true; }
             shakeEl.classList.remove("is-shake"); void shakeEl.offsetWidth; shakeEl.classList.add("is-shake");
-            showCorrection(typed); zhEl.textContent = q.zh || ""; sayLine(); renderDots();
+            // Wrong → just say the WORD once (reinforce its sound), show correction.
+            showCorrection(typed); zhEl.textContent = q.zh || ""; renderDots();
+            try { TTS.speak(q.word); } catch (_) {}
           }
         }
         function retry() { if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; input.value = ""; renderCells(); } }
 
-        input.addEventListener("input", () => { input.value = input.value.replace(/[^A-Za-z]/g, ""); if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; } });
+        input.addEventListener("input", () => { input.value = input.value.replace(/[^A-Za-z]/g, ""); if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; } renderCells(); });
         input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); onCheck(); } });
         input.addEventListener("focus", retry);
         input.addEventListener("click", () => { if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; } });
+        // Tap any cell → focus the (single) input; it always fills from the first.
+        if (cellsEl) cellsEl.addEventListener("click", () => { try { input.focus(); } catch (_) {} });
         el(".gs-listen").addEventListener("click", sayLine);          // tap label / ↻ to replay
         enEl.addEventListener("click", sayLine);                      // tap the sentence to replay
         present();
@@ -1630,14 +1645,32 @@ const Views = (function () {
           if (syns.length && ex) cand.push({ word: ans, ex: ex.example, correctSyn: syns[0].word });
         }
         return shuffle(cand, Math.floor(Math.random() * 99991)).map(c => {
-          const distract = [], sd = new Set([c.correctSyn.toLowerCase(), c.word.toLowerCase()]);
-          const others = cand.filter(o => o.word !== c.word).map(o => o.correctSyn).concat(cand.map(o => o.word));
-          for (const d of others) { if (distract.length >= 3) break; const dl = d.toLowerCase(); if (sd.has(dl)) continue; sd.add(dl); distract.push(d); }
-          while (distract.length < 3) distract.push("—");
+          const distract = pickGroupDistractors(c.word, c.correctSyn);
           const opts = shuffle([{ zh: c.correctSyn, word: c.correctSyn, correct: true }]
             .concat(distract.map(d => ({ zh: d, word: d, correct: false }))), c.word.length || 1);
           return { group: true, word: c.word, ex: c.ex, options: opts };
         });
+      }
+      // 3 ENGLISH distractor words for a synonym question — real reading words
+      // that look like the correct synonym, never the target / its relations.
+      function pickGroupDistractors(targetWord, correctSyn) {
+        const byFirst = quizDistractorPool();
+        const related = relatedSet(targetWord);
+        related.add(String(correctSyn).toLowerCase());
+        const syn = String(correctSyn).toLowerCase();
+        const out = [], used = new Set([syn, String(targetWord).toLowerCase()]);
+        function take(list) {
+          list.sort((a, b) => lookAlike(syn, b.word) - lookAlike(syn, a.word));
+          for (const c of list) {
+            if (out.length >= 3) break;
+            if (used.has(c.word) || related.has(c.word) || sameRoot(syn, c.word)) continue;
+            used.add(c.word); out.push(c.word);
+          }
+        }
+        take((byFirst[syn[0]] || []).slice());
+        if (out.length < 3) take([].concat.apply([], Object.keys(byFirst).map(k => byFirst[k])));
+        while (out.length < 3) out.push("—");
+        return out;
       }
       function renderItem(q, idx, retry) {
         const qhtml = q.group
@@ -2009,7 +2042,7 @@ const Views = (function () {
         const left = Math.max(0, originalWords.size - solvedWords.size);
         scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ WAIT, YOUR HIGHNESS ✦</div>
           <p class="qx-en">Just <b class="qx-num">${left}</b> more and the stage is yours.</p>
-          <p class="qx-zh">现在走的话，这一关的单词可就进不了你的花园啦——殿下，再点几下就到手了哦。</p>
+          <p class="qx-zh">Slip away now and the words you've gathered won't reach your garden — shall we finish them?</p>
           <div class="qx-actions">
             <button type="button" class="gs-btn qx-stay">Keep Going</button>
             <button type="button" class="gs-btn qx-leave">Leave</button>
@@ -2725,7 +2758,7 @@ const Views = (function () {
         cur = set[queue[0]]; phase = "word";
         const prog = String(Math.min(set.length, passedCount() + 1)).padStart(2, "0") + " / " + String(set.length).padStart(2, "0");
         paintWord(cur, prog);
-        qZone.innerHTML = `<div class="rv-q-hint">Tap anywhere to reveal the sentence.<br><span class="rv-q-zh">点击任意处，进入语境选择。</span></div>`;
+        qZone.innerHTML = `<div class="rv-q-hint">Tap anywhere to reveal the sentence.</div>`;
         renderBottom();
         say(cur.word);
       }
@@ -2756,7 +2789,7 @@ const Views = (function () {
         const fb = document.createElement("div"); fb.className = "rv-feedback";
         fb.innerHTML = `<div class="rv-fb-key">${esc(q.word)}${q.meaning ? " · " + esc(q.meaning) : ""}</div>`
           + (q.zh ? `<div class="rv-fb-zh">${esc(q.zh)}</div>` : "")
-          + `<div class="rv-fb-tip">点击选项翻看 · 点击任意处继续 ›</div>`;
+          + `<div class="rv-fb-tip">Tap an option to flip · tap anywhere to continue ›</div>`;
         qZone.appendChild(fb);
         say(q.en);
       }
@@ -2884,7 +2917,7 @@ const Views = (function () {
         const left = Math.max(0, set.length - passedCount());
         scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ ONE MOMENT, YOUR HIGHNESS ✦</div>
           <p class="qx-en">Only <b class="qx-num">${left}</b> left to revisit today.</p>
-          <p class="qx-zh">这些都是你最容易忘的词呀——陪它们走完这一轮，它们才会乖乖沉下去哦。</p>
+          <p class="qx-zh">These are the words you forget most — walk them through this round and they'll finally settle.</p>
           <div class="qx-actions">
             <button type="button" class="gs-btn qx-stay">Keep Going</button>
             <button type="button" class="gs-btn qx-leave">Leave</button>
@@ -3015,7 +3048,7 @@ const Views = (function () {
         const zh = questionZh(idx);
         const div = document.createElement("div");
         div.className = "comp-zh" + (zh ? "" : " is-missing");
-        div.textContent = zh || "（这道题对应原文的译文暂缺）";
+        div.textContent = zh || "(translation coming)";
         item.querySelector(".quiz-question").after(div);
       }
       body.addEventListener("click", (e) => {
@@ -3064,7 +3097,7 @@ const Views = (function () {
         const left = all.filter(it => it.dataset.solved !== "1").length;
         scrim.innerHTML = `<div class="qx-card"><div class="qx-mark">✦ STAY A LINE LONGER ✦</div>
           <p class="qx-en">Just <b class="qx-num">${left}</b> question${left === 1 ? "" : "s"} between you and the next page.</p>
-          <p class="qx-zh">读都读到这儿了，殿下——把这几道做完，下一章就为你翻开啦。</p>
+          <p class="qx-zh">You've read this far, your Highness — answer these and the next chapter opens for you.</p>
           <div class="qx-actions">
             <button type="button" class="gs-btn qx-stay">Keep Reading</button>
             <button type="button" class="gs-btn qx-leave">Leave</button>
