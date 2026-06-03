@@ -545,7 +545,7 @@ const Views = (function () {
           </div>`;
         if (!btn) return;
 
-        const secs = (window.ChapterNav && ChapterNav.sectionsOf) ? (ChapterNav.sectionsOf(c.id) || []) : [];
+        const secs = (typeof ChapterNav !== "undefined" && ChapterNav.sectionsOf) ? (ChapterNav.sectionsOf(c.id) || []) : [];
         const resumeSec = lastSectionOf(c.id, c.firstSection || (secs[0] && secs[0].number) || "1.1");
         let sel = Math.max(0, secs.findIndex(s => String(s.number) === String(resumeSec)));
         if (sel < 0) sel = 0;
@@ -3232,41 +3232,51 @@ const Views = (function () {
         });
         return (bestI >= 0 && trans[bestI]) || "";
       }
-      // Double-tap a correctly-answered question to reveal its 中文. Prefer the
-      // authored question + options translation (correct option marked via the
-      // English answer index); else fall back to the passage-sentence match.
+      // Double-tap a correctly-answered question to reveal its 中文. The
+      // translation is mapped PER LINE — the zh question sits under the English
+      // question, and each option's zh sits directly under that option — rather
+      // than dumping the whole block beneath the question. Falls back to the
+      // passage-sentence match when no authored zh exists.
       function toggleCompZh(item, idx) {
-        const existing = item.querySelector(".comp-zh");
-        if (existing) { existing.remove(); return; }
+        const injected = item.querySelectorAll(".comp-zh, .comp-zh-opt-line");
+        if (injected.length) { injected.forEach(n => n.remove()); return; }
         const q = items[idx] || {};
         const zq = zhItems && zhItems[idx];
-        const div = document.createElement("div");
-        div.className = "comp-zh";
         if (zq && zq.q) {
-          const opts = (zq.options || []).map((o, n) =>
-            `<li class="comp-zh-opt${n === q.answer ? " is-correct" : ""}">${esc(LETTER[n] || "")}. ${esc(o)}</li>`).join("");
-          div.innerHTML = `<p class="comp-zh-q">${esc(zq.q)}</p>` + (opts ? `<ul class="comp-zh-opts">${opts}</ul>` : "");
-        } else if (/[一-鿿]/.test(q.q || "")) {
-          div.classList.add("is-missing");
-          div.textContent = "（题目本身即中文）";
+          const qd = document.createElement("div");
+          qd.className = "comp-zh comp-zh-q-line";
+          qd.textContent = zq.q;
+          item.querySelector(".quiz-question").after(qd);
+          const optEls = item.querySelectorAll(".quiz-option");
+          (zq.options || []).forEach((o, n) => {
+            const li = optEls[n]; if (!li) return;
+            const od = document.createElement("div");
+            od.className = "comp-zh-opt-line" + (n === q.answer ? " is-correct" : "");
+            od.textContent = o;
+            li.appendChild(od);
+          });
         } else {
-          const zh = questionZhFallback(idx);
-          if (!zh) div.classList.add("is-missing");
-          div.textContent = zh || "(translation coming)";
+          const div = document.createElement("div");
+          if (/[一-鿿]/.test(q.q || "")) { div.className = "comp-zh is-missing"; div.textContent = "（题目本身即中文）"; }
+          else { const zh = questionZhFallback(idx); div.className = "comp-zh" + (zh ? "" : " is-missing"); div.textContent = zh || "(translation coming)"; }
+          item.querySelector(".quiz-question").after(div);
         }
-        item.querySelector(".quiz-question").after(div);
       }
       body.addEventListener("click", (e) => {
-        const opt = e.target.closest(".quiz-option");
         const itm = e.target.closest(".quiz-item");
+        // A SOLVED item: single tap reads the line, double-tap toggles the
+        // translation. This works wherever the tap lands (options are locked
+        // once solved), so double-tapping an option reveals its 中文 too.
+        if (itm && itm.dataset.solved === "1") {
+          const idx = all.indexOf(itm);
+          const nowT = Date.now();
+          if (itm._tapT && (nowT - itm._tapT) < 380) { itm._tapT = 0; toggleCompZh(itm, idx); }
+          else { itm._tapT = nowT; setTimeout(() => { if (itm._tapT) { itm._tapT = 0; speakItem(itm); } }, 240); }
+          return;
+        }
+        const opt = e.target.closest(".quiz-option");
         if (!opt) {
-          // Double-tap a SOLVED (correct) question → its translation.
-          if (itm && itm.dataset.solved === "1") {
-            const idx = all.indexOf(itm);
-            const nowT = Date.now();
-            if (itm._tapT && (nowT - itm._tapT) < 380) { itm._tapT = 0; toggleCompZh(itm, idx); }
-            else { itm._tapT = nowT; setTimeout(() => { if (itm._tapT) { itm._tapT = 0; speakItem(itm); } }, 240); }
-          } else if (itm && itm.classList.contains("is-shown")) { speakItem(itm); }
+          if (itm && itm.classList.contains("is-shown")) speakItem(itm);
           return;
         }
         if (failed || opt.classList.contains("is-locked")) return;
@@ -3276,13 +3286,15 @@ const Views = (function () {
         focusItem(item);
         // One shot only — lock every option the moment one is picked.
         item.querySelectorAll(".quiz-option").forEach(o => o.classList.add("is-locked"));
+        const optText = (opt.querySelector(".quiz-option-text") || {}).textContent || "";
         if (opt.dataset.correct === "1") {
           opt.classList.add("is-correct");
           item.dataset.solved = "1";
           try { playReviewChord(); } catch (_) {}
           const idx = all.indexOf(item);
-          // Read the question aloud, and only advance once it has finished.
-          speakThen((item.querySelector(".quiz-question").textContent || "").trim(), () => {
+          // Read the CHOSEN option aloud (not the question), and only advance
+          // once it has finished so nothing gets cut off.
+          speakThen(optText, () => {
             if (idx + 1 < all.length) showThrough(idx + 1);
             else if (allCorrect()) finish();
           });
@@ -3290,10 +3302,8 @@ const Views = (function () {
           // Wrong = wrong: read the wrong option aloud, then bounce to story.
           opt.classList.add("is-wrong");
           failed = true;
-          const optText = (opt.querySelector(".quiz-option-text") || {}).textContent || "";
-          try { TTS.speak(optText); } catch (_) {}
           window.__navDir = "back";
-          setTimeout(() => window.go(returnHref), 1400);
+          speakThen(optText, () => window.go(returnHref));
         }
       });
 
