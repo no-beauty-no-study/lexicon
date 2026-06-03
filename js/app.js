@@ -45,11 +45,18 @@
   document.addEventListener("touchmove", (e) => {
     if (e.scale && e.scale !== 1) e.preventDefault();
   }, { passive: false });
-  let lastTap = 0;
+  // Block ONLY a real double-tap-to-zoom: two taps close in time AND at the
+  // same spot. Two quick taps on DIFFERENT controls (e.g. auto-read question
+  // → tap an option) must NOT be cancelled — preventDefault on touchend kills
+  // the synthesized click, which made quiz options feel "not clickable".
+  let lastTap = 0, lastX = 0, lastY = 0;
   document.addEventListener("touchend", (e) => {
     const now = Date.now();
-    if (now - lastTap < 350) e.preventDefault();
-    lastTap = now;
+    const t = (e.changedTouches && e.changedTouches[0]) || null;
+    const x = t ? t.clientX : 0, y = t ? t.clientY : 0;
+    const samePlace = Math.abs(x - lastX) < 30 && Math.abs(y - lastY) < 30;
+    if (now - lastTap < 350 && samePlace) e.preventDefault();
+    lastTap = now; lastX = x; lastY = y;
   }, { passive: false });
 
 
