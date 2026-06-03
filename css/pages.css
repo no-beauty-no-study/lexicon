@@ -1916,8 +1916,9 @@
   font-weight: 500; letter-spacing: 0.04em;
   color: #e9dcc0; line-height: 1;
   text-shadow: 0 1px 2px rgba(40, 52, 74, 0.55);
-  pointer-events: none;
+  cursor: pointer;
 }
+.note-card .note-index:hover { color: #ffffff; }
 
 /* ---- reading EXCERPT (left big; wider; tap to hear) ---- */
 .note-card .note-quote {
@@ -2403,3 +2404,15 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
   background: rgba(238,229,211,0.4); border-radius: 0 4px 4px 0;
 }
 .reading-art .comp-item .comp-zh.is-missing { font-style: italic; color: #9A8C72; }
+
+/* Inline stage-clear / comprehension-done row (replaces the popup) */
+.reading-art .quiz-done-row, .reading-art .comp-done-row {
+  margin: 18px auto 8px; text-align: center;
+}
+.reading-art .quiz-done-title, .reading-art .comp-done-title {
+  font-family: var(--font-display), Georgia, serif; font-size: 15px;
+  letter-spacing: 0.06em; color: #6E5A2A; margin: 0 0 12px;
+}
+.reading-art .quiz-done-actions, .reading-art .comp-done-actions {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+}
