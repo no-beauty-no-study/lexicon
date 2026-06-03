@@ -1411,7 +1411,12 @@ const Views = (function () {
             const clean = !revealed && !wrongThis;     // un-prompted, first try this presentation
             if (clean) { q.status = "sealed"; if (window.Quiz) Quiz.recordSpelled(q.word); playSuccessChord(); }
             else { if (q.status !== "sealed") q.status = "corrected"; if (window.Quiz) Quiz.recordCorrected(q.word); queue.push(queue[pos]); }
-            // After submit: replay the line once + reveal the Chinese, then move on.
+            // Correct → the 中文 blank slides into the real English word, the
+            // line is read aloud, and the translation appears below.
+            corr.hidden = true; corr.innerHTML = "";
+            const filled = esc(q.en).replace(new RegExp("\\b" + rxq(q.word) + "\\b", "i"), `<span class="gs-filled">${esc(q.word)}</span>`);
+            enEl.classList.add("gs-swap");
+            setTimeout(() => { enEl.innerHTML = filled; enEl.classList.remove("gs-swap"); }, 150);
             zhEl.textContent = q.zh || "";
             sayLine();
             renderDots(); recordState();
@@ -1430,9 +1435,10 @@ const Views = (function () {
         }
         function retry() { if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; input.value = ""; renderCells(); } }
 
-        input.addEventListener("input", () => { input.value = input.value.replace(/[^A-Za-z]/g, ""); });
+        input.addEventListener("input", () => { input.value = input.value.replace(/[^A-Za-z]/g, ""); if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; } });
         input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); onCheck(); } });
         input.addEventListener("focus", retry);
+        input.addEventListener("click", () => { if (!corr.hidden) { corr.hidden = true; corr.innerHTML = ""; } });
         el(".gs-listen").addEventListener("click", sayLine);          // tap label / ↻ to replay
         enEl.addEventListener("click", sayLine);                      // tap the sentence to replay
         present();
@@ -2283,9 +2289,9 @@ const Views = (function () {
       function rowHTML(word) {
         const st = (window.Quiz && Quiz.wordStat) ? Quiz.wordStat(word) : { w: 0, rc: 0 };
         const need = (st.w || 0) - (st.rc || 0);
+        // No translation shown — tempt the reader to tap and recall it (一考自己).
         return `<li class="wg-row" data-id="${esc(word)}">
           <span class="wg-row-en">${esc(word)}</span>
-          <span class="wg-row-zh">${esc(glossOf(word))}</span>
           ${need > 0 ? `<span class="wg-row-need" title="needs review">${need}</span>` : ""}
         </li>`;
       }
