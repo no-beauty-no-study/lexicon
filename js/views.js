@@ -2487,12 +2487,17 @@ const Views = (function () {
         return out;
       }
       function rowHTML(word) {
-        const st = (window.Quiz && Quiz.wordStat) ? Quiz.wordStat(word) : { w: 0, rc: 0 };
+        const st = (window.Quiz && Quiz.wordStat) ? Quiz.wordStat(word) : { w: 0, rc: 0, spelled: false };
+        // "needs review" = choice-quiz misses still outstanding (w - rc). Once a
+        // word is SEALED via dictation it's done, so we don't tag a sealed word
+        // with its old choice-quiz error count (that was reading as a stray
+        // number on the Sealed column).
         const need = (st.w || 0) - (st.rc || 0);
+        const showNeed = need > 0 && !st.spelled;
         // No translation shown — tempt the reader to tap and recall it (一考自己).
         return `<li class="wg-row" data-id="${esc(word)}">
           <span class="wg-row-en">${esc(word)}</span>
-          <span class="wg-row-need" title="needs review">${need > 0 ? need : ""}</span>
+          <span class="wg-row-need" title="needs review">${showNeed ? need : ""}</span>
         </li>`;
       }
       function colHTML(title, total, rows) {
