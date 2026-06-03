@@ -539,20 +539,71 @@ const Views = (function () {
       CHAPTERS.forEach((c) => {
         const text = host.querySelector(".zone-toc-" + c.number);
         const btn  = host.querySelector(".zone-toc-btn-" + c.number);
-        const resumeSec = lastSectionOf(c.id, c.firstSection || "1.1");
         if (text) text.innerHTML = `
           <div class="toc-card-text">
             <p class="toc-card-tagline">${esc(c.tagline || "")}</p>
           </div>`;
-        if (btn) btn.innerHTML = `
-          <button type="button" class="antique-button toc-open-btn"
-                  data-go="#reading?chapter=${encodeURIComponent(c.id)}&section=${encodeURIComponent(resumeSec)}${browseFlag}">
-            <span class="antique-button-corner tl"></span>
-            <span class="antique-button-corner tr"></span>
-            <span class="antique-button-corner bl"></span>
-            <span class="antique-button-corner br"></span>
-            <span class="antique-button-label">Open Chapter</span>
-          </button>`;
+        if (!btn) return;
+
+        const secs = (window.ChapterNav && ChapterNav.sectionsOf) ? (ChapterNav.sectionsOf(c.id) || []) : [];
+        const resumeSec = lastSectionOf(c.id, c.firstSection || (secs[0] && secs[0].number) || "1.1");
+        let sel = Math.max(0, secs.findIndex(s => String(s.number) === String(resumeSec)));
+        if (sel < 0) sel = 0;
+        // sub-number shown in the picker (1.3 → "3"); falls back to full label.
+        const subNum = (n) => { const m = String(n).match(/\.(\d+)$/); return m ? m[1] : String(n); };
+
+        btn.innerHTML = `
+          <div class="toc-open-wrap">
+            <button type="button" class="antique-button toc-open-btn">
+              <span class="antique-button-corner tl"></span>
+              <span class="antique-button-corner tr"></span>
+              <span class="antique-button-corner bl"></span>
+              <span class="antique-button-corner br"></span>
+              <span class="antique-button-label">Open Chapter</span>
+            </button>
+            ${secs.length > 1 ? `
+            <div class="toc-sec-picker" title="Slide up / down to pick a section">
+              <button type="button" class="toc-sec-step" data-step="-1" aria-label="Previous section">▲</button>
+              <span class="toc-sec-num">${esc(subNum(secs[sel] && secs[sel].number))}</span>
+              <button type="button" class="toc-sec-step" data-step="1" aria-label="Next section">▼</button>
+            </div>` : ""}
+          </div>`;
+
+        const openBtn = btn.querySelector(".toc-open-btn");
+        const numEl   = btn.querySelector(".toc-sec-num");
+        const picker  = btn.querySelector(".toc-sec-picker");
+        function targetSec() { return (secs[sel] && secs[sel].number) || resumeSec; }
+        function go() {
+          window.__navDir = "forward";
+          window.go(`#reading?chapter=${encodeURIComponent(c.id)}&section=${encodeURIComponent(targetSec())}${browseFlag}`);
+        }
+        openBtn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); go(); });
+
+        if (picker && secs.length > 1) {
+          function setSel(i) {
+            sel = Math.max(0, Math.min(secs.length - 1, i));
+            if (numEl) numEl.textContent = subNum(secs[sel].number);
+          }
+          // ▲ previous · ▼ next
+          picker.querySelectorAll(".toc-sec-step").forEach(b => {
+            b.addEventListener("click", (e) => { e.stopPropagation(); setSel(sel + (+b.dataset.step)); });
+          });
+          // tap the number → advance one (wraps), so a plain tap cycles through.
+          if (numEl) numEl.addEventListener("click", (e) => { e.stopPropagation(); setSel((sel + 1) % secs.length); });
+          // wheel + vertical drag = "slide up/down".
+          picker.addEventListener("wheel", (e) => { e.preventDefault(); setSel(sel + (e.deltaY > 0 ? 1 : -1)); }, { passive: false });
+          let dragY = null, acc = 0;
+          picker.addEventListener("pointerdown", (e) => { dragY = e.clientY; acc = 0; try { picker.setPointerCapture(e.pointerId); } catch (_) {} });
+          picker.addEventListener("pointermove", (e) => {
+            if (dragY == null) return;
+            acc += (e.clientY - dragY); dragY = e.clientY;
+            while (acc >= 24) { acc -= 24; setSel(sel + 1); }     // drag down → later section
+            while (acc <= -24) { acc += 24; setSel(sel - 1); }    // drag up → earlier section
+          });
+          const endDrag = () => { dragY = null; };
+          picker.addEventListener("pointerup", endDrag);
+          picker.addEventListener("pointercancel", endDrag);
+        }
       });
     },
   };
@@ -693,22 +744,6 @@ const Views = (function () {
         }).join("");
       } else {
         body.innerHTML = `<p class="sentence-block" data-i="0">No content available yet for this section.</p>`;
-      }
-      // BROWSE (from the index): a row of small section "circles" pinned at the
-      // top of the reading — tap one to jump straight into that section (like
-      // the dictation dots). Only when the chapter has more than one section.
-      if (isBrowse) {
-        const secs = (window.ChapterNav && ChapterNav.sectionsOf) ? (ChapterNav.sectionsOf(chapterId) || []) : [];
-        if (secs.length > 1) {
-          const dots = secs.map(s => {
-            const n = s.number;
-            const isCur = String(n) === String(sectionNum);
-            return `<button type="button" class="section-dot${isCur ? " is-current" : ""}"
-                      title="${esc(n + " · " + (s.title || ""))}"
-                      data-go="#reading?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(n)}&browse=1">${esc(String(n).replace(/^\d+\./, ""))}</button>`;
-          }).join("");
-          body.insertAdjacentHTML("afterbegin", `<div class="section-dots">${dots}</div>`);
-        }
       }
 
       function currentEntryFromStack() {
