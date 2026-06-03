@@ -694,6 +694,22 @@ const Views = (function () {
       } else {
         body.innerHTML = `<p class="sentence-block" data-i="0">No content available yet for this section.</p>`;
       }
+      // BROWSE (from the index): a row of small section "circles" pinned at the
+      // top of the reading — tap one to jump straight into that section (like
+      // the dictation dots). Only when the chapter has more than one section.
+      if (isBrowse) {
+        const secs = (window.ChapterNav && ChapterNav.sectionsOf) ? (ChapterNav.sectionsOf(chapterId) || []) : [];
+        if (secs.length > 1) {
+          const dots = secs.map(s => {
+            const n = s.number;
+            const isCur = String(n) === String(sectionNum);
+            return `<button type="button" class="section-dot${isCur ? " is-current" : ""}"
+                      title="${esc(n + " · " + (s.title || ""))}"
+                      data-go="#reading?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(n)}&browse=1">${esc(String(n).replace(/^\d+\./, ""))}</button>`;
+          }).join("");
+          body.insertAdjacentHTML("afterbegin", `<div class="section-dots">${dots}</div>`);
+        }
+      }
 
       function currentEntryFromStack() {
         const cur = host.querySelector(".word-card.is-current");
