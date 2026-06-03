@@ -1689,7 +1689,7 @@ const Views = (function () {
                 // synonym. Both store the other form for the tap-to-flip study.
                 const zh = q.group ? optMeaning(en) : (o.zh || "");
                 const shown = q.group ? en : zh;
-                return `<li class="quiz-option" data-word="${esc(en)}" data-en="${esc(en)}" data-zh="${esc(zh)}" data-correct="${o.correct ? 1 : 0}">
+                return `<li class="quiz-option" data-flip="${q.group ? "en" : "zh"}" data-word="${esc(en)}" data-en="${esc(en)}" data-zh="${esc(zh)}" data-correct="${o.correct ? 1 : 0}">
                   <span class="quiz-option-letter">${LETTER[i]}.</span>
                   <span class="quiz-option-text">${esc(shown)}</span>
                 </li>`;
@@ -1801,11 +1801,15 @@ const Views = (function () {
           : ((item.dataset.word) || (item.querySelector(".quiz-question")?.textContent || "").trim());
         try { TTS.speak(w); } catch (_) {}
       }
-      // Tapping a revealed question rereads it; once it's SOLVED, tapping the
-      // word also reveals its small card on the right (→ full card).
+      // Tapping the QUESTION TEXT (only — not the whole block) rereads it; once
+      // SOLVED, tapping it also reveals its small card on the right. The options
+      // are NOT part of this hit area, so tapping an option never plays the
+      // question audio (user: "这一大块绑定了题目的语音，点啥都播题目").
       body.addEventListener("click", (e) => {
-        if (e.target.closest(".quiz-option")) return;
-        const item = e.target.closest(".quiz-item");
+        if (e.target.closest(".quiz-option")) return;     // options handled below
+        const q = e.target.closest(".quiz-question, .quiz-no");
+        if (!q) return;
+        const item = q.closest(".quiz-item");
         if (item && item.classList.contains("is-shown")) {
           speakItem(item);
           if (item.dataset.solved === "1") showQuizWord(item.dataset.word);
@@ -1969,11 +1973,12 @@ const Views = (function () {
         if (item.dataset.solved === "1") {
           const text = opt.querySelector(".quiz-option-text");
           const en = opt.dataset.en || "", zh = opt.dataset.zh || "";
-          const toEn = !opt.classList.contains("opt-en");
+          const toEn = (opt.dataset.flip || "zh") !== "en";
           opt.classList.add("opt-flip");
           setTimeout(() => {
             if (text) text.textContent = toEn ? (en || zh) : (zh || en);
             opt.classList.toggle("opt-en", toEn);
+            opt.dataset.flip = toEn ? "en" : "zh";
             opt.classList.remove("opt-flip");
           }, 130);
           if (en) { try { TTS.speak(en); } catch (_) {} showQuizWord(en); }
@@ -2709,9 +2714,9 @@ const Views = (function () {
       }
       function meaningOptions(q) {
         const out = [], used = new Set([q.meaning]);
-        for (const o of shuffle(set)) { if (out.length >= 3) break; if (o === q || !o.meaning || used.has(o.meaning)) continue; used.add(o.meaning); out.push(o.meaning); }
-        while (out.length < 3) out.push("—");
-        return shuffle([{ t: q.meaning, correct: true }].concat(out.map(d => ({ t: d, correct: false }))));
+        for (const o of shuffle(set)) { if (out.length >= 3) break; if (o === q || !o.meaning || used.has(o.meaning)) continue; used.add(o.meaning); out.push({ t: o.meaning, en: o.word }); }
+        while (out.length < 3) out.push({ t: "—", en: "" });
+        return shuffle([{ t: q.meaning, en: q.word, correct: true }].concat(out.map(d => ({ t: d.t, en: d.en, correct: false }))));
       }
 
       const LETTER = ["A", "B", "C", "D"];
@@ -2746,10 +2751,12 @@ const Views = (function () {
       let phase = "word", cur = null, useSyn = false;
       function optMeaningRv(w) { const sc = VR && VR.getSmallCard ? VR.getSmallCard(w) : null; return sc ? stripPos(sc.zh || "") : ""; }
       function optEl(o, n) {
-        const en = useSyn ? (o.t || "") : "";
+        // SYN round: o.t is the English word. MEANING round: o.t is the Chinese
+        // meaning and o.en is the word it belongs to (so the flip can show it).
+        const en = useSyn ? (o.t || "") : (o.en || "");
         const zh = useSyn ? optMeaningRv(o.t) : (o.t || "");
         const shown = useSyn ? (en || zh) : zh;
-        return `<li class="quiz-option" data-en="${esc(en)}" data-zh="${esc(zh)}" data-correct="${o.correct ? 1 : 0}">
+        return `<li class="quiz-option" data-flip="${useSyn ? "en" : "zh"}" data-en="${esc(en)}" data-zh="${esc(zh)}" data-correct="${o.correct ? 1 : 0}">
           <span class="quiz-option-letter">${LETTER[n]}.</span><span class="quiz-option-text">${esc(shown)}</span></li>`;
       }
       function stageA() {
@@ -2796,9 +2803,9 @@ const Views = (function () {
       function studyFlip(opt) {
         const text = opt.querySelector(".quiz-option-text");
         const en = opt.dataset.en || "", zh = opt.dataset.zh || "";
-        const toEn = !opt.classList.contains("opt-en");
+        const toEn = (opt.dataset.flip || "zh") !== "en";
         opt.classList.add("opt-flip");
-        setTimeout(() => { if (text) text.textContent = toEn ? (en || zh) : (zh || en); opt.classList.toggle("opt-en", toEn); opt.classList.remove("opt-flip"); }, 130);
+        setTimeout(() => { if (text) text.textContent = toEn ? (en || zh) : (zh || en); opt.classList.toggle("opt-en", toEn); opt.dataset.flip = toEn ? "en" : "zh"; opt.classList.remove("opt-flip"); }, 130);
         if (en) { try { TTS.speak(en); } catch (_) {} }
       }
       // One click handler drives the whole stage by phase. Nav / popups bail out.
