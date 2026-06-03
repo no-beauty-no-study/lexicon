@@ -2055,7 +2055,7 @@ const Views = (function () {
 
         const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
         const phraseRows = phrases.map(p => `
-            <span class="word-phrase">${esc(p.en)}${p.zh ? `<span class="word-phrase-zh">— ${esc(p.zh)}</span>` : ""}</span>`).join("");
+            <div class="word-phrase"><span class="wp-en">${esc(p.en)}</span>${p.zh ? `<span class="wp-sep">—</span><span class="wp-zh">${esc(p.zh)}</span>` : ""}</div>`).join("");
         const example   = (entry && entry.example) || "";
         const exampleZh = (entry && (entry.exampleZh || entry.example_zh)) || "";
 
@@ -2069,6 +2069,7 @@ const Views = (function () {
         // shows only its top until tapped — see CSS .note-card overlap.
         cards.push(`
           <li class="note-card" data-id="${esc(id)}">
+            <div class="note-foldword">${esc(word)}</div>
             <div class="note-quote" title="Tap to hear">
               <div class="note-quote-inner">
                 ${src ? `<div class="note-source">${esc(src)}</div>` : ""}
@@ -2079,7 +2080,7 @@ const Views = (function () {
             <div class="note-word">
               <div class="word-title">${esc(word)}</div>
               ${entry && entry.meaning ? `<div class="word-zh">${esc(entry.meaning)}</div>` : ""}
-              ${phraseRows ? `<div class="word-divider"></div><div class="word-phrases">${phraseRows}</div>` : ""}
+              ${phraseRows ? `<div class="word-phrases">${phraseRows}</div>` : ""}
             </div>
             <div class="note-example" title="Tap to hear">
               ${example ? `<div class="word-example">${esc(example)}</div>` : ""}
