@@ -75,9 +75,16 @@ const Quiz = (function () {
     }
     return "#word-garden";
   }
-  // Reading / Index — straight into the section's choice quiz (word → group).
-  function readingHref(ch, sec) { return quizHref(ch, sec, "silver", "story"); }
-  function indexHref(ch, sec)   { return quizHref(ch, sec, "silver", "index"); }
+  // Reading / Index — RESUME this section at its first unfinished stage, so a
+  // cleared Stage 1 isn't redone: silver → golden → (both done) redo silver.
+  function sectionResumeHref(ch, sec, from) {
+    const st = sectionState(ch, sec);
+    if (st.quiz1.status !== "completed") return quizHref(ch, sec, "silver", from);
+    if (st.quiz2.status !== "completed") return quizHref(ch, sec, "golden", from);
+    return quizHref(ch, sec, "silver", from);
+  }
+  function readingHref(ch, sec) { return sectionResumeHref(ch, sec, "story"); }
+  function indexHref(ch, sec)   { return sectionResumeHref(ch, sec, "index"); }
 
   /* ---------- per-word mistake stats (review ordering) ----------
      The order/priority is by ERROR COUNT and never falls because of an
@@ -93,26 +100,26 @@ const Quiz = (function () {
   function blankStat() { return { w: 0, rc: 0, collected: false, spelled: false, t: 0 }; }
   // Stamp the FIRST time a word is collected, so recency can break weight ties
   // (earlier-accumulated words get reviewed / pulled in to pad a quiz first).
-  function stampCollected(e) { e.collected = true; if (!e.t) e.t = Date.now(); }
-  // A CHOICE answer (silver / golden / review group). The word is collected on
-  // first sight; only a WRONG answer moves the score. A correct answer NEVER
-  // subtracts (that is reserved for review).
+  function stampCollected(e) { if (!e.collected) { e.collected = true; e.t = Date.now(); } }
+  // A CHOICE answer (silver / golden). Records the WRONG count only — a word is
+  // NOT "accumulated" yet; it enters the garden only when BOTH choice stages of
+  // its section are cleared (see markCollected, called on section completion).
   function recordWord(word, ok) {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
     const e = Object.assign(blankStat(), s[k]);
-    stampCollected(e);
     if (!ok) e.w = (e.w || 0) + 1;
     s[k] = e; saveStats(s);
   }
-  // Legacy hook — kept so old call-sites stay valid; just ensures collected.
-  function recordCorrected(word) {
+  // Both choice stages of a section cleared → its words enter the garden.
+  function markCollected(word) {
     const k = String(word || "").toLowerCase(); if (!k) return;
     const s = loadStats();
     const e = Object.assign(blankStat(), s[k]);
     stampCollected(e);
     s[k] = e; saveStats(s);
   }
+  function recordCorrected(word) { markCollected(word); }   // legacy alias
   // A clean dictation seals the word (right column). Dictation is NOT "new
   // accumulation" and never changes the score — it only flags SPELLED.
   function recordSpelled(word) {
@@ -151,7 +158,7 @@ const Quiz = (function () {
   return {
     sectionState, setStageStatus, update, sectionCompleted,
     order, menuHref, readingHref, indexHref, quizHref, statusHref,
-    recordWord, recordCorrected, recordSpelled, recordReviewCorrect, undoCorrect,
+    recordWord, recordCorrected, recordSpelled, recordReviewCorrect, markCollected, undoCorrect,
     reviewWords, accumulatedWords, collectedWords, spelledWords, toSpellWords, unsealedWords, wordStat,
   };
 })();
