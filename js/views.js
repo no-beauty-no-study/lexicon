@@ -2055,7 +2055,7 @@ const Views = (function () {
 
         const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
         const phraseRows = phrases.map(p => `
-            <div class="word-phrase"><span class="wp-en">${esc(p.en)}</span>${p.zh ? `<span class="wp-sep">—</span><span class="wp-zh">${esc(p.zh)}</span>` : ""}</div>`).join("");
+            <div class="word-phrase"><span class="wp-en">${esc(p.en)}</span>${p.zh ? `<span class="wp-zh">${esc(p.zh)}</span>` : ""}</div>`).join("");
         const example   = (entry && entry.example) || "";
         const exampleZh = (entry && (entry.exampleZh || entry.example_zh)) || "";
 
