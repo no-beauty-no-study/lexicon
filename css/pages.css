@@ -1843,7 +1843,7 @@
 .notes-art .notes-scroll {
   position: absolute;
   left: 5%; right: 5%;
-  top: 16.5%; bottom: 11.5%;
+  top: 20%; bottom: 11.5%;        /* pushed down off the painted heading */
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -1868,7 +1868,7 @@
   aspect-ratio: 1990 / 622;
   background: url("../assets/bg/ui/IMG_6778.png") no-repeat center center;
   background-size: 100% 100%;
-  margin-bottom: -18.2%;          /* overlap tuned so ~8 heads fill a page */
+  margin-bottom: -17.4%;          /* overlap tuned so ~7 heads fill a page */
   cursor: pointer;
   filter: drop-shadow(0 4px 10px rgba(120,105,90,0.22))
           drop-shadow(0 12px 22px rgba(120,105,90,0.12));
@@ -2430,3 +2430,55 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .quiz-option-text { display: inline-block; transition: transform 130ms ease, opacity 130ms ease; }
 .quiz-option.opt-flip .quiz-option-text { opacity: 0; transform: translateX(10px); }
 .quiz-option.opt-en .quiz-option-text { font-style: italic; color: #8a6a2e; }
+
+/* ============================================================
+   UNIFIED TOOL BUTTONS — every in-content button uses the reading
+   FOLD look: transparent, thin classical border, ink text, no fills,
+   no green/denim washes. (.qx popup, quiz done-rows, fold, seal-more,
+   review buttons, dictation buttons.)
+   ============================================================ */
+.gs-btn,
+.qz-fold,
+.wg-sealmore,
+.rv-done-btn,
+.review-art .rv-nav-btn,
+.quiz-done-actions .antique-button,
+.comp-done-actions .antique-button {
+  background: transparent !important;
+  border: 1.5px solid rgba(124, 95, 50, 0.62) !important;
+  border-radius: 3px !important;
+  box-shadow: none !important;
+  font-family: var(--font-display), Georgia, serif !important;
+  font-size: 11px !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  font-weight: 500 !important;
+  color: #6b5836 !important;
+  padding: 9px 18px !important;
+  min-width: 150px;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.gs-btn:hover,
+.qz-fold:hover,
+.wg-sealmore:hover:not([disabled]),
+.rv-done-btn:hover,
+.review-art .rv-nav-btn:hover,
+.quiz-done-actions .antique-button:hover,
+.comp-done-actions .antique-button:hover {
+  color: #2a1e08 !important;
+  border-color: rgba(124, 95, 50, 0.95) !important;
+  background: transparent !important;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.5);
+}
+/* drop the old denim "continue" + red "leave" washes */
+.qx-continue, .qx-stay, .qx-leave, .qx-finish, .qx-spell { background: transparent !important; border-color: rgba(124,95,50,0.62) !important; color: #6b5836 !important; }
+.qx-leave, .qx-finish { color: #8A5B56 !important; border-color: rgba(138,91,86,0.5) !important; }
+/* folded/saved state stays subtle (denim, never green) */
+.qz-fold.is-saved { color: #7F95A3 !important; border-color: #7F95A3 !important; background: transparent !important; }
+.wg-sealmore { min-width: 0; }
+
+/* Dictation: blank 中文 slides into the filled English word on a correct answer */
+.gs-sentence-en { transition: opacity 150ms ease, transform 150ms ease; }
+.gs-sentence-en.gs-swap { opacity: 0; transform: translateX(10px); }
+.gs-filled { color: #8a5a1e; font-weight: 600; padding: 0 4px; border-bottom: 2px solid rgba(184,160,111,0.7); }
