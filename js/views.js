@@ -1565,7 +1565,8 @@ const Views = (function () {
         const seen = new Set(), poolW = [];
         const firstMap = quizFirstSectionMap();
         const here = chapterId + "|" + sectionNum;
-        // 1) words that FIRST appear in this section — each tested only once.
+        // 1) EVERY word that first appears in this section (has a card + example,
+        //    not repeated from an earlier chapter) gets a question — no 16 cap.
         const toks = ((sec && sec.blocks) || []).join(" ").match(/\b[A-Za-z][A-Za-z'-]{2,}\b/g) || [];
         for (const raw of toks) {
           const w = raw.toLowerCase(); if (seen.has(w)) continue; seen.add(w);
@@ -1573,10 +1574,9 @@ const Views = (function () {
           if (seen.has(q.word)) continue; seen.add(q.word);
           if (firstMap[q.word] && firstMap[q.word] !== here) continue;   // owned by an earlier section
           poolW.push(q);
-          if (poolW.length >= QUIZ_TARGET) break;
         }
-        // 2) pad a thin section up to 16 with the highest-need accumulated words
-        //    (ties broken by earliest-collected — see Quiz.byScore).
+        // 2) only if the section is THIN do we pad up to a 16-question minimum
+        //    with the highest-need accumulated words (recency-tiebroken).
         if (poolW.length < QUIZ_TARGET && window.Quiz && Quiz.reviewWords) {
           for (const fw of Quiz.reviewWords()) {
             if (poolW.length >= QUIZ_TARGET) break;
@@ -1587,7 +1587,9 @@ const Views = (function () {
             poolW.push(q);
           }
         }
-        return poolW.map(p => {
+        // Random order each time (no fixed sequence to memorise the answers by).
+        const ordered = shuffle(poolW, Math.floor(Math.random() * 99991));
+        return ordered.map(p => {
           const distract = pickDistractors(p.word, p.zh);
           const opts = shuffle([{ zh: p.zh, word: p.word, correct: true }]
             .concat(distract.map(d => ({ zh: d.zh, word: d.word, correct: false }))), p.word.length || 1);
@@ -1613,9 +1615,8 @@ const Views = (function () {
           const syns = ((bc && bc.group) || []).filter(g => g.clickable && g.word);
           const ex = (sc.examples || []).find(e => e.example && new RegExp("\\b" + rxq(ans) + "\\b", "i").test(e.example));
           if (syns.length && ex) cand.push({ word: ans, ex: ex.example, correctSyn: syns[0].word });
-          if (cand.length >= 16) break;
         }
-        return cand.map(c => {
+        return shuffle(cand, Math.floor(Math.random() * 99991)).map(c => {
           const distract = [], sd = new Set([c.correctSyn.toLowerCase(), c.word.toLowerCase()]);
           const others = cand.filter(o => o.word !== c.word).map(o => o.correctSyn).concat(cand.map(o => o.word));
           for (const d of others) { if (distract.length >= 3) break; const dl = d.toLowerCase(); if (sd.has(dl)) continue; sd.add(dl); distract.push(d); }
@@ -1812,6 +1813,14 @@ const Views = (function () {
       // Stage clear is an INLINE button row appended under the questions (no
       // blocking popup) so you can still tap the last question's options to
       // study them ("错误选项也值得学习") before moving on.
+      // Both choice stages of this section done → its words enter the garden.
+      function markSectionCollected() {
+        if (!(window.Quiz && Quiz.markCollected)) return;
+        const ws = new Set();
+        try { buildChoiceItems(section).forEach(i => ws.add(i.word)); } catch (_) {}
+        try { buildGroupItems(section).forEach(i => ws.add(i.word)); } catch (_) {}
+        ws.forEach(w => Quiz.markCollected(w));
+      }
       function maybeChapterComplete() {
         if (advancing || !allCorrect()) return;
         advancing = true;
@@ -1826,11 +1835,13 @@ const Views = (function () {
             btns = [["Continue · Group ›", () => go(hrefFor("golden"))], ["Later", menuNext]];
           } else {
             if (window.Quiz) Quiz.setStageStatus(chapterId, sectionNum, "quiz2", "completed");
+            markSectionCollected();
             title = "Section cleared — study any option, then choose.";
             btns = [["Keep Questing ›", menuNext], ["Dictation", () => go(hrefFor("seal"))]];
           }
         } else {
           if (window.Quiz) { Quiz.setStageStatus(chapterId, sectionNum, "quiz1", "completed"); Quiz.setStageStatus(chapterId, sectionNum, "quiz2", "completed"); }
+          markSectionCollected();
           title = "Section cleared — study any option, then choose.";
           btns = [["Keep Questing ›", menuNext], ["Dictation", () => go(hrefFor("seal"))]];
         }
