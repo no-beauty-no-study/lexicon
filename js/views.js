@@ -2009,23 +2009,34 @@ const Views = (function () {
         //   right top = word / 中文 / phrases (tap to open the word card)
         //   right low = example + 中文 (tap to hear)
         //   pennant   = folded note index number
+        // Collapsed by default: a thin overlapping slip showing only the
+        // English word (+ index). Tap to expand THIS one into the full card —
+        // the five zones live inside .note-body and only show when open.
         cards.push(`
           <li class="note-card" data-id="${esc(id)}">
-            <div class="note-quote" title="Tap to hear">
-              ${src ? `<div class="note-source">${esc(src)}</div>` : ""}
-              <div class="note-quote-text">${highlightWord(quote, word)}</div>
+            <button type="button" class="note-strip">
+              <span class="note-strip-en">${esc(word)}</span>
+              <span class="note-strip-idx">${esc(idxStr)}</span>
+            </button>
+            <div class="note-body">
+              <div class="note-quote" title="Tap to hear">
+                <div class="note-quote-inner">
+                  ${src ? `<div class="note-source">${esc(src)}</div>` : ""}
+                  <div class="note-quote-text">${highlightWord(quote, word)}</div>
+                </div>
+              </div>
+              ${openBtn}
+              <div class="note-word">
+                <div class="word-title">${esc(word)}</div>
+                ${entry && entry.meaning ? `<div class="word-zh">${esc(entry.meaning)}</div>` : ""}
+                ${phraseRows ? `<div class="word-divider"></div><div class="word-phrases">${phraseRows}</div>` : ""}
+              </div>
+              <div class="note-example" title="Tap to hear">
+                ${example ? `<div class="word-example">${esc(example)}</div>` : ""}
+                ${exampleZh ? `<div class="word-example-zh">${esc(exampleZh)}</div>` : ""}
+              </div>
+              <div class="note-index">${esc(idxStr)}</div>
             </div>
-            ${openBtn}
-            <div class="note-word">
-              <div class="word-title">${esc(word)}</div>
-              ${entry && entry.meaning ? `<div class="word-zh">${esc(entry.meaning)}</div>` : ""}
-              ${phraseRows ? `<div class="word-divider"></div><div class="word-phrases">${phraseRows}</div>` : ""}
-            </div>
-            <div class="note-example" title="Tap to hear">
-              ${example ? `<div class="word-example">${esc(example)}</div>` : ""}
-              ${exampleZh ? `<div class="word-example-zh">${esc(exampleZh)}</div>` : ""}
-            </div>
-            <div class="note-index">${esc(idxStr)}</div>
           </li>`);
       });
 
@@ -2033,13 +2044,19 @@ const Views = (function () {
         ? cards.join("")
         : `<li class="notes-empty">No saved words yet — fold a word while reading to keep it here.</li>`;
 
-      // Right-top word block opens the full drawer card; the reading-quote
-      // and example blocks read their text aloud. (OPEN uses data-go, handled
-      // globally.)
+      // Tap the slip → expand just that note (accordion). Inside an open card:
+      // quote / example read aloud, word block opens the drawer, OPEN → chapter.
       listEl.addEventListener("click", (e) => {
         if (e.target.closest(".note-open")) return;   // data-go handles it
         const card = e.target.closest(".note-card");
         if (!card) return;
+        if (e.target.closest(".note-strip")) {
+          e.stopPropagation();
+          const wasOpen = card.classList.contains("is-open");
+          listEl.querySelectorAll(".note-card.is-open").forEach(c => c.classList.remove("is-open"));
+          if (!wasOpen) card.classList.add("is-open");
+          return;
+        }
         const speak = (t) => { try { if (t && typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t).trim()); } catch (_) {} };
         if (e.target.closest(".note-quote"))   { e.stopPropagation(); speak(card.querySelector(".note-quote-text")?.textContent); return; }
         if (e.target.closest(".note-example")) { e.stopPropagation(); speak(card.querySelector(".word-example")?.textContent); return; }
