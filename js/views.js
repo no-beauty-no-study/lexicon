@@ -2069,7 +2069,6 @@ const Views = (function () {
         // shows only its top until tapped — see CSS .note-card overlap.
         cards.push(`
           <li class="note-card" data-id="${esc(id)}">
-            <div class="note-foldword">${esc(word)}</div>
             <div class="note-quote" title="Tap to hear">
               <div class="note-quote-inner">
                 ${src ? `<div class="note-source">${esc(src)}</div>` : ""}
@@ -2094,12 +2093,17 @@ const Views = (function () {
         ? cards.join("")
         : `<li class="notes-empty">No saved words yet — fold a word while reading to keep it here.</li>`;
       // Stack depth: later cards paint over earlier ones (deck look).
-      Array.from(listEl.querySelectorAll(".note-card")).forEach((c, i) => { c.style.zIndex = i + 1; });
+      const allCards = Array.from(listEl.querySelectorAll(".note-card"));
+      allCards.forEach((c, i) => { c.style.zIndex = i + 1; });
+      // The bottom card is fully in view (nothing overlaps it), so show it open
+      // by default — otherwise the last card reads as a blank sheet.
+      const lastCard = allCards[allCards.length - 1];
+      if (lastCard) lastCard.classList.add("is-open");
 
       const speak = (t, cb) => { try { if (t && typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t).trim(), cb ? { onEnd: cb } : undefined); } catch (_) {} };
-      // Folded by default: tap a card → it slides fully out (others stay folded)
-      // and reads its word, then its example. On an OPEN card: quote / example
-      // read aloud, word block opens the drawer, OPEN → chapter.
+      // Folded by default: tap a card → it slides fully out (others fold back)
+      // and reads its word, then its example. The bottom card always stays
+      // open. On an OPEN card: quote / example read aloud, word → drawer.
       listEl.addEventListener("click", (e) => {
         if (e.target.closest(".note-open")) return;   // data-go handles it
         const card = e.target.closest(".note-card");
@@ -2108,6 +2112,7 @@ const Views = (function () {
           e.stopPropagation();
           listEl.querySelectorAll(".note-card.is-open").forEach(c => c.classList.remove("is-open"));
           card.classList.add("is-open");
+          if (lastCard) lastCard.classList.add("is-open");   // keep the bottom card open
           const entry = byId[card.dataset.id] || {};
           try { TTS && TTS.cancel && TTS.cancel(); } catch (_) {}
           speak(entry.word, () => speak(entry.example));   // word, then example
