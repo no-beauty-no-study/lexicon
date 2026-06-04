@@ -1,4 +1,4 @@
-/* Reading content (chapter-11 dissolved into 1-10; some new sections now carry per-sentence blocks + translations). */
+/* Reading content (chapter-11 dissolved into 1-10; new sections carry blocks + translations where available). */
 const CHAPTER_CONTENT = {
  "universe": {
   "number": "1",
@@ -217,7 +217,12 @@ const CHAPTER_CONTENT = {
     "number": "1.8",
     "title": "Modern Space Exploration",
     "blocks": [
-     "After the Apollo programme triumphantly deposited astronauts on the lunar surface the pace of human spaceflight slumped, because every launch consigned a multi-million-dollar rocket to the ocean floor. Elon Musk decided to make that disposable architecture his personal antagonist. After a procession of dramatic and visually spectacular detonations on the launch pad, his company at last coaxed a rocket into completing its mission, reversing direction, decelerating against the same gravity that had hurled it skyward, and landing back upright on the launch pad for reuse, slashing the cost of orbital access by an order of magnitude. In parallel a telescope was dispatched to a quiet point well beyond the Moon, where it now captures the faint light emitted by the earliest galaxies near the dawn of the universe. Robotic rovers crawl autonomously across the rust-coloured plains of Mars, drilling samples and sniffing for traces of vanished water. Serious people, for the first time in earnest, debate whether the species ought to convert itself into a multi-planet civilisation rather than concentrating its entire existence on a single fragile planet."
+     "After the Apollo programme triumphantly deposited astronauts on the lunar surface the pace of human spaceflight slumped, because every launch consigned a multi-million-dollar rocket to the ocean floor.",
+     "Elon Musk decided to make that disposable architecture his personal antagonist.",
+     "After a procession of dramatic and visually spectacular detonations on the launch pad, his company at last coaxed a rocket into completing its mission, reversing direction, decelerating against the same gravity that had hurled it skyward, and landing back upright on the launch pad for reuse, slashing the cost of orbital access by an order of magnitude.",
+     "In parallel a telescope was dispatched to a quiet point well beyond the Moon, where it now captures the faint light emitted by the earliest galaxies near the dawn of the universe.",
+     "Robotic rovers crawl autonomously across the rust-coloured plains of Mars, drilling samples and sniffing for traces of vanished water.",
+     "Serious people, for the first time in earnest, debate whether the species ought to convert itself into a multi-planet civilisation rather than concentrating its entire existence on a single fragile planet."
     ],
     "quiz": []
    }
@@ -423,7 +428,14 @@ const CHAPTER_CONTENT = {
     "number": "2.7",
     "title": "The Tunguska Event",
     "blocks": [
-     "At dawn over a remote stretch of central Siberia a flash brighter than the sun erupted across the sky, followed within seconds by a concussion that flattened a vast tract of pristine forest in a single instant, toppling enormous numbers of trees in a radial pattern, shattering windows hundreds of kilometres away, and hurling distant herdsmen off their feet. The blast was equivalent in raw violence to a sustained nuclear arsenal. Yet when scientists at last reached the remote site, decades after the event, they confronted a single inexplicable absence. There was no impact crater. An event sufficient to flatten a vast tract of forest had left no hole in the ground. The current consensus is that an incoming asteroid or comet detonated some kilometres above the surface, with the result that the shock wave reached the ground but the original object itself never did. The precise nature, size, and composition of the object, however, remain undetermined. Had the same fragment arrived only hours later, after the Earth had rotated further on its axis, the target beneath it would have been a populous European city."
+     "At dawn over a remote stretch of central Siberia a flash brighter than the sun erupted across the sky, followed within seconds by a concussion that flattened a vast tract of pristine forest in a single instant, toppling enormous numbers of trees in a radial pattern, shattering windows hundreds of kilometres away, and hurling distant herdsmen off their feet.",
+     "The blast was equivalent in raw violence to a sustained nuclear arsenal.",
+     "Yet when scientists at last reached the remote site, decades after the event, they confronted a single inexplicable absence.",
+     "There was no impact crater.",
+     "An event sufficient to flatten a vast tract of forest had left no hole in the ground.",
+     "The current consensus is that an incoming asteroid or comet detonated some kilometres above the surface, with the result that the shock wave reached the ground but the original object itself never did.",
+     "The precise nature, size, and composition of the object, however, remain undetermined.",
+     "Had the same fragment arrived only hours later, after the Earth had rotated further on its axis, the target beneath it would have been a populous European city."
     ],
     "quiz": []
    },
@@ -742,7 +754,11 @@ const CHAPTER_CONTENT = {
     "number": "3.15",
     "title": "Child Cognitive Development",
     "blocks": [
-     "The Swiss psychologist Jean Piaget patiently devoted decades to observing children, including his own, and demonstrated that small children are not simply little adults who have not yet been told everything, but instead reason according to a logic profoundly different from the adult one, climbing through fixed developmental stages on their way upward. A young infant has not yet acquired the concept of object permanence: a thing that disappears from sight has, for the infant, ceased to exist altogether, which is precisely why the game of peekaboo strikes the infant as so dramatic. A slightly older child sincerely believes that the same volume of water poured into a tall narrow glass has somehow increased on the way over, because the child has not yet grasped the abstract notion that quantity is conserved across changes of shape. Linguists have also identified a critical window for language acquisition. Children deprived of normal linguistic input during this window, in the rare and harrowing documented cases of extreme childhood isolation, never quite master the grammar of any subsequent language, and once the window has slammed shut it cannot be coaxed open again."
+     "The Swiss psychologist Jean Piaget patiently devoted decades to observing children, including his own, and demonstrated that small children are not simply little adults who have not yet been told everything, but instead reason according to a logic profoundly different from the adult one, climbing through fixed developmental stages on their way upward.",
+     "A young infant has not yet acquired the concept of object permanence: a thing that disappears from sight has, for the infant, ceased to exist altogether, which is precisely why the game of peekaboo strikes the infant as so dramatic.",
+     "A slightly older child sincerely believes that the same volume of water poured into a tall narrow glass has somehow increased on the way over, because the child has not yet grasped the abstract notion that quantity is conserved across changes of shape.",
+     "Linguists have also identified a critical window for language acquisition.",
+     "Children deprived of normal linguistic input during this window, in the rare and harrowing documented cases of extreme childhood isolation, never quite master the grammar of any subsequent language, and once the window has slammed shut it cannot be coaxed open again."
     ],
     "quiz": []
    },
@@ -2649,7 +2665,15 @@ const CHAPTER_CONTENT = {
     "number": "7.24",
     "title": "Göbekli Tepe",
     "blocks": [
-     "Buried beneath an unremarkable hillside in south-eastern Turkey lies a sanctuary that has quietly overturned the conventional narrative of human civilisation. Archaeologists patiently excavated a ring of T-shaped megaliths, each weighing many tonnes and carved in low relief with lions, scorpions, and vultures. When the site was dated, the textbooks had to be rewritten. It predates Stonehenge by millennia and the Egyptian pyramids by even more, having been erected long before the dawn of recorded civilisation. The most disorienting discovery is that the people who erected it were still hunter-gatherers wielding stone tools, who had not yet invented agriculture, writing, pottery, or the wheel, and who had not yet domesticated even a single grain of wheat. The conventional account had insisted that civilisation requires agriculture first, then settled villages, then surplus, and only afterwards the capacity for monumental religion. Göbekli Tepe quietly proposes the opposite sequence: gathering to construct a sanctuary and to perform shared rituals may have been the social pressure that compelled human beings to settle down and cultivate grain. We may not have invented religion because we were full, in other words. We may have invented agriculture because we had committed to a god."
+     "Buried beneath an unremarkable hillside in south-eastern Turkey lies a sanctuary that has quietly overturned the conventional narrative of human civilisation.",
+     "Archaeologists patiently excavated a ring of T-shaped megaliths, each weighing many tonnes and carved in low relief with lions, scorpions, and vultures.",
+     "When the site was dated, the textbooks had to be rewritten.",
+     "It predates Stonehenge by millennia and the Egyptian pyramids by even more, having been erected long before the dawn of recorded civilisation.",
+     "The most disorienting discovery is that the people who erected it were still hunter-gatherers wielding stone tools, who had not yet invented agriculture, writing, pottery, or the wheel, and who had not yet domesticated even a single grain of wheat.",
+     "The conventional account had insisted that civilisation requires agriculture first, then settled villages, then surplus, and only afterwards the capacity for monumental religion.",
+     "Göbekli Tepe quietly proposes the opposite sequence: gathering to construct a sanctuary and to perform shared rituals may have been the social pressure that compelled human beings to settle down and cultivate grain.",
+     "We may not have invented religion because we were full, in other words.",
+     "We may have invented agriculture because we had committed to a god."
     ],
     "quiz": []
    }
@@ -2756,7 +2780,12 @@ const CHAPTER_CONTENT = {
     "number": "9.5",
     "title": "The Antikythera Mechanism",
     "blocks": [
-     "Greek sponge divers working off a small island recovered, from a Roman shipwreck of immense antiquity, a corroded lump of bronze that nobody could identify. The lump was deposited in a museum drawer and quietly forgotten for decades. When scientists at last penetrated its rusted exterior with X-rays they encountered, packed inside it, dozens of finely meshed bronze gears, organised into a precision astronomical computer capable of calculating the positions of the sun and moon on any future date, anticipating both solar and lunar eclipses, and tracking the irregular cycle of the ancient Olympic Games. The mechanical sophistication is one that European clockmakers would not match again for more than a millennium. Nobody knows who designed it, whether other examples ever existed, or how a technical tradition this advanced could have been so completely effaced that the entire discipline of precision mechanics had to be reinvented from scratch in the late medieval period. The mechanism resembles, more than anything else, an artefact that does not belong to the century in which it was found."
+     "Greek sponge divers working off a small island recovered, from a Roman shipwreck of immense antiquity, a corroded lump of bronze that nobody could identify.",
+     "The lump was deposited in a museum drawer and quietly forgotten for decades.",
+     "When scientists at last penetrated its rusted exterior with X-rays they encountered, packed inside it, dozens of finely meshed bronze gears, organised into a precision astronomical computer capable of calculating the positions of the sun and moon on any future date, anticipating both solar and lunar eclipses, and tracking the irregular cycle of the ancient Olympic Games.",
+     "The mechanical sophistication is one that European clockmakers would not match again for more than a millennium.",
+     "Nobody knows who designed it, whether other examples ever existed, or how a technical tradition this advanced could have been so completely effaced that the entire discipline of precision mechanics had to be reinvented from scratch in the late medieval period.",
+     "The mechanism resembles, more than anything else, an artefact that does not belong to the century in which it was found."
     ],
     "quiz": []
    },
@@ -3002,7 +3031,14 @@ const CHAPTER_CONTENT = {
     "number": "9.16",
     "title": "Epidemiology and Plague",
     "blocks": [
-     "When cholera tore through industrialising London, the prevailing theory blamed foul air, the so-called miasma, exhaled by rotting matter. A physician named John Snow flatly refused to accept it. He mapped every recorded death on a chart of the surrounding streets and watched, line by line, a tight cluster emerge around a single neighbourhood water pump. He persuaded the authorities to remove the handle of the pump, the epidemic subsided within days, and the discipline of epidemiology was born along with it. Looking backward across history, the bubonic plague killed roughly a third of medieval Europe and so thoroughly undermined the moral authority of the church that the entire medieval order began to collapse upon itself. Smallpox accompanying the Spanish into the Americas exterminated indigenous populations on a scale large enough to deliver an entire empire into the hands of a small ragged expedition. The great influenza outbreak after the First World War killed more people than the war itself. Each great epidemic, far from being merely a tragedy of mortality, quietly reshapes wage rates, religious authority, town planning, and even habits as small as washing one's hands."
+     "When cholera tore through industrialising London, the prevailing theory blamed foul air, the so-called miasma, exhaled by rotting matter.",
+     "A physician named John Snow flatly refused to accept it.",
+     "He mapped every recorded death on a chart of the surrounding streets and watched, line by line, a tight cluster emerge around a single neighbourhood water pump.",
+     "He persuaded the authorities to remove the handle of the pump, the epidemic subsided within days, and the discipline of epidemiology was born along with it.",
+     "Looking backward across history, the bubonic plague killed roughly a third of medieval Europe and so thoroughly undermined the moral authority of the church that the entire medieval order began to collapse upon itself.",
+     "Smallpox accompanying the Spanish into the Americas exterminated indigenous populations on a scale large enough to deliver an entire empire into the hands of a small ragged expedition.",
+     "The great influenza outbreak after the First World War killed more people than the war itself.",
+     "Each great epidemic, far from being merely a tragedy of mortality, quietly reshapes wage rates, religious authority, town planning, and even habits as small as washing one's hands."
     ],
     "quiz": []
    },
@@ -3010,7 +3046,13 @@ const CHAPTER_CONTENT = {
     "number": "9.17",
     "title": "Vaccines and Modern Medicine",
     "blocks": [
-     "An observant English country doctor named Edward Jenner noticed that the milkmaids who handled cattle every day almost never contracted the lethal disease smallpox, having previously caught a much milder bovine disease called cowpox. He boldly inoculated a small boy with cowpox lymph, then exposed the same boy to the genuine smallpox virus, and watched the boy emerge entirely immune. The technique he had invented is called vaccination, the English word descending from the Latin vacca for cow. The underlying principle is to display to the immune system a preview of a dangerous pathogen so that the body manufactures matching antibodies in advance, so when the real pathogen at last arrives the defending army already recognises it on sight. A coordinated global vaccination campaign has driven smallpox into complete extinction, the only human infectious disease ever eradicated from the planet. Generations after Jenner, a radical new technology called messenger RNA was deployed against the recent coronavirus pandemic. Instead of injecting the virus itself, scientists encoded the genetic instructions for one viral protein and let each patient's own cells manufacture the preview, compressing into months a development cycle that traditionally demanded a decade."
+     "An observant English country doctor named Edward Jenner noticed that the milkmaids who handled cattle every day almost never contracted the lethal disease smallpox, having previously caught a much milder bovine disease called cowpox.",
+     "He boldly inoculated a small boy with cowpox lymph, then exposed the same boy to the genuine smallpox virus, and watched the boy emerge entirely immune.",
+     "The technique he had invented is called vaccination, the English word descending from the Latin vacca for cow.",
+     "The underlying principle is to display to the immune system a preview of a dangerous pathogen so that the body manufactures matching antibodies in advance, so when the real pathogen at last arrives the defending army already recognises it on sight.",
+     "A coordinated global vaccination campaign has driven smallpox into complete extinction, the only human infectious disease ever eradicated from the planet.",
+     "Generations after Jenner, a radical new technology called messenger RNA was deployed against the recent coronavirus pandemic.",
+     "Instead of injecting the virus itself, scientists encoded the genetic instructions for one viral protein and let each patient's own cells manufacture the preview, compressing into months a development cycle that traditionally demanded a decade."
     ],
     "quiz": []
    },
@@ -4189,7 +4231,14 @@ const CHAPTER_CONTENT = {
     "number": "9.65",
     "title": "Deciphering Lost Scripts",
     "blocks": [
-     "A French soldier scrambling through the Egyptian campaign uncovered a slab of black basalt inscribed with the same passage in three different scripts: Egyptian hieroglyphic, an Egyptian cursive, and ancient Greek. The French scholar Jean-Francois Champollion, who already commanded Greek, spent the better part of his adult life comparing the three columns until he finally cracked a writing system that had defied interpretation for over a thousand years, restoring to the ancient Egyptian civilisation the capacity to speak again. Generations later the German military encrypted its wartime communications with a machine called Enigma whose possible settings ran into astronomical numbers, certain that no human mind could ever unravel them. The British mathematician Alan Turing, sequestered in a secret country estate called Bletchley Park, designed the proto-computer that broke Enigma and is reckoned to have abbreviated the Second World War by years. The achievement was buried under official secrecy for decades, and Turing himself was prosecuted for homosexuality and driven to suicide before his contribution was at last publicly acknowledged. The most stubborn case still resists every effort. The Voynich Manuscript, an enigmatic medieval codex crammed with an unknown script and bizarre botanical illustrations, has shrugged off every cryptographic technique applied to it. Across the intervening centuries no one has determined whether it encodes a lost language, an elaborate hoax, or the private writing of a mind no diagnosis has ever named."
+     "A French soldier scrambling through the Egyptian campaign uncovered a slab of black basalt inscribed with the same passage in three different scripts: Egyptian hieroglyphic, an Egyptian cursive, and ancient Greek.",
+     "The French scholar Jean-Francois Champollion, who already commanded Greek, spent the better part of his adult life comparing the three columns until he finally cracked a writing system that had defied interpretation for over a thousand years, restoring to the ancient Egyptian civilisation the capacity to speak again.",
+     "Generations later the German military encrypted its wartime communications with a machine called Enigma whose possible settings ran into astronomical numbers, certain that no human mind could ever unravel them.",
+     "The British mathematician Alan Turing, sequestered in a secret country estate called Bletchley Park, designed the proto-computer that broke Enigma and is reckoned to have abbreviated the Second World War by years.",
+     "The achievement was buried under official secrecy for decades, and Turing himself was prosecuted for homosexuality and driven to suicide before his contribution was at last publicly acknowledged.",
+     "The most stubborn case still resists every effort.",
+     "The Voynich Manuscript, an enigmatic medieval codex crammed with an unknown script and bizarre botanical illustrations, has shrugged off every cryptographic technique applied to it.",
+     "Across the intervening centuries no one has determined whether it encodes a lost language, an elaborate hoax, or the private writing of a mind no diagnosis has ever named."
     ],
     "quiz": []
    },
@@ -4213,7 +4262,13 @@ const CHAPTER_CONTENT = {
     "number": "9.68",
     "title": "The Radium Craze",
     "blocks": [
-     "Marie Curie's isolation of the self-luminous element radium triggered one of the most absurd episodes in consumer history. Manufacturers cheerfully laced radium into toothpaste, face cream, chocolate, and bottled spring water, advertising the element as a universal tonic capable of restoring youth and energising any flagging metabolism. A wealthy American named Eben Byers swallowed several bottles of radium-laced water every day for years and ultimately lost most of his jaw to radiation necrosis, dying in a manner so gruesome that the public was at last shaken into recognising radium as a violent poison. Meanwhile, in a watch-dial factory, a workforce of young women painted luminous numerals onto wristwatches with a paint laced with radium, and their supervisors instructed them to lick the tip of each brush to keep the bristles pointed, never warning them that the luminous powder was quietly eating their bones from inside. These workers, later christened the Radium Girls, gradually developed disfiguring jaw necrosis, lost their teeth, and watched their skeletons crumble, while the corporation that employed them denied responsibility and suppressed the medical findings. A handful of dying women dragged their employer through the courts and established a landmark legal precedent: a worker may sue the employer for occupational injury. They paid with their lives for the first foundation stone of modern workplace safety law."
+     "Marie Curie's isolation of the self-luminous element radium triggered one of the most absurd episodes in consumer history.",
+     "Manufacturers cheerfully laced radium into toothpaste, face cream, chocolate, and bottled spring water, advertising the element as a universal tonic capable of restoring youth and energising any flagging metabolism.",
+     "A wealthy American named Eben Byers swallowed several bottles of radium-laced water every day for years and ultimately lost most of his jaw to radiation necrosis, dying in a manner so gruesome that the public was at last shaken into recognising radium as a violent poison.",
+     "Meanwhile, in a watch-dial factory, a workforce of young women painted luminous numerals onto wristwatches with a paint laced with radium, and their supervisors instructed them to lick the tip of each brush to keep the bristles pointed, never warning them that the luminous powder was quietly eating their bones from inside.",
+     "These workers, later christened the Radium Girls, gradually developed disfiguring jaw necrosis, lost their teeth, and watched their skeletons crumble, while the corporation that employed them denied responsibility and suppressed the medical findings.",
+     "A handful of dying women dragged their employer through the courts and established a landmark legal precedent: a worker may sue the employer for occupational injury.",
+     "They paid with their lives for the first foundation stone of modern workplace safety law."
     ],
     "quiz": []
    }
@@ -5236,7 +5291,12 @@ const CHAPTER_CONTENT = {
     "number": "10.41",
     "title": "The MBA and Wall Street",
     "blocks": [
-     "Twentieth-century American business schools recast commerce as a teachable discipline, and the Master of Business Administration emerged as the indispensable ticket into the upper offices of Wall Street and the major corporations. Beneath the polished curriculum runs a single audacious logic: capital today purchases the right to anticipated future earnings, so that an unprofitable company can nonetheless command a soaring share price simply by persuading investors that immense profits lie ahead. The same logic has manufactured colossal fortunes and engineered equally spectacular collapses. The energy conglomerate Enron quietly buried its crippling debts inside an opaque thicket of shell subsidiaries, repackaged them as profits, and unravelled in a single weekend when the deception was at last exposed, prompting federal auditors to redraw the rules of corporate disclosure. Two decades later Wall Street bundled the mortgages of borrowers manifestly unable to repay them into elegantly named financial products, distributed them across the global banking system, and detonated a worldwide recession the instant the underlying borrowers defaulted. When Tim Cook inherited Apple he invented nothing dramatic, but optimised the company's supply chain into a precision instrument so unforgiving that Apple became the most profitable corporation ever assembled."
+     "Twentieth-century American business schools recast commerce as a teachable discipline, and the Master of Business Administration emerged as the indispensable ticket into the upper offices of Wall Street and the major corporations.",
+     "Beneath the polished curriculum runs a single audacious logic: capital today purchases the right to anticipated future earnings, so that an unprofitable company can nonetheless command a soaring share price simply by persuading investors that immense profits lie ahead.",
+     "The same logic has manufactured colossal fortunes and engineered equally spectacular collapses.",
+     "The energy conglomerate Enron quietly buried its crippling debts inside an opaque thicket of shell subsidiaries, repackaged them as profits, and unravelled in a single weekend when the deception was at last exposed, prompting federal auditors to redraw the rules of corporate disclosure.",
+     "Two decades later Wall Street bundled the mortgages of borrowers manifestly unable to repay them into elegantly named financial products, distributed them across the global banking system, and detonated a worldwide recession the instant the underlying borrowers defaulted.",
+     "When Tim Cook inherited Apple he invented nothing dramatic, but optimised the company's supply chain into a precision instrument so unforgiving that Apple became the most profitable corporation ever assembled."
     ],
     "quiz": []
    },
@@ -5244,7 +5304,13 @@ const CHAPTER_CONTENT = {
     "number": "10.42",
     "title": "Data and Statistics",
     "blocks": [
-     "The most disorienting lesson of statistics is that the entire opinion of a populous nation can be inferred, with startling accuracy, from a few thousand citizens drawn at random, provided only that the draw is genuinely impartial. The pollster George Gallup proved the point by predicting an American presidential election from a sample so small that his lavishly funded rivals, who had canvassed millions, were left publicly humiliated. Statisticians now wield regression analysis to extract hidden ligatures from the chaos of raw data, exposing the link between smoking and lung cancer, between advertising and consumer behaviour, between schooling and lifetime earnings, with a confidence no anecdote could ever furnish. The same instruments, however, mislead anyone who confuses correlation with causation. Ice-cream sales and drowning deaths surge together every summer, not because ice cream drowns its consumers but because the heat of summer drives both. Today an algorithmic engine ingests the viewing history of hundreds of millions of subscribers and predicts, through matrix arithmetic, which programme will hold the viewer for one more episode. We inhabit, increasingly, an existence in which everything is quantified, anticipated, and recommended for us before we have noticed wanting it."
+     "The most disorienting lesson of statistics is that the entire opinion of a populous nation can be inferred, with startling accuracy, from a few thousand citizens drawn at random, provided only that the draw is genuinely impartial.",
+     "The pollster George Gallup proved the point by predicting an American presidential election from a sample so small that his lavishly funded rivals, who had canvassed millions, were left publicly humiliated.",
+     "Statisticians now wield regression analysis to extract hidden ligatures from the chaos of raw data, exposing the link between smoking and lung cancer, between advertising and consumer behaviour, between schooling and lifetime earnings, with a confidence no anecdote could ever furnish.",
+     "The same instruments, however, mislead anyone who confuses correlation with causation.",
+     "Ice-cream sales and drowning deaths surge together every summer, not because ice cream drowns its consumers but because the heat of summer drives both.",
+     "Today an algorithmic engine ingests the viewing history of hundreds of millions of subscribers and predicts, through matrix arithmetic, which programme will hold the viewer for one more episode.",
+     "We inhabit, increasingly, an existence in which everything is quantified, anticipated, and recommended for us before we have noticed wanting it."
     ],
     "quiz": []
    },
@@ -5252,7 +5318,12 @@ const CHAPTER_CONTENT = {
     "number": "10.43",
     "title": "Modern Urban Planning",
     "blocks": [
-     "For most of the twentieth century the city was conceived as a machine for the automobile: arterial roads were carved through old neighbourhoods, pedestrians compressed onto narrow pavements, and the sidewalk café displaced by the traffic island. Late in the century, planners began to repent. In Manhattan an obsolete freight railway suspended above the West Side was patiently transfigured, segment by segment, into a linear park called the High Line, and the property values along the adjacent blocks vaulted upward almost overnight, furnishing a model of post-industrial revitalisation that has since been imitated from Seoul to São Paulo. Barcelona retorted with the superblock, sealing off interior streets from through traffic and restoring them to pedestrians, café tables, and children improvising games on the asphalt. Singapore meanwhile housed the overwhelming majority of its citizens in carefully designed public apartments while throttling private car ownership through punitive licensing. Beneath each of these distinct gambits runs a single reorientation: the city was reconceived as an instrument for the people who inhabit it rather than for the vehicles that traverse it."
+     "For most of the twentieth century the city was conceived as a machine for the automobile: arterial roads were carved through old neighbourhoods, pedestrians compressed onto narrow pavements, and the sidewalk café displaced by the traffic island.",
+     "Late in the century, planners began to repent.",
+     "In Manhattan an obsolete freight railway suspended above the West Side was patiently transfigured, segment by segment, into a linear park called the High Line, and the property values along the adjacent blocks vaulted upward almost overnight, furnishing a model of post-industrial revitalisation that has since been imitated from Seoul to São Paulo.",
+     "Barcelona retorted with the superblock, sealing off interior streets from through traffic and restoring them to pedestrians, café tables, and children improvising games on the asphalt.",
+     "Singapore meanwhile housed the overwhelming majority of its citizens in carefully designed public apartments while throttling private car ownership through punitive licensing.",
+     "Beneath each of these distinct gambits runs a single reorientation: the city was reconceived as an instrument for the people who inhabit it rather than for the vehicles that traverse it."
     ],
     "quiz": []
    },
@@ -5260,7 +5331,12 @@ const CHAPTER_CONTENT = {
     "number": "10.44",
     "title": "Environmental Engineering and Water",
     "blocks": [
-     "The most clandestine artery of the modern metropolis is its water supply. Early in the twentieth century Los Angeles, confronted with explosive growth, quietly bought up the water rights of valleys hundreds of kilometres to its north and constructed an enormous aqueduct that drained their rivers wholesale, converting fertile farmland into a glittering crust of salt and inaugurating one of the canonical case studies in municipal predation. The Netherlands, much of whose terrain lies below sea level, instinctively adopted the opposite philosophy. Dutch engineers championed the sponge city, refusing to seal every surface in concrete and instead restoring permeable ground, hollowing out subterranean reservoirs, and reconstructing artificial wetlands so that rainfall would be absorbed and released gradually back into the local water table. The same logic now propagates outward to every flood-prone city on the planet. At the agricultural frontier, vertical farms tucked inside urban high-rises cultivate leafy crops layer upon layer through a soil-free technique called hydroponics, consuming only a small fraction of the irrigation water demanded by an equivalent acreage of conventional field."
+     "The most clandestine artery of the modern metropolis is its water supply.",
+     "Early in the twentieth century Los Angeles, confronted with explosive growth, quietly bought up the water rights of valleys hundreds of kilometres to its north and constructed an enormous aqueduct that drained their rivers wholesale, converting fertile farmland into a glittering crust of salt and inaugurating one of the canonical case studies in municipal predation.",
+     "The Netherlands, much of whose terrain lies below sea level, instinctively adopted the opposite philosophy.",
+     "Dutch engineers championed the sponge city, refusing to seal every surface in concrete and instead restoring permeable ground, hollowing out subterranean reservoirs, and reconstructing artificial wetlands so that rainfall would be absorbed and released gradually back into the local water table.",
+     "The same logic now propagates outward to every flood-prone city on the planet.",
+     "At the agricultural frontier, vertical farms tucked inside urban high-rises cultivate leafy crops layer upon layer through a soil-free technique called hydroponics, consuming only a small fraction of the irrigation water demanded by an equivalent acreage of conventional field."
     ],
     "quiz": []
    },
@@ -5268,7 +5344,12 @@ const CHAPTER_CONTENT = {
     "number": "10.45",
     "title": "Materials Science",
     "blocks": [
-     "Each human epoch is conventionally christened for the dominant material of its tools, from stone to bronze to iron, and the twentieth century ought by the same convention to be christened the age of synthetic materials. The chemists at the DuPont laboratory patiently chained small organic molecules into long flexible polymers and conjured nylon, a fibre simultaneously lighter, stronger, and more elastic than silk. Women's stockings were liberated overnight from any dependence on the silkworm, and humanity had, for the first recorded time, deliberately manufactured a substance unknown to the natural world. Engineers at Bell Laboratories implanted minute impurities into a wafer of silicon to construct the transistor, a microscopic switch that herded electrical current on command, and every modern electronic device has since been erected on billions of them. The current frontier flirts with graphene, a sheet of pure carbon a single atom thick yet several hundred times stronger than steel, and conducting electricity more freely than any metal previously isolated. Every breakthrough in material redraws, almost silently, the boundary of what becomes physically possible for our species."
+     "Each human epoch is conventionally christened for the dominant material of its tools, from stone to bronze to iron, and the twentieth century ought by the same convention to be christened the age of synthetic materials.",
+     "The chemists at the DuPont laboratory patiently chained small organic molecules into long flexible polymers and conjured nylon, a fibre simultaneously lighter, stronger, and more elastic than silk.",
+     "Women's stockings were liberated overnight from any dependence on the silkworm, and humanity had, for the first recorded time, deliberately manufactured a substance unknown to the natural world.",
+     "Engineers at Bell Laboratories implanted minute impurities into a wafer of silicon to construct the transistor, a microscopic switch that herded electrical current on command, and every modern electronic device has since been erected on billions of them.",
+     "The current frontier flirts with graphene, a sheet of pure carbon a single atom thick yet several hundred times stronger than steel, and conducting electricity more freely than any metal previously isolated.",
+     "Every breakthrough in material redraws, almost silently, the boundary of what becomes physically possible for our species."
     ],
     "quiz": []
    },
@@ -5276,7 +5357,11 @@ const CHAPTER_CONTENT = {
     "number": "10.46",
     "title": "Sustainable Energy",
     "blocks": [
-     "After two centuries of incinerating coal and oil humanity has at last recognised that the buried fuels are finite and that the act of combusting them is gradually scorching the planet they inhabit. Engineers have accordingly pivoted toward sources that are, for any human horizon, inexhaustible: enormous wind turbines pivot quietly above the open sea, photovoltaic panels convert sunlight directly into electricity, geothermal stations siphon heat from kilometres beneath the crust, and tidal generators harness the gravitational pull of the moon itself. The dominant difficulty has migrated from generation to storage, because the wind does not blow obediently and the sun refuses to shine at night. Vast batteries and pumped-hydro reservoirs, into which surplus electricity drives water uphill so that it can be released through turbines on demand, have therefore quietly become the central technologies of the transition. Several Scandinavian countries already run their grids almost entirely on hydroelectricity and wind, having converted energy from a substance to be excavated and combusted into a resource continuously borrowed from the natural world."
+     "After two centuries of incinerating coal and oil humanity has at last recognised that the buried fuels are finite and that the act of combusting them is gradually scorching the planet they inhabit.",
+     "Engineers have accordingly pivoted toward sources that are, for any human horizon, inexhaustible: enormous wind turbines pivot quietly above the open sea, photovoltaic panels convert sunlight directly into electricity, geothermal stations siphon heat from kilometres beneath the crust, and tidal generators harness the gravitational pull of the moon itself.",
+     "The dominant difficulty has migrated from generation to storage, because the wind does not blow obediently and the sun refuses to shine at night.",
+     "Vast batteries and pumped-hydro reservoirs, into which surplus electricity drives water uphill so that it can be released through turbines on demand, have therefore quietly become the central technologies of the transition.",
+     "Several Scandinavian countries already run their grids almost entirely on hydroelectricity and wind, having converted energy from a substance to be excavated and combusted into a resource continuously borrowed from the natural world."
     ],
     "quiz": []
    }
