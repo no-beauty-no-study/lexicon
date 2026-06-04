@@ -1,4 +1,4 @@
-/* Reading content (chapter-11 dissolved into 1-10; new sections carry per-sentence blocks + translations). */
+/* Reading content (ch11 + ch12 supplements dissolved into 1-10). */
 const CHAPTER_CONTENT = {
  "universe": {
   "number": "1",
@@ -2256,6 +2256,19 @@ const CHAPTER_CONTENT = {
    },
    {
     "number": "7.8",
+    "title": "Yuan Longping and the Hybrid Rice",
+    "blocks": [
+     "In order to feed the great hungry population of his country, Yuan Longping resolved on a project nearly every contemporary biologist had dismissed as impossible: to comb the rice paddies of southern China for a single naturally male-sterile plant, and then to use it to breed a hybrid rice whose yield would double anything traditional cultivation could deliver.",
+     "The decision committed him to searching for the rarest needle in the most repetitive haystack the planet had ever produced, since the plants of any established rice variety look almost identical to one another.",
+     "For years he wore a straw hat and waded into the sweltering paddies and stooped over the ankle-deep water, plant by plant, parting each flower and peering at the anthers, sweat dripping from his chin into the mud, leeches latching onto his calves, the sun burning the back of his neck a permanent red.",
+     "He at last spotted, in one particular field, a handful of plants whose anthers had withered into shrivelled empty husks, and almost wept with joy at the sight.",
+     "From there he chased the seed itself across the seasons, hauling it down to the tropical south of China each winter so that the rice could squeeze in additional generations every year, crossing and back-crossing, sifting and purifying, dragging the yield per field steadily upward until it had broken every traditional ceiling.",
+     "A single man, bent over the mud for a working lifetime, had quietly raised the rice bowl of the world's most populous nation."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "7.9",
     "title": "The Way That Did Not Prevail",
     "blocks": [
      "In the fifth century before the common era, an unemployed clerk named Confucius walked from one Chinese kingdom to the next, attempting to persuade princes that a state could be governed not by punishment or by armed force but by a single discipline: the patient cultivation of moral relationships between people.",
@@ -2290,7 +2303,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.8"
    },
    {
-    "number": "7.9",
+    "number": "7.10",
     "title": "Laozi and the Way",
     "blocks": [
      "A near contemporary of Confucius, the elder Laozi, rode westward on a buffalo through the imperial gate and disappeared into the mountains, leaving behind only a five-thousand-character manuscript we now call the Dao De Jing.",
@@ -2315,7 +2328,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.9"
    },
    {
-    "number": "7.10",
+    "number": "7.11",
     "title": "The First Emperor",
     "blocks": [
      "A king of the western Chinese state of Qin, named Ying Zheng, spent a decade conquering the six other warring states and unified the whole of China under a single throne, designating himself the First Emperor.",
@@ -2340,7 +2353,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.10"
    },
    {
-    "number": "7.11",
+    "number": "7.12",
     "title": "Under the Bodhi Tree",
     "blocks": [
      "A young prince in northern India, raised in the comfort of his father's palace, encountered for the first time outside its walls an aged man, a sick man, and a corpse.",
@@ -2367,7 +2380,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.11"
    },
    {
-    "number": "7.12",
+    "number": "7.13",
     "title": "The Path of Yoga",
     "blocks": [
      "Older than Buddhism itself, Hinduism has never functioned as a single religion in the European sense but rather as an entire way of life.",
@@ -2392,7 +2405,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.12"
    },
    {
-    "number": "7.13",
+    "number": "7.14",
     "title": "The Capital and the Four Inventions",
     "blocks": [
      "The Tang dynasty capital of Chang'an was the largest international city in the world during its century, its avenues thronged with Persian merchants, Arab envoys, Japanese student monks, and Korean painters.",
@@ -2417,7 +2430,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.13"
    },
    {
-    "number": "7.14",
+    "number": "7.15",
     "title": "Print Crosses the Continent",
     "blocks": [
      "Tang dynasty Buddhist monks first carved entire sutras onto wooden blocks and printed multiple copies of each text by inking the blocks and pressing paper against them, a technique that exploded the availability of religious literature throughout East Asia.",
@@ -2442,7 +2455,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.14"
    },
    {
-    "number": "7.15",
+    "number": "7.16",
     "title": "The Road That Carried Everything",
     "blocks": [
      "The Silk Road never carried only silk.",
@@ -2467,7 +2480,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.15"
    },
    {
-    "number": "7.16",
+    "number": "7.17",
     "title": "The Mongol Horseman",
     "blocks": [
      "A poor steppe chieftain named Temujin, who would later assume the title Genghis Khan, organised the scattered Mongol tribes into the most disciplined cavalry the planet had ever seen, and across a single generation conquered the largest contiguous land empire in human history, extending from the Pacific coast all the way to the eastern edge of Europe.",
@@ -2492,7 +2505,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.16"
    },
    {
-    "number": "7.17",
+    "number": "7.18",
     "title": "The Island Empire",
     "blocks": [
      "Separated from the Asian mainland by a narrow strait, Japan developed across centuries a culture distinct from any continental neighbour.",
@@ -2518,7 +2531,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.17"
    },
    {
-    "number": "7.18",
+    "number": "7.19",
     "title": "The Leaf That Started a War",
     "blocks": [
      "In the mountains of Yunnan grows a small evergreen shrub whose dried leaves release a mild stimulant when steeped in hot water.",
@@ -2544,7 +2557,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.18"
    },
    {
-    "number": "7.19",
+    "number": "7.20",
     "title": "The Mountain That Cooled the Planet",
     "blocks": [
      "The Indonesian volcano Tambora erupted with such violence that its ash cloud encircled the entire planet and reduced the solar radiation reaching the surface for an entire year, generating what later observers called the Year Without a Summer.",
@@ -2571,7 +2584,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.19"
    },
    {
-    "number": "7.20",
+    "number": "7.21",
     "title": "Reform and Opening Up",
     "blocks": [
      "After a century of foreign humiliation, civil war, and revolutionary upheaval, China entered a period of austere central planning in which private commerce was effectively eliminated and every farm and factory belonged to the collective.",
@@ -2597,7 +2610,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.20"
    },
    {
-    "number": "7.21",
+    "number": "7.22",
     "title": "The Continent That Caught Up",
     "blocks": [
      "Within a generation the same continent that had been pedalling bicycles to the rice paddy was constructing the most extensive high-speed rail network on the planet, with more kilometres of track than every other country combined.",
@@ -2623,7 +2636,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.21"
    },
    {
-    "number": "7.22",
+    "number": "7.23",
     "title": "sealyra",
     "blocks": [
      "To curb the demographic explosion that had accompanied the early decades of the People's Republic, the central authorities instituted what is colloquially known as the one-child policy, restricting most urban families to a single offspring under penalty of considerable administrative sanction. sealyra was born into precisely this demographic interlude, an only daughter saturated from infancy with the undivided expectations and resources of two parents and four grandparents, an entire generational pyramid converging on a single small recipient.",
@@ -2649,7 +2662,85 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.22"
    },
    {
-    "number": "7.23",
+    "number": "7.24",
+    "title": "The Seminar",
+    "blocks": [
+     "The room fell silent as Sealyra clicked to her first slide.",
+     "Her throat had gone dry.",
+     "She cleared it once, twice, and began.",
+     "Three rows back, Shiro sat slouched in his chair, one ankle crossed over his knee, drumming his pale fingers against the armrest with an expression of open boredom.",
+     "He did not look at her.",
+     "He looked at the window, at his watch, at anything but her. \"And so the data suggests a clear correlation between,\" she went on. \"Suggests.\" His voice cut through the room, soft and lazy.",
+     "He did not even raise his hand. \"You keep saying suggests.",
+     "Do you have evidence, or do you have a feeling?\" Heat flooded her face.",
+     "The other students shifted, their eyes darting between the two of them.",
+     "Sealyra's fingers tightened around the clicker until her knuckles went white. \"The regression analysis,\" she said. \"Is built on a sample too small to mean anything.\" He finally turned his gaze on her, and it was worse than the words: cool, gray, faintly amused, as if she were something mildly entertaining he had scraped off his shoe.",
+     "One corner of his mouth curved. \"But please.",
+     "Continue.",
+     "I'm sure the conclusion will be fascinating.\" She wanted to hurl the clicker at his perfect, smirking face.",
+     "Instead she lifted her chin, swallowed the tremor in her voice, and went on.",
+     "She would not give him the satisfaction of watching her falter.",
+     "Behind that cold smile, she had no way of knowing, his own fingers had drifted to his wrist, quietly counting a heartbeat that had been racing far too fast all morning."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "7.25",
+    "title": "The Yacht",
+    "blocks": [
+     "He had invited the entire cohort to his birthday party on the yacht.",
+     "Sealyra almost did not come.",
+     "When she stepped aboard, Shiro's gaze swept over her once, cold and dismissive, and he turned away without a word, leaving her standing alone at the rail as the others laughed somewhere behind him.",
+     "The storm rolled in across the black water.",
+     "Then the shove came from nowhere.",
+     "One moment she was watching the lightning split the sky.",
+     "The next, a hard pressure struck her between the shoulder blades and the deck vanished from under her feet.",
+     "She squeezed her eyes shut and braced for the cold, for the shock of water closing over her head.",
+     "It never came.",
+     "A hand caught her wrist.",
+     "A hand so pale it was almost translucent, trembling violently, gripping her with a strength that made no sense for how thin those fingers were.",
+     "Rain hammered down in sheets.",
+     "Her heart slammed against her ribs, or perhaps that was the thunder, she could no longer tell.",
+     "For one suspended instant the entire world went utterly silent.",
+     "Then he wrenched her upward with everything he had and heaved her back over the rail onto the deck.",
+     "And lost his own footing.",
+     "She landed hard on the wet planks, gasping, and spun around just in time to see Shiro tip backward over the edge, his gray eyes wide, his mouth open around a word she never heard.",
+     "The sea swallowed him without a sound."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "7.26",
+    "title": "After",
+    "blocks": [
+     "By the time the others dragged the lifeboat around, she had already hauled him onto the deck and forced the water from his lungs.",
+     "Now he lay motionless under the awning, out of the rain at last, his chest rising in shallow, uneven breaths.",
+     "Unconscious.",
+     "But alive.",
+     "The crowd had thinned.",
+     "The storm was drifting out to sea.",
+     "And Sealyra found herself kneeling alone beside him, unable to look away.",
+     "Without the cold smirk, without the sharp tongue, his face was something else entirely.",
+     "Damp strands of dark hair clung to his pale forehead.",
+     "His lashes lay long and still against skin so fair it seemed almost translucent in the gray light.",
+     "Every arrogant line she had hated all term had softened into something unbearably delicate.",
+     "She stared, and stared, and could not make herself stop.",
+     "Her hand moved before she told it to.",
+     "Slowly, helplessly, her fingertips drifted toward his cheek, hovered there a breath away, and finally grazed the cool, wet skin.",
+     "His lashes fluttered.",
+     "She went rigid.",
+     "Too late to pull back.",
+     "His eyes opened, slow and unfocused, then settled on her, and up close they were not gray at all but a deep, clear color, like some cut jewel catching the last of the light.",
+     "Her heart lurched straight into her throat. \"There was,\" she blurted, snatching her hand back, \"something on your face.\" He did not blink.",
+     "He did not look away.",
+     "He simply held her gaze, silent, while the rain dripped from the edge of the awning and her pulse pounded loud enough to drown out the sea.",
+     "A long moment passed.",
+     "Then another. \"Water,\" he rasped at last. \"I want water.\""
+    ],
+    "quiz": []
+   },
+   {
+    "number": "7.27",
     "title": "The Shaman and the Mammoth Hunter",
     "blocks": [
      "The paleolithic peoples of north Asia, ancestors of every indigenous community from Siberia to Alaska, organised their existence around the seasonal subsistence hunt of large mammals across treeless tundra.",
@@ -2676,7 +2767,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch7/7.23"
    },
    {
-    "number": "7.24",
+    "number": "7.28",
     "title": "Göbekli Tepe",
     "blocks": [
      "Buried beneath an unremarkable hillside in south-eastern Turkey lies a sanctuary that has quietly overturned the conventional narrative of human civilisation.",
@@ -3156,6 +3247,27 @@ const CHAPTER_CONTENT = {
    },
    {
     "number": "9.22",
+    "title": "Cellini Casts the Perseus",
+    "blocks": [
+     "A hot-tempered Florentine goldsmith and sculptor named Benvenuto Cellini received from his Duke the commission to cast a bronze statue of Perseus brandishing the severed head of Medusa.",
+     "The casting of bronze is the most perilous gamble any craftsman ever submits to in his life.",
+     "The metal must reach exactly the right temperature, neither a degree above nor a degree below.",
+     "Too cool and it congeals on the way through the channels and clogs them solid.",
+     "Too hot and it burns straight through the clay mould and floods the foundry.",
+     "Just as the furnace was roaring at full blaze, Cellini collapsed into bed with a violent fever.",
+     "His workmen burst into the bedroom in panic, reporting that the bronze had begun to clot inside the furnace and the whole statue was on the brink of ruin.",
+     "He leapt out of bed and stormed into the workshop.",
+     "The bronze had indeed grown too sluggish to flow.",
+     "Half delirious, he ordered every pewter plate and pewter bowl in the household, and even the wooden furniture, hurled into the furnace to revive the temperature, then heaped log after log onto the fire until the flames almost lifted the roof off the workshop.",
+     "The molten bronze at last surrendered and began to flow again.",
+     "He pried open the casting plug, and the golden-red liquid hissed and roared into every cavity of the mould.",
+     "When the clay was at last broken away, Perseus stood inside it perfectly formed, not so much as a toe missing.",
+     "The statue still stands in the same Florentine piazza for which Cellini forged it."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "9.23",
     "title": "The Northern Renaissance",
     "blocks": [
      "When the Renaissance crossed the Alps it acquired a different aesthetic.",
@@ -3180,7 +3292,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.15"
    },
    {
-    "number": "9.23",
+    "number": "9.24",
     "title": "Westward into the Unknown",
     "blocks": [
      "The Genoese navigator Columbus calculated, on the basis of mistakenly low estimates, that the planet was small enough to circumnavigate westward to Asia within a few weeks.",
@@ -3205,7 +3317,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.16"
    },
    {
-    "number": "9.24",
+    "number": "9.25",
     "title": "The Spanish Golden Century",
     "blocks": [
      "The Castilian writer Cervantes composed Don Quixote, in which an elderly gentleman addled by chivalric novels mounts a worn-out horse and charges windmills he sincerely believes to be giants, a satire universally credited as the first modern novel.",
@@ -3231,7 +3343,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.17"
    },
    {
-    "number": "9.25",
+    "number": "9.26",
     "title": "Ninety-Five Theses",
     "blocks": [
      "The German artisan Gutenberg invented movable metal type and printed the first European Bible, then went bankrupt before he could see the implications of his invention propagate.",
@@ -3258,7 +3370,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.18"
    },
    {
-    "number": "9.26",
+    "number": "9.27",
     "title": "The Astronomer and the Telescope",
     "blocks": [
      "The Polish astronomer Copernicus calculated, against every philosophical and theological intuition of his era, that the Earth was not the centre of the universe but instead orbited around the Sun.",
@@ -3284,7 +3396,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.19"
    },
    {
-    "number": "9.27",
+    "number": "9.28",
     "title": "Alchemy",
     "blocks": [
      "Among the manuscripts Isaac Newton left at his death, the notes on physics occupy only a slender minority.",
@@ -3298,7 +3410,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.28",
+    "number": "9.29",
     "title": "Astrology and Tarot",
     "blocks": [
      "For countless generations the priests of ancient Mesopotamia climbed each evening to the roof of their temple to register the positions of the planets, convinced that the wandering of those distant lights corresponded, line by line, to the fates of kings on the dust below.",
@@ -3312,7 +3424,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.29",
+    "number": "9.30",
     "title": "The Glover's Son and the Virgin Queen",
     "blocks": [
      "The son of a small-town glove-maker grew up to write thirty-seven plays and one hundred fifty-four sonnets that effectively reshaped the English language itself.",
@@ -3338,7 +3450,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.20"
    },
    {
-    "number": "9.30",
+    "number": "9.31",
     "title": "The Lens and the Stock",
     "blocks": [
      "The Delft cloth merchant Anton van Leeuwenhoek ground his own glass lenses and constructed the most powerful microscope of his era, through which he first perceived bacteria, spermatozoa, and the single-celled organisms he called animalcules.",
@@ -3363,7 +3475,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.21"
    },
    {
-    "number": "9.31",
+    "number": "9.32",
     "title": "The Baroque and the Light",
     "blocks": [
      "Baroque painting abandoned the calm clarity of the Renaissance in favour of high contrast and emotional violence.",
@@ -3390,7 +3502,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.22"
    },
    {
-    "number": "9.32",
+    "number": "9.33",
     "title": "The Anatomy",
     "blocks": [
      "Medieval European authorities had prohibited the dissection of human cadavers, so European medical textbooks continued reproducing the anatomical errors of the Greek physician Galen for over a thousand years.",
@@ -3415,7 +3527,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.23"
    },
    {
-    "number": "9.33",
+    "number": "9.34",
     "title": "The Chicken and the Stove",
     "blocks": [
      "The English statesman Francis Bacon, founder of empiricism, insisted that all genuine knowledge must originate in observed experiment rather than received authority.",
@@ -3441,7 +3553,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.24"
    },
    {
-    "number": "9.34",
+    "number": "9.35",
     "title": "The Plague Year",
     "blocks": [
      "When the bubonic plague closed Cambridge, a young undergraduate named Isaac Newton retreated to the family farm and within eighteen months independently formulated universal gravitation, invented the differential and integral calculus, and demonstrated through prism experiments that ordinary white light contains every colour of the rainbow.",
@@ -3467,7 +3579,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.25"
    },
    {
-    "number": "9.35",
+    "number": "9.36",
     "title": "The Fire and the Dome",
     "blocks": [
      "A bakery on Pudding Lane caught fire one night and the resulting blaze consumed two thirds of the medieval City of London across the following five days, demolishing every wooden structure between St Paul's and the river.",
@@ -3492,7 +3604,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.26"
    },
    {
-    "number": "9.36",
+    "number": "9.37",
     "title": "The Parisian Cafés",
     "blocks": [
      "The intellectual centre of European Europe migrated from the monastery and the royal salon into the cafés of eighteenth-century Paris, where philosophers and writers congregated daily over coffee to argue the political principles of the coming century.",
@@ -3519,7 +3631,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.27"
    },
    {
-    "number": "9.37",
+    "number": "9.38",
     "title": "The Baroque Composer",
     "blocks": [
      "Baroque music elaborated several independent melodic lines simultaneously through the discipline of counterpoint, each voice maintaining its own integrity while contributing to a harmonic whole.",
@@ -3544,7 +3656,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.28"
    },
    {
-    "number": "9.38",
+    "number": "9.39",
     "title": "The Three Viennese Masters",
     "blocks": [
      "The three composers who consolidated the classical symphony all converged on imperial Vienna across a single century.",
@@ -3570,7 +3682,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.29"
    },
    {
-    "number": "9.39",
+    "number": "9.40",
     "title": "The Engine and the Loom",
     "blocks": [
      "The Scottish engineer James Watt, repairing a worn Newcomen steam engine, perceived that adding a separate condensing chamber would multiply the efficiency of the entire mechanism several times over.",
@@ -3596,7 +3708,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.30"
    },
    {
-    "number": "9.40",
+    "number": "9.41",
     "title": "Guillotine and Empire",
     "blocks": [
      "The French king Louis XVI was conducted to the public scaffold in Paris and beheaded by guillotine before a cheering crowd, terminating a thousand years of Bourbon monarchy in a single afternoon.",
@@ -3620,7 +3732,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.31"
    },
    {
-    "number": "9.41",
+    "number": "9.42",
     "title": "The Year Without a Summer",
     "blocks": [
      "A circle of English poets sheltered at a villa on the shore of Lake Geneva during the summer of the Tambora ash cloud, when the unrelenting rain prevented every outdoor pursuit.",
@@ -3647,7 +3759,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.32"
    },
    {
-    "number": "9.42",
+    "number": "9.43",
     "title": "The Fossils and the Origin",
     "blocks": [
      "A twelve-year-old English girl named Mary Anning, daughter of a furniture repairman on the south coast of Dorset, excavated a five-metre fossilised marine reptile from the cliffs near her home and subsequently dug up dozens of additional extinct creatures whose existence the established theology of her era was theoretically not permitted to accommodate.",
@@ -3672,7 +3784,23 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.33"
    },
    {
-    "number": "9.43",
+    "number": "9.44",
+    "title": "Darwin and the Universal Face",
+    "blocks": [
+     "Having finished On the Origin of Species, Darwin fixed his eye on a subtler question.",
+     "Were the human expressions of joy, anger, sorrow, and fear learned in childhood, or innately wired into the species at birth? He observed his own newborn baby through every passing day, recording how the infant frowned and how it first broke into a smile.",
+     "He posted questionnaires to missionaries scattered across the remotest outposts of the world, asking whether the distant tribes among whom they lived contorted their faces in exactly the same way when angry, frightened, or grieving.",
+     "He collected photographs of psychiatric patients and of stage actors and traced the precise pull of every facial muscle.",
+     "From this immense patient correspondence he reached a conclusion well ahead of his century: the basic emotional expressions of human beings are evolved instincts shared by the entire species, and the ancestry of the frown, the glare, and the bared teeth can be traced backward through the lineage to other animals.",
+     "A century later psychologists carrying photographs walked into an utterly isolated tribe in Papua New Guinea whose people had never seen television or foreigners.",
+     "The tribe nevertheless identified the happiness, anger, and fear on the American faces in the photographs at once, and their own expressions, recorded on film in turn, were understood without hesitation by a New York audience.",
+     "Darwin had been right.",
+     "Our faces speak a language every member of the species inherits at birth."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "9.45",
     "title": "The Victorian Novel",
     "blocks": [
      "The English novel reached its mature form across the Victorian century.",
@@ -3698,7 +3826,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.34"
    },
    {
-    "number": "9.44",
+    "number": "9.46",
     "title": "Marx, Nietzsche, and the Horse",
     "blocks": [
      "The German political economist Marx spent decades in the reading room of the British Museum drafting Das Kapital, in which he articulated the doctrine that capitalism would collapse under its own internal contradictions and that proletarian revolution was historically inevitable.",
@@ -3724,7 +3852,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.35"
    },
    {
-    "number": "9.45",
+    "number": "9.47",
     "title": "The Russian Triple",
     "blocks": [
      "The Russian aristocrat Tolstoy left his estate to labour alongside the peasants in his own fields, wrote War and Peace tracking several aristocratic families through the Napoleonic invasion, and authored Anna Karenina, in which a married woman destroys herself for love beneath the wheels of a train.",
@@ -3750,7 +3878,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.36"
    },
    {
-    "number": "9.46",
+    "number": "9.48",
     "title": "Romantic and Realist Paint",
     "blocks": [
      "After the French Revolution, painting split into competing schools.",
@@ -3776,7 +3904,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.37"
    },
    {
-    "number": "9.47",
+    "number": "9.49",
     "title": "The Impressionists",
     "blocks": [
      "A circle of young French painters whom the official Salon had rejected mounted an independent exhibition, and a hostile critic christened them Impressionists in mockery of a painting by Monet titled Impression, Sunrise.",
@@ -3803,7 +3931,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.38"
    },
    {
-    "number": "9.48",
+    "number": "9.50",
     "title": "The Opera House",
     "blocks": [
      "The nineteenth-century opera house became the centre of European bourgeois entertainment.",
@@ -3829,7 +3957,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.39"
    },
    {
-    "number": "9.49",
+    "number": "9.51",
     "title": "The Germs and the Pasteurised Milk",
     "blocks": [
      "The French chemist Pasteur demonstrated through controlled experiments that fermentation and infectious disease were both caused by microscopic living organisms invisible to the unaided eye, definitively refuting the doctrine of spontaneous generation and establishing the modern principle of microbial causality in disease.",
@@ -3855,7 +3983,25 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.40"
    },
    {
-    "number": "9.50",
+    "number": "9.52",
+    "title": "Pasteur and the Living Yeast",
+    "blocks": [
+     "The wine and beer brewers of nineteenth-century France were tormented by a mystery.",
+     "Their carefully prepared barrels would inexplicably turn sour or rancid, ruining entire vintages and bankrupting honest men.",
+     "In desperation they appealed to the chemist Louis Pasteur.",
+     "Pasteur drew a single drop from a soured cask, placed it under the lens of his microscope, and saw, alongside the round familiar cells of the yeast, dense colonies of a different and unwelcome microbe crowding the field of view.",
+     "From this single drop he lifted the underlying truth of fermentation.",
+     "Fermentation is not a passive chemical drift but the labour of living invisible organisms which feed greedily on the sugars dissolved in the liquid, multiply, and exhale either alcohol or acid in their turn.",
+     "Yeast converts sugar into alcohol, which is precisely what allows dough to swell beneath the cloth and grape juice to mature into wine.",
+     "The intruding bacteria, by contrast, convert the alcohol into vinegar, which is what spoils a fine cask in a single bad week.",
+     "Pasteur devised a simple technique of warming the liquid just enough to kill the contaminating microbes without destroying the flavour, a method now called pasteurisation in his honour, and every carton of milk on every modern shelf has relied on it ever since.",
+     "He then reasoned, almost casually, that since invisible microbes could spoil wine, perhaps invisible microbes could also breed disease inside the human body.",
+     "The intuition rewrote the whole of modern medicine."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "9.53",
     "title": "The Radioactive Notebook",
     "blocks": [
      "The Polish-French chemist Marie Curie isolated the element radium from several tons of uranium ore in a poorly ventilated laboratory shed, eventually winning Nobel prizes in both physics and chemistry, and continues to be the only person who has won the Nobel in two distinct scientific disciplines.",
@@ -3883,7 +4029,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.41"
    },
    {
-    "number": "9.51",
+    "number": "9.54",
     "title": "The Rules of the Game",
     "blocks": [
      "Modern team sports emerged largely from the public schools of nineteenth-century England, where masters used organised games to inculcate gentlemanly virtues into adolescent boys.",
@@ -3908,7 +4054,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.42"
    },
    {
-    "number": "9.52",
+    "number": "9.55",
     "title": "The Private Estate",
     "blocks": [
      "The Belgian king Leopold II personally acquired sovereignty over a vast territory in central Africa, designated the Congo Free State, that legally belonged to him rather than to the Belgian nation.",
@@ -3935,7 +4081,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.43"
    },
    {
-    "number": "9.53",
+    "number": "9.56",
     "title": "The Vienna of the Mind",
     "blocks": [
      "Early twentieth-century Vienna constituted a single experimental laboratory of the human interior.",
@@ -3961,7 +4107,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.44"
    },
    {
-    "number": "9.54",
+    "number": "9.57",
     "title": "The Irish Revival",
     "blocks": [
      "After centuries of English domination and the potato famine that had starved a million Irish to death while exporting two million more to America, Ireland appeared culturally exhausted.",
@@ -3986,7 +4132,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.45"
    },
    {
-    "number": "9.55",
+    "number": "9.58",
     "title": "The Modernist Sentence",
     "blocks": [
      "European fiction in the early twentieth century turned away from external event toward the texture of internal experience.",
@@ -4012,7 +4158,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.46"
    },
    {
-    "number": "9.56",
+    "number": "9.59",
     "title": "The Modern Canvas",
     "blocks": [
      "Twentieth-century painting, the most aggressively avant-garde movement in any art form, demolished five hundred years of single-viewpoint perspective.",
@@ -4040,7 +4186,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.47"
    },
    {
-    "number": "9.57",
+    "number": "9.60",
     "title": "The Trenches",
     "blocks": [
      "A Serbian nationalist named Princip shot the heir to the Austro-Hungarian throne in the streets of Sarajevo, and the resulting cascade of mutual defence treaties dragged virtually every European power into a continental war within weeks.",
@@ -4065,7 +4211,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.48"
    },
    {
-    "number": "9.58",
+    "number": "9.61",
     "title": "The Concentration Camp",
     "blocks": [
      "Post-war German hyperinflation rendered the currency so worthless that a loaf of bread required a wheelbarrow of banknotes.",
@@ -4090,7 +4236,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.49"
    },
    {
-    "number": "9.59",
+    "number": "9.62",
     "title": "The Camera Walks Out",
     "blocks": [
      "Post-war European cinema rebelled simultaneously in two countries against Hollywood polish.",
@@ -4120,7 +4266,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.50"
    },
    {
-    "number": "9.60",
+    "number": "9.63",
     "title": "The Social Sciences",
     "blocks": [
      "Modern social theory built itself from the wreckage of pre-modern Europe.",
@@ -4151,7 +4297,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.51"
    },
    {
-    "number": "9.61",
+    "number": "9.64",
     "title": "The Long Light of the North",
     "blocks": [
      "The Scandinavian aesthetic was forged by long dark winters, abundant pale wood, and very little metal.",
@@ -4178,7 +4324,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.52"
    },
    {
-    "number": "9.62",
+    "number": "9.65",
     "title": "The Balkans Burn Again",
     "blocks": [
      "The federation of Yugoslavia held together six south Slavic republics, four languages, and three religions under the iron presidency of Tito; when he died, the federation began to disintegrate along precisely those ethnic and religious fault lines that he had welded shut.",
@@ -4204,7 +4350,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.53"
    },
    {
-    "number": "9.63",
+    "number": "9.66",
     "title": "The Wall Falls, the Borders Open",
     "blocks": [
      "Across forty years the Berlin Wall divided a single German city into a Western capitalist half and an Eastern communist half, until the East German government, unable to contain the swelling demonstrations on its own streets, abruptly suspended the border controls and the entire wall was demolished by the surrounding crowds across a single euphoric night.",
@@ -4229,7 +4375,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.54"
    },
    {
-    "number": "9.64",
+    "number": "9.67",
     "title": "The Grammar in Every Baby",
     "blocks": [
      "European linguistics across the twentieth century articulated the discipline that studies how human language actually operates.",
@@ -4259,7 +4405,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.55"
    },
    {
-    "number": "9.65",
+    "number": "9.68",
     "title": "Deciphering Lost Scripts",
     "blocks": [
      "A French soldier scrambling through the Egyptian campaign uncovered a slab of black basalt inscribed with the same passage in three different scripts: Egyptian hieroglyphic, an Egyptian cursive, and ancient Greek.",
@@ -4274,7 +4420,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.66",
+    "number": "9.69",
     "title": "Modern Linguistics",
     "blocks": [
      "The Swiss scholar Ferdinand de Saussure threw down a disorienting principle.",
@@ -4289,7 +4435,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.67",
+    "number": "9.70",
     "title": "Esperanto",
     "blocks": [
      "A young Polish eye doctor named Ludwik Zamenhof grew up in a city in which Poles, Jews, Germans, and Russians coexisted in mutual suspicion, fragmented above all by the languages that divided them.",
@@ -4303,7 +4449,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.68",
+    "number": "9.71",
     "title": "The Radium Craze",
     "blocks": [
      "Marie Curie's isolation of the self-luminous element radium triggered one of the most absurd episodes in consumer history.",
@@ -4738,6 +4884,22 @@ const CHAPTER_CONTENT = {
    },
    {
     "number": "10.17",
+    "title": "Jesse Owens at Berlin",
+    "blocks": [
+     "The Berlin Olympics, staged on the eve of the Second World War, had been meticulously engineered by Hitler into a propaganda showcase for the supremacy of the Aryan race, and the dictator intended to prove to the watching world that white Europeans stood biologically above every other people on the planet.",
+     "Instead an American Black sprinter named Jesse Owens stepped onto the track in front of him and walked off with a clean sweep of four gold medals.",
+     "The starter's pistol cracked.",
+     "Owens lunged out of the starting blocks, his legs hammered the track like pistons, his arms tore through the air, and within the few violent seconds of a hundred-metre dash his muscles burst into anaerobic effort, lactic acid piled up rapidly inside the tissue, and he was nevertheless still pulling away from the rest of the field as he crossed the line.",
+     "Up in the stands Hitler's face hardened into something grey and rigid.",
+     "He refused to rise to acknowledge the victor and left the stadium early.",
+     "Owens, with four gold medals around his neck, had publicly shattered the Nazi racial myth in front of a global audience.",
+     "The bitter irony arrived on his return to the United States, where the segregation laws of the day forbade him to enter white restaurants or white hotels, and he was reduced for a time to making a living by racing on foot against racehorses for the amusement of paying crowds.",
+     "He had won the highest stage in the world, and could not win the prejudice of his own country."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "10.18",
     "title": "The Bomb",
     "blocks": [
      "Albert Einstein, having fled Nazi Germany for the institute at Princeton, wrote to President Roosevelt warning that German physicists might exploit nuclear fission to construct a weapon of unprecedented destructive capacity.",
@@ -4763,7 +4925,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.17"
    },
    {
-    "number": "10.18",
+    "number": "10.19",
     "title": "The Race to the Moon",
     "blocks": [
      "When the Soviet Union launched the first artificial satellite into low Earth orbit and the first cosmonaut into space, the United States, perceiving itself overtaken, established the National Aeronautics and Space Administration and committed to landing astronauts on the surface of the Moon.",
@@ -4788,7 +4950,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.18"
    },
    {
-    "number": "10.19",
+    "number": "10.20",
     "title": "The Mind in the Laboratory",
     "blocks": [
      "Twentieth-century American psychology laboratories conducted a series of experiments that progressively dismantled the optimistic conception of the human mind.",
@@ -4816,7 +4978,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.19"
    },
    {
-    "number": "10.20",
+    "number": "10.21",
     "title": "The Code of Life",
     "blocks": [
      "The American biologist Watson and the British physicist Crick, working at Cambridge with crucial X-ray crystallographic data produced by Rosalind Franklin, deduced that the molecule of heredity, DNA, takes the form of a double helix, two intertwined strands of complementary base pairs.",
@@ -4842,7 +5004,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.20"
    },
    {
-    "number": "10.21",
+    "number": "10.22",
     "title": "The Garage",
     "blocks": [
      "A region of small fruit orchards south of San Francisco transformed across a few decades into the technological centre of the planet.",
@@ -4867,7 +5029,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.21"
    },
    {
-    "number": "10.22",
+    "number": "10.23",
     "title": "The Pocket Computer",
     "blocks": [
      "Steve Jobs returned to Apple after a decade of exile and presented the iPhone, integrating a touch-sensitive screen, a personal computer, a phone, a camera, and a portable internet terminal into a single device that fits inside an ordinary pocket.",
@@ -4896,7 +5058,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.22"
    },
    {
-    "number": "10.23",
+    "number": "10.24",
     "title": "The Silent Spring",
     "blocks": [
      "The marine biologist Rachel Carson published a book demonstrating that the pesticide DDT, sprayed liberally on American agricultural land across the post-war decades, was accumulating in the tissues of insectivorous birds and thinning the shells of their eggs to the point that virtually no chicks were hatching.",
@@ -4922,7 +5084,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.23"
    },
    {
-    "number": "10.24",
+    "number": "10.25",
     "title": "The Splatter and the Soup Can",
     "blocks": [
      "After the Second World War the centre of the visual art world migrated from Paris to New York.",
@@ -4949,7 +5111,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.24"
    },
    {
-    "number": "10.25",
+    "number": "10.26",
     "title": "Hollywood",
     "blocks": [
      "A handful of Jewish immigrant entrepreneurs migrated west from New York to the small Los Angeles suburb of Hollywood and established the first film studios there.",
@@ -4975,7 +5137,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.25"
    },
    {
-    "number": "10.26",
+    "number": "10.27",
     "title": "The Building Reaches Up",
     "blocks": [
      "After the Chicago Fire, engineers invented the steel-skeleton load-bearing structure, which permitted buildings to ascend dozens of storeys above the ground without requiring stone walls thick enough to support their own weight, and the Manhattan skyline began to climb.",
@@ -4999,7 +5161,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.26"
    },
    {
-    "number": "10.27",
+    "number": "10.28",
     "title": "The University",
     "blocks": [
      "Eight private universities along the northeastern American coast collectively form what is now known as the Ivy League, distinguished by enormous accumulated endowments, selective admissions, and tenured faculty who can pursue unpopular research without dismissal.",
@@ -5024,7 +5186,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.27"
    },
    {
-    "number": "10.28",
+    "number": "10.29",
     "title": "The Long Vote",
     "blocks": [
      "American women acquired the legal right to vote only after a prolonged campaign of demonstrations, hunger strikes, and imprisonment by suffragettes, who were granted the franchise nationally through the Nineteenth Amendment.",
@@ -5049,7 +5211,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.28"
    },
    {
-    "number": "10.29",
+    "number": "10.30",
     "title": "The Long Out",
     "blocks": [
      "A confrontation between police and the patrons of a Manhattan bar called the Stonewall Inn precipitated several nights of street protest by the lesbian, gay, bisexual, and transgender community, and inaugurated the modern LGBTQ rights movement.",
@@ -5074,7 +5236,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.29"
    },
    {
-    "number": "10.30",
+    "number": "10.31",
     "title": "The Bill Arrives",
     "blocks": [
      "A coordinated attack by hijacked passenger aircraft demolished the World Trade Center towers in Manhattan and damaged the Pentagon in Washington, killing approximately three thousand civilians.",
@@ -5102,7 +5264,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.30"
    },
    {
-    "number": "10.31",
+    "number": "10.32",
     "title": "The Brain in the Scanner",
     "blocks": [
      "Late twentieth-century American neuroscience finally acquired the instruments to perceive the human brain at work in real time.",
@@ -5130,7 +5292,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.31"
    },
    {
-    "number": "10.32",
+    "number": "10.33",
     "title": "The Trial of the Century",
     "blocks": [
      "The American legal system became the most televised theatre on the planet in the late twentieth century.",
@@ -5159,7 +5321,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.32"
    },
    {
-    "number": "10.33",
+    "number": "10.34",
     "title": "MBA and Wall Street",
     "blocks": [
      "Across the post-war decades the American Master of Business Administration evolved into the standard credential for entry into senior corporate management.",
@@ -5189,7 +5351,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.33"
    },
    {
-    "number": "10.34",
+    "number": "10.35",
     "title": "The Survey and the Number",
     "blocks": [
      "Modern American social science depends absolutely on statistics, and the foundation of any survey is the principle that a representative sample of a few thousand respondents can predict the behaviour of a population a thousand times larger.",
@@ -5219,7 +5381,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.34"
    },
    {
-    "number": "10.35",
+    "number": "10.36",
     "title": "The High Line and the Block",
     "blocks": [
      "American urban planners across the twenty-first century have begun to revisit the assumptions on which the twentieth-century car-centric city was constructed.",
@@ -5247,7 +5409,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.35"
    },
    {
-    "number": "10.36",
+    "number": "10.37",
     "title": "Sponge City and the Vertical Farm",
     "blocks": [
      "Across the twentieth century, the city of Los Angeles drew its drinking water from an aqueduct hundreds of miles long that despoiled the agricultural valleys to its north and depleted every aquifer the canal could reach, a strategy that antedates almost every modern environmental regulation.",
@@ -5277,7 +5439,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.36"
    },
    {
-    "number": "10.37",
+    "number": "10.38",
     "title": "The Lab Coat and the Material",
     "blocks": [
      "The American materials sciences of the twentieth century produced inventions that quietly restructured every domestic interior.",
@@ -5308,7 +5470,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.37"
    },
    {
-    "number": "10.38",
+    "number": "10.39",
     "title": "Benjamin Franklin",
     "blocks": [
      "Born into a poor Boston household, Benjamin Franklin was withdrawn from school as a small child to apprentice in his elder brother's print shop and proceeded, in defiance of his interrupted education, to instruct himself by devouring every borrowed book within reach.",
@@ -5319,7 +5481,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.39",
+    "number": "10.40",
     "title": "Nikola Tesla",
     "blocks": [
      "Nikola Tesla disembarked in New York from a Serbian village with a few coins in his pocket and a head crowded with diagrams that would, given time, remake the entire planet.",
@@ -5334,7 +5496,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.40",
+    "number": "10.41",
     "title": "The Modern Legal System",
     "blocks": [
      "A founding maxim of Anglo-American justice declared, from the outset, that it would sooner acquit a thousand of the guilty than condemn a single innocent, and from that uneasy commitment the entire architecture of the modern trial was patiently assembled around the rights of the accused.",
@@ -5346,7 +5508,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.41",
+    "number": "10.42",
     "title": "The MBA and Wall Street",
     "blocks": [
      "Twentieth-century American business schools recast commerce as a teachable discipline, and the Master of Business Administration emerged as the indispensable ticket into the upper offices of Wall Street and the major corporations.",
@@ -5359,7 +5521,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.42",
+    "number": "10.43",
     "title": "Data and Statistics",
     "blocks": [
      "The most disorienting lesson of statistics is that the entire opinion of a populous nation can be inferred, with startling accuracy, from a few thousand citizens drawn at random, provided only that the draw is genuinely impartial.",
@@ -5373,7 +5535,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.43",
+    "number": "10.44",
     "title": "Modern Urban Planning",
     "blocks": [
      "For most of the twentieth century the city was conceived as a machine for the automobile: arterial roads were carved through old neighbourhoods, pedestrians compressed onto narrow pavements, and the sidewalk café displaced by the traffic island.",
@@ -5386,7 +5548,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.44",
+    "number": "10.45",
     "title": "Environmental Engineering and Water",
     "blocks": [
      "The most clandestine artery of the modern metropolis is its water supply.",
@@ -5399,7 +5561,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.45",
+    "number": "10.46",
     "title": "Materials Science",
     "blocks": [
      "Each human epoch is conventionally christened for the dominant material of its tools, from stone to bronze to iron, and the twentieth century ought by the same convention to be christened the age of synthetic materials.",
@@ -5412,7 +5574,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.46",
+    "number": "10.47",
     "title": "Sustainable Energy",
     "blocks": [
      "After two centuries of incinerating coal and oil humanity has at last recognised that the buried fuels are finite and that the act of combusting them is gradually scorching the planet they inhabit.",
