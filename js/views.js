@@ -646,7 +646,10 @@ const Views = (function () {
     const used = new Set();
     let wi = 0;
     return String(sentence).replace(/[A-Za-z][A-Za-z'-]*|[^A-Za-z]+/g, (m) => {
-      if (!/^[A-Za-z]/.test(m)) return esc(m);
+      // Punctuation / spaces: wrap them too so they blur + ink-in WITH the words
+      // (sharing the next word's stagger index) instead of staying sharp while
+      // the words are still developing — otherwise dense punctuation pops out.
+      if (!/^[A-Za-z]/.test(m)) return `<span class="w" style="--wi:${wi}">${esc(m)}</span>`;
       const lc = m.toLowerCase();
       const clickable = !used.has(lc) && vocabClickable(lc);
       if (clickable) used.add(lc);
