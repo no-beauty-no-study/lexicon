@@ -750,7 +750,7 @@ const Views = (function () {
       const body = host.querySelector(".reading-body");
       if (section && section.blocks && section.blocks.length) {
         body.innerHTML = section.blocks.map((sent, i) => {
-          const audio = `${section.audio_prefix}-${i + 1}.mp3`;
+          const audio = section.audio_prefix ? `${section.audio_prefix}-${i + 1}.mp3` : "";
           return `<p class="sentence-block" data-i="${i}" data-audio="${audio}">${renderSentenceHTML(sent)}</p>`;
         }).join("");
       } else {
