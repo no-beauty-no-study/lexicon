@@ -1,4 +1,4 @@
-/* Reading content (chapter-11 dissolved into 1-10; new sections carry blocks + translations where available). */
+/* Reading content (chapter-11 dissolved into 1-10; new sections carry per-sentence blocks + translations). */
 const CHAPTER_CONTENT = {
  "universe": {
   "number": "1",
@@ -539,7 +539,12 @@ const CHAPTER_CONTENT = {
     "number": "3.3",
     "title": "Archaeological Dating",
     "blocks": [
-     "Every living organism continuously absorbs a slowly decaying form of carbon, and the moment the organism dies the absorption stops dead and the existing supply quietly diminishes at a steady, predictable rate, like an unalterable hourglass embedded in the bones. By measuring how much of that isotope remains in a fragment of bone or a piece of wood, an archaeologist can infer how long ago its owner died, a method called radiocarbon dating, accurate well back into prehistory. A more delicate technique relies on tree rings. Each year a tree adds one ring, and rings from wet years are noticeably wider than those from droughts, so by matching the pattern of an ancient timber against the long catalogue established from living trees the date of the timber can be fixed to a precise year. The most recent and most extraordinary technique extracts ancient DNA directly from bones of immense antiquity. Through this method scientists have established that every modern European still carries a small percentage of Neanderthal DNA, traces of an interbreeding event that the bones themselves had silently preserved across the millennia."
+     "Every living organism continuously absorbs a slowly decaying form of carbon, and the moment the organism dies the absorption stops dead and the existing supply quietly diminishes at a steady, predictable rate, like an unalterable hourglass embedded in the bones.",
+     "By measuring how much of that isotope remains in a fragment of bone or a piece of wood, an archaeologist can infer how long ago its owner died, a method called radiocarbon dating, accurate well back into prehistory.",
+     "A more delicate technique relies on tree rings.",
+     "Each year a tree adds one ring, and rings from wet years are noticeably wider than those from droughts, so by matching the pattern of an ancient timber against the long catalogue established from living trees the date of the timber can be fixed to a precise year.",
+     "The most recent and most extraordinary technique extracts ancient DNA directly from bones of immense antiquity.",
+     "Through this method scientists have established that every modern European still carries a small percentage of Neanderthal DNA, traces of an interbreeding event that the bones themselves had silently preserved across the millennia."
     ],
     "quiz": []
    },
@@ -746,7 +751,11 @@ const CHAPTER_CONTENT = {
     "number": "3.14",
     "title": "DNA and Genes",
     "blocks": [
-     "Inside the nucleus of every cell coils a long chain called DNA, whose four chemical letters spell out, in arrangements of breathtaking compactness, the complete instructions for assembling an entire human being. A single cell holds a chain longer than a small child, folded tightly into a region too small to see. Two young researchers at Cambridge, James Watson and Francis Crick, leaning heavily on the X-ray crystallography of a female colleague named Rosalind Franklin whose name went unrecorded for decades, deduced that DNA takes the form of a double helix: two intertwined strands of complementary bases that, when separated, each serve as a template for the synthesis of a fresh partner, so that one cell becomes two with the inherited code preserved intact. A long patient international effort subsequently sequenced the entire human genome, the biological equivalent of a lunar landing. The biochemist Jennifer Doudna later refined the CRISPR system, originally a bacterial defence against invading viruses, into a precise pair of molecular scissors capable of editing any gene at any location, conferring on our species the power to rewrite its own inheritance and dropping it, for the first time, onto the moral question of whether it should."
+     "Inside the nucleus of every cell coils a long chain called DNA, whose four chemical letters spell out, in arrangements of breathtaking compactness, the complete instructions for assembling an entire human being.",
+     "A single cell holds a chain longer than a small child, folded tightly into a region too small to see.",
+     "Two young researchers at Cambridge, James Watson and Francis Crick, leaning heavily on the X-ray crystallography of a female colleague named Rosalind Franklin whose name went unrecorded for decades, deduced that DNA takes the form of a double helix: two intertwined strands of complementary bases that, when separated, each serve as a template for the synthesis of a fresh partner, so that one cell becomes two with the inherited code preserved intact.",
+     "A long patient international effort subsequently sequenced the entire human genome, the biological equivalent of a lunar landing.",
+     "The biochemist Jennifer Doudna later refined the CRISPR system, originally a bacterial defence against invading viruses, into a precise pair of molecular scissors capable of editing any gene at any location, conferring on our species the power to rewrite its own inheritance and dropping it, for the first time, onto the moral question of whether it should."
     ],
     "quiz": []
    },
@@ -1708,7 +1717,12 @@ const CHAPTER_CONTENT = {
     "number": "8.8",
     "title": "The Mystery of the Deep Sea",
     "blocks": [
-     "We have charted the surface of Mars in greater resolution than the vast majority of our own ocean floor. The deep sea persists as the last unexplored frontier on the planet. No sunlight penetrates to such depths, the pressure would flatten unreinforced steel, the water hovers a hair above freezing, and the biologists who once dismissed the abyss as lifeless instead discovered, glittering in their submersible lights, an entire alternative ecosystem. Hydrothermal vents jet superheated mineral-rich water out of the seabed and are encircled by dense colonies of tubeworms, blind shrimp, and giant clams that derive their energy not from sunlight but from bacteria that metabolise the chemicals dissolved in the venting water, a finding that compelled biology to redraw the conditions under which life can subsist. The same depths teem with bioluminescent organisms that manufacture their own cold light to lure prey, repel predators, or attract mates across the dark. The legendary giant squid, long dismissed as a sailor's myth, was finally photographed alive in its natural habitat only recently, and almost every deep-sea expedition still surfaces carrying species previously unknown to science."
+     "We have charted the surface of Mars in greater resolution than the vast majority of our own ocean floor.",
+     "The deep sea persists as the last unexplored frontier on the planet.",
+     "No sunlight penetrates to such depths, the pressure would flatten unreinforced steel, the water hovers a hair above freezing, and the biologists who once dismissed the abyss as lifeless instead discovered, glittering in their submersible lights, an entire alternative ecosystem.",
+     "Hydrothermal vents jet superheated mineral-rich water out of the seabed and are encircled by dense colonies of tubeworms, blind shrimp, and giant clams that derive their energy not from sunlight but from bacteria that metabolise the chemicals dissolved in the venting water, a finding that compelled biology to redraw the conditions under which life can subsist.",
+     "The same depths teem with bioluminescent organisms that manufacture their own cold light to lure prey, repel predators, or attract mates across the dark.",
+     "The legendary giant squid, long dismissed as a sailor's myth, was finally photographed alive in its natural habitat only recently, and almost every deep-sea expedition still surfaces carrying species previously unknown to science."
     ],
     "quiz": []
    }
@@ -3023,7 +3037,12 @@ const CHAPTER_CONTENT = {
     "number": "9.15",
     "title": "Witches and the Witch Hunt",
     "blocks": [
-     "From the late Middle Ages into the early modern era Europe was convulsed by a witch-hunting frenzy that persisted across centuries and condemned tens of thousands of accused individuals, the overwhelming majority of them socially marginal women: widows, herbalists, midwives, the solitary old. A manual of detection grimly titled the Malleus Maleficarum was duplicated by the newly invented printing press and codified an elaborate procedure for identifying and interrogating witches, weaponising preposterous reasoning into systematic persecution. The most notorious episode erupted in a small Puritan settlement on the colonial Massachusetts coast called Salem, where a handful of adolescent girls began convulsing, screaming, and proclaiming themselves possessed, the whole village dissolved into collective hysteria, and twenty accused witches were executed before the panic at last exhausted itself. A modern hypothesis attributes the original convulsions to ergot, a fungus that infests damp rye and provokes violent hallucinations in those who consume the contaminated grain. At root, however, a society pressed simultaneously by plague, famine, and war required a scapegoat, and independent women who possessed practical knowledge of medicine, who declined to depend on a husband, and who answered to no priest furnished the most convenient target. A modern Pagan revival named Wicca has more recently reclaimed the word witch as a positive identity centred on respect for nature, the lunar cycle, and herbal lore, quietly transforming a former capital crime into a chosen way of life."
+     "From the late Middle Ages into the early modern era Europe was convulsed by a witch-hunting frenzy that persisted across centuries and condemned tens of thousands of accused individuals, the overwhelming majority of them socially marginal women: widows, herbalists, midwives, the solitary old.",
+     "A manual of detection grimly titled the Malleus Maleficarum was duplicated by the newly invented printing press and codified an elaborate procedure for identifying and interrogating witches, weaponising preposterous reasoning into systematic persecution.",
+     "The most notorious episode erupted in a small Puritan settlement on the colonial Massachusetts coast called Salem, where a handful of adolescent girls began convulsing, screaming, and proclaiming themselves possessed, the whole village dissolved into collective hysteria, and twenty accused witches were executed before the panic at last exhausted itself.",
+     "A modern hypothesis attributes the original convulsions to ergot, a fungus that infests damp rye and provokes violent hallucinations in those who consume the contaminated grain.",
+     "At root, however, a society pressed simultaneously by plague, famine, and war required a scapegoat, and independent women who possessed practical knowledge of medicine, who declined to depend on a husband, and who answered to no priest furnished the most convenient target.",
+     "A modern Pagan revival named Wicca has more recently reclaimed the word witch as a positive identity centred on respect for nature, the lunar cycle, and herbal lore, quietly transforming a former capital crime into a chosen way of life."
     ],
     "quiz": []
    },
@@ -3268,7 +3287,13 @@ const CHAPTER_CONTENT = {
     "number": "9.27",
     "title": "Alchemy",
     "blocks": [
-     "Among the manuscripts Isaac Newton left at his death, the notes on physics occupy only a slender minority. The vast remainder concerns alchemy, and the towering intellect who articulated universal gravitation devoted decades of secrecy to the unsuccessful project of converting ordinary metals into gold. The alchemists held that all matter aspires upward toward perfection, that lead is merely a sickly or unfinished version of gold, and that an elusive substance called the philosopher's stone, once isolated, would transmute base metals into noble ones and yield, almost as a bonus, an elixir capable of granting eternal life. They never succeeded, of course, yet across centuries of patient heating, distilling, purifying, and recombining, they invented essentially every apparatus and every procedure that the modern chemistry laboratory still relies upon. Robert Boyle, frequently credited as the first modern chemist, emerged directly from the alchemical tradition and dragged it into rigorous experimental science by demanding controlled measurement. The ultimate irony arrived only in the twentieth century, when nuclear physicists at last accomplished the alchemical dream: inside a particle accelerator, atoms of one element can indeed be transmuted into another, and bismuth has been bombarded successfully into gold. The cost per gram, alas, runs into billions, which is to say the dream worked, but on terms no medieval alchemist could have anticipated."
+     "Among the manuscripts Isaac Newton left at his death, the notes on physics occupy only a slender minority.",
+     "The vast remainder concerns alchemy, and the towering intellect who articulated universal gravitation devoted decades of secrecy to the unsuccessful project of converting ordinary metals into gold.",
+     "The alchemists held that all matter aspires upward toward perfection, that lead is merely a sickly or unfinished version of gold, and that an elusive substance called the philosopher's stone, once isolated, would transmute base metals into noble ones and yield, almost as a bonus, an elixir capable of granting eternal life.",
+     "They never succeeded, of course, yet across centuries of patient heating, distilling, purifying, and recombining, they invented essentially every apparatus and every procedure that the modern chemistry laboratory still relies upon.",
+     "Robert Boyle, frequently credited as the first modern chemist, emerged directly from the alchemical tradition and dragged it into rigorous experimental science by demanding controlled measurement.",
+     "The ultimate irony arrived only in the twentieth century, when nuclear physicists at last accomplished the alchemical dream: inside a particle accelerator, atoms of one element can indeed be transmuted into another, and bismuth has been bombarded successfully into gold.",
+     "The cost per gram, alas, runs into billions, which is to say the dream worked, but on terms no medieval alchemist could have anticipated."
     ],
     "quiz": []
    },
@@ -3276,7 +3301,13 @@ const CHAPTER_CONTENT = {
     "number": "9.28",
     "title": "Astrology and Tarot",
     "blocks": [
-     "For countless generations the priests of ancient Mesopotamia climbed each evening to the roof of their temple to register the positions of the planets, convinced that the wandering of those distant lights corresponded, line by line, to the fates of kings on the dust below. They sliced the band of sky through which the planets travelled into twelve neat segments, and the zodiac was born. For most of subsequent history astronomy and astrology remained a single discipline, and even the founders of modern celestial mechanics, including Johannes Kepler, sustained themselves by composing horoscopes for noble patrons until the scientific revolution at last prised the two apart, abandoning the empirical predictions to one and the symbolic ones to the other. The tarot, often presumed to encode an ancient body of Egyptian wisdom, in fact began as an aristocratic Italian card game and acquired its esoteric reputation only after occult writers retrofitted onto it a wholly fabricated Egyptian genealogy. The genuinely interesting question is why so many people still find such systems uncannily accurate. Psychologists have demonstrated that a description vague enough to fit anyone, such as you appear confident yet secretly long to be understood, feels intensely personal to almost every reader who encounters it, a phenomenon christened the Barnum effect. Combine the Barnum effect with the brain's habitual tendency to remember the hits and discard the misses, and the apparent reliability of divination dissolves into a performance the listener has unwittingly staged on the speaker's behalf."
+     "For countless generations the priests of ancient Mesopotamia climbed each evening to the roof of their temple to register the positions of the planets, convinced that the wandering of those distant lights corresponded, line by line, to the fates of kings on the dust below.",
+     "They sliced the band of sky through which the planets travelled into twelve neat segments, and the zodiac was born.",
+     "For most of subsequent history astronomy and astrology remained a single discipline, and even the founders of modern celestial mechanics, including Johannes Kepler, sustained themselves by composing horoscopes for noble patrons until the scientific revolution at last prised the two apart, abandoning the empirical predictions to one and the symbolic ones to the other.",
+     "The tarot, often presumed to encode an ancient body of Egyptian wisdom, in fact began as an aristocratic Italian card game and acquired its esoteric reputation only after occult writers retrofitted onto it a wholly fabricated Egyptian genealogy.",
+     "The genuinely interesting question is why so many people still find such systems uncannily accurate.",
+     "Psychologists have demonstrated that a description vague enough to fit anyone, such as you appear confident yet secretly long to be understood, feels intensely personal to almost every reader who encounters it, a phenomenon christened the Barnum effect.",
+     "Combine the Barnum effect with the brain's habitual tendency to remember the hits and discard the misses, and the apparent reliability of divination dissolves into a performance the listener has unwittingly staged on the speaker's behalf."
     ],
     "quiz": []
    },
@@ -4246,7 +4277,14 @@ const CHAPTER_CONTENT = {
     "number": "9.66",
     "title": "Modern Linguistics",
     "blocks": [
-     "The Swiss scholar Ferdinand de Saussure threw down a disorienting principle. The syllable cat, he insisted, bears no necessary relation whatever to the actual animal it names. The connection between the two is purely a social convention, and the meaning of any word arises not from the thing it points at but from its difference from the other words around it. Language thereby ceased to be a transparent window onto reality and became a system of signs to be analysed in its own right, and the entire discipline of modern linguistics opened up around the proposal. The American Noam Chomsky later pressed the argument even further, contending that every human infant arrives equipped with an inherited universal grammar, a deep template common to all human languages that any specific tongue merely fills in with local vocabulary. That is why a small child can absorb fluent grammar that no adult could ever explicitly articulate. Linguists have also documented a more sombre statistic. Every so often an indigenous language slips out of the world as its last living speaker dies, and each loss extinguishes an entire distinct way of perceiving reality itself."
+     "The Swiss scholar Ferdinand de Saussure threw down a disorienting principle.",
+     "The syllable cat, he insisted, bears no necessary relation whatever to the actual animal it names.",
+     "The connection between the two is purely a social convention, and the meaning of any word arises not from the thing it points at but from its difference from the other words around it.",
+     "Language thereby ceased to be a transparent window onto reality and became a system of signs to be analysed in its own right, and the entire discipline of modern linguistics opened up around the proposal.",
+     "The American Noam Chomsky later pressed the argument even further, contending that every human infant arrives equipped with an inherited universal grammar, a deep template common to all human languages that any specific tongue merely fills in with local vocabulary.",
+     "That is why a small child can absorb fluent grammar that no adult could ever explicitly articulate.",
+     "Linguists have also documented a more sombre statistic.",
+     "Every so often an indigenous language slips out of the world as its last living speaker dies, and each loss extinguishes an entire distinct way of perceiving reality itself."
     ],
     "quiz": []
    },
@@ -4254,7 +4292,13 @@ const CHAPTER_CONTENT = {
     "number": "9.67",
     "title": "Esperanto",
     "blocks": [
-     "A young Polish eye doctor named Ludwik Zamenhof grew up in a city in which Poles, Jews, Germans, and Russians coexisted in mutual suspicion, fragmented above all by the languages that divided them. From this daily friction he conceived an audacious idealist's ambition: to invent a neutral language belonging to no nation, so that all human beings might meet on linguistic equal ground and dissolve the misunderstandings that ignite wars. He constructed Esperanto, whose grammar tolerates not a single exception and which a determined adult can master within a few months of focused study. At its peak the language attracted several million speakers, and several governments seriously contemplated adopting it as an official auxiliary medium. It never became the universal tongue Zamenhof had imagined, partly because English, propped up by the British Empire and later American power, quietly seized that role instead. Yet Esperanto endures. Several thousand people still speak it fluently to this day, and a handful of children have been raised by their parents as native speakers of a language an ophthalmologist devised from scratch one evening at his desk."
+     "A young Polish eye doctor named Ludwik Zamenhof grew up in a city in which Poles, Jews, Germans, and Russians coexisted in mutual suspicion, fragmented above all by the languages that divided them.",
+     "From this daily friction he conceived an audacious idealist's ambition: to invent a neutral language belonging to no nation, so that all human beings might meet on linguistic equal ground and dissolve the misunderstandings that ignite wars.",
+     "He constructed Esperanto, whose grammar tolerates not a single exception and which a determined adult can master within a few months of focused study.",
+     "At its peak the language attracted several million speakers, and several governments seriously contemplated adopting it as an official auxiliary medium.",
+     "It never became the universal tongue Zamenhof had imagined, partly because English, propped up by the British Empire and later American power, quietly seized that role instead.",
+     "Yet Esperanto endures.",
+     "Several thousand people still speak it fluently to this day, and a handful of children have been raised by their parents as native speakers of a language an ophthalmologist devised from scratch one evening at his desk."
     ],
     "quiz": []
    },
@@ -5267,7 +5311,10 @@ const CHAPTER_CONTENT = {
     "number": "10.38",
     "title": "Benjamin Franklin",
     "blocks": [
-     "Born into a poor Boston household, Benjamin Franklin was withdrawn from school as a small child to apprentice in his elder brother's print shop and proceeded, in defiance of his interrupted education, to instruct himself by devouring every borrowed book within reach. During a thunderstorm he famously flew a kite trailing a brass key, demonstrated that the lightning ripping across the sky and the electrical fluid he could conjure in his Philadelphia laboratory were one and the same phenomenon, and casually invented the lightning rod, which has since rescued countless church spires from incineration. He deliberately refused to patent any of his inventions, arguing that since he himself had benefited from the inventions of others his own ought likewise to be freely available to anyone who could use them: bifocal spectacles, an efficient stove, the swim fin, a glass musical instrument played with damp fingers. He proved equally formidable as a diplomat, crossing the Atlantic at an age when most men retire and negotiating the decisive French support that ultimately delivered the new United States from the British Empire."
+     "Born into a poor Boston household, Benjamin Franklin was withdrawn from school as a small child to apprentice in his elder brother's print shop and proceeded, in defiance of his interrupted education, to instruct himself by devouring every borrowed book within reach.",
+     "During a thunderstorm he famously flew a kite trailing a brass key, demonstrated that the lightning ripping across the sky and the electrical fluid he could conjure in his Philadelphia laboratory were one and the same phenomenon, and casually invented the lightning rod, which has since rescued countless church spires from incineration.",
+     "He deliberately refused to patent any of his inventions, arguing that since he himself had benefited from the inventions of others his own ought likewise to be freely available to anyone who could use them: bifocal spectacles, an efficient stove, the swim fin, a glass musical instrument played with damp fingers.",
+     "He proved equally formidable as a diplomat, crossing the Atlantic at an age when most men retire and negotiating the decisive French support that ultimately delivered the new United States from the British Empire."
     ],
     "quiz": []
    },
@@ -5275,7 +5322,14 @@ const CHAPTER_CONTENT = {
     "number": "10.39",
     "title": "Nikola Tesla",
     "blocks": [
-     "Nikola Tesla disembarked in New York from a Serbian village with a few coins in his pocket and a head crowded with diagrams that would, given time, remake the entire planet. He worked briefly under Thomas Edison and quarrelled with him irreparably over the merits of direct against alternating current. Edison's direct current could only crawl across short distances before fading. Tesla, calmly defiant, maintained that alternating current would deliver electricity across hundreds of kilometres without flinching, and to discredit him Edison publicly electrocuted stray animals using alternating current in a grotesque campaign of fear. The laws of physics, however, sided unambiguously with Tesla, and every modern electrical grid on the planet now runs on alternating current. Tesla also conceived wireless power transmission, remote control, and the polyphase induction motor, several of his proposals so far ahead of their epoch that the technology of his time could not even begin to realise them. He proved hopelessly incapable of converting his inventions into a successful business, was repeatedly outmanoeuvred by sharper commercial minds, and died alone in a Manhattan hotel room with only his pet pigeons for company. Long afterward an electric-car company adopted his name, restoring to a forgotten genius a measure of the recognition his contemporaries had withheld."
+     "Nikola Tesla disembarked in New York from a Serbian village with a few coins in his pocket and a head crowded with diagrams that would, given time, remake the entire planet.",
+     "He worked briefly under Thomas Edison and quarrelled with him irreparably over the merits of direct against alternating current.",
+     "Edison's direct current could only crawl across short distances before fading.",
+     "Tesla, calmly defiant, maintained that alternating current would deliver electricity across hundreds of kilometres without flinching, and to discredit him Edison publicly electrocuted stray animals using alternating current in a grotesque campaign of fear.",
+     "The laws of physics, however, sided unambiguously with Tesla, and every modern electrical grid on the planet now runs on alternating current.",
+     "Tesla also conceived wireless power transmission, remote control, and the polyphase induction motor, several of his proposals so far ahead of their epoch that the technology of his time could not even begin to realise them.",
+     "He proved hopelessly incapable of converting his inventions into a successful business, was repeatedly outmanoeuvred by sharper commercial minds, and died alone in a Manhattan hotel room with only his pet pigeons for company.",
+     "Long afterward an electric-car company adopted his name, restoring to a forgotten genius a measure of the recognition his contemporaries had withheld."
     ],
     "quiz": []
    },
@@ -5283,7 +5337,11 @@ const CHAPTER_CONTENT = {
     "number": "10.40",
     "title": "The Modern Legal System",
     "blocks": [
-     "A founding maxim of Anglo-American justice declared, from the outset, that it would sooner acquit a thousand of the guilty than condemn a single innocent, and from that uneasy commitment the entire architecture of the modern trial was patiently assembled around the rights of the accused. The whole weight of proof was thereby loaded onto the prosecution, the defendant absolved of any obligation to demonstrate his innocence, and a jury of ordinary citizens, summoned at random from the surrounding population, installed as the final barrier between the state and the individual. When provincial police neglected to inform a suspect of his right to remain silent, the Supreme Court annulled the resulting confession, and every American officer ever since has been compelled to recite, at the moment of arrest, the four short sentences known as the Miranda warning. The football celebrity tried for the murder of his former wife illustrated the same architecture in reverse: although the prosecution's case appeared overwhelming, the defence painstakingly dismantled the procedural integrity of the police investigation along racial fault lines that no courtroom could reconcile, and the jury acquitted him in defiance of the apparent evidence. The law, in the end, defends not the truth itself but the citizen against the careless or vindictive exercise of authority."
+     "A founding maxim of Anglo-American justice declared, from the outset, that it would sooner acquit a thousand of the guilty than condemn a single innocent, and from that uneasy commitment the entire architecture of the modern trial was patiently assembled around the rights of the accused.",
+     "The whole weight of proof was thereby loaded onto the prosecution, the defendant absolved of any obligation to demonstrate his innocence, and a jury of ordinary citizens, summoned at random from the surrounding population, installed as the final barrier between the state and the individual.",
+     "When provincial police neglected to inform a suspect of his right to remain silent, the Supreme Court annulled the resulting confession, and every American officer ever since has been compelled to recite, at the moment of arrest, the four short sentences known as the Miranda warning.",
+     "The football celebrity tried for the murder of his former wife illustrated the same architecture in reverse: although the prosecution's case appeared overwhelming, the defence painstakingly dismantled the procedural integrity of the police investigation along racial fault lines that no courtroom could reconcile, and the jury acquitted him in defiance of the apparent evidence.",
+     "The law, in the end, defends not the truth itself but the citizen against the careless or vindictive exercise of authority."
     ],
     "quiz": []
    },
