@@ -1,7 +1,4 @@
-/* Reading content. Originally auto-generated from 文本.txt; chapter-11 'Minds,
-   Methods, and Mysteries' material has been dissolved into chapters 1-10 in
-   narrative order (see data/sectionRenumberMap.js). Hand-edited — the Python
-   build is no longer the source of truth. */
+/* Reading content (chapter-11 dissolved into 1-10; some new sections now carry per-sentence blocks + translations). */
 const CHAPTER_CONTENT = {
  "universe": {
   "number": "1",
@@ -645,7 +642,14 @@ const CHAPTER_CONTENT = {
     "number": "3.8",
     "title": "Sleep and the Body Clock",
     "blocks": [
-     "Buried deep inside every human skull a small invisible clock keeps time, indifferent to whether the sun is up. A cluster of neurons called the suprachiasmatic nucleus oscillates at its own approximately daily rhythm, dispatching orders to the rest of the body about when to feel awake and when to surrender to sleep. After dusk the pineal gland in the brain secretes the hormone melatonin, drowsiness creeps quietly into the limbs, and the body prepares for shutdown. The trouble is that human ingenuity has gifted us electric lighting and the luminous screens of telephones, whose blue wavelengths impersonate sunlight so convincingly that the brain is duped into believing the day still continues, and the entire modern biological clock has accordingly been thrown into chronic disarray. Insomnia has consequently swelled into an epidemic. Sleep itself, contrary to its idle reputation, is not the brain switching off between shifts but instead one of its busiest stretches of work. During the deepest stages cerebrospinal fluid floods the tissue, flushing out the metabolic waste accumulated during the day, while the rapid-eye-movement phase quietly sorts, compresses, and consolidates the short-term memories of the previous hours into long-term storage. The student who sleeps too little fails to retain what he has learned not because he is lazy but because his brain has had no chance to archive the lesson before the next one arrives."
+     "Buried deep inside every human skull a small invisible clock keeps time, indifferent to whether the sun is up.",
+     "A cluster of neurons called the suprachiasmatic nucleus oscillates at its own approximately daily rhythm, dispatching orders to the rest of the body about when to feel awake and when to surrender to sleep.",
+     "After dusk the pineal gland in the brain secretes the hormone melatonin, drowsiness creeps quietly into the limbs, and the body prepares for shutdown.",
+     "The trouble is that human ingenuity has gifted us electric lighting and the luminous screens of telephones, whose blue wavelengths impersonate sunlight so convincingly that the brain is duped into believing the day still continues, and the entire modern biological clock has accordingly been thrown into chronic disarray.",
+     "Insomnia has consequently swelled into an epidemic.",
+     "Sleep itself, contrary to its idle reputation, is not the brain switching off between shifts but instead one of its busiest stretches of work.",
+     "During the deepest stages cerebrospinal fluid floods the tissue, flushing out the metabolic waste accumulated during the day, while the rapid-eye-movement phase quietly sorts, compresses, and consolidates the short-term memories of the previous hours into long-term storage.",
+     "The student who sleeps too little fails to retain what he has learned not because he is lazy but because his brain has had no chance to archive the lesson before the next one arrives."
     ],
     "quiz": []
    },
@@ -653,7 +657,15 @@ const CHAPTER_CONTENT = {
     "number": "3.9",
     "title": "Memory and Forgetting",
     "blocks": [
-     "A pioneering German psychologist named Hermann Ebbinghaus, faced with an entirely empty field, conscripted himself into service as his own laboratory animal. He memorised long lists of meaningless syllables and recorded, day after day, how rapidly each one slipped from his grasp. From the resulting data he plotted the first forgetting curve in the history of psychology and exposed an inconvenient truth: retention collapses sharply across the earliest interval and afterwards drifts downward much more gently. From this counter-intuitive shape comes a powerful study technique. Rather than rehearsing the material many times in immediate succession, the learner ought to revisit it at the precise moment when forgetting is about to seize it, so that each retrieval reinforces the trace a little more durably than the last. This is called spaced repetition. The orators of ancient Greece, meanwhile, had devised an entirely different solution called the memory palace. They mentally lodged each item to be remembered inside a particular room of a familiar building, then strolled through the building in the mind whenever they needed to retrieve the contents. Both techniques exploit the same modern neurological fact: a memory is not a fixed recording but a structure the brain rebuilds every time it is summoned, and the more often the structure is rebuilt the firmer its foundations become."
+     "A pioneering German psychologist named Hermann Ebbinghaus, faced with an entirely empty field, conscripted himself into service as his own laboratory animal.",
+     "He memorised long lists of meaningless syllables and recorded, day after day, how rapidly each one slipped from his grasp.",
+     "From the resulting data he plotted the first forgetting curve in the history of psychology and exposed an inconvenient truth: retention collapses sharply across the earliest interval and afterwards drifts downward much more gently.",
+     "From this counter-intuitive shape comes a powerful study technique.",
+     "Rather than rehearsing the material many times in immediate succession, the learner ought to revisit it at the precise moment when forgetting is about to seize it, so that each retrieval reinforces the trace a little more durably than the last.",
+     "This is called spaced repetition.",
+     "The orators of ancient Greece, meanwhile, had devised an entirely different solution called the memory palace.",
+     "They mentally lodged each item to be remembered inside a particular room of a familiar building, then strolled through the building in the mind whenever they needed to retrieve the contents.",
+     "Both techniques exploit the same modern neurological fact: a memory is not a fixed recording but a structure the brain rebuilds every time it is summoned, and the more often the structure is rebuilt the firmer its foundations become."
     ],
     "quiz": []
    },
@@ -661,7 +673,17 @@ const CHAPTER_CONTENT = {
     "number": "3.10",
     "title": "Neuroscience",
     "blocks": [
-     "Tucked inside the skull, the brain stitches together vast numbers of neurons through tiny chemical gaps called synapses, the simultaneous connections inside it outnumbering the stars of the entire Milky Way. A famous railway worker was tamping powder one afternoon when an iron rod fired upward through his frontal lobe and exited out the top of his head. Astonishingly, he survived. But the mild, reliable young man his colleagues had known swung overnight into someone impulsive, profane, and uncontrollable, and his transformation handed neuroscience its first hard evidence that character and moral judgement reside in specific regions of the brain rather than hovering immaterially somewhere above the body. Subsequent research has traced the circuitry. Fear is triggered by a small structure called the amygdala. Memories are consolidated by the hippocampus. Rational decision-making is supervised by the prefrontal cortex. The most counter-intuitive discovery, however, is that the brain rebuilds itself throughout life, a property called neuroplasticity. The visual cortex of a blind person is gradually rewired to process touch and sound, and the motor regions of a stroke patient can be coaxed into taking over the functions of damaged tissue. Learning any new skill, in this sense, is the physical rewiring of one's own brain at the cellular level."
+     "Tucked inside the skull, the brain stitches together vast numbers of neurons through tiny chemical gaps called synapses, the simultaneous connections inside it outnumbering the stars of the entire Milky Way.",
+     "A famous railway worker was tamping powder one afternoon when an iron rod fired upward through his frontal lobe and exited out the top of his head.",
+     "Astonishingly, he survived.",
+     "But the mild, reliable young man his colleagues had known swung overnight into someone impulsive, profane, and uncontrollable, and his transformation handed neuroscience its first hard evidence that character and moral judgement reside in specific regions of the brain rather than hovering immaterially somewhere above the body.",
+     "Subsequent research has traced the circuitry.",
+     "Fear is triggered by a small structure called the amygdala.",
+     "Memories are consolidated by the hippocampus.",
+     "Rational decision-making is supervised by the prefrontal cortex.",
+     "The most counter-intuitive discovery, however, is that the brain rebuilds itself throughout life, a property called neuroplasticity.",
+     "The visual cortex of a blind person is gradually rewired to process touch and sound, and the motor regions of a stroke patient can be coaxed into taking over the functions of damaged tissue.",
+     "Learning any new skill, in this sense, is the physical rewiring of one's own brain at the cellular level."
     ],
     "quiz": []
    },
@@ -669,7 +691,14 @@ const CHAPTER_CONTENT = {
     "number": "3.11",
     "title": "The Microbiome and the Gut",
     "blocks": [
-     "The human intestine quietly accommodates trillions of bacteria whose combined cell count rivals that of the human cells in the entire body and whose combined mass piles up to roughly a kilogram. For most of medical history the bacteria were dismissed as adversaries to be eradicated on sight. Only recently have researchers established that this enormous resident community, the gut microbiome, behaves as an indispensable organ in its own right. It digests dietary fibres that human enzymes cannot break apart, synthesises essential vitamins, and patiently trains the immune system to distinguish friend from foe. More disorienting still, the gut and the brain converse directly along a dedicated nerve highway, and the microbes themselves manufacture chemical messengers that influence mood and appetite, so the colloquial reference to a gut feeling may quietly carry literal biological weight. When the gut bacteria of a slim mouse are transplanted into an obese mouse, the obese mouse begins to lose weight. Within a few days of a dietary shift the entire community reshuffles itself. Every meal you eat, in effect, reshapes an invisible ecosystem residing inside you."
+     "The human intestine quietly accommodates trillions of bacteria whose combined cell count rivals that of the human cells in the entire body and whose combined mass piles up to roughly a kilogram.",
+     "For most of medical history the bacteria were dismissed as adversaries to be eradicated on sight.",
+     "Only recently have researchers established that this enormous resident community, the gut microbiome, behaves as an indispensable organ in its own right.",
+     "It digests dietary fibres that human enzymes cannot break apart, synthesises essential vitamins, and patiently trains the immune system to distinguish friend from foe.",
+     "More disorienting still, the gut and the brain converse directly along a dedicated nerve highway, and the microbes themselves manufacture chemical messengers that influence mood and appetite, so the colloquial reference to a gut feeling may quietly carry literal biological weight.",
+     "When the gut bacteria of a slim mouse are transplanted into an obese mouse, the obese mouse begins to lose weight.",
+     "Within a few days of a dietary shift the entire community reshuffles itself.",
+     "Every meal you eat, in effect, reshapes an invisible ecosystem residing inside you."
     ],
     "quiz": []
    },
@@ -677,7 +706,12 @@ const CHAPTER_CONTENT = {
     "number": "3.12",
     "title": "Smell and Memory",
     "blocks": [
-     "The human nose discriminates among an enormous range of separate scents, vastly more than the colours the eye can resolve. A familiar smell will jolt a powerful and uncannily specific memory into consciousness because olfactory information takes a private shortcut through the brain. Instead of routing through the thalamus like every other sense, the smell signal projects directly into the amygdala and the hippocampus, the very regions that store emotion and long-term memory, so the recovered memory arrives with its original feeling already attached. The French novelist Marcel Proust wrote a celebrated passage in which the scent of a small cake dipped in tea returns the whole of his childhood in a single overwhelming instant, and the phenomenon has been christened the Proust effect in his honour. Every individual's catalogue of olfactory memory is intensely private, because each scent fuses indelibly to the situation and the emotional state in which it was first encountered, and the association is essentially unbreakable for the rest of a lifetime. A perfume, an old book, the wet pavement after summer rain, each opens a corridor in the brain that no deliberate effort of recall ever quite enters on its own."
+     "The human nose discriminates among an enormous range of separate scents, vastly more than the colours the eye can resolve.",
+     "A familiar smell will jolt a powerful and uncannily specific memory into consciousness because olfactory information takes a private shortcut through the brain.",
+     "Instead of routing through the thalamus like every other sense, the smell signal projects directly into the amygdala and the hippocampus, the very regions that store emotion and long-term memory, so the recovered memory arrives with its original feeling already attached.",
+     "The French novelist Marcel Proust wrote a celebrated passage in which the scent of a small cake dipped in tea returns the whole of his childhood in a single overwhelming instant, and the phenomenon has been christened the Proust effect in his honour.",
+     "Every individual's catalogue of olfactory memory is intensely private, because each scent fuses indelibly to the situation and the emotional state in which it was first encountered, and the association is essentially unbreakable for the rest of a lifetime.",
+     "A perfume, an old book, the wet pavement after summer rain, each opens a corridor in the brain that no deliberate effort of recall ever quite enters on its own."
     ],
     "quiz": []
    },
@@ -685,7 +719,14 @@ const CHAPTER_CONTENT = {
     "number": "3.13",
     "title": "Sound and Hearing",
     "blocks": [
-     "Sound is nothing more than the vibration of air, and deep within the ear a spiral organ shaped like the shell of a snail houses thousands of microscopic hair cells, each tuned to a different frequency. Incoming vibrations agitate different hairs along the spiral, and the brain receives a coded electrical signal that has quietly translated atmospheric motion into perceived pitch. The same brain possesses the remarkable knack of locking onto a single voice in a crowded noisy room and filtering out everything else, a faculty known as the cocktail party effect that engineers required generations of patient computation to begin to imitate. Whales have pushed the use of sound to its outer limits. Their low-frequency songs propagate across vast stretches of ocean, every member of a population sings the same song, and the population collaboratively revises the melody from one year to the next. The noise of the modern city, by contrast, persecutes its inhabitants. Prolonged exposure to traffic noise measurably raises blood pressure, disrupts sleep, and degrades hearing itself. Silence has accordingly mutated into an increasingly luxurious resource."
+     "Sound is nothing more than the vibration of air, and deep within the ear a spiral organ shaped like the shell of a snail houses thousands of microscopic hair cells, each tuned to a different frequency.",
+     "Incoming vibrations agitate different hairs along the spiral, and the brain receives a coded electrical signal that has quietly translated atmospheric motion into perceived pitch.",
+     "The same brain possesses the remarkable knack of locking onto a single voice in a crowded noisy room and filtering out everything else, a faculty known as the cocktail party effect that engineers required generations of patient computation to begin to imitate.",
+     "Whales have pushed the use of sound to its outer limits.",
+     "Their low-frequency songs propagate across vast stretches of ocean, every member of a population sings the same song, and the population collaboratively revises the melody from one year to the next.",
+     "The noise of the modern city, by contrast, persecutes its inhabitants.",
+     "Prolonged exposure to traffic noise measurably raises blood pressure, disrupts sleep, and degrades hearing itself.",
+     "Silence has accordingly mutated into an increasingly luxurious resource."
     ],
     "quiz": []
    },
@@ -1635,7 +1676,15 @@ const CHAPTER_CONTENT = {
     "number": "8.7",
     "title": "Animal Navigation",
     "blocks": [
-     "Each autumn an enormous orange tide of monarch butterflies pours southward from Canada toward a particular small grove of fir trees in central Mexico, a destination none of them has ever seen. Pigeons released far from their lofts find their way back without hesitation. Sea turtles haul themselves out of the surf onto the very stretch of beach on which they once hatched in order to deposit their own eggs, having paddled across an entire ocean in between. None of these creatures carries a map or a compass. After patient experiment, biologists have at last established that many of them harbour specialised cells exquisitely sensitive to the Earth's magnetic field, which orient them as reliably as a built-in compass. Inside the eyes of certain birds a peculiar protein actually allows the magnetic field to be perceived directly, almost as a colour superimposed on the visible scene. Other species memorise the configuration of stars, the angle of the sun, the smell of distant coastlines, or the long wave patterns rolling across the open ocean. The strangest case of all is the monarch, whose annual migration takes several successive generations to complete a single round trip. No individual butterfly has ever survived the entire route, and yet the route itself is written precisely into the species' genes."
+     "Each autumn an enormous orange tide of monarch butterflies pours southward from Canada toward a particular small grove of fir trees in central Mexico, a destination none of them has ever seen.",
+     "Pigeons released far from their lofts find their way back without hesitation.",
+     "Sea turtles haul themselves out of the surf onto the very stretch of beach on which they once hatched in order to deposit their own eggs, having paddled across an entire ocean in between.",
+     "None of these creatures carries a map or a compass.",
+     "After patient experiment, biologists have at last established that many of them harbour specialised cells exquisitely sensitive to the Earth's magnetic field, which orient them as reliably as a built-in compass.",
+     "Inside the eyes of certain birds a peculiar protein actually allows the magnetic field to be perceived directly, almost as a colour superimposed on the visible scene.",
+     "Other species memorise the configuration of stars, the angle of the sun, the smell of distant coastlines, or the long wave patterns rolling across the open ocean.",
+     "The strangest case of all is the monarch, whose annual migration takes several successive generations to complete a single round trip.",
+     "No individual butterfly has ever survived the entire route, and yet the route itself is written precisely into the species' genes."
     ],
     "quiz": []
    },
@@ -1708,7 +1757,13 @@ const CHAPTER_CONTENT = {
     "number": "6.3",
     "title": "Alexander von Humboldt",
     "blocks": [
-     "The German aristocrat Alexander von Humboldt spent his entire inherited fortune on a long expedition into South America. He climbed almost to the summit of one of the Andean volcanoes, then the highest altitude any European had ever attained, recording with each gain in elevation the way the vegetation around him shifted band by band, and so first identified the precise correspondence between climate, altitude, and the geographical distribution of life. The new field he opened is called biogeography. He measured the temperature of the seawater along the Pacific coast and discovered the cold northward current that still bears his name. He linked points of equal temperature into curves on a map and so invented the isotherm, a method of representation still printed on every modern weather forecast. He proposed, well ahead of his contemporaries, that the natural world constitutes a single interconnected web in which the deforestation of one valley can measurably alter the rainfall of another a great distance away. The concept now called the ecosystem was, in this sense, a Humboldt discovery long before the discipline of ecology consolidated around it."
+     "The German aristocrat Alexander von Humboldt spent his entire inherited fortune on a long expedition into South America.",
+     "He climbed almost to the summit of one of the Andean volcanoes, then the highest altitude any European had ever attained, recording with each gain in elevation the way the vegetation around him shifted band by band, and so first identified the precise correspondence between climate, altitude, and the geographical distribution of life.",
+     "The new field he opened is called biogeography.",
+     "He measured the temperature of the seawater along the Pacific coast and discovered the cold northward current that still bears his name.",
+     "He linked points of equal temperature into curves on a map and so invented the isotherm, a method of representation still printed on every modern weather forecast.",
+     "He proposed, well ahead of his contemporaries, that the natural world constitutes a single interconnected web in which the deforestation of one valley can measurably alter the rainfall of another a great distance away.",
+     "The concept now called the ecosystem was, in this sense, a Humboldt discovery long before the discipline of ecology consolidated around it."
     ],
     "quiz": []
    },
@@ -1740,7 +1795,13 @@ const CHAPTER_CONTENT = {
     "number": "6.5",
     "title": "The Hidden Life of Plants",
     "blocks": [
-     "For most of human history we assumed the trees of a forest stood as solitary individuals, each competing in silent isolation for its share of sunlight and water. Then biologists who dared to dig beneath the canopy uncovered an enormous hidden network. The roots of the trees, they discovered, intertwine intimately with a particular kind of fungus whose threadlike filaments weave through the soil and stitch the trees of an entire forest into a single continuous web, popularly nicknamed the wood wide web. Through this underground network a mature tree can quietly divert surplus sugars to a sick or shaded neighbour, and a mother tree can pick out her own seedlings from those of rivals and nourish them preferentially. When an insect begins gnawing at a tree's leaves, the tree releases chemical alarms through the network and prompts its neighbours to secrete defensive compounds before the insects ever reach them. The plant possesses no brain at all, yet it senses the direction of light, registers exactly where on a stem it has been touched, and calculates whether its stored starch will suffice to last the night. It simply lives, in other words, by a logic profoundly different from any animal's."
+     "For most of human history we assumed the trees of a forest stood as solitary individuals, each competing in silent isolation for its share of sunlight and water.",
+     "Then biologists who dared to dig beneath the canopy uncovered an enormous hidden network.",
+     "The roots of the trees, they discovered, intertwine intimately with a particular kind of fungus whose threadlike filaments weave through the soil and stitch the trees of an entire forest into a single continuous web, popularly nicknamed the wood wide web.",
+     "Through this underground network a mature tree can quietly divert surplus sugars to a sick or shaded neighbour, and a mother tree can pick out her own seedlings from those of rivals and nourish them preferentially.",
+     "When an insect begins gnawing at a tree's leaves, the tree releases chemical alarms through the network and prompts its neighbours to secrete defensive compounds before the insects ever reach them.",
+     "The plant possesses no brain at all, yet it senses the direction of light, registers exactly where on a stem it has been touched, and calculates whether its stored starch will suffice to last the night.",
+     "It simply lives, in other words, by a logic profoundly different from any animal's."
     ],
     "quiz": []
    },
@@ -2680,7 +2741,14 @@ const CHAPTER_CONTENT = {
     "number": "9.4",
     "title": "Aristotle",
     "blocks": [
-     "Plato's brightest and most rebellious student, Aristotle rejected the doctrine that the perceptible world consists merely of imperfect shadows of higher Forms, and insisted instead that truth resides within the ordinary objects in front of us. He therefore set out to observe, dissect, and classify everything he could lay his hands on. He dissected marine animals along the Aegean coast and recorded the habits of countless species, founding the earliest systematic biology. He codified the rules of deductive reasoning into the syllogism, the prototype of every subsequent formal logic. He partitioned knowledge into discrete disciplines and assigned each its modern name: physics, metaphysics, ethics, politics, poetics, rhetoric, zoology. Nearly every department in a contemporary university, in the humanities or in the sciences, traces its label back to this single Greek thinker of antiquity. He also tutored a teenager who would proceed to conquer half the known world. A single human being thus defined the categories within which Western inquiry has been conducted and incidentally trained the boy who would empirically rearrange the map."
+     "Plato's brightest and most rebellious student, Aristotle rejected the doctrine that the perceptible world consists merely of imperfect shadows of higher Forms, and insisted instead that truth resides within the ordinary objects in front of us.",
+     "He therefore set out to observe, dissect, and classify everything he could lay his hands on.",
+     "He dissected marine animals along the Aegean coast and recorded the habits of countless species, founding the earliest systematic biology.",
+     "He codified the rules of deductive reasoning into the syllogism, the prototype of every subsequent formal logic.",
+     "He partitioned knowledge into discrete disciplines and assigned each its modern name: physics, metaphysics, ethics, politics, poetics, rhetoric, zoology.",
+     "Nearly every department in a contemporary university, in the humanities or in the sciences, traces its label back to this single Greek thinker of antiquity.",
+     "He also tutored a teenager who would proceed to conquer half the known world.",
+     "A single human being thus defined the categories within which Western inquiry has been conducted and incidentally trained the boy who would empirically rearrange the map."
     ],
     "quiz": []
    },
@@ -2977,7 +3045,12 @@ const CHAPTER_CONTENT = {
     "number": "9.19",
     "title": "Leonardo da Vinci",
     "blocks": [
-     "Born illegitimate, Leonardo da Vinci was permanently barred from the formal universities of his era, and the exclusion freed him from any obligation to respect the boundaries between academic disciplines. He painted aristocratic portraits by day and slipped into the mortuary by night to dissect cadavers, eventually documenting a great many bodies in notebooks whose anatomical precision surpassed every medical textbook then in circulation, mapping the muscle fibres of the shoulder, the chambers of the heart, and the foetus curled inside the womb. His patient observation of the spiralling eddies of moving water anticipated, by several centuries, the fluid dynamics engineers would later formalise as turbulence. He sketched flapping-wing flying machines modelled on the structure of bird wings, the earliest plausible parachute, and conceptual diagrams of tanks, submarines, and machine guns long before any available technology could implement them. He even traced the spiral arrangement of leaves on a stem and deduced the geometric principle by which a plant maximises its exposure to sunlight. The famous half-smile of the Mona Lisa was produced through a technique he himself devised, in which many translucent layers of pigment fade into one another until the transition itself becomes imperceptible."
+     "Born illegitimate, Leonardo da Vinci was permanently barred from the formal universities of his era, and the exclusion freed him from any obligation to respect the boundaries between academic disciplines.",
+     "He painted aristocratic portraits by day and slipped into the mortuary by night to dissect cadavers, eventually documenting a great many bodies in notebooks whose anatomical precision surpassed every medical textbook then in circulation, mapping the muscle fibres of the shoulder, the chambers of the heart, and the foetus curled inside the womb.",
+     "His patient observation of the spiralling eddies of moving water anticipated, by several centuries, the fluid dynamics engineers would later formalise as turbulence.",
+     "He sketched flapping-wing flying machines modelled on the structure of bird wings, the earliest plausible parachute, and conceptual diagrams of tanks, submarines, and machine guns long before any available technology could implement them.",
+     "He even traced the spiral arrangement of leaves on a stem and deduced the geometric principle by which a plant maximises its exposure to sunlight.",
+     "The famous half-smile of the Mona Lisa was produced through a technique he himself devised, in which many translucent layers of pigment fade into one another until the transition itself becomes imperceptible."
     ],
     "quiz": []
    },
@@ -2985,7 +3058,12 @@ const CHAPTER_CONTENT = {
     "number": "9.20",
     "title": "Michelangelo",
     "blocks": [
-     "All his life Michelangelo insisted he was only a sculptor, and resented even the Pope for coercing him into painting the ceiling of the Sistine Chapel against his preference. He travelled in person to the quarries at Carrara to select his marble, claiming he could perceive the human figure already trapped inside an unworked block and that sculpting consisted of nothing more than chipping away the surplus stone to release the figure waiting within. The David he extracted from such a block displays the swelling veins and tense musculature of the human body at anatomical precision, because as a young man he too had secretly dissected corpses to understand what lay beneath the skin. Compelled to paint the chapel ceiling, he stood for years on a wooden scaffold with his head perpetually tilted back, paint dripping into his eyes, until his neck and cervical vertebrae had deformed permanently and he could not lower his gaze for months afterward. In old age he was summoned to design the dome of St Peter's Basilica, carrying a sculptor's intuitive grasp of three-dimensional volume into the discipline of architecture. The double-shell dome that resulted remains the most recognisable silhouette on the Roman skyline."
+     "All his life Michelangelo insisted he was only a sculptor, and resented even the Pope for coercing him into painting the ceiling of the Sistine Chapel against his preference.",
+     "He travelled in person to the quarries at Carrara to select his marble, claiming he could perceive the human figure already trapped inside an unworked block and that sculpting consisted of nothing more than chipping away the surplus stone to release the figure waiting within.",
+     "The David he extracted from such a block displays the swelling veins and tense musculature of the human body at anatomical precision, because as a young man he too had secretly dissected corpses to understand what lay beneath the skin.",
+     "Compelled to paint the chapel ceiling, he stood for years on a wooden scaffold with his head perpetually tilted back, paint dripping into his eyes, until his neck and cervical vertebrae had deformed permanently and he could not lower his gaze for months afterward.",
+     "In old age he was summoned to design the dome of St Peter's Basilica, carrying a sculptor's intuitive grasp of three-dimensional volume into the discipline of architecture.",
+     "The double-shell dome that resulted remains the most recognisable silhouette on the Roman skyline."
     ],
     "quiz": []
    },
