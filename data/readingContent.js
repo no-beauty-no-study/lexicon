@@ -1,4 +1,4 @@
-/* Reading content (ch11 + ch12 supplements + lexical appendices dissolved into 1-10). */
+/* Reading content (ch11 + ch12 dissolved). */
 const CHAPTER_CONTENT = {
  "universe": {
   "number": "1",
@@ -2796,22 +2796,7 @@ const CHAPTER_CONTENT = {
     "number": "7.24",
     "title": "The Seminar",
     "blocks": [
-     "The room fell silent as Sealyra clicked to her first slide.",
-     "Her throat had gone dry.",
-     "She cleared it once, twice, and began.",
-     "Three rows back, Shiro sat slouched in his chair, one ankle crossed over his knee, drumming his pale fingers against the armrest with an expression of open boredom.",
-     "He did not look at her.",
-     "He looked at the window, at his watch, at anything but her. \"And so the data suggests a clear correlation between,\" she went on. \"Suggests.\" His voice cut through the room, soft and lazy.",
-     "He did not even raise his hand. \"You keep saying suggests.",
-     "Do you have evidence, or do you have a feeling?\" Heat flooded her face.",
-     "The other students shifted, their eyes darting between the two of them.",
-     "Sealyra's fingers tightened around the clicker until her knuckles went white. \"The regression analysis,\" she said. \"Is built on a sample too small to mean anything.\" He finally turned his gaze on her, and it was worse than the words: cool, gray, faintly amused, as if she were something mildly entertaining he had scraped off his shoe.",
-     "One corner of his mouth curved. \"But please.",
-     "Continue.",
-     "I'm sure the conclusion will be fascinating.\" She wanted to hurl the clicker at his perfect, smirking face.",
-     "Instead she lifted her chin, swallowed the tremor in her voice, and went on.",
-     "She would not give him the satisfaction of watching her falter.",
-     "Behind that cold smile, she had no way of knowing, his own fingers had drifted to his wrist, quietly counting a heartbeat that had been racing far too fast all morning."
+     "The room fell silent as Sealyra clicked to her first slide. Her throat had gone dry. She cleared it once, twice, and began. Three rows back, Shiro sat slouched in his chair, one ankle crossed over his knee, drumming his pale fingers against the armrest with an expression of open boredom. He did not look at her. He looked at the window, at his watch, at anything but her. \"And so the data suggests a clear correlation between,\" she went on. \"Suggests.\" His voice cut through the room, soft and lazy. He did not even raise his hand. \"You keep saying suggests. Do you have evidence, or do you have a feeling?\" Heat flooded her face. The other students shifted, their eyes darting between the two of them. Sealyra's fingers tightened around the clicker until her knuckles went white. \"The regression analysis,\" she said. \"Is built on a sample too small to mean anything.\" He finally turned his gaze on her, and it was worse than the words: cool, gray, faintly amused, as if she were something mildly entertaining he had scraped off his shoe. One corner of his mouth curved. \"But please. Continue. I'm sure the conclusion will be fascinating.\" She wanted to hurl the clicker at his perfect, smirking face. Instead she lifted her chin, swallowed the tremor in her voice, and went on. She would not give him the satisfaction of watching her falter. Behind that cold smile, she had no way of knowing, his own fingers had drifted to his wrist, quietly counting a heartbeat that had been racing far too fast all morning."
     ],
     "quiz": []
    },
@@ -2844,29 +2829,7 @@ const CHAPTER_CONTENT = {
     "number": "7.26",
     "title": "After",
     "blocks": [
-     "By the time the others dragged the lifeboat around, she had already hauled him onto the deck and forced the water from his lungs.",
-     "Now he lay motionless under the awning, out of the rain at last, his chest rising in shallow, uneven breaths.",
-     "Unconscious.",
-     "But alive.",
-     "The crowd had thinned.",
-     "The storm was drifting out to sea.",
-     "And Sealyra found herself kneeling alone beside him, unable to look away.",
-     "Without the cold smirk, without the sharp tongue, his face was something else entirely.",
-     "Damp strands of dark hair clung to his pale forehead.",
-     "His lashes lay long and still against skin so fair it seemed almost translucent in the gray light.",
-     "Every arrogant line she had hated all term had softened into something unbearably delicate.",
-     "She stared, and stared, and could not make herself stop.",
-     "Her hand moved before she told it to.",
-     "Slowly, helplessly, her fingertips drifted toward his cheek, hovered there a breath away, and finally grazed the cool, wet skin.",
-     "His lashes fluttered.",
-     "She went rigid.",
-     "Too late to pull back.",
-     "His eyes opened, slow and unfocused, then settled on her, and up close they were not gray at all but a deep, clear color, like some cut jewel catching the last of the light.",
-     "Her heart lurched straight into her throat. \"There was,\" she blurted, snatching her hand back, \"something on your face.\" He did not blink.",
-     "He did not look away.",
-     "He simply held her gaze, silent, while the rain dripped from the edge of the awning and her pulse pounded loud enough to drown out the sea.",
-     "A long moment passed.",
-     "Then another. \"Water,\" he rasped at last. \"I want water.\""
+     "By the time the others dragged the lifeboat around, she had already hauled him onto the deck and forced the water from his lungs. Now he lay motionless under the awning, out of the rain at last, his chest rising in shallow, uneven breaths. Unconscious. But alive. The crowd had thinned. The storm was drifting out to sea. And Sealyra found herself kneeling alone beside him, unable to look away. Without the cold smirk, without the sharp tongue, his face was something else entirely. Damp strands of dark hair clung to his pale forehead. His lashes lay long and still against skin so fair it seemed almost translucent in the gray light. Every arrogant line she had hated all term had softened into something unbearably delicate. She stared, and stared, and could not make herself stop. Her hand moved before she told it to. Slowly, helplessly, her fingertips drifted toward his cheek, hovered there a breath away, and finally grazed the cool, wet skin. His lashes fluttered. She went rigid. Too late to pull back. His eyes opened, slow and unfocused, then settled on her, and up close they were not gray at all but a deep, clear color, like some cut jewel catching the last of the light. Her heart lurched straight into her throat. \"There was,\" she blurted, snatching her hand back, \"something on your face.\" He did not blink. He did not look away. He simply held her gaze, silent, while the rain dripped from the edge of the awning and her pulse pounded loud enough to drown out the sea. A long moment passed. Then another. \"Water,\" he rasped at last. \"I want water.\""
     ],
     "quiz": []
    },
@@ -3942,7 +3905,8 @@ const CHAPTER_CONTENT = {
     "title": "Darwin and the Universal Face",
     "blocks": [
      "Having finished On the Origin of Species, Darwin fixed his eye on a subtler question.",
-     "Were the human expressions of joy, anger, sorrow, and fear learned in childhood, or innately wired into the species at birth? He observed his own newborn baby through every passing day, recording how the infant frowned and how it first broke into a smile.",
+     "Were the human expressions of joy, anger, sorrow, and fear learned in childhood, or innately wired into the species at birth?",
+     "He observed his own newborn baby through every passing day, recording how the infant frowned and how it first broke into a smile.",
      "He posted questionnaires to missionaries scattered across the remotest outposts of the world, asking whether the distant tribes among whom they lived contorted their faces in exactly the same way when angry, frightened, or grieving.",
      "He collected photographs of psychiatric patients and of stage actors and traced the precise pull of every facial muscle.",
      "From this immense patient correspondence he reached a conclusion well ahead of his century: the basic emotional expressions of human beings are evolved instincts shared by the entire species, and the ancestry of the frown, the glare, and the bared teeth can be traced backward through the lineage to other animals.",
