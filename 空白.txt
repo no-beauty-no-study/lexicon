@@ -1,0 +1,1181 @@
+# Stage 0, Chapter 11: Minds, Methods, and Mysteries
+
+---
+
+## 11.1  Leonardo da Vinci
+
+Born illegitimate, Leonardo da Vinci was permanently barred from the formal universities of his era, and the exclusion freed him from any obligation to respect the boundaries between academic disciplines. He painted aristocratic portraits by day and slipped into the mortuary by night to dissect cadavers, eventually documenting a great many bodies in notebooks whose anatomical precision surpassed every medical textbook then in circulation, mapping the muscle fibres of the shoulder, the chambers of the heart, and the foetus curled inside the womb. His patient observation of the spiralling eddies of moving water anticipated, by several centuries, the fluid dynamics engineers would later formalise as turbulence. He sketched flapping-wing flying machines modelled on the structure of bird wings, the earliest plausible parachute, and conceptual diagrams of tanks, submarines, and machine guns long before any available technology could implement them. He even traced the spiral arrangement of leaves on a stem and deduced the geometric principle by which a plant maximises its exposure to sunlight. The famous half-smile of the Mona Lisa was produced through a technique he himself devised, in which many translucent layers of pigment fade into one another until the transition itself becomes imperceptible.
+
+**Group A:** illegitimate, exclude, obligation, boundary, discipline, slip, dissect, document, anatomical, surpass, circulation, observe, anticipate, formalise, sketch, conceive, implement, trace, deduce, geometric, principle, maximise, exposure, translucent, layer, fade, transition, imperceptible, devise, sustained
+
+**Group B:** mortuary, cadaver, muscle fibre, chamber, foetus, womb, eddy, turbulence, fluid dynamics, parachute, pigment, glaze, portrait, mirror script, notebook
+
+**Q1:** Leonardo was permanently barred from the formal universities of his era because
+A he refused to specialise in any single discipline.
+B his birth was illegitimate.
+C his family could not afford the tuition.
+D the church had condemned his anatomical dissections.
+**A1:** B
+
+**Q2:** Leonardo's patient observation of the spiralling eddies of moving water anticipated, by four centuries, the engineering field of
+A aerodynamics.
+B fluid dynamics, in particular the laws of turbulence.
+C hydraulic irrigation.
+D meteorology.
+**A2:** B
+
+**Q3:** The half-smile of the Mona Lisa was produced through a technique in which Leonardo
+A engraved fine lines into wet plaster.
+B layered dozens of translucent glazes until the transition became imperceptible.
+C used a hidden mirror to reflect candle light onto the canvas.
+D rubbed the painted surface with charcoal dust.
+**A3:** B
+
+---
+
+## 11.2  Michelangelo
+
+All his life Michelangelo insisted he was only a sculptor, and resented even the Pope for coercing him into painting the ceiling of the Sistine Chapel against his preference. He travelled in person to the quarries at Carrara to select his marble, claiming he could perceive the human figure already trapped inside an unworked block and that sculpting consisted of nothing more than chipping away the surplus stone to release the figure waiting within. The David he extracted from such a block displays the swelling veins and tense musculature of the human body at anatomical precision, because as a young man he too had secretly dissected corpses to understand what lay beneath the skin. Compelled to paint the chapel ceiling, he stood for years on a wooden scaffold with his head perpetually tilted back, paint dripping into his eyes, until his neck and cervical vertebrae had deformed permanently and he could not lower his gaze for months afterward. In old age he was summoned to design the dome of St Peter's Basilica, carrying a sculptor's intuitive grasp of three-dimensional volume into the discipline of architecture. The double-shell dome that resulted remains the most recognisable silhouette on the Roman skyline.
+
+**Group A:** insist, resent, coerce, preference, in person, select, perceive, claim, consist, chip, surplus, release, extract, display, swelling, tense, precision, dissect, compel, perpetually, deform, permanently, lower, summon, carry, intuitive, grasp, dimensional, discipline, recognisable, silhouette
+
+**Group B:** sculptor, quarry, marble, block, figure, vein, musculature, anatomy, corpse, scaffold, cervical vertebra, gaze, dome, basilica, skyline
+
+**Q1:** Michelangelo insisted throughout his life that he was a
+A painter.
+B sculptor.
+C architect.
+D poet.
+**A1:** B
+
+**Q2:** Michelangelo said that sculpting consisted of
+A chipping away the surplus stone to release the figure inside.
+B assembling small pieces of marble into a whole.
+C polishing the marble until it reflected light evenly.
+D casting molten bronze into a stone mould.
+**A2:** A
+
+**Q3:** Four years of painting the Sistine ceiling left Michelangelo
+A entirely deaf for the rest of his life.
+B with cervical vertebrae permanently deformed.
+C blind in one eye from dripping paint.
+D bankrupt because the Pope refused to pay him.
+**A3:** B
+
+---
+
+## 11.3  Aristotle
+
+Plato's brightest and most rebellious student, Aristotle rejected the doctrine that the perceptible world consists merely of imperfect shadows of higher Forms, and insisted instead that truth resides within the ordinary objects in front of us. He therefore set out to observe, dissect, and classify everything he could lay his hands on. He dissected marine animals along the Aegean coast and recorded the habits of countless species, founding the earliest systematic biology. He codified the rules of deductive reasoning into the syllogism, the prototype of every subsequent formal logic. He partitioned knowledge into discrete disciplines and assigned each its modern name: physics, metaphysics, ethics, politics, poetics, rhetoric, zoology. Nearly every department in a contemporary university, in the humanities or in the sciences, traces its label back to this single Greek thinker of antiquity. He also tutored a teenager who would proceed to conquer half the known world. A single human being thus defined the categories within which Western inquiry has been conducted and incidentally trained the boy who would empirically rearrange the map.
+
+**Group A:** rebellious, reject, doctrine, perceptible, consist, merely, imperfect, insist, reside, ordinary, observe, classify, dissect, record, habit, found, systematic, codify, deductive, prototype, subsequent, partition, discrete, discipline, assign, label, trace, contemporary, humanities, inquiry, conduct, incidentally, empirically, rearrange
+
+**Group B:** marine animal, species, biology, syllogism, logic, metaphysics, ethics, poetics, rhetoric, zoology, tutor, conquest
+
+**Q1:** Against his teacher Plato, Aristotle insisted that truth resides
+A in the realm of perfect Forms beyond the senses.
+B within ordinary objects directly in front of us.
+C in mathematical relations alone.
+D in divine revelation accessible only to priests.
+**A1:** B
+
+**Q2:** Aristotle codified the rules of deductive reasoning into a structured argument form called the
+A syllogism.
+B dialectic.
+C analogy.
+D aphorism.
+**A2:** A
+
+**Q3:** Nearly every modern university department traces its label back to Aristotle because he
+A endowed each department from his personal fortune.
+B partitioned knowledge into discrete disciplines and assigned each its name.
+C wrote the entry examinations still used by universities.
+D taught every original founder of a Greek school.
+**A3:** B
+
+---
+
+## 11.4  Alexander von Humboldt
+
+The German aristocrat Alexander von Humboldt spent his entire inherited fortune on a long expedition into South America. He climbed almost to the summit of one of the Andean volcanoes, then the highest altitude any European had ever attained, recording with each gain in elevation the way the vegetation around him shifted band by band, and so first identified the precise correspondence between climate, altitude, and the geographical distribution of life. The new field he opened is called biogeography. He measured the temperature of the seawater along the Pacific coast and discovered the cold northward current that still bears his name. He linked points of equal temperature into curves on a map and so invented the isotherm, a method of representation still printed on every modern weather forecast. He proposed, well ahead of his contemporaries, that the natural world constitutes a single interconnected web in which the deforestation of one valley can measurably alter the rainfall of another a great distance away. The concept now called the ecosystem was, in this sense, a Humboldt discovery long before the discipline of ecology consolidated around it.
+
+**Group A:** aristocrat, inherit, fortune, exploration, summit, attain, gain, elevation, vegetation, shift, identify, precise, correspondence, distribution, measure, discover, link, equal, invent, representation, propose, contemporary, constitute, interconnected, measurably, alter, discipline, consolidate
+
+**Group B:** altitude, volcano, biogeography, current, temperature, isotherm, weather forecast, deforestation, ecosystem, ecology, rainfall
+
+**Q1:** Climbing an Andean volcano, Humboldt first identified the precise correspondence between climate, altitude, and the
+A chemical composition of the atmosphere.
+B geographical distribution of living species.
+C mineral content of the soil.
+D rotation rate of the Earth.
+**A1:** B
+
+**Q2:** By linking points of equal temperature into curves on a map, Humboldt invented the
+A contour line.
+B isotherm.
+C latitude grid.
+D barometer.
+**A2:** B
+
+**Q3:** Humboldt proposed, well ahead of his contemporaries, that
+A only the strongest species are entitled to inhabit a region.
+B the natural world is a single interconnected web in which a change in one valley alters a distant one.
+C continents have remained stationary throughout Earth's history.
+D human cultivation can fully replace natural vegetation without consequence.
+**A3:** B
+
+---
+
+## 11.5  Sleep and the Body Clock
+
+Buried deep inside every human skull a small invisible clock keeps time, indifferent to whether the sun is up. A cluster of neurons called the suprachiasmatic nucleus oscillates at its own approximately daily rhythm, dispatching orders to the rest of the body about when to feel awake and when to surrender to sleep. After dusk the pineal gland in the brain secretes the hormone melatonin, drowsiness creeps quietly into the limbs, and the body prepares for shutdown. The trouble is that human ingenuity has gifted us electric lighting and the luminous screens of telephones, whose blue wavelengths impersonate sunlight so convincingly that the brain is duped into believing the day still continues, and the entire modern biological clock has accordingly been thrown into chronic disarray. Insomnia has consequently swelled into an epidemic. Sleep itself, contrary to its idle reputation, is not the brain switching off between shifts but instead one of its busiest stretches of work. During the deepest stages cerebrospinal fluid floods the tissue, flushing out the metabolic waste accumulated during the day, while the rapid-eye-movement phase quietly sorts, compresses, and consolidates the short-term memories of the previous hours into long-term storage. The student who sleeps too little fails to retain what he has learned not because he is lazy but because his brain has had no chance to archive the lesson before the next one arrives.
+
+**Group A:** operate, invisible, internal, cluster, oscillate, induce, cease, permit, ingenuity, deceive, perceive, persistently, disrupt, epidemic, establish, switch off, accumulate, flush, sort, compress, consolidate, archive, retain, lazy, opportunity
+
+**Group B:** neuron, circadian rhythm, dusk, pineal gland, hormone, melatonin, drowsiness, dawn, alertness, wavelength, insomnia, cerebrospinal fluid, metabolic waste, rapid eye movement, long-term memory
+
+**Q1:** The internal cluster of neurons that regulates the circadian rhythm is called the
+A pineal gland.
+B suprachiasmatic nucleus.
+C amygdala.
+D hippocampus.
+**A1:** B
+
+**Q2:** Blue light from telephone screens disrupts modern sleep because it
+A overheats the eye and damages the retina.
+B deceives the brain into perceiving continued daytime.
+C interferes directly with the secretion of cerebrospinal fluid.
+D blocks the auditory cues that normally signal night.
+**A2:** B
+
+**Q3:** During deep sleep, cerebrospinal fluid
+A delivers fresh oxygen to the visual cortex.
+B flushes accumulated metabolic waste from the brain tissue.
+C transports memories backward into childhood storage.
+D regulates the body's temperature against night-time cooling.
+**A3:** B
+
+---
+
+## 11.6  Memory and Forgetting
+
+A pioneering German psychologist named Hermann Ebbinghaus, faced with an entirely empty field, conscripted himself into service as his own laboratory animal. He memorised long lists of meaningless syllables and recorded, day after day, how rapidly each one slipped from his grasp. From the resulting data he plotted the first forgetting curve in the history of psychology and exposed an inconvenient truth: retention collapses sharply across the earliest interval and afterwards drifts downward much more gently. From this counter-intuitive shape comes a powerful study technique. Rather than rehearsing the material many times in immediate succession, the learner ought to revisit it at the precise moment when forgetting is about to seize it, so that each retrieval reinforces the trace a little more durably than the last. This is called spaced repetition. The orators of ancient Greece, meanwhile, had devised an entirely different solution called the memory palace. They mentally lodged each item to be remembered inside a particular room of a familiar building, then strolled through the building in the mind whenever they needed to retrieve the contents. Both techniques exploit the same modern neurological fact: a memory is not a fixed recording but a structure the brain rebuilds every time it is summoned, and the more often the structure is rebuilt the firmer its foundations become.
+
+**Group A:** psychologist, memorise, meaningless, record, plot, retention, initial, drop, considerable, counter-intuitive, technique, rehearse, succession, review, precise, claim, retrieval, reinforce, trace, durable, devise, distribute, familiar, retrieve, stroll, neurological, fixed, recall, foundation
+
+**Group B:** syllable, forgetting curve, spaced repetition, orator, memory palace
+
+**Q1:** Hermann Ebbinghaus plotted the first forgetting curve by
+A monitoring his students over a semester.
+B memorising meaningless syllables and recording how rapidly he forgot them.
+C measuring brain activity with early electrical instruments.
+D comparing the test scores of identical twins.
+**A1:** B
+
+**Q2:** Spaced repetition works on the principle that the learner should
+A rehearse all material many times in immediate succession.
+B review material at the precise moments when forgetting is about to claim it.
+C postpone every review until the material has been entirely forgotten.
+D review only the most difficult material and skip the easier items.
+**A2:** B
+
+**Q3:** Both spaced repetition and the memory palace rest on the same fact that a memory
+A is permanently fixed once stored, like a photograph.
+B is rebuilt by the brain every time it is recalled, growing firmer with each rebuild.
+C can only be reliable if it is written down on the day it is formed.
+D fades evenly across time regardless of how often it is recalled.
+**A3:** B
+
+---
+
+## 11.7  The Hidden Life of Plants
+
+For most of human history we assumed the trees of a forest stood as solitary individuals, each competing in silent isolation for its share of sunlight and water. Then biologists who dared to dig beneath the canopy uncovered an enormous hidden network. The roots of the trees, they discovered, intertwine intimately with a particular kind of fungus whose threadlike filaments weave through the soil and stitch the trees of an entire forest into a single continuous web, popularly nicknamed the wood wide web. Through this underground network a mature tree can quietly divert surplus sugars to a sick or shaded neighbour, and a mother tree can pick out her own seedlings from those of rivals and nourish them preferentially. When an insect begins gnawing at a tree's leaves, the tree releases chemical alarms through the network and prompts its neighbours to secrete defensive compounds before the insects ever reach them. The plant possesses no brain at all, yet it senses the direction of light, registers exactly where on a stem it has been touched, and calculates whether its stored starch will suffice to last the night. It simply lives, in other words, by a logic profoundly different from any animal's.
+
+**Group A:** assume, independent, individual, compete, isolation, examine, beneath, intertwine, weave, link, continuous, divert, surplus, recognise, nourish, preferentially, release, alarm, secrete, defensive, compound, possess, sense, register, calculate, store, suffice, profoundly, differ
+
+**Group B:** canopy, root, fungus, filament, soil, wood wide web, seedling, insect, compound, brain, starch
+
+**Q1:** Biologists discovered that the roots of forest trees are linked into a continuous underground network by
+A fine plastic fibres deposited by industrial pollution.
+B threadlike filaments of fungus weaving through the soil.
+C dense bacterial colonies clinging to the bark.
+D static electricity generated by the canopy.
+**A1:** B
+
+**Q2:** Through the wood wide web a mother tree can
+A absorb sunlight from her seedlings during the dry season.
+B divert surplus sugars to her own seedlings and nourish them preferentially.
+C steal starch from rival trees and store it inside her own roots.
+D communicate her age to passing animals.
+**A2:** B
+
+**Q3:** A plant that has been touched on its stem
+A immediately wilts at the touched point and dies within days.
+B registers the location of the touch and adjusts subsequent growth accordingly.
+C forgets the touch within seconds, since it possesses no neural memory.
+D becomes vulnerable to insect attack at every other point on the stem.
+**A3:** B
+
+---
+
+## 11.8  Animal Navigation
+
+Each autumn an enormous orange tide of monarch butterflies pours southward from Canada toward a particular small grove of fir trees in central Mexico, a destination none of them has ever seen. Pigeons released far from their lofts find their way back without hesitation. Sea turtles haul themselves out of the surf onto the very stretch of beach on which they once hatched in order to deposit their own eggs, having paddled across an entire ocean in between. None of these creatures carries a map or a compass. After patient experiment, biologists have at last established that many of them harbour specialised cells exquisitely sensitive to the Earth's magnetic field, which orient them as reliably as a built-in compass. Inside the eyes of certain birds a peculiar protein actually allows the magnetic field to be perceived directly, almost as a colour superimposed on the visible scene. Other species memorise the configuration of stars, the angle of the sun, the smell of distant coastlines, or the long wave patterns rolling across the open ocean. The strangest case of all is the monarch, whose annual migration takes several successive generations to complete a single round trip. No individual butterfly has ever survived the entire route, and yet the route itself is written precisely into the species' genes.
+
+**Group A:** release, hesitation, hatch, traverse, decade, patient, establish, contain, specialised, sensitive, orient, reliable, permit, perceive, directly, superimpose, memorise, configuration, distant, pattern, complete, route, individual, survive, entirely
+
+**Group B:** grove, fir tree, pigeon, sea turtle, compass, magnetic field, protein, coastline, gene, migration
+
+**Q1:** Many migratory animals navigate without a map because their bodies contain
+A specialised cells sensitive to the Earth's magnetic field.
+B miniature internal models of the global coastline.
+C synchronised internal clocks calibrated against the stars only.
+D inherited memories of every journey their ancestors made.
+**A1:** A
+
+**Q2:** Certain birds appear to perceive the magnetic field directly because their eyes contain a specialised
+A muscle that points the eye toward magnetic north.
+B protein that translates the field into something almost like a colour.
+C lens that refracts ultraviolet light.
+D mirror that reflects the polarised light of the sky.
+**A2:** B
+
+**Q3:** The monarch butterfly's round-trip migration is biologically remarkable because
+A every individual butterfly completes the route multiple times in a lifetime.
+B no individual butterfly has ever survived the full route, yet the route is encoded in the species' genes.
+C the butterflies follow the visible trail of older butterflies as a guide.
+D the route shifts dramatically from one year to the next.
+**A3:** B
+
+---
+
+## 11.9  Neuroscience
+
+Tucked inside the skull, the brain stitches together vast numbers of neurons through tiny chemical gaps called synapses, the simultaneous connections inside it outnumbering the stars of the entire Milky Way. A famous railway worker was tamping powder one afternoon when an iron rod fired upward through his frontal lobe and exited out the top of his head. Astonishingly, he survived. But the mild, reliable young man his colleagues had known swung overnight into someone impulsive, profane, and uncontrollable, and his transformation handed neuroscience its first hard evidence that character and moral judgement reside in specific regions of the brain rather than hovering immaterially somewhere above the body. Subsequent research has traced the circuitry. Fear is triggered by a small structure called the amygdala. Memories are consolidated by the hippocampus. Rational decision-making is supervised by the prefrontal cortex. The most counter-intuitive discovery, however, is that the brain rebuilds itself throughout life, a property called neuroplasticity. The visual cortex of a blind person is gradually rewired to process touch and sound, and the motor regions of a stroke patient can be coaxed into taking over the functions of damaged tissue. Learning any new skill, in this sense, is the physical rewiring of one's own brain at the cellular level.
+
+**Group A:** consist, vast, connect, simultaneous, exceed, drive, survive, switch, abrupt, mild, reliable, impulsive, uncontrolled, evidence, character, moral, judgement, reside, region, subsequent, trigger, consolidate, supervise, counter-intuitive, remodel, property, gradually, rewire, process, coax, take over, cellular
+
+**Group B:** neuron, synapse, Milky Way, railway worker, frontal lobe, amygdala, hippocampus, prefrontal cortex, neuroplasticity, visual cortex, stroke
+
+**Q1:** The railway worker who survived an iron rod through his frontal lobe was significant to neuroscience because
+A the wound healed so cleanly that surgeons learned a new technique from it.
+B his personality switched abruptly afterward, providing evidence that character resides in specific brain regions.
+C he was the first patient to lose all memory and become a blank slate.
+D he had no measurable change in behaviour, disproving early brain localisation.
+**A1:** B
+
+**Q2:** Fear, memory consolidation, and rational decision-making are respectively associated with the
+A amygdala, hippocampus, and prefrontal cortex.
+B hippocampus, prefrontal cortex, and amygdala.
+C cerebellum, frontal lobe, and brainstem.
+D pineal gland, hippocampus, and amygdala.
+**A2:** A
+
+**Q3:** Neuroplasticity is the property by which
+A neurons reproduce indefinitely from infancy through old age.
+B the brain remodels itself throughout life, including rewiring damaged regions.
+C the brain shrinks measurably with every new memory stored.
+D synapses harden into a fixed configuration soon after adolescence.
+**A3:** B
+
+---
+
+## 11.10  The Microbiome and the Gut
+
+The human intestine quietly accommodates trillions of bacteria whose combined cell count rivals that of the human cells in the entire body and whose combined mass piles up to roughly a kilogram. For most of medical history the bacteria were dismissed as adversaries to be eradicated on sight. Only recently have researchers established that this enormous resident community, the gut microbiome, behaves as an indispensable organ in its own right. It digests dietary fibres that human enzymes cannot break apart, synthesises essential vitamins, and patiently trains the immune system to distinguish friend from foe. More disorienting still, the gut and the brain converse directly along a dedicated nerve highway, and the microbes themselves manufacture chemical messengers that influence mood and appetite, so the colloquial reference to a gut feeling may quietly carry literal biological weight. When the gut bacteria of a slim mouse are transplanted into an obese mouse, the obese mouse begins to lose weight. Within a few days of a dietary shift the entire community reshuffles itself. Every meal you eat, in effect, reshapes an invisible ecosystem residing inside you.
+
+**Group A:** house, combined, rival, amount, roughly, treat, adversary, eradicate, recently, establish, resident, indispensable, function, digest, dietary, synthesise, essential, distinguish, foe, striking, dedicated, manufacture, messenger, influence, mood, appetite, colloquial, literal, transplant, obese, reshuffle, reshape, invisible
+
+**Group B:** intestine, bacteria, microbiome, organ, fibre, enzyme, immune system, nerve, microbe, gut feeling, ecosystem
+
+**Q1:** The gut microbiome was for most of medical history
+A treated as adversaries to be eradicated rather than understood.
+B accurately understood as an indispensable organ.
+C considered the source of all human emotions.
+D believed to disappear during fasting.
+**A1:** A
+
+**Q2:** Among the indispensable functions of the gut microbiome is
+A storing sugar in reserve for the brain to draw on.
+B digesting dietary fibres that human enzymes cannot break down.
+C generating the electrical signals that drive the heartbeat.
+D transmitting visual information to the optic nerve.
+**A2:** B
+
+**Q3:** Transplanting the gut bacteria of a slim mouse into an obese mouse causes the obese mouse to
+A become aggressive and refuse to eat.
+B lose weight, demonstrating the microbiome's influence on metabolism.
+C develop a fever and die within days.
+D grow noticeably larger than before.
+**A3:** B
+
+---
+
+## 11.11  Smell and Memory
+
+The human nose discriminates among an enormous range of separate scents, vastly more than the colours the eye can resolve. A familiar smell will jolt a powerful and uncannily specific memory into consciousness because olfactory information takes a private shortcut through the brain. Instead of routing through the thalamus like every other sense, the smell signal projects directly into the amygdala and the hippocampus, the very regions that store emotion and long-term memory, so the recovered memory arrives with its original feeling already attached. The French novelist Marcel Proust wrote a celebrated passage in which the scent of a small cake dipped in tea returns the whole of his childhood in a single overwhelming instant, and the phenomenon has been christened the Proust effect in his honour. Every individual's catalogue of olfactory memory is intensely private, because each scent fuses indelibly to the situation and the emotional state in which it was first encountered, and the association is essentially unbreakable for the rest of a lifetime. A perfume, an old book, the wet pavement after summer rain, each opens a corridor in the brain that no deliberate effort of recall ever quite enters on its own.
+
+**Group A:** distinguish, vastly, resolve, trigger, uncanny, specific, route, project, store, celebrated, passage, instantly, phenomenon, individual, catalogue, intensely, link, indelible, encounter, association, unbreakable, corridor, deliberate, effort, recall
+
+**Group B:** scent, olfactory, thalamus, sense, amygdala, hippocampus, emotion, memory, perfume, pavement
+
+**Q1:** Smell triggers uncannily specific memories because olfactory information
+A is processed slowly enough to allow conscious filtering.
+B bypasses the thalamus and projects directly into the amygdala and hippocampus.
+C arrives in the brain only after sleep has consolidated the day.
+D is amplified by the visual cortex before being recalled.
+**A1:** B
+
+**Q2:** The Proust effect is named after the French novelist who described
+A a vivid dream of his lost childhood home.
+B the taste of a small cake dipped in tea instantly returning his whole childhood.
+C a perfume worn by his mother on a particular evening.
+D the smell of the sea on a summer afternoon.
+**A2:** B
+
+**Q3:** Every individual's catalogue of olfactory memory is intensely private because
+A nobody else can ever smell the same molecule twice.
+B each scent is linked indelibly to the specific situation and emotional state in which it was first encountered.
+C scents fade unevenly across the population.
+D the nose stores the memories independently of the brain.
+**A3:** B
+
+---
+
+## 11.12  Sound and Hearing
+
+Sound is nothing more than the vibration of air, and deep within the ear a spiral organ shaped like the shell of a snail houses thousands of microscopic hair cells, each tuned to a different frequency. Incoming vibrations agitate different hairs along the spiral, and the brain receives a coded electrical signal that has quietly translated atmospheric motion into perceived pitch. The same brain possesses the remarkable knack of locking onto a single voice in a crowded noisy room and filtering out everything else, a faculty known as the cocktail party effect that engineers required generations of patient computation to begin to imitate. Whales have pushed the use of sound to its outer limits. Their low-frequency songs propagate across vast stretches of ocean, every member of a population sings the same song, and the population collaboratively revises the melody from one year to the next. The noise of the modern city, by contrast, persecutes its inhabitants. Prolonged exposure to traffic noise measurably raises blood pressure, disrupts sleep, and degrades hearing itself. Silence has accordingly mutated into an increasingly luxurious resource.
+
+**Group A:** vibration, contain, microscopic, tune, frequency, incoming, agitate, code, translate, atmospheric, perceive, possess, remarkable, lock onto, filter, faculty, computation, imitate, extreme, propagate, vast, stretch, collaborative, revise, persecute, prolonged, exposure, measurable, raise, disrupt, degrade, luxurious, resource
+
+**Group B:** spiral organ, snail, hair cell, pitch, cocktail party effect, whale, low frequency, melody, traffic noise, blood pressure
+
+**Q1:** Deep in the ear, different frequencies are translated into perceived pitch by
+A a vibrating membrane that converts air directly into thought.
+B microscopic hair cells along a spiral organ shaped like a snail shell.
+C a fluid-filled balloon that expands and contracts with sound.
+D a small bone that taps against the brain's auditory cortex.
+**A1:** B
+
+**Q2:** The cocktail party effect refers to the brain's ability to
+A predict what a stranger will say next at a party.
+B lock onto a single voice in a crowded room and filter out everything else.
+C reproduce a piece of music after hearing it just once.
+D distinguish musical notes more precisely after drinking alcohol.
+**A2:** B
+
+**Q3:** Prolonged exposure to traffic noise has been measured to
+A improve the hearing of city dwellers through constant training.
+B raise blood pressure, disrupt sleep, and degrade hearing.
+C lower the rate of insomnia in dense neighbourhoods.
+D have no measurable effect on physical health.
+**A3:** B
+
+---
+
+## 11.13  DNA and Genes
+
+Inside the nucleus of every cell coils a long chain called DNA, whose four chemical letters spell out, in arrangements of breathtaking compactness, the complete instructions for assembling an entire human being. A single cell holds a chain longer than a small child, folded tightly into a region too small to see. Two young researchers at Cambridge, James Watson and Francis Crick, leaning heavily on the X-ray crystallography of a female colleague named Rosalind Franklin whose name went unrecorded for decades, deduced that DNA takes the form of a double helix: two intertwined strands of complementary bases that, when separated, each serve as a template for the synthesis of a fresh partner, so that one cell becomes two with the inherited code preserved intact. A long patient international effort subsequently sequenced the entire human genome, the biological equivalent of a lunar landing. The biochemist Jennifer Doudna later refined the CRISPR system, originally a bacterial defence against invading viruses, into a precise pair of molecular scissors capable of editing any gene at any location, conferring on our species the power to rewrite its own inheritance and dropping it, for the first time, onto the moral question of whether it should.
+
+**Group A:** nucleus, coil, chain, arrangement, breathtaking, compactness, assemble, hold, fold, region, deduce, intertwine, complementary, separate, template, synthesis, partner, inherit, preserve, intact, subsequent, sequence, equivalent, biochemist, refine, originally, precise, capable, location, confer, inheritance, expose, moral
+
+**Group B:** DNA, X-ray crystallography, double helix, base, genome, biochemist, CRISPR, bacterial defence, scissors, gene
+
+**Q1:** DNA was deduced to take the form of
+A a single linear ribbon.
+B a double helix of two intertwined complementary strands.
+C a triple-stranded ring.
+D a sphere of folded protein.
+**A1:** B
+
+**Q2:** The X-ray crystallography that allowed Watson and Crick to deduce the structure of DNA was produced by
+A Jennifer Doudna.
+B Rosalind Franklin.
+C Marie Curie.
+D Mary Anning.
+**A2:** B
+
+**Q3:** Originally a bacterial defence against viruses, CRISPR has been refined into
+A a vaccine for the common cold.
+B a precise pair of molecular scissors capable of editing any gene at any location.
+C a microscope that can see individual atoms.
+D a tool for measuring the age of fossils.
+**A3:** B
+
+---
+
+## 11.14  Vaccines and Modern Medicine
+
+An observant English country doctor named Edward Jenner noticed that the milkmaids who handled cattle every day almost never contracted the lethal disease smallpox, having previously caught a much milder bovine disease called cowpox. He boldly inoculated a small boy with cowpox lymph, then exposed the same boy to the genuine smallpox virus, and watched the boy emerge entirely immune. The technique he had invented is called vaccination, the English word descending from the Latin vacca for cow. The underlying principle is to display to the immune system a preview of a dangerous pathogen so that the body manufactures matching antibodies in advance, so when the real pathogen at last arrives the defending army already recognises it on sight. A coordinated global vaccination campaign has driven smallpox into complete extinction, the only human infectious disease ever eradicated from the planet. Generations after Jenner, a radical new technology called messenger RNA was deployed against the recent coronavirus pandemic. Instead of injecting the virus itself, scientists encoded the genetic instructions for one viral protein and let each patient's own cells manufacture the preview, compressing into months a development cycle that traditionally demanded a decade.
+
+**Group A:** observant, notice, contract, lethal, previously, mild, boldly, inoculate, subsequently, immune, technique, invent, underlying, principle, preview, manufacture, advance, recognise, eradicate, completely, eliminate, radical, deploy, respond, inject, encode, instruction, compress, cycle, traditionally
+
+**Group B:** doctor, milkmaid, smallpox, cowpox, lymph, vaccination, antibody, pathogen, infectious disease, messenger RNA, coronavirus, pandemic, virus, protein
+
+**Q1:** Edward Jenner suspected that milkmaids were protected from smallpox because
+A their farm diet boosted their natural immunity.
+B they had previously caught a milder bovine disease called cowpox.
+C they routinely washed their hands in alcohol.
+D they avoided contact with infected city dwellers.
+**A1:** B
+
+**Q2:** The underlying principle of a vaccine is to
+A kill the pathogen directly with a chemical agent.
+B show the immune system a preview of a pathogen so that the body prepares antibodies in advance.
+C suppress the immune system temporarily so it cannot overreact.
+D replace the patient's blood with a sterile substitute.
+**A2:** B
+
+**Q3:** Messenger RNA vaccines differ from traditional vaccines in that they
+A inject a live virus directly into the patient.
+B encode the genetic instructions for a viral protein and let the patient's own cells manufacture the preview.
+C rely on antibodies harvested from previously infected donors.
+D require the patient to swallow the dose rather than receive an injection.
+**A3:** B
+
+---
+
+## 11.15  Modern Linguistics
+
+The Swiss scholar Ferdinand de Saussure threw down a disorienting principle. The syllable cat, he insisted, bears no necessary relation whatever to the actual animal it names. The connection between the two is purely a social convention, and the meaning of any word arises not from the thing it points at but from its difference from the other words around it. Language thereby ceased to be a transparent window onto reality and became a system of signs to be analysed in its own right, and the entire discipline of modern linguistics opened up around the proposal. The American Noam Chomsky later pressed the argument even further, contending that every human infant arrives equipped with an inherited universal grammar, a deep template common to all human languages that any specific tongue merely fills in with local vocabulary. That is why a small child can absorb fluent grammar that no adult could ever explicitly articulate. Linguists have also documented a more sombre statistic. Every so often an indigenous language slips out of the world as its last living speaker dies, and each loss extinguishes an entire distinct way of perceiving reality itself.
+
+**Group A:** propose, disorienting, principle, bear, necessary, relation, purely, convention, arise, point at, sign, analyse, discipline, push, argue, equip, inherit, universal, deep, template, common, specific, vocabulary, acquire, fluent, explicitly, articulate, document, sombre, statistic, indigenous, distinct, perceive
+
+**Group B:** scholar, syllable, linguistics, infant, universal grammar, grammar, language, speaker
+
+**Q1:** Saussure's disorienting principle was that the meaning of any word
+A is fixed by the natural sound of the thing it refers to.
+B arises not from the thing it points at but from its difference from other words around it.
+C is identical across every human language at the deepest level.
+D depends entirely on the speaker's emotional state.
+**A1:** B
+
+**Q2:** Chomsky proposed that every human infant arrives equipped with an inherited
+A vocabulary of basic survival words.
+B universal grammar, a deep template common to all languages.
+C accent that determines lifelong pronunciation.
+D preference for the language spoken by the mother.
+**A2:** B
+
+**Q3:** When an indigenous language disappears from the planet, what is lost is
+A only the local words for plants and animals.
+B an entire distinct way of perceiving the world.
+C the literature of the speakers but not the grammar.
+D nothing of consequence beyond the speakers themselves.
+**A3:** B
+
+---
+
+## 11.16  Child Cognitive Development
+
+The Swiss psychologist Jean Piaget patiently devoted decades to observing children, including his own, and demonstrated that small children are not simply little adults who have not yet been told everything, but instead reason according to a logic profoundly different from the adult one, climbing through fixed developmental stages on their way upward. A young infant has not yet acquired the concept of object permanence: a thing that disappears from sight has, for the infant, ceased to exist altogether, which is precisely why the game of peekaboo strikes the infant as so dramatic. A slightly older child sincerely believes that the same volume of water poured into a tall narrow glass has somehow increased on the way over, because the child has not yet grasped the abstract notion that quantity is conserved across changes of shape. Linguists have also identified a critical window for language acquisition. Children deprived of normal linguistic input during this window, in the rare and harrowing documented cases of extreme childhood isolation, never quite master the grammar of any subsequent language, and once the window has slammed shut it cannot be coaxed open again.
+
+**Group A:** devote, observe, including, demonstrate, simply, reason, profoundly, advance, fixed, acquire, concept, cease, dramatic, slightly, grasp, abstract, notion, quantity, conserve, identify, critical, window, deprive, input, rare, document, extreme, isolation, master, subsequent
+
+**Group B:** psychologist, infant, object permanence, peekaboo, volume, glass, linguist, language acquisition, grammar
+
+**Q1:** Piaget demonstrated that small children
+A are essentially little adults who simply have not yet been told everything.
+B reason according to a logic profoundly different from the adult one, advancing through fixed stages.
+C reach full adult cognition by the age of three.
+D possess no logic at all until they begin formal schooling.
+**A1:** B
+
+**Q2:** A young infant who finds peekaboo so dramatic has not yet acquired the concept of
+A facial recognition.
+B object permanence.
+C symbolic language.
+D conserved quantity.
+**A2:** B
+
+**Q3:** Children deprived of normal linguistic input during the critical window for language acquisition
+A acquire grammar more rapidly once the window closes.
+B never master the grammar of any subsequent language.
+C develop a secret private language of their own.
+D recover full linguistic ability through intensive adult instruction.
+**A3:** B
+
+---
+
+## 11.17  Archaeological Dating
+
+Every living organism continuously absorbs a slowly decaying form of carbon, and the moment the organism dies the absorption stops dead and the existing supply quietly diminishes at a steady, predictable rate, like an unalterable hourglass embedded in the bones. By measuring how much of that isotope remains in a fragment of bone or a piece of wood, an archaeologist can infer how long ago its owner died, a method called radiocarbon dating, accurate well back into prehistory. A more delicate technique relies on tree rings. Each year a tree adds one ring, and rings from wet years are noticeably wider than those from droughts, so by matching the pattern of an ancient timber against the long catalogue established from living trees the date of the timber can be fixed to a precise year. The most recent and most extraordinary technique extracts ancient DNA directly from bones of immense antiquity. Through this method scientists have established that every modern European still carries a small percentage of Neanderthal DNA, traces of an interbreeding event that the bones themselves had silently preserved across the millennia.
+
+**Group A:** continuously, absorb, decay, supply, diminish, steady, predictable, unalterable, measure, remain, infer, accurate, prehistory, delicate, technique, rely, match, pattern, ancient, catalogue, establish, fix, precise, extraordinary, extract, percentage, trace, interbreed, silently, preserve
+
+**Group B:** organism, carbon, isotope, hourglass, bone, archaeologist, radiocarbon dating, tree ring, drought, timber, DNA, Neanderthal
+
+**Q1:** Radiocarbon dating works because once an organism dies
+A its bones turn slowly into stone at a steady rate.
+B its supply of a decaying carbon isotope diminishes at a predictable rate.
+C its DNA reorganises itself into a new form.
+D it absorbs minerals from the soil at a constant rate.
+**A1:** B
+
+**Q2:** Tree-ring dating fixes the year of an ancient timber by
+A counting the rings forward from the centre.
+B matching the timber's ring pattern against the long catalogue established from living trees.
+C measuring the radioactive decay of the rings.
+D comparing the timber's colour with a reference chart.
+**A2:** B
+
+**Q3:** Extraction of ancient DNA from very old bones has established that
+A every modern European carries a small percentage of Neanderthal DNA.
+B Neanderthals and modern humans never interbred.
+C all human ancestry can be traced to a single African woman.
+D Neanderthals were genetically identical to modern Europeans.
+**A3:** A
+
+---
+
+## 11.18  Epidemiology and Plague
+
+When cholera tore through industrialising London, the prevailing theory blamed foul air, the so-called miasma, exhaled by rotting matter. A physician named John Snow flatly refused to accept it. He mapped every recorded death on a chart of the surrounding streets and watched, line by line, a tight cluster emerge around a single neighbourhood water pump. He persuaded the authorities to remove the handle of the pump, the epidemic subsided within days, and the discipline of epidemiology was born along with it. Looking backward across history, the bubonic plague killed roughly a third of medieval Europe and so thoroughly undermined the moral authority of the church that the entire medieval order began to collapse upon itself. Smallpox accompanying the Spanish into the Americas exterminated indigenous populations on a scale large enough to deliver an entire empire into the hands of a small ragged expedition. The great influenza outbreak after the First World War killed more people than the war itself. Each great epidemic, far from being merely a tragedy of mortality, quietly reshapes wage rates, religious authority, town planning, and even habits as small as washing one's hands.
+
+**Group A:** prevail, blame, foul, exhale, refuse, accept, record, cluster, neighbourhood, persuade, authority, remove, subside, discipline, undermine, moral, collapse, exterminate, deliver, expedition, outbreak, merely, tragedy, mortality, reshape, habit
+
+**Group B:** cholera, miasma, physician, water pump, epidemic, epidemiology, bubonic plague, medieval, smallpox, indigenous, empire, influenza
+
+**Q1:** John Snow disproved the miasma theory by
+A inoculating volunteers with foul air and observing their health.
+B mapping every recorded cholera death and showing the cases clustered around a single water pump.
+C isolating the bacterium responsible for cholera in a laboratory.
+D persuading the authorities to ventilate the city's sewers.
+**A1:** B
+
+**Q2:** The bubonic plague is said to have undermined the moral authority of the medieval church because
+A church officials profited visibly from the deaths of their parishioners.
+B the church had been unable to prevent the catastrophe despite its claimed access to divine power.
+C the plague was traced to relics held in cathedral treasuries.
+D the surviving priests refused to bury the dead.
+**A2:** B
+
+**Q3:** Each great epidemic reshapes society far beyond mere mortality, affecting
+A only the wage rates of agricultural labourers.
+B wage rates, religious authority, town planning, and even hand-washing habits.
+C the genetic composition of survivors but nothing about institutions.
+D the climate of the affected region for generations afterward.
+**A3:** B
+
+---
+
+## 11.19  The Modern Legal System
+
+A founding maxim of Anglo-American justice declared, from the outset, that it would sooner acquit a thousand of the guilty than condemn a single innocent, and from that uneasy commitment the entire architecture of the modern trial was patiently assembled around the rights of the accused. The whole weight of proof was thereby loaded onto the prosecution, the defendant absolved of any obligation to demonstrate his innocence, and a jury of ordinary citizens, summoned at random from the surrounding population, installed as the final barrier between the state and the individual. When provincial police neglected to inform a suspect of his right to remain silent, the Supreme Court annulled the resulting confession, and every American officer ever since has been compelled to recite, at the moment of arrest, the four short sentences known as the Miranda warning. The football celebrity tried for the murder of his former wife illustrated the same architecture in reverse: although the prosecution's case appeared overwhelming, the defence painstakingly dismantled the procedural integrity of the police investigation along racial fault lines that no courtroom could reconcile, and the jury acquitted him in defiance of the apparent evidence. The law, in the end, defends not the truth itself but the citizen against the careless or vindictive exercise of authority.
+
+**Group A:** maxim, outset, sooner, acquit, condemn, uneasy, commitment, architecture, assemble, accused, weight, load, prosecution, absolve, obligation, demonstrate, summon, install, barrier, neglect, suspect, annul, confession, recite, illustrate, reverse, overwhelming, painstaking, dismantle, procedural, integrity, fault line, reconcile, defy, vindictive, exercise
+
+**Group B:** maxim, trial, accused, prosecution, defendant, jury, suspect, Miranda warning, courtroom, evidence
+
+**Q1:** The founding maxim of Anglo-American justice insists that the system should sooner
+A condemn a thousand innocent to spare a single guilty.
+B acquit a thousand of the guilty than condemn a single innocent.
+C convict on circumstantial evidence than acquit on technicality.
+D admit confession obtained under duress than release an obvious culprit.
+**A1:** B
+
+**Q2:** The Miranda warning was instituted after the Supreme Court annulled a confession because
+A the suspect had been beaten by the arresting officers.
+B the police had neglected to inform the suspect of his right to remain silent.
+C the confession had been translated into the wrong language.
+D the arresting officers had no warrant for the arrest.
+**A2:** B
+
+**Q3:** In the football celebrity's murder trial, the defence overturned an apparently overwhelming case by
+A producing a previously unknown witness at the last moment.
+B dismantling the procedural integrity of the police investigation along racial fault lines.
+C confessing on behalf of the defendant in exchange for a reduced sentence.
+D challenging the constitutional validity of the murder statute itself.
+**A3:** B
+
+---
+
+## 11.20  The MBA and Wall Street
+
+Twentieth-century American business schools recast commerce as a teachable discipline, and the Master of Business Administration emerged as the indispensable ticket into the upper offices of Wall Street and the major corporations. Beneath the polished curriculum runs a single audacious logic: capital today purchases the right to anticipated future earnings, so that an unprofitable company can nonetheless command a soaring share price simply by persuading investors that immense profits lie ahead. The same logic has manufactured colossal fortunes and engineered equally spectacular collapses. The energy conglomerate Enron quietly buried its crippling debts inside an opaque thicket of shell subsidiaries, repackaged them as profits, and unravelled in a single weekend when the deception was at last exposed, prompting federal auditors to redraw the rules of corporate disclosure. Two decades later Wall Street bundled the mortgages of borrowers manifestly unable to repay them into elegantly named financial products, distributed them across the global banking system, and detonated a worldwide recession the instant the underlying borrowers defaulted. When Tim Cook inherited Apple he invented nothing dramatic, but optimised the company's supply chain into a precision instrument so unforgiving that Apple became the most profitable corporation ever assembled.
+
+**Group A:** recast, teachable, discipline, indispensable, ticket, upper, polished, curriculum, audacious, logic, anticipated, earnings, nonetheless, command, soaring, persuade, immense, manufacture, colossal, engineer, conglomerate, quietly, bury, crippling, opaque, thicket, repackage, unravel, deception, expose, prompt, auditor, redraw, disclosure, bundle, manifestly, unable, repay, distribute, detonate, recession, underlying, default, inherit, dramatic, optimise, precision, unforgiving, assemble
+
+**Group B:** business school, MBA, Wall Street, corporation, capital, share price, investor, debt, subsidiary, auditor, mortgage, borrower, recession, supply chain
+
+**Q1:** The audacious logic at the heart of Wall Street is that capital today purchases
+A the right to anticipated future earnings, no matter the current state of the company.
+B the physical assets visible on a company's premises today.
+C a guaranteed dividend mandated by federal law.
+D the labour of every employee until retirement.
+**A1:** A
+
+**Q2:** Enron concealed its crippling debts by
+A burying them inside an opaque thicket of shell subsidiaries repackaged as profits.
+B physically destroying the paper records in a single weekend.
+C bribing federal auditors to overlook them.
+D issuing new shares at a temporarily inflated price.
+**A2:** A
+
+**Q3:** Tim Cook made Apple the most profitable corporation ever assembled by
+A inventing a series of dramatic new products in rapid succession.
+B optimising the company's supply chain into a precision instrument so unforgiving that nothing was wasted.
+C acquiring every promising competitor before it could grow large enough to threaten Apple.
+D persuading governments to tax rival manufacturers more heavily.
+**A3:** B
+
+---
+
+## 11.21  Data and Statistics
+
+The most disorienting lesson of statistics is that the entire opinion of a populous nation can be inferred, with startling accuracy, from a few thousand citizens drawn at random, provided only that the draw is genuinely impartial. The pollster George Gallup proved the point by predicting an American presidential election from a sample so small that his lavishly funded rivals, who had canvassed millions, were left publicly humiliated. Statisticians now wield regression analysis to extract hidden ligatures from the chaos of raw data, exposing the link between smoking and lung cancer, between advertising and consumer behaviour, between schooling and lifetime earnings, with a confidence no anecdote could ever furnish. The same instruments, however, mislead anyone who confuses correlation with causation. Ice-cream sales and drowning deaths surge together every summer, not because ice cream drowns its consumers but because the heat of summer drives both. Today an algorithmic engine ingests the viewing history of hundreds of millions of subscribers and predicts, through matrix arithmetic, which programme will hold the viewer for one more episode. We inhabit, increasingly, an existence in which everything is quantified, anticipated, and recommended for us before we have noticed wanting it.
+
+**Group A:** disorienting, lesson, infer, startling, accuracy, populous, draw, impartial, predict, sample, lavishly, fund, rival, canvass, publicly, humiliate, statistician, wield, extract, hidden, ligature, chaos, expose, confidence, anecdote, furnish, mislead, confuse, correlation, causation, surge, drive, ingest, anticipate, matrix, arithmetic, inhabit, increasingly, existence, quantify, notice
+
+**Group B:** statistics, pollster, presidential election, sample, regression analysis, smoking, lung cancer, advertising, ice cream, drowning, subscriber, matrix, algorithm
+
+**Q1:** George Gallup's startling result was that the opinion of an entire nation could be predicted from
+A a few thousand citizens drawn at random.
+B every single registered voter in the country.
+C the editorial pages of the largest newspapers.
+D the betting markets in the major cities.
+**A1:** A
+
+**Q2:** Statisticians use regression analysis to
+A invent new variables that no one has previously observed.
+B extract hidden ligatures from the chaos of raw data and expose links between phenomena.
+C replace experimental science with pure mathematical reasoning.
+D guarantee that any correlation discovered must also be a causation.
+**A2:** B
+
+**Q3:** Ice-cream sales and drowning deaths surge together every summer because
+A consumers grow careless after eating cold food and venture into the water.
+B the heat of summer drives both increases, illustrating the danger of confusing correlation with causation.
+C ice cream is sold at the beach where most drownings occur.
+D the public health authorities have never bothered to investigate the link.
+**A3:** B
+
+---
+
+## 11.22  Modern Urban Planning
+
+For most of the twentieth century the city was conceived as a machine for the automobile: arterial roads were carved through old neighbourhoods, pedestrians compressed onto narrow pavements, and the sidewalk café displaced by the traffic island. Late in the century, planners began to repent. In Manhattan an obsolete freight railway suspended above the West Side was patiently transfigured, segment by segment, into a linear park called the High Line, and the property values along the adjacent blocks vaulted upward almost overnight, furnishing a model of post-industrial revitalisation that has since been imitated from Seoul to São Paulo. Barcelona retorted with the superblock, sealing off interior streets from through traffic and restoring them to pedestrians, café tables, and children improvising games on the asphalt. Singapore meanwhile housed the overwhelming majority of its citizens in carefully designed public apartments while throttling private car ownership through punitive licensing. Beneath each of these distinct gambits runs a single reorientation: the city was reconceived as an instrument for the people who inhabit it rather than for the vehicles that traverse it.
+
+**Group A:** conceive, machine, arterial, carve, neighbourhood, compress, narrow, pavement, displace, late, repent, obsolete, freight, suspend, patiently, transfigure, segment, linear, property, adjacent, vault, overnight, furnish, revitalisation, imitate, retort, superblock, seal, interior, restore, improvise, asphalt, overwhelming, throttle, punitive, distinct, gambit, reorientation, reconceive, instrument, inhabit, traverse
+
+**Group B:** automobile, arterial road, pedestrian, pavement, freight railway, High Line, property value, superblock, public housing, apartment, licensing
+
+**Q1:** For most of the twentieth century the city was conceived as
+A a sanctuary for displaced rural populations.
+B a machine for the automobile, with arterial roads carved through old neighbourhoods.
+C an enlarged village governed by a single council.
+D an experimental laboratory for utopian architects.
+**A1:** B
+
+**Q2:** The High Line in Manhattan was transfigured into a linear park from
+A a decommissioned subway tunnel.
+B an obsolete elevated freight railway suspended above the West Side.
+C a derelict harbour pier.
+D a former cattle market.
+**A2:** B
+
+**Q3:** Beneath the High Line, the Barcelona superblock, and the Singapore housing programme runs a single reorientation, namely that
+A skyscrapers should replace every low-rise building.
+B the city is to be reconceived as an instrument for the people who inhabit it rather than for the vehicles that traverse it.
+C private property ought to be abolished in the city centre.
+D the automobile remains the indispensable measure of urban success.
+**A3:** B
+
+---
+
+## 11.23  Environmental Engineering and Water
+
+The most clandestine artery of the modern metropolis is its water supply. Early in the twentieth century Los Angeles, confronted with explosive growth, quietly bought up the water rights of valleys hundreds of kilometres to its north and constructed an enormous aqueduct that drained their rivers wholesale, converting fertile farmland into a glittering crust of salt and inaugurating one of the canonical case studies in municipal predation. The Netherlands, much of whose terrain lies below sea level, instinctively adopted the opposite philosophy. Dutch engineers championed the sponge city, refusing to seal every surface in concrete and instead restoring permeable ground, hollowing out subterranean reservoirs, and reconstructing artificial wetlands so that rainfall would be absorbed and released gradually back into the local water table. The same logic now propagates outward to every flood-prone city on the planet. At the agricultural frontier, vertical farms tucked inside urban high-rises cultivate leafy crops layer upon layer through a soil-free technique called hydroponics, consuming only a small fraction of the irrigation water demanded by an equivalent acreage of conventional field.
+
+**Group A:** clandestine, artery, metropolis, confront, explosive, quietly, construct, enormous, drain, wholesale, convert, fertile, glittering, crust, inaugurate, canonical, municipal, predation, terrain, instinctive, adopt, opposite, philosophy, champion, refuse, seal, restore, permeable, hollow, subterranean, reconstruct, absorb, release, gradually, water table, propagate, flood-prone, frontier, tuck, cultivate, layer, fraction, demand, equivalent, acreage, conventional
+
+**Group B:** water supply, aqueduct, salt flat, sponge city, stormwater, reservoir, wetland, water table, vertical farm, hydroponics, irrigation
+
+**Q1:** Early-twentieth-century Los Angeles secured its water by
+A desalinating water from the Pacific Ocean at industrial scale.
+B quietly buying the water rights of distant valleys and constructing an aqueduct that drained their rivers wholesale.
+C drilling deeper wells inside the city limits.
+D negotiating a federal treaty with the Mexican government.
+**A1:** B
+
+**Q2:** Dutch engineers championed the sponge city in order to
+A funnel every drop of rainfall into the sea as rapidly as possible.
+B absorb rainfall through permeable ground and release it gradually into the local water table.
+C drown enemy invasions through deliberate flooding.
+D conserve drinking water by rationing it across districts.
+**A2:** B
+
+**Q3:** Vertical farms differ from conventional agriculture in that they
+A grow crops outdoors but elevated on tall metal frames.
+B cultivate leafy crops layer upon layer through a soil-free technique called hydroponics, demanding only a fraction of the irrigation water.
+C depend entirely on rainfall and natural sunlight.
+D produce only ornamental flowers and never edible food.
+**A3:** B
+
+---
+
+## 11.24  Materials Science
+
+Each human epoch is conventionally christened for the dominant material of its tools, from stone to bronze to iron, and the twentieth century ought by the same convention to be christened the age of synthetic materials. The chemists at the DuPont laboratory patiently chained small organic molecules into long flexible polymers and conjured nylon, a fibre simultaneously lighter, stronger, and more elastic than silk. Women's stockings were liberated overnight from any dependence on the silkworm, and humanity had, for the first recorded time, deliberately manufactured a substance unknown to the natural world. Engineers at Bell Laboratories implanted minute impurities into a wafer of silicon to construct the transistor, a microscopic switch that herded electrical current on command, and every modern electronic device has since been erected on billions of them. The current frontier flirts with graphene, a sheet of pure carbon a single atom thick yet several hundred times stronger than steel, and conducting electricity more freely than any metal previously isolated. Every breakthrough in material redraws, almost silently, the boundary of what becomes physically possible for our species.
+
+**Group A:** epoch, conventionally, christen, dominant, ought, convention, synthetic, patiently, chain, organic, molecule, flexible, polymer, conjure, simultaneously, elastic, liberate, overnight, dependence, deliberately, manufacture, substance, recorded, implant, minute, impurity, wafer, construct, microscopic, switch, herd, command, erect, frontier, flirt, conduct, previously, isolate, breakthrough, redraw, silently, boundary
+
+**Group B:** bronze, iron, polymer, nylon, fibre, silk, silkworm, stocking, transistor, silicon, electronic device, graphene, carbon, atom, steel, metal
+
+**Q1:** The chemists at the DuPont laboratory chained small organic molecules into long flexible polymers and conjured
+A graphene.
+B nylon.
+C bronze.
+D crystal silicon.
+**A1:** B
+
+**Q2:** The transistor herds electrical current on command because Bell Laboratories engineers
+A spun copper wires into ever finer filaments.
+B implanted minute impurities into a wafer of silicon.
+C insulated each switch with several layers of polymer.
+D coated each switch with a thin film of graphene.
+**A2:** B
+
+**Q3:** Graphene differs from the metals previously isolated in that it is
+A a sheet of pure carbon a single atom thick yet several hundred times stronger than steel.
+B a chain of silicon atoms organised into a crystal lattice.
+C a translucent ceramic that hardens under heat.
+D a polymer fibre derived from petroleum.
+**A3:** A
+
+---
+
+## 11.25  Modern Space Exploration
+
+After the Apollo programme triumphantly deposited astronauts on the lunar surface the pace of human spaceflight slumped, because every launch consigned a multi-million-dollar rocket to the ocean floor. Elon Musk decided to make that disposable architecture his personal antagonist. After a procession of dramatic and visually spectacular detonations on the launch pad, his company at last coaxed a rocket into completing its mission, reversing direction, decelerating against the same gravity that had hurled it skyward, and landing back upright on the launch pad for reuse, slashing the cost of orbital access by an order of magnitude. In parallel a telescope was dispatched to a quiet point well beyond the Moon, where it now captures the faint light emitted by the earliest galaxies near the dawn of the universe. Robotic rovers crawl autonomously across the rust-coloured plains of Mars, drilling samples and sniffing for traces of vanished water. Serious people, for the first time in earnest, debate whether the species ought to convert itself into a multi-planet civilisation rather than concentrating its entire existence on a single fragile planet.
+
+**Group A:** triumphantly, deposit, lunar, pace, slump, consign, disposable, architecture, antagonist, procession, dramatic, spectacular, detonation, coax, complete, reverse, decelerate, hurl, skyward, upright, reuse, slash, orbital, magnitude, parallel, dispatch, quiet, capture, faint, emit, dawn, crawl, autonomous, plain, drill, sample, sniff, trace, vanish, earnest, convert, civilisation, concentrate, fragile
+
+**Group B:** astronaut, lunar surface, rocket, launch pad, orbit, telescope, galaxy, rover, Mars
+
+**Q1:** The pace of human spaceflight slumped after the Apollo programme because
+A astronauts refused to volunteer for further missions.
+B every launch consigned a multi-million-dollar rocket to the ocean floor, making spaceflight prohibitively expensive.
+C the Soviet Union withdrew from its cooperation agreements.
+D the public lost interest after the first lunar landing.
+**A1:** B
+
+**Q2:** Elon Musk's company eventually slashed the cost of orbital access by
+A coaxing a rocket into reversing direction after launch and landing upright on the launch pad for reuse.
+B persuading governments to subsidise every launch in advance.
+C miniaturising rockets to a fraction of their previous size.
+D extracting fuel from the upper atmosphere mid-flight.
+**A2:** A
+
+**Q3:** Robotic rovers on Mars drill samples and sniff for traces of
+A buried ancient settlements.
+B vanished water.
+C subsurface microorganisms still alive today.
+D extraterrestrial radio signals.
+**A3:** B
+
+---
+
+## 11.26  Sustainable Energy
+
+After two centuries of incinerating coal and oil humanity has at last recognised that the buried fuels are finite and that the act of combusting them is gradually scorching the planet they inhabit. Engineers have accordingly pivoted toward sources that are, for any human horizon, inexhaustible: enormous wind turbines pivot quietly above the open sea, photovoltaic panels convert sunlight directly into electricity, geothermal stations siphon heat from kilometres beneath the crust, and tidal generators harness the gravitational pull of the moon itself. The dominant difficulty has migrated from generation to storage, because the wind does not blow obediently and the sun refuses to shine at night. Vast batteries and pumped-hydro reservoirs, into which surplus electricity drives water uphill so that it can be released through turbines on demand, have therefore quietly become the central technologies of the transition. Several Scandinavian countries already run their grids almost entirely on hydroelectricity and wind, having converted energy from a substance to be excavated and combusted into a resource continuously borrowed from the natural world.
+
+**Group A:** incinerate, recognise, buried, finite, combust, gradually, scorch, inhabit, accordingly, pivot, source, horizon, inexhaustible, enormous, quietly, photovoltaic, convert, directly, geothermal, siphon, beneath, crust, tidal, harness, gravitational, dominant, migrate, generation, storage, obediently, refuse, vast, surplus, drive, release, demand, central, transition, grid, entirely, convert, excavate, continuously, borrow
+
+**Group B:** fossil fuel, coal, oil, wind turbine, photovoltaic, sunlight, electricity, geothermal, tidal, battery, pumped hydro, reservoir, grid, hydroelectricity
+
+**Q1:** Humanity has pivoted away from fossil fuels because
+A the supply of coal and oil has already run out everywhere on the planet.
+B the buried fuels are finite and the act of combusting them is gradually scorching the planet.
+C the price of fossil fuels has risen too quickly to be affordable.
+D international law now prohibits their extraction.
+**A1:** B
+
+**Q2:** The dominant difficulty of renewable energy has migrated from generation to storage because
+A wind turbines produce too little electricity to be useful.
+B the wind does not blow obediently and the sun refuses to shine at night.
+C solar panels rapidly lose efficiency in the cold.
+D consumers refuse to pay for stored electricity.
+**A2:** B
+
+**Q3:** Pumped-hydro reservoirs store renewable electricity by
+A freezing water into reservoirs of ice on cold nights.
+B driving surplus water uphill so that it can be released through turbines on demand.
+C pumping warm water into the ocean to power tidal generators.
+D compressing steam into underground caverns.
+**A3:** B
+
+---
+
+## 11.27  Benjamin Franklin
+
+Born into a poor Boston household, Benjamin Franklin was withdrawn from school as a small child to apprentice in his elder brother's print shop and proceeded, in defiance of his interrupted education, to instruct himself by devouring every borrowed book within reach. During a thunderstorm he famously flew a kite trailing a brass key, demonstrated that the lightning ripping across the sky and the electrical fluid he could conjure in his Philadelphia laboratory were one and the same phenomenon, and casually invented the lightning rod, which has since rescued countless church spires from incineration. He deliberately refused to patent any of his inventions, arguing that since he himself had benefited from the inventions of others his own ought likewise to be freely available to anyone who could use them: bifocal spectacles, an efficient stove, the swim fin, a glass musical instrument played with damp fingers. He proved equally formidable as a diplomat, crossing the Atlantic at an age when most men retire and negotiating the decisive French support that ultimately delivered the new United States from the British Empire.
+
+**Group A:** withdraw, apprentice, defiance, interrupt, instruct, devour, borrow, within reach, famously, trail, demonstrate, rip, conjure, phenomenon, casually, invent, rescue, countless, spire, incineration, deliberately, refuse, patent, argue, benefit, likewise, available, equally, formidable, diplomat, retire, negotiate, decisive, ultimately, deliver
+
+**Group B:** print shop, thunderstorm, kite, brass key, lightning, lightning rod, spire, patent, bifocal spectacles, stove, swim fin, diplomat, Atlantic, French support, British Empire
+
+**Q1:** Franklin demonstrated that lightning and the electrical fluid he conjured in his laboratory were the same phenomenon by
+A reproducing a thunderstorm inside a sealed glass jar.
+B flying a kite trailing a brass key during a thunderstorm.
+C measuring the electrical current of a lightning-struck tree.
+D capturing lightning directly with a copper rod planted in his garden.
+**A1:** B
+
+**Q2:** Franklin deliberately refused to patent his inventions because
+A he distrusted the legal procedure of patenting in his era.
+B since he himself had benefited from the inventions of others, his own ought likewise to be freely available.
+C he secretly believed his inventions to be of negligible value.
+D his employer claimed ownership of every invention produced in the print shop.
+**A2:** B
+
+**Q3:** Franklin's diplomatic triumph was
+A negotiating the decisive French support that ultimately delivered the new United States from the British Empire.
+B persuading the British Parliament to abolish the tea tax peacefully.
+C convincing the Spanish crown to recognise American independence first.
+D mediating the peace between Russia and Sweden.
+**A3:** A
+
+---
+
+## 11.28  Nikola Tesla
+
+Nikola Tesla disembarked in New York from a Serbian village with a few coins in his pocket and a head crowded with diagrams that would, given time, remake the entire planet. He worked briefly under Thomas Edison and quarrelled with him irreparably over the merits of direct against alternating current. Edison's direct current could only crawl across short distances before fading. Tesla, calmly defiant, maintained that alternating current would deliver electricity across hundreds of kilometres without flinching, and to discredit him Edison publicly electrocuted stray animals using alternating current in a grotesque campaign of fear. The laws of physics, however, sided unambiguously with Tesla, and every modern electrical grid on the planet now runs on alternating current. Tesla also conceived wireless power transmission, remote control, and the polyphase induction motor, several of his proposals so far ahead of their epoch that the technology of his time could not even begin to realise them. He proved hopelessly incapable of converting his inventions into a successful business, was repeatedly outmanoeuvred by sharper commercial minds, and died alone in a Manhattan hotel room with only his pet pigeons for company. Long afterward an electric-car company adopted his name, restoring to a forgotten genius a measure of the recognition his contemporaries had withheld.
+
+**Group A:** disembark, briefly, quarrel, irreparable, merit, direct, alternating, current, crawl, fade, calm, defiant, maintain, deliver, flinch, discredit, electrocute, stray, grotesque, campaign, side, unambiguously, modern, grid, conceive, wireless, transmission, remote, polyphase, proposal, epoch, technology, realise, hopelessly, incapable, convert, outmanoeuvre, commercial, adopt, restore, recognition, contemporary, withhold
+
+**Group B:** village, coin, current, electrocution, grid, induction motor, hotel, pigeon, electric car, genius
+
+**Q1:** Edison and Tesla quarrelled irreparably over
+A the patent for the incandescent light bulb.
+B the merits of direct against alternating current.
+C the ownership of the Menlo Park laboratory.
+D the design of the lightning rod.
+**A1:** B
+
+**Q2:** To discredit Tesla, Edison publicly
+A printed pamphlets accusing Tesla of being a foreign spy.
+B electrocuted stray animals using alternating current in a grotesque campaign of fear.
+C refused to pay Tesla his agreed wages.
+D bribed the patent office to reject Tesla's applications.
+**A2:** B
+
+**Q3:** Tesla died alone in a Manhattan hotel room with only
+A his unfinished manuscripts piled around him.
+B his pet pigeons for company.
+C a single electric motor still humming on the desk.
+D a bag of unpaid bills under the pillow.
+**A3:** B
+
+---
+
+## 11.29  Astrology and Tarot
+
+For countless generations the priests of ancient Mesopotamia climbed each evening to the roof of their temple to register the positions of the planets, convinced that the wandering of those distant lights corresponded, line by line, to the fates of kings on the dust below. They sliced the band of sky through which the planets travelled into twelve neat segments, and the zodiac was born. For most of subsequent history astronomy and astrology remained a single discipline, and even the founders of modern celestial mechanics, including Johannes Kepler, sustained themselves by composing horoscopes for noble patrons until the scientific revolution at last prised the two apart, abandoning the empirical predictions to one and the symbolic ones to the other. The tarot, often presumed to encode an ancient body of Egyptian wisdom, in fact began as an aristocratic Italian card game and acquired its esoteric reputation only after occult writers retrofitted onto it a wholly fabricated Egyptian genealogy. The genuinely interesting question is why so many people still find such systems uncannily accurate. Psychologists have demonstrated that a description vague enough to fit anyone, such as you appear confident yet secretly long to be understood, feels intensely personal to almost every reader who encounters it, a phenomenon christened the Barnum effect. Combine the Barnum effect with the brain's habitual tendency to remember the hits and discard the misses, and the apparent reliability of divination dissolves into a performance the listener has unwittingly staged on the speaker's behalf.
+
+**Group A:** countless, generation, priest, register, convinced, wander, distant, correspond, dust, slice, band, neat, segment, subsequent, discipline, found, sustain, compose, patron, scientific, revolution, prise, abandon, empirical, prediction, symbolic, presume, encode, ancient, aristocratic, acquire, esoteric, reputation, retrofit, wholly, fabricate, genealogy, genuine, uncannily, accurate, psychologist, vague, fit, intensely, personal, encounter, phenomenon, christen, combine, habitual, tendency, discard, apparent, reliability, dissolve, performance, unwittingly, stage, behalf
+
+**Group B:** priest, temple, planet, zodiac, astronomy, astrology, celestial mechanics, horoscope, tarot, card game, occult, Barnum effect, divination
+
+**Q1:** The zodiac was born when ancient priests
+A scattered twelve stones across a temple floor and read the pattern.
+B sliced the band of sky through which the planets travelled into twelve neat segments.
+C counted the days between successive full moons.
+D copied the constellations from older Egyptian charts.
+**A1:** B
+
+**Q2:** The tarot in fact began as
+A an ancient Egyptian body of esoteric wisdom.
+B an aristocratic Italian card game, acquiring its esoteric reputation only later.
+C a divination practice of the Mesopotamian priests.
+D a code used by medieval merchants to record debts.
+**A2:** B
+
+**Q3:** The Barnum effect helps explain the apparent reliability of divination because
+A people unconsciously hypnotise themselves before consulting a fortune-teller.
+B a description vague enough to fit anyone feels intensely personal to almost every reader who encounters it.
+C the planets do exert a measurable but very weak influence on personality.
+D the tarot cards are physically arranged to produce a statistically improbable pattern.
+**A3:** B
+
+---
+
+## 11.30  Witches and the Witch Hunt
+
+From the late Middle Ages into the early modern era Europe was convulsed by a witch-hunting frenzy that persisted across centuries and condemned tens of thousands of accused individuals, the overwhelming majority of them socially marginal women: widows, herbalists, midwives, the solitary old. A manual of detection grimly titled the Malleus Maleficarum was duplicated by the newly invented printing press and codified an elaborate procedure for identifying and interrogating witches, weaponising preposterous reasoning into systematic persecution. The most notorious episode erupted in a small Puritan settlement on the colonial Massachusetts coast called Salem, where a handful of adolescent girls began convulsing, screaming, and proclaiming themselves possessed, the whole village dissolved into collective hysteria, and twenty accused witches were executed before the panic at last exhausted itself. A modern hypothesis attributes the original convulsions to ergot, a fungus that infests damp rye and provokes violent hallucinations in those who consume the contaminated grain. At root, however, a society pressed simultaneously by plague, famine, and war required a scapegoat, and independent women who possessed practical knowledge of medicine, who declined to depend on a husband, and who answered to no priest furnished the most convenient target. A modern Pagan revival named Wicca has more recently reclaimed the word witch as a positive identity centred on respect for nature, the lunar cycle, and herbal lore, quietly transforming a former capital crime into a chosen way of life.
+
+**Group A:** convulse, frenzy, persist, condemn, accuse, overwhelming, majority, marginal, widow, manual, grimly, duplicate, codify, elaborate, procedure, identify, interrogate, weaponise, preposterous, reasoning, systematic, persecution, notorious, erupt, settlement, colonial, adolescent, proclaim, possess, dissolve, collective, hysteria, panic, exhaust, hypothesis, attribute, original, infest, provoke, violent, hallucination, consume, contaminated, simultaneously, press, scapegoat, independent, practical, decline, depend, furnish, convenient, target, revival, reclaim, positive, identity, lunar, lore, quietly, transform, former, capital
+
+**Group B:** witch hunt, widow, herbalist, midwife, printing press, witch, Puritan, settlement, possession, hysteria, ergot, fungus, rye, hallucination, plague, famine, scapegoat, Wicca, lunar cycle, herbal lore
+
+**Q1:** The Malleus Maleficarum was a manual that
+A defended the accused women against the charge of witchcraft.
+B codified an elaborate procedure for identifying and interrogating witches, weaponising preposterous reasoning into systematic persecution.
+C compiled herbal remedies safe for use during pregnancy.
+D recorded the genealogies of European royal families.
+**A1:** B
+
+**Q2:** A modern hypothesis attributes the original Salem convulsions to
+A intentional fraud organised by the local minister.
+B ergot, a fungus that infests damp rye and provokes violent hallucinations in those who consume the contaminated grain.
+C lead poisoning from contaminated cooking pots.
+D shared malnutrition during a particularly harsh winter.
+**A2:** B
+
+**Q3:** Independent women furnished the most convenient target for the witch hunt because they
+A had committed real crimes that the authorities had overlooked.
+B possessed practical knowledge of medicine, declined to depend on a husband, and answered to no priest.
+C had openly converted to a forbidden religion.
+D were physically distinguishable from the other inhabitants of their villages.
+**A3:** B
+
+---
+
+## 11.31  Alchemy
+
+Among the manuscripts Isaac Newton left at his death, the notes on physics occupy only a slender minority. The vast remainder concerns alchemy, and the towering intellect who articulated universal gravitation devoted decades of secrecy to the unsuccessful project of converting ordinary metals into gold. The alchemists held that all matter aspires upward toward perfection, that lead is merely a sickly or unfinished version of gold, and that an elusive substance called the philosopher's stone, once isolated, would transmute base metals into noble ones and yield, almost as a bonus, an elixir capable of granting eternal life. They never succeeded, of course, yet across centuries of patient heating, distilling, purifying, and recombining, they invented essentially every apparatus and every procedure that the modern chemistry laboratory still relies upon. Robert Boyle, frequently credited as the first modern chemist, emerged directly from the alchemical tradition and dragged it into rigorous experimental science by demanding controlled measurement. The ultimate irony arrived only in the twentieth century, when nuclear physicists at last accomplished the alchemical dream: inside a particle accelerator, atoms of one element can indeed be transmuted into another, and bismuth has been bombarded successfully into gold. The cost per gram, alas, runs into billions, which is to say the dream worked, but on terms no medieval alchemist could have anticipated.
+
+**Group A:** manuscript, slender, minority, vast, remainder, concern, towering, intellect, articulate, gravitation, devote, secrecy, unsuccessful, convert, ordinary, hold, aspire, perfection, sickly, unfinished, elusive, substance, isolate, transmute, base, noble, yield, bonus, elixir, capable, grant, eternal, succeed, patient, distil, purify, recombine, invent, essentially, apparatus, procedure, frequently, credit, emerge, tradition, drag, rigorous, experimental, demand, controlled, measurement, ultimate, irony, accomplish, particle, atom, element, bombard, alas, anticipate
+
+**Group B:** manuscript, alchemy, gold, matter, lead, philosopher's stone, elixir, distillation, apparatus, chemist, particle accelerator, atom, bismuth, alchemist
+
+**Q1:** Among the manuscripts Isaac Newton left at his death,
+A every page concerns universal gravitation.
+B the notes on physics occupy only a slender minority, the vast remainder concerning alchemy.
+C nothing of scientific interest survives.
+D the bulk consists of correspondence with European monarchs.
+**A1:** B
+
+**Q2:** Alchemy bequeathed to modern chemistry
+A nothing of practical use except a list of failed experiments.
+B essentially every apparatus and procedure that the modern laboratory still relies upon.
+C the theory of the atom in its complete modern form.
+D the principle of conservation of mass.
+**A2:** B
+
+**Q3:** The ultimate irony of alchemy is that
+A medieval alchemists succeeded in converting lead into gold but kept the secret.
+B nuclear physicists in the twentieth century at last accomplished the alchemical dream, but at a cost of billions per gram.
+C gold turned out not to be a true element at all.
+D the philosopher's stone was eventually identified as ordinary quartz.
+**A3:** B
+
+---
+
+## 11.32  Deciphering Lost Scripts
+
+A French soldier scrambling through the Egyptian campaign uncovered a slab of black basalt inscribed with the same passage in three different scripts: Egyptian hieroglyphic, an Egyptian cursive, and ancient Greek. The French scholar Jean-Francois Champollion, who already commanded Greek, spent the better part of his adult life comparing the three columns until he finally cracked a writing system that had defied interpretation for over a thousand years, restoring to the ancient Egyptian civilisation the capacity to speak again. Generations later the German military encrypted its wartime communications with a machine called Enigma whose possible settings ran into astronomical numbers, certain that no human mind could ever unravel them. The British mathematician Alan Turing, sequestered in a secret country estate called Bletchley Park, designed the proto-computer that broke Enigma and is reckoned to have abbreviated the Second World War by years. The achievement was buried under official secrecy for decades, and Turing himself was prosecuted for homosexuality and driven to suicide before his contribution was at last publicly acknowledged. The most stubborn case still resists every effort. The Voynich Manuscript, an enigmatic medieval codex crammed with an unknown script and bizarre botanical illustrations, has shrugged off every cryptographic technique applied to it. Across the intervening centuries no one has determined whether it encodes a lost language, an elaborate hoax, or the private writing of a mind no diagnosis has ever named.
+
+**Group A:** scramble, uncover, slab, inscribe, passage, script, cursive, scholar, command, compare, crack, defy, interpretation, restore, civilisation, capacity, encrypt, wartime, possible, setting, astronomical, unravel, mathematician, sequester, design, proto, reckon, abbreviate, achievement, bury, secrecy, prosecute, drive, contribution, publicly, acknowledge, stubborn, resist, enigmatic, codex, cram, bizarre, botanical, illustration, shrug off, cryptographic, intervening, determine, encode, elaborate, hoax, diagnosis
+
+**Group B:** basalt, hieroglyphic, cursive, scholar, Enigma machine, mathematician, proto-computer, prosecution, manuscript, codex, botanical illustration, hoax
+
+**Q1:** Champollion cracked the Egyptian hieroglyphic script by
+A intuiting the meaning of each symbol from its visual shape.
+B comparing the same passage in three different scripts, including a Greek column he already commanded.
+C deciphering a parallel inscription in cuneiform.
+D consulting a surviving Coptic priesthood that still read the script.
+**A1:** B
+
+**Q2:** Alan Turing's proto-computer is reckoned to have
+A revealed Enigma's settings only after the war had ended.
+B abbreviated the Second World War by years.
+C produced the first message in modern computer code.
+D contained the same operating system used in modern laptops.
+**A2:** B
+
+**Q3:** The Voynich Manuscript has shrugged off every cryptographic technique applied to it, with the result that
+A its origin in northern Italy has been confirmed beyond doubt.
+B no one has determined whether it encodes a lost language, an elaborate hoax, or the private writing of a mind no diagnosis has ever named.
+C the manuscript has been declared a forgery and removed from circulation.
+D modern computers will likely break it within the next year.
+**A3:** B
+
+---
+
+## 11.33  Esperanto
+
+A young Polish eye doctor named Ludwik Zamenhof grew up in a city in which Poles, Jews, Germans, and Russians coexisted in mutual suspicion, fragmented above all by the languages that divided them. From this daily friction he conceived an audacious idealist's ambition: to invent a neutral language belonging to no nation, so that all human beings might meet on linguistic equal ground and dissolve the misunderstandings that ignite wars. He constructed Esperanto, whose grammar tolerates not a single exception and which a determined adult can master within a few months of focused study. At its peak the language attracted several million speakers, and several governments seriously contemplated adopting it as an official auxiliary medium. It never became the universal tongue Zamenhof had imagined, partly because English, propped up by the British Empire and later American power, quietly seized that role instead. Yet Esperanto endures. Several thousand people still speak it fluently to this day, and a handful of children have been raised by their parents as native speakers of a language an ophthalmologist devised from scratch one evening at his desk.
+
+**Group A:** doctor, coexist, mutual, suspicion, fragment, above all, friction, conceive, audacious, idealist, ambition, invent, neutral, belong, linguistic, equal, dissolve, misunderstanding, ignite, construct, tolerate, exception, determined, master, focused, peak, attract, seriously, contemplate, adopt, official, auxiliary, medium, universal, imagine, partly, prop up, quietly, seize, instead, endure, fluent, handful, native, devise, scratch
+
+**Group B:** doctor, suspicion, language, Esperanto, grammar, exception, speaker, English, ophthalmologist
+
+**Q1:** Zamenhof conceived Esperanto in order to
+A replace English as the dominant international language.
+B invent a neutral language belonging to no nation so that misunderstandings between peoples might be dissolved.
+C preserve the dying languages of his native city.
+D translate scientific texts more efficiently than existing languages allowed.
+**A1:** B
+
+**Q2:** Esperanto's grammar is distinctive because it
+A imitates the irregularities of Polish and Russian.
+B tolerates not a single exception.
+C requires a long apprenticeship to master.
+D adopts the vocabulary of every European language equally.
+**A2:** B
+
+**Q3:** Esperanto never became the universal tongue Zamenhof imagined, partly because
+A its grammar proved too difficult for adult learners.
+B English, propped up by the British Empire and later American power, quietly seized that role instead.
+C the early speakers refused to teach it to their children.
+D governments declared it illegal in most countries.
+**A3:** B
+
+---
+
+## 11.34  The Mystery of the Deep Sea
+
+We have charted the surface of Mars in greater resolution than the vast majority of our own ocean floor. The deep sea persists as the last unexplored frontier on the planet. No sunlight penetrates to such depths, the pressure would flatten unreinforced steel, the water hovers a hair above freezing, and the biologists who once dismissed the abyss as lifeless instead discovered, glittering in their submersible lights, an entire alternative ecosystem. Hydrothermal vents jet superheated mineral-rich water out of the seabed and are encircled by dense colonies of tubeworms, blind shrimp, and giant clams that derive their energy not from sunlight but from bacteria that metabolise the chemicals dissolved in the venting water, a finding that compelled biology to redraw the conditions under which life can subsist. The same depths teem with bioluminescent organisms that manufacture their own cold light to lure prey, repel predators, or attract mates across the dark. The legendary giant squid, long dismissed as a sailor's myth, was finally photographed alive in its natural habitat only recently, and almost every deep-sea expedition still surfaces carrying species previously unknown to science.
+
+**Group A:** chart, resolution, vast, majority, persist, unexplored, frontier, penetrate, depth, pressure, flatten, unreinforced, hover, freezing, biologist, once, dismiss, abyss, lifeless, glitter, submersible, alternative, ecosystem, jet, superheated, mineral, encircle, dense, colony, derive, energy, metabolise, dissolve, vent, compel, redraw, condition, subsist, teem, organism, manufacture, lure, prey, repel, predator, attract, legendary, dismiss, myth, photograph, habitat, expedition, surface, previously
+
+**Group B:** ocean floor, sunlight, seabed, hydrothermal vent, tubeworm, shrimp, clam, bacteria, bioluminescence, squid, submersible, expedition
+
+**Q1:** Hydrothermal vents support dense colonies of tubeworms and giant clams whose energy comes from
+A photosynthesis driven by faint sunlight filtering down from above.
+B bacteria that metabolise the chemicals dissolved in the venting water.
+C buried fossil fuels seeping upward from the seabed.
+D radioactive decay of the rocks immediately around the vent.
+**A1:** B
+
+**Q2:** Bioluminescent organisms manufacture their own cold light in order to
+A warm themselves against the near-freezing temperature.
+B lure prey, repel predators, or attract mates across the dark.
+C signal their position to passing submarines.
+D photosynthesise without sunlight.
+**A2:** B
+
+**Q3:** The legendary giant squid was for centuries
+A regularly hunted by Scandinavian whalers.
+B dismissed as a sailor's myth, and photographed alive in its natural habitat only recently.
+C displayed in European museums as a stuffed exhibit.
+D believed to come ashore once a year to lay its eggs.
+**A3:** B
+
+---
+
+## 11.35  The Antikythera Mechanism
+
+Greek sponge divers working off a small island recovered, from a Roman shipwreck of immense antiquity, a corroded lump of bronze that nobody could identify. The lump was deposited in a museum drawer and quietly forgotten for decades. When scientists at last penetrated its rusted exterior with X-rays they encountered, packed inside it, dozens of finely meshed bronze gears, organised into a precision astronomical computer capable of calculating the positions of the sun and moon on any future date, anticipating both solar and lunar eclipses, and tracking the irregular cycle of the ancient Olympic Games. The mechanical sophistication is one that European clockmakers would not match again for more than a millennium. Nobody knows who designed it, whether other examples ever existed, or how a technical tradition this advanced could have been so completely effaced that the entire discipline of precision mechanics had to be reinvented from scratch in the late medieval period. The mechanism resembles, more than anything else, an artefact that does not belong to the century in which it was found.
+
+**Group A:** sponge, diver, recover, shipwreck, immense, antiquity, corroded, lump, bronze, identify, deposit, drawer, quietly, forget, penetrate, rusted, exterior, encounter, pack, finely, mesh, gear, organise, precision, astronomical, capable, calculate, position, future, anticipate, lunar, eclipse, track, irregular, cycle, sophistication, match, millennium, design, exist, advanced, completely, efface, discipline, mechanics, reinvent, scratch, medieval, resemble, artefact, belong, century
+
+**Group B:** sponge diver, shipwreck, bronze, museum, X-ray, gear, astronomical computer, eclipse, Olympic Games, clockmaker, mechanics, artefact
+
+**Q1:** The corroded lump from the Roman shipwreck turned out to be
+A a child's toy made of melted coins.
+B a precision astronomical computer capable of calculating the positions of the sun and moon and anticipating eclipses.
+C the seal of a Roman provincial governor.
+D a navigational instrument used by Greek sailors to follow the stars.
+**A1:** B
+
+**Q2:** The mechanical sophistication of the Antikythera mechanism is one that European clockmakers would not match again for
+A a few decades after the shipwreck.
+B more than a millennium.
+C an indefinite period that has yet to be reached.
+D barely two centuries.
+**A2:** B
+
+**Q3:** The Antikythera mechanism unsettles historians because
+A its inscriptions name an otherwise unknown Roman emperor.
+B it resembles an artefact that does not belong to the century in which it was found.
+C it predates the invention of bronze by several thousand years.
+D it appears to have been manufactured in the modern era and planted as a hoax.
+**A3:** B
+
+---
+
+## 11.36  Göbekli Tepe
+
+Buried beneath an unremarkable hillside in south-eastern Turkey lies a sanctuary that has quietly overturned the conventional narrative of human civilisation. Archaeologists patiently excavated a ring of T-shaped megaliths, each weighing many tonnes and carved in low relief with lions, scorpions, and vultures. When the site was dated, the textbooks had to be rewritten. It predates Stonehenge by millennia and the Egyptian pyramids by even more, having been erected long before the dawn of recorded civilisation. The most disorienting discovery is that the people who erected it were still hunter-gatherers wielding stone tools, who had not yet invented agriculture, writing, pottery, or the wheel, and who had not yet domesticated even a single grain of wheat. The conventional account had insisted that civilisation requires agriculture first, then settled villages, then surplus, and only afterwards the capacity for monumental religion. Göbekli Tepe quietly proposes the opposite sequence: gathering to construct a sanctuary and to perform shared rituals may have been the social pressure that compelled human beings to settle down and cultivate grain. We may not have invented religion because we were full, in other words. We may have invented agriculture because we had committed to a god.
+
+**Group A:** unremarkable, hillside, sanctuary, quietly, overturn, conventional, narrative, civilisation, archaeologist, patiently, excavate, ring, megalith, tonne, carve, relief, site, date, textbook, rewrite, predate, erect, dawn, recorded, disorient, hunter-gatherer, wield, invent, pottery, domesticate, grain, account, insist, require, settled, surplus, capacity, monumental, religion, propose, opposite, sequence, gather, construct, perform, shared, ritual, social, pressure, compel, settle, cultivate, commit
+
+**Group B:** hillside, sanctuary, megalith, relief, scorpion, vulture, Stonehenge, pyramid, hunter-gatherer, agriculture, pottery, wheat, ritual
+
+**Q1:** The disorienting discovery at Göbekli Tepe was that the people who erected it were
+A early Neolithic farmers who had recently domesticated wheat.
+B still hunter-gatherers wielding stone tools, who had not yet invented agriculture, writing, pottery, or the wheel.
+C colonial settlers from a long-vanished maritime civilisation.
+D survivors of a global flood preserved in regional folklore.
+**A1:** B
+
+**Q2:** The conventional account of civilisation had insisted on the sequence
+A monumental religion, then settled villages, then agriculture.
+B agriculture, then settled villages, then surplus, and only afterwards the capacity for monumental religion.
+C writing, then religion, then agriculture, then the wheel.
+D simultaneous emergence of every element from a single founding event.
+**A2:** B
+
+**Q3:** Göbekli Tepe quietly proposes the opposite sequence, in which
+A monumental religion arose independently after agriculture had collapsed.
+B gathering to construct a sanctuary may have been the social pressure that compelled human beings to settle down and cultivate grain.
+C writing emerged before any spoken language.
+D the wheel was invented at the same site to transport the megaliths.
+**A3:** B
+
+---
+
+## 11.37  The Tunguska Event
+
+At dawn over a remote stretch of central Siberia a flash brighter than the sun erupted across the sky, followed within seconds by a concussion that flattened a vast tract of pristine forest in a single instant, toppling enormous numbers of trees in a radial pattern, shattering windows hundreds of kilometres away, and hurling distant herdsmen off their feet. The blast was equivalent in raw violence to a sustained nuclear arsenal. Yet when scientists at last reached the remote site, decades after the event, they confronted a single inexplicable absence. There was no impact crater. An event sufficient to flatten a vast tract of forest had left no hole in the ground. The current consensus is that an incoming asteroid or comet detonated some kilometres above the surface, with the result that the shock wave reached the ground but the original object itself never did. The precise nature, size, and composition of the object, however, remain undetermined. Had the same fragment arrived only hours later, after the Earth had rotated further on its axis, the target beneath it would have been a populous European city.
+
+**Group A:** dawn, remote, stretch, flash, bright, erupt, concussion, flatten, vast, tract, pristine, instant, topple, enormous, radial, pattern, shatter, hurl, distant, herdsman, blast, equivalent, raw, violence, sustained, arsenal, confront, inexplicable, absence, impact, sufficient, hole, current, consensus, incoming, detonate, shock, original, object, reach, never, precise, nature, size, composition, undetermined, fragment, arrive, rotate, axis, target, beneath, populous
+
+**Group B:** dawn, Siberia, forest, herdsman, blast, atomic bomb, impact crater, asteroid, comet, shock wave, axis
+
+**Q1:** When scientists finally reached the Tunguska site decades after the event they confronted
+A scorched earth radiating outward from a deep crater.
+B a single inexplicable absence, namely no impact crater at all.
+C an intact spacecraft buried beneath the topsoil.
+D the petrified remains of every animal in the affected forest.
+**A1:** B
+
+**Q2:** The current consensus is that the Tunguska event was caused by
+A a hidden volcanic eruption beneath the Siberian forest.
+B an incoming asteroid or comet detonating some kilometres above the surface so that the shock wave reached the ground but the original object never did.
+C an early Soviet nuclear test gone awry.
+D a swarm of small meteorites striking simultaneously.
+**A2:** B
+
+**Q3:** Had the same fragment arrived only hours later, after the Earth had rotated further on its axis,
+A the blast would have struck the deep ocean and gone unnoticed.
+B the target beneath it would have been a populous European city.
+C the fragment would have burned up harmlessly in the upper atmosphere.
+D the resulting crater would have been visible from the Moon.
+**A3:** B
+
+---
+
+## 11.38  The Radium Craze
+
+Marie Curie's isolation of the self-luminous element radium triggered one of the most absurd episodes in consumer history. Manufacturers cheerfully laced radium into toothpaste, face cream, chocolate, and bottled spring water, advertising the element as a universal tonic capable of restoring youth and energising any flagging metabolism. A wealthy American named Eben Byers swallowed several bottles of radium-laced water every day for years and ultimately lost most of his jaw to radiation necrosis, dying in a manner so gruesome that the public was at last shaken into recognising radium as a violent poison. Meanwhile, in a watch-dial factory, a workforce of young women painted luminous numerals onto wristwatches with a paint laced with radium, and their supervisors instructed them to lick the tip of each brush to keep the bristles pointed, never warning them that the luminous powder was quietly eating their bones from inside. These workers, later christened the Radium Girls, gradually developed disfiguring jaw necrosis, lost their teeth, and watched their skeletons crumble, while the corporation that employed them denied responsibility and suppressed the medical findings. A handful of dying women dragged their employer through the courts and established a landmark legal precedent: a worker may sue the employer for occupational injury. They paid with their lives for the first foundation stone of modern workplace safety law.
+
+**Group A:** isolation, self, luminous, element, trigger, absurd, episode, consumer, manufacturer, cheerfully, lace, advertise, universal, tonic, capable, restore, energise, flagging, metabolism, wealthy, swallow, ultimately, lose, jaw, manner, gruesome, shake, recognise, violent, poison, workforce, employ, factory, paint, luminous, contain, instruct, lick, tip, brush, bristle, warn, powder, quietly, eat, gradually, disfigure, crumble, skeleton, corporation, deny, responsibility, suppress, finding, handful, drag, employer, court, establish, landmark, precedent, occupational, injury, foundation, workplace, safety
+
+**Group B:** radium, toothpaste, face cream, chocolate, tonic, jaw, necrosis, watch dial, wristwatch, paint, brush, occupational injury, precedent, workplace safety
+
+**Q1:** During the radium craze, manufacturers advertised radium as
+A a substance to be handled with extreme caution by trained chemists only.
+B a universal tonic capable of restoring youth and energising any flagging metabolism.
+C a colouring agent for industrial paint and nothing else.
+D a substitute for ordinary salt in cooking.
+**A1:** B
+
+**Q2:** The Radium Girls suffered disfiguring jaw necrosis because they
+A drank radium-laced water on their lunch breaks.
+B were instructed to lick the tip of each brush to keep the bristles pointed, never warned that the luminous powder was eating their bones from inside.
+C were exposed to leaking radium gas from the factory ventilation.
+D handled raw radium ore with their bare hands.
+**A2:** B
+
+**Q3:** A handful of dying Radium Girls dragged their employer through the courts and established the landmark legal precedent that
+A factories must provide a hot meal during every shift.
+B a worker may sue the employer for occupational injury.
+C luminous paint must be tested on animals before use.
+D corporations may be prosecuted for fraudulent advertising.
+**A3:** B
+
+---
