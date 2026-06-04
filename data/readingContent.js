@@ -1,4 +1,4 @@
-/* Reading content (ch11 + ch12 dissolved). */
+/* Reading content (ch11 + ch12 dissolved; lexical supplements merged into existing sections). */
 const CHAPTER_CONTENT = {
  "universe": {
   "number": "1",
@@ -74,7 +74,11 @@ const CHAPTER_CONTENT = {
      "And then the picture grew stranger.",
      "The cosmos as a whole, the data revealed, is not merely expanding but accelerating outward, propelled apart by an even more elusive presence we now denote as dark energy.",
      "Once you accumulate the totals, the verdict is uncomfortable: every star, every planet, every atom we have ever observed or measured constitutes barely five per cent of the universe.",
-     "The other ninety five per cent persists, for now, as a complete blank."
+     "The other ninety five per cent persists, for now, as a complete blank.",
+     "Modern astronomers track the planet's motion from observatories perched on remote mountain ridges, calibrating their instruments to detect even the faintest oscillation in the spectrum of a distant star at wavelengths the unaided eye cannot perceive.",
+     "An eclipse darkens the daylight when one celestial body slides in front of another, and the kinetic energy released when bodies collide at planetary scale is calculated through the mathematics of kinetics.",
+     "Cosmologists hypothesise hypothetical particles whose existence the largest detectors are still trying to verify, and the computation of every trajectory through the vacuum of space turns the gravitational field into a vector pointing in a single resolvable direction.",
+     "Inside the nucleus of every atom the same physical laws operate as in the most distant scenario the telescopes can resolve."
     ],
     "quiz": [
      {
@@ -225,17 +229,6 @@ const CHAPTER_CONTENT = {
      "Serious people, for the first time in earnest, debate whether the species ought to convert itself into a multi-planet civilisation rather than concentrating its entire existence on a single fragile planet."
     ],
     "quiz": []
-   },
-   {
-    "number": "1.9",
-    "title": "Cosmos and Measurement",
-    "blocks": [
-     "Modern astronomers track the planet's motion from observatories perched on remote mountain ridges, calibrating their instruments to detect even the faintest oscillation in the spectrum of a distant star at wavelengths the unaided eye cannot perceive.",
-     "An eclipse darkens the daylight when one celestial body slides in front of another, and the kinetic energy released when bodies collide at planetary scale is calculated through the mathematics of kinetics.",
-     "Cosmologists hypothesise hypothetical particles whose existence the largest detectors are still trying to verify, and the computation of every trajectory through the vacuum of space turns the gravitational field into a vector pointing in a single resolvable direction.",
-     "Inside the nucleus of every atom the same physical laws operate as in the most distant scenario the telescopes can resolve."
-    ],
-    "quiz": []
    }
   ]
  },
@@ -285,7 +278,11 @@ const CHAPTER_CONTENT = {
      "What we now call the Cambrian Explosion commenced almost simultaneously across every ocean basin on the planet.",
      "Animals of forms so bizarre they appear nearly imaginary suddenly emerged in the fossil record: the predatory Anomalocaris with its segmented compound eyes, trilobites armoured in interlocking plates, and a small ribbon-like creature named Pikaia which appeared, at the time, utterly negligible.",
      "Yet hidden along Pikaia's slender body lay a thin internal rod called a notochord, and that single anatomical innovation would eventually constitute the backbone of every fish, every reptile, every bird, every mammal, and, with eight hundred million years of patience, you.",
-     "Here is the strange consolation of being human: trace your own lineage backwards far enough and you arrive at a worm so unremarkable that the giants of its era barely perceived it at all."
+     "Here is the strange consolation of being human: trace your own lineage backwards far enough and you arrive at a worm so unremarkable that the giants of its era barely perceived it at all.",
+     "Geological sedimentation lays down stratified layers that, across millions of years, accomplish the fossilization of bones and shells.",
+     "The periodic evaporation of inland seas leaves behind crusts of salt that record the planet's chronic salinization and the slow desertification of formerly fertile regions.",
+     "Archaeology then reads this stratigraphy in reverse, with excavation teams charting ancient sites by latitude and longitude and recovering inscriptions and artefacts whose chronology rewrites the prevailing narrative of early civilisation.",
+     "The methodology of dating is calibrated through multiple independent techniques to mutually confirm the age of each find."
     ],
     "quiz": [
      {
@@ -483,17 +480,6 @@ const CHAPTER_CONTENT = {
      }
     ],
     "audio_prefix": "assets/audio/ch2/2.7"
-   },
-   {
-    "number": "2.9",
-    "title": "Reading the Fossil Record",
-    "blocks": [
-     "Geological sedimentation lays down stratified layers that, across millions of years, accomplish the fossilization of bones and shells.",
-     "The periodic evaporation of inland seas leaves behind crusts of salt that record the planet's chronic salinization and the slow desertification of formerly fertile regions.",
-     "Archaeology then reads this stratigraphy in reverse, with excavation teams charting ancient sites by latitude and longitude and recovering inscriptions and artefacts whose chronology rewrites the prevailing narrative of early civilisation.",
-     "The methodology of dating is calibrated through multiple independent techniques to mutually confirm the age of each find."
-    ],
-    "quiz": []
    }
   ]
  },
@@ -704,14 +690,7 @@ const CHAPTER_CONTENT = {
      "This is called spaced repetition.",
      "The orators of ancient Greece, meanwhile, had devised an entirely different solution called the memory palace.",
      "They mentally lodged each item to be remembered inside a particular room of a familiar building, then strolled through the building in the mind whenever they needed to retrieve the contents.",
-     "Both techniques exploit the same modern neurological fact: a memory is not a fixed recording but a structure the brain rebuilds every time it is summoned, and the more often the structure is rebuilt the firmer its foundations become."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.10",
-    "title": "Memory, Learning, and Metacognition",
-    "blocks": [
+     "Both techniques exploit the same modern neurological fact: a memory is not a fixed recording but a structure the brain rebuilds every time it is summoned, and the more often the structure is rebuilt the firmer its foundations become.",
      "Memorization reinforced by spaced retrieval rather than rereading is a far more reliable route to long-term retention, and the intrinsic motivation to learn outlasts the extrinsic incentive of a grade.",
      "Procrastination is the predictable derivative of low intrinsic interest.",
      "Metacognition, the patient monitoring of one's own thought, is itself a learnable habit, and the empirical literature confirms that a brief distraction during practice can deepen rather than weaken retention, provided the learner returns promptly to the task.",
@@ -721,7 +700,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "3.11",
+    "number": "3.10",
     "title": "Neuroscience",
     "blocks": [
      "Tucked inside the skull, the brain stitches together vast numbers of neurons through tiny chemical gaps called synapses, the simultaneous connections inside it outnumbering the stars of the entire Milky Way.",
@@ -734,14 +713,7 @@ const CHAPTER_CONTENT = {
      "Rational decision-making is supervised by the prefrontal cortex.",
      "The most counter-intuitive discovery, however, is that the brain rebuilds itself throughout life, a property called neuroplasticity.",
      "The visual cortex of a blind person is gradually rewired to process touch and sound, and the motor regions of a stroke patient can be coaxed into taking over the functions of damaged tissue.",
-     "Learning any new skill, in this sense, is the physical rewiring of one's own brain at the cellular level."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.12",
-    "title": "Behaviorism, Neuroscience, and Cognition",
-    "blocks": [
+     "Learning any new skill, in this sense, is the physical rewiring of one's own brain at the cellular level.",
      "Twentieth-century behaviorism reduced learning to stimulus-response associations measurable in a pigeon's pecking, treating cognition itself as an unverifiable black box.",
      "Later constructivism rebuilt the field by treating the learner as actively assembling internal models.",
      "The contemporary electroencephalogram tracks attentional and inhibitory networks in real time, while functional imaging traces neurogenesis in the adult hippocampus and the lateralization of language between the cerebral hemispheres.",
@@ -751,7 +723,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "3.13",
+    "number": "3.11",
     "title": "The Microbiome and the Gut",
     "blocks": [
      "The human intestine quietly accommodates trillions of bacteria whose combined cell count rivals that of the human cells in the entire body and whose combined mass piles up to roughly a kilogram.",
@@ -766,7 +738,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "3.14",
+    "number": "3.12",
     "title": "Smell and Memory",
     "blocks": [
      "The human nose discriminates among an enormous range of separate scents, vastly more than the colours the eye can resolve.",
@@ -779,7 +751,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "3.15",
+    "number": "3.13",
     "title": "Sound and Hearing",
     "blocks": [
      "Sound is nothing more than the vibration of air, and deep within the ear a spiral organ shaped like the shell of a snail houses thousands of microscopic hair cells, each tuned to a different frequency.",
@@ -794,7 +766,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "3.16",
+    "number": "3.14",
     "title": "DNA and Genes",
     "blocks": [
      "Inside the nucleus of every cell coils a long chain called DNA, whose four chemical letters spell out, in arrangements of breathtaking compactness, the complete instructions for assembling an entire human being.",
@@ -806,21 +778,14 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "3.17",
+    "number": "3.15",
     "title": "Child Cognitive Development",
     "blocks": [
      "The Swiss psychologist Jean Piaget patiently devoted decades to observing children, including his own, and demonstrated that small children are not simply little adults who have not yet been told everything, but instead reason according to a logic profoundly different from the adult one, climbing through fixed developmental stages on their way upward.",
      "A young infant has not yet acquired the concept of object permanence: a thing that disappears from sight has, for the infant, ceased to exist altogether, which is precisely why the game of peekaboo strikes the infant as so dramatic.",
      "A slightly older child sincerely believes that the same volume of water poured into a tall narrow glass has somehow increased on the way over, because the child has not yet grasped the abstract notion that quantity is conserved across changes of shape.",
      "Linguists have also identified a critical window for language acquisition.",
-     "Children deprived of normal linguistic input during this window, in the rare and harrowing documented cases of extreme childhood isolation, never quite master the grammar of any subsequent language, and once the window has slammed shut it cannot be coaxed open again."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.18",
-    "title": "Personality, Motivation, and Social Cognition",
-    "blocks": [
+     "Children deprived of normal linguistic input during this window, in the rare and harrowing documented cases of extreme childhood isolation, never quite master the grammar of any subsequent language, and once the window has slammed shut it cannot be coaxed open again.",
      "Personality research has long distinguished the extrovert who draws energy from social stimulation from the introvert who recovers in solitude, while subconscious patterns of conformity, formed in childhood, partly determine each adult's stereotyping of strangers.",
      "Motivation may be intrinsic, springing from genuine interest, or extrinsic, driven by reward; the intergroup distinction between an in-group and an out-group emerges remarkably early.",
      "The propensity to procrastinate falls predictably as intrinsic motivation rises, and the patient cultivation of empathy quietly enlarges the ethical horizon of the developing child.",
@@ -829,7 +794,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "3.19",
+    "number": "3.16",
     "title": "The Nile and the Pharaoh",
     "blocks": [
      "Once every summer, the great river that traverses northeastern Africa flooded reliably across its lower valley, depositing a layer of fertile silt onto the narrow strip of cultivable soil along either bank, and finally fanning out into the broad Nile delta where the river meets the Mediterranean.",
@@ -857,7 +822,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.7"
    },
    {
-    "number": "3.20",
+    "number": "3.17",
     "title": "The Caravans and the Books",
     "blocks": [
      "On the southern edge of the Sahara, where the desert begins to yield to the savannah, a trading city named Timbuktu flourished across the fourteenth century.",
@@ -866,7 +831,9 @@ const CHAPTER_CONTENT = {
      "At its peak Timbuktu accommodated nearly a hundred thousand inhabitants and amassed a library reputed to contain several hundred thousand handwritten manuscripts.",
      "When the first European traveller finally reached Timbuktu in the early nineteenth century he found the wells silted and the libraries dispersed, but the manuscripts had not vanished.",
      "They had been concealed in private wooden chests by descendants who would rather hide their inheritance than surrender it.",
-     "Most of those chests have outlasted every subsequent invasion."
+     "Most of those chests have outlasted every subsequent invasion.",
+     "Each community curates its heritage through monuments, oral history, and the renowned literary works of its earliest writers, while the pseudonym chosen by a controversial author is sometimes preserved alongside the original name in the historical record.",
+     "The civilization that has lasted longest is usually the one most willing to renovate its institutions without dismantling the underlying virtue of its founding charter."
     ],
     "quiz": [
      {
@@ -885,7 +852,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.8"
    },
    {
-    "number": "3.21",
+    "number": "3.18",
     "title": "The Ships at the Coast",
     "blocks": [
      "European ships began calling regularly at the West African coast from the late fifteenth century, exchanging guns, rum, and bolts of cloth for captured human beings.",
@@ -912,7 +879,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.9"
    },
    {
-    "number": "3.22",
+    "number": "3.19",
     "title": "The Lines on the Map",
     "blocks": [
      "At the end of the nineteenth century the European powers gathered around a single map in Berlin and drew the boundaries of their African colonies with rulers and pencils, deliberately ignoring the tribal, linguistic, and ethnic frontiers that the continent had developed across thousands of years.",
@@ -920,7 +887,12 @@ const CHAPTER_CONTENT = {
      "King Leopold of Belgium designated the entire Congo basin as his private estate and compelled the inhabitants to harvest rubber under quota; those who failed to meet the quota had their hands amputated, and over ten million Congolese died across the next two decades.",
      "In what is now Namibia, the German colonial authority herded the Herero people into the Kalahari and poisoned the wells, executing the earliest systematically documented genocide of the twentieth century.",
      "The borders the Europeans drew that afternoon still hold today, decades after independence, with all their ethnic contradictions intact.",
-     "The map outlived the empires that drew it."
+     "The map outlived the empires that drew it.",
+     "Modern anthropology distinguishes the unhurried processes of acculturation and assimilation, by which two peoples gradually absorb each other's customs, from the coercive imposition of colonization that marginalizes one population beneath another.",
+     "Ethnography records the rituals of a people from inside their own categories, deliberately resisting the ethnocentrism that views every distant custom as either exotic or deficient.",
+     "The hierarchical structures of communal village life, the unwritten taboos around mourning and marriage, and the slow indigenization of imported religion across the continent all yield to such patient documentation.",
+     "Ideology and persuasion, mobilised against the alienation, hostility, and oppression bequeathed by the colonial era, have powered every postcolonial movement to reclaim self-rule.",
+     "Even after independence, the marginalization of women under persistent patriarchy and the norm of intergroup suspicion have remained urgent fronts of advocacy."
     ],
     "quiz": [
      {
@@ -939,7 +911,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.10"
    },
    {
-    "number": "3.23",
+    "number": "3.20",
     "title": "Mandela and the Long Patience",
     "blocks": [
      "Across the middle of the twentieth century, almost every African colony achieved nominal independence, yet the borders the Europeans had drawn left so many ethnic groups divided between separate countries that internal conflict has scarcely ceased anywhere on the continent since.",
@@ -965,7 +937,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.11"
    },
    {
-    "number": "3.24",
+    "number": "3.21",
     "title": "The Beat That Came Back",
     "blocks": [
      "The rhythmic patterns enslaved Africans carried into the holds of the slave ships eventually transformed, in the cotton fields and ghettos of the Americas, into blues, jazz, soul, and hip-hop, and from there reflected back across the Atlantic to the continent of origin.",
@@ -991,7 +963,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.12"
    },
    {
-    "number": "3.25",
+    "number": "3.22",
     "title": "The Wounds That Will Not Close",
     "blocks": [
      "Some wounds inflicted on Africa in the late twentieth century have refused to close on schedule.",
@@ -1018,7 +990,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.13"
    },
    {
-    "number": "3.26",
+    "number": "3.23",
     "title": "The Continent That Did Not Wait",
     "blocks": [
      "What Rwanda built after the genocide nobody anticipated.",
@@ -1043,27 +1015,6 @@ const CHAPTER_CONTENT = {
      }
     ],
     "audio_prefix": "assets/audio/ch3/3.14"
-   },
-   {
-    "number": "3.27",
-    "title": "Anthropology and the Colonial Aftermath",
-    "blocks": [
-     "Modern anthropology distinguishes the unhurried processes of acculturation and assimilation, by which two peoples gradually absorb each other's customs, from the coercive imposition of colonization that marginalizes one population beneath another.",
-     "Ethnography records the rituals of a people from inside their own categories, deliberately resisting the ethnocentrism that views every distant custom as either exotic or deficient.",
-     "The hierarchical structures of communal village life, the unwritten taboos around mourning and marriage, and the slow indigenization of imported religion across the continent all yield to such patient documentation.",
-     "Ideology and persuasion, mobilised against the alienation, hostility, and oppression bequeathed by the colonial era, have powered every postcolonial movement to reclaim self-rule.",
-     "Even after independence, the marginalization of women under persistent patriarchy and the norm of intergroup suspicion have remained urgent fronts of advocacy."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.28",
-    "title": "Heritage and Renown",
-    "blocks": [
-     "Each community curates its heritage through monuments, oral history, and the renowned literary works of its earliest writers, while the pseudonym chosen by a controversial author is sometimes preserved alongside the original name in the historical record.",
-     "The civilization that has lasted longest is usually the one most willing to renovate its institutions without dismantling the underlying virtue of its founding charter."
-    ],
-    "quiz": []
    }
   ]
  },
@@ -1157,7 +1108,11 @@ const CHAPTER_CONTENT = {
      "A simple food chain forces every predator on it to develop more elaborate strategies.",
      "Orcas have learned to coordinate in teams of three: one whale generates a wave that washes a seal off an ice floe, while the others wait below to intercept the seal as it falls into the water.",
      "Leopard seals lurk just beneath the surface near a crack in the ice and wait silently for penguins returning from a fishing dive, then accelerate upward and seize the bird in a single explosive lunge.",
-     "Each predator has devised a specialised technique tuned exactly to its single available prey, and the result is the most intellectually demanding food chain on the planet, played out across an ice landscape in which a single mistake terminates whatever creature made it."
+     "Each predator has devised a specialised technique tuned exactly to its single available prey, and the result is the most intellectually demanding food chain on the planet, played out across an ice landscape in which a single mistake terminates whatever creature made it.",
+     "The Arctic biosphere supports a tightly woven ecosystemic web in which bears and seals occupy alternating winter strategies of hibernation and active foraging.",
+     "The thick fur of any Arctic mammal is itself an ecosystem in miniature, hosting parasite populations whose long symbiosis with the host has become almost imperceptible.",
+     "Conservationists working in the polar regions deploy heightened sensory instruments alongside the unaided eye, because the subtle, intermittent shifts in ice thickness and animal behaviour cannot be reliably picked up by ordinary observation alone.",
+     "Afforestation projects further south have only an indirect effect on these ecosystems, but the ongoing deforestation of subarctic forests does feed back into the long-term climate budget."
     ],
     "quiz": [
      {
@@ -1357,17 +1312,6 @@ const CHAPTER_CONTENT = {
      }
     ],
     "audio_prefix": "assets/audio/ch4/4.11"
-   },
-   {
-    "number": "4.12",
-    "title": "The Polar Biosphere and the Senses",
-    "blocks": [
-     "The Arctic biosphere supports a tightly woven ecosystemic web in which bears and seals occupy alternating winter strategies of hibernation and active foraging.",
-     "The thick fur of any Arctic mammal is itself an ecosystem in miniature, hosting parasite populations whose long symbiosis with the host has become almost imperceptible.",
-     "Conservationists working in the polar regions deploy heightened sensory instruments alongside the unaided eye, because the subtle, intermittent shifts in ice thickness and animal behaviour cannot be reliably picked up by ordinary observation alone.",
-     "Afforestation projects further south have only an indirect effect on these ecosystems, but the ongoing deforestation of subarctic forests does feed back into the long-term climate budget."
-    ],
-    "quiz": []
    }
   ]
  },
@@ -1523,7 +1467,10 @@ const CHAPTER_CONTENT = {
      "Without canoes, they lost the ability to fish offshore or to migrate elsewhere when famine arrived.",
      "Without the canopy of forest, the topsoil eroded into the sea.",
      "The chiefdoms that had once cooperated on the moai now began to wage war against each other, and the entire civilisation collapsed inside its own enclosed laboratory of resource exhaustion.",
-     "Easter Island therefore constitutes the cleanest documented sample of an ecological suicide: a society that consumed the very environment which had been sustaining it, and could not stop in time to save itself."
+     "Easter Island therefore constitutes the cleanest documented sample of an ecological suicide: a society that consumed the very environment which had been sustaining it, and could not stop in time to save itself.",
+     "Across Australian rangelands, decades of overgrazing have driven creeping salinization upward into the topsoil, leaving the land arid and unproductive; the colonial pivot toward monoculture cropping accelerated the same loss of sustainability.",
+     "Aboriginal communities had traditionally moved across the landscape in a measured nomadism that allowed each region to recover before the next dry season returned, whereas the sedentary practices of settler agriculture demanded year-round herbicide application and intensive irrigation.",
+     "The aquaculture industry along the coast is now scrutinised for its detrimental contamination of inshore waters, and the contemporary conservation movement has begun to recover the older sustainable rotations, though it cannot easily reverse the salinity profile of soils already exhausted by a century of intensive cultivation."
     ],
     "quiz": [
      {
@@ -1576,7 +1523,11 @@ const CHAPTER_CONTENT = {
      "The Australian government constructed a rabbit-proof fence stretching for thousands of kilometres across the western half of the continent, which entirely failed to contain them.",
      "Decades later, the same authorities introduced cane toads from Hawaii to control insect pests in the sugarcane fields.",
      "The cane toad turned out to secrete a venom potent enough to terminate every native Australian predator that attempted to consume it, and the toads themselves dispersed unchecked.",
-     "Australia is now, in places, the cautionary tale of every other continent's possible future."
+     "Australia is now, in places, the cautionary tale of every other continent's possible future.",
+     "Modern agriculture deploys fertilizer to enrich the soil, herbicide to suppress competing weeds, and preservative agents to extend shelf life.",
+     "Successful pollination ensures the fertilization of every flowering crop, and the proliferation of pests is countered through carefully calibrated incineration of the most affected fields or biological controls.",
+     "Aquaculture along the coast supplements protein needs that traditional fisheries can no longer meet.",
+     "The calorie budget of a working population is a function of yield, transportation efficiency, and dietary preference."
     ],
     "quiz": [
      {
@@ -1621,27 +1572,6 @@ const CHAPTER_CONTENT = {
      }
     ],
     "audio_prefix": "assets/audio/ch5/5.9"
-   },
-   {
-    "number": "5.10",
-    "title": "Land Use and Degradation",
-    "blocks": [
-     "Across Australian rangelands, decades of overgrazing have driven creeping salinization upward into the topsoil, leaving the land arid and unproductive; the colonial pivot toward monoculture cropping accelerated the same loss of sustainability.",
-     "Aboriginal communities had traditionally moved across the landscape in a measured nomadism that allowed each region to recover before the next dry season returned, whereas the sedentary practices of settler agriculture demanded year-round herbicide application and intensive irrigation.",
-     "The aquaculture industry along the coast is now scrutinised for its detrimental contamination of inshore waters, and the contemporary conservation movement has begun to recover the older sustainable rotations, though it cannot easily reverse the salinity profile of soils already exhausted by a century of intensive cultivation."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "5.11",
-    "title": "Agriculture and Food Systems",
-    "blocks": [
-     "Modern agriculture deploys fertilizer to enrich the soil, herbicide to suppress competing weeds, and preservative agents to extend shelf life.",
-     "Successful pollination ensures the fertilization of every flowering crop, and the proliferation of pests is countered through carefully calibrated incineration of the most affected fields or biological controls.",
-     "Aquaculture along the coast supplements protein needs that traditional fisheries can no longer meet.",
-     "The calorie budget of a working population is a function of yield, transportation efficiency, and dietary preference."
-    ],
-    "quiz": []
    }
   ]
  },
@@ -1659,7 +1589,11 @@ const CHAPTER_CONTENT = {
      "This annual wind system is the monsoon, and the rice civilisations of South and Southeast Asia depend on it absolutely.",
      "In winter the pattern reverses: the land cools faster than the sea, dry air flows outward, and the monsoon disappears for half a year.",
      "Should the monsoon arrive late, or fail to reach a particular region, famine follows within a season.",
-     "The monsoon constitutes the literal lifeline of more than two billion people, and its annual reliability has done more to shape the agricultural calendar of Asia than any human institution ever devised."
+     "The monsoon constitutes the literal lifeline of more than two billion people, and its annual reliability has done more to shape the agricultural calendar of Asia than any human institution ever devised.",
+     "Oceanography reads the planet through the rhythms of moving water.",
+     "The great thermohaline circulation rolls vast undercurrents through the deep, knitting the planet's heat budget together across hemispheres, while drifting plankton and zooplankton at the surface convert sunlight into the foundation of every marine food chain.",
+     "Coastal cities suffering chronic drought have begun to deploy desalination plants to wring fresh water out of the ocean's salinity, and sedimentation at the great river mouths is monitored continuously because shifts in delivery rate quietly remap the contours of every estuary.",
+     "Meteorological instruments calibrated to the barometer detect the air pressure that drives every cyclone forming above the warm sea."
     ],
     "quiz": [
      {
@@ -1835,17 +1769,6 @@ const CHAPTER_CONTENT = {
      "The legendary giant squid, long dismissed as a sailor's myth, was finally photographed alive in its natural habitat only recently, and almost every deep-sea expedition still surfaces carrying species previously unknown to science."
     ],
     "quiz": []
-   },
-   {
-    "number": "8.9",
-    "title": "The Rhythms of Moving Water",
-    "blocks": [
-     "Oceanography reads the planet through the rhythms of moving water.",
-     "The great thermohaline circulation rolls vast undercurrents through the deep, knitting the planet's heat budget together across hemispheres, while drifting plankton and zooplankton at the surface convert sunlight into the foundation of every marine food chain.",
-     "Coastal cities suffering chronic drought have begun to deploy desalination plants to wring fresh water out of the ocean's salinity, and sedimentation at the great river mouths is monitored continuously because shifts in delivery rate quietly remap the contours of every estuary.",
-     "Meteorological instruments calibrated to the barometer detect the air pressure that drives every cyclone forming above the warm sea."
-    ],
-    "quiz": []
    }
   ]
  },
@@ -1966,7 +1889,10 @@ const CHAPTER_CONTENT = {
      "The poison dart frog, by contrast, embraces the opposite strategy entirely: it advertises itself in vivid red, yellow, and blue patterns precisely because the venom on its skin can terminate a human heart with a single drop.",
      "Indigenous hunters extract the venom by simply wiping a blowdart tip across the frog's skin.",
      "Within moments any monkey or bird struck by the dart drops paralysed from the canopy.",
-     "Every brightly coloured creature in the rainforest is sending you the same one-sentence message, which is: do not eat me, I am ready."
+     "Every brightly coloured creature in the rainforest is sending you the same one-sentence message, which is: do not eat me, I am ready.",
+     "The continent's astonishing biodiversity, refined through millions of years of unhurried diversification, persists today in pockets of forest whose ecosystemic complexity researchers are still cataloguing.",
+     "Each isolated valley produces species whose feathers and flowers are improbably ornamental, and whose interdependence with pollinators and seed-carriers has been refined through reciprocal selection across deep time.",
+     "The proliferation of insects feeds an entire vertical food web, and the paradoxical efficiency of the canopy in capturing every available wavelength of sunlight is one of the system's quintessential features."
     ],
     "quiz": [
      {
@@ -2187,16 +2113,6 @@ const CHAPTER_CONTENT = {
      }
     ],
     "audio_prefix": "assets/audio/ch6/6.12"
-   },
-   {
-    "number": "6.15",
-    "title": "The Architecture of Biodiversity",
-    "blocks": [
-     "The continent's astonishing biodiversity, refined through millions of years of unhurried diversification, persists today in pockets of forest whose ecosystemic complexity researchers are still cataloguing.",
-     "Each isolated valley produces species whose feathers and flowers are improbably ornamental, and whose interdependence with pollinators and seed-carriers has been refined through reciprocal selection across deep time.",
-     "The proliferation of insects feeds an entire vertical food web, and the paradoxical efficiency of the canopy in capturing every available wavelength of sunlight is one of the system's quintessential features."
-    ],
-    "quiz": []
    }
   ]
  },
@@ -2440,7 +2356,12 @@ const CHAPTER_CONTENT = {
      "A near contemporary of Confucius, the elder Laozi, rode westward on a buffalo through the imperial gate and disappeared into the mountains, leaving behind only a five-thousand-character manuscript we now call the Dao De Jing.",
      "Where Confucius had advocated active moral cultivation, Laozi articulated the opposite: the best ruler is the one whose subjects scarcely perceive being ruled at all, and the strongest force is water, which appears yielding yet eventually wears through any stone.",
      "His spiritual descendant Zhuangzi pursued the same intuition further, asking whether the philosopher had dreamt of becoming a butterfly or the butterfly had dreamt of becoming a philosopher.",
-     "The whole system, Taoism, penetrates Chinese medicine, martial arts, geomancy, and cuisine through the complementary opposites of yin and yang, the dark and the light, the receptive and the assertive, neither one prevailing without the other."
+     "The whole system, Taoism, penetrates Chinese medicine, martial arts, geomancy, and cuisine through the complementary opposites of yin and yang, the dark and the light, the receptive and the assertive, neither one prevailing without the other.",
+     "East Asian societies have historically organised themselves around a hierarchical collectivism in which the kindred group revere shared ancestors and conform their actions to the communal good.",
+     "Custom and ritualistic observance structure each year, and the unspoken taboo against breaking ranks is reinforced by a public ideology of harmony.",
+     "Classical Confucian and Daoist thought asked rigorous epistemological and ontological questions about what can be known and what truly exists, and Chinese Buddhist scholars later imported a formal sceptical method whose etymology runs back to the Greek syllogism.",
+     "The persistent skepticism toward unverified claims sits comfortably alongside the older ritualistic practice.",
+     "Modern East Asian education places heavy weight on literacy, memorisation, and standardisation, and a compulsory examination system continues to filter cohorts into prospective careers."
     ],
     "quiz": [
      {
@@ -2875,18 +2796,6 @@ const CHAPTER_CONTENT = {
      "We may have invented agriculture because we had committed to a god."
     ],
     "quiz": []
-   },
-   {
-    "number": "7.29",
-    "title": "Classical Thought and the Social Order",
-    "blocks": [
-     "East Asian societies have historically organised themselves around a hierarchical collectivism in which the kindred group revere shared ancestors and conform their actions to the communal good.",
-     "Custom and ritualistic observance structure each year, and the unspoken taboo against breaking ranks is reinforced by a public ideology of harmony.",
-     "Classical Confucian and Daoist thought asked rigorous epistemological and ontological questions about what can be known and what truly exists, and Chinese Buddhist scholars later imported a formal sceptical method whose etymology runs back to the Greek syllogism.",
-     "The persistent skepticism toward unverified claims sits comfortably alongside the older ritualistic practice.",
-     "Modern East Asian education places heavy weight on literacy, memorisation, and standardisation, and a compulsory examination system continues to filter cohorts into prospective careers."
-    ],
-    "quiz": []
    }
   ]
  },
@@ -2983,7 +2892,10 @@ const CHAPTER_CONTENT = {
      "He partitioned knowledge into discrete disciplines and assigned each its modern name: physics, metaphysics, ethics, politics, poetics, rhetoric, zoology.",
      "Nearly every department in a contemporary university, in the humanities or in the sciences, traces its label back to this single Greek thinker of antiquity.",
      "He also tutored a teenager who would proceed to conquer half the known world.",
-     "A single human being thus defined the categories within which Western inquiry has been conducted and incidentally trained the boy who would empirically rearrange the map."
+     "A single human being thus defined the categories within which Western inquiry has been conducted and incidentally trained the boy who would empirically rearrange the map.",
+     "Logical notation expresses relations between propositions with a precision ordinary prose cannot match.",
+     "The logarithm and the exponent are inverse operations that compress and expand multiplicative growth onto a manageable scale, and any quantitative argument is improved by clear notational discipline.",
+     "A finding judged redundant in one framework may become indispensable in another, and the analogous structure between two unrelated systems frequently turns out to be the deepest invitation to a new theorem."
     ],
     "quiz": []
    },
@@ -3186,7 +3098,11 @@ const CHAPTER_CONTENT = {
      "The whole class was governed by an explicit code called chivalry: protection of women, loyalty to the king, honourable conduct in single combat.",
      "Their principal entertainment was the joust, in which mounted knights charged each other with long lances, attempting to unseat the opponent at considerable risk of death, as the French king Henri II discovered when a splinter from a broken lance pierced his visor.",
      "Meanwhile in Bologna, a group of law students banded together to hire their own teachers rather than be exploited by them, generating the first European university.",
-     "The Italian friar Aquinas later combined Aristotle's logic with Christian theology in the multi-million-word Summa, dictating to four secretaries at once."
+     "The Italian friar Aquinas later combined Aristotle's logic with Christian theology in the multi-million-word Summa, dictating to four secretaries at once.",
+     "Resilient learners persist through repeated failure, and the resilience of any community to economic or epidemiological shocks depends partly on its diversification of livelihoods.",
+     "The resonant note in a teacher's example often outlasts the textbook's bare statement, and the yearning to understand a single hard problem can sustain years of patient solitary study.",
+     "A grandiose self-image and a zealous attachment to one's own opinions are well-known obstacles to disciplined inquiry, but a measured zeal for the subject is the engine that carries a student to her natural zenith.",
+     "The reception of any new finding by the wider community depends on whether the methodology has been described in terms the reviewers can scrutinize, and the viability of an entire research programme is gauged by how often it furnishes punctual and verifiable predictions."
     ],
     "quiz": [
      {
@@ -3268,14 +3184,7 @@ const CHAPTER_CONTENT = {
      "The underlying principle is to display to the immune system a preview of a dangerous pathogen so that the body manufactures matching antibodies in advance, so when the real pathogen at last arrives the defending army already recognises it on sight.",
      "A coordinated global vaccination campaign has driven smallpox into complete extinction, the only human infectious disease ever eradicated from the planet.",
      "Generations after Jenner, a radical new technology called messenger RNA was deployed against the recent coronavirus pandemic.",
-     "Instead of injecting the virus itself, scientists encoded the genetic instructions for one viral protein and let each patient's own cells manufacture the preview, compressing into months a development cycle that traditionally demanded a decade."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.18",
-    "title": "Pathology and Public Health",
-    "blocks": [
+     "Instead of injecting the virus itself, scientists encoded the genetic instructions for one viral protein and let each patient's own cells manufacture the preview, compressing into months a development cycle that traditionally demanded a decade.",
      "Modern medicine distinguishes acute pathology that strikes suddenly from chronic conditions that linger across years.",
      "Malnutrition is the persistent shortage of essential nutrients in the diet, and vaccination programmes combined with antibiotic therapy have driven down the global burden of infection.",
      "Pathology laboratories process tissue samples and digestion-related tests at industrial scale, while public health rehabilitates millions of patients each year through coordinated outpatient care.",
@@ -3284,7 +3193,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.19",
+    "number": "9.18",
     "title": "The Dome and the Medici",
     "blocks": [
      "The Florentine cathedral had stood for a century with a vast circular opening at its centre that no architect could figure out how to roof.",
@@ -3311,7 +3220,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.13"
    },
    {
-    "number": "9.20",
+    "number": "9.19",
     "title": "Leonardo da Vinci",
     "blocks": [
      "Born illegitimate, Leonardo da Vinci was permanently barred from the formal universities of his era, and the exclusion freed him from any obligation to respect the boundaries between academic disciplines.",
@@ -3324,7 +3233,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.21",
+    "number": "9.20",
     "title": "Michelangelo",
     "blocks": [
      "All his life Michelangelo insisted he was only a sculptor, and resented even the Pope for coercing him into painting the ceiling of the Sistine Chapel against his preference.",
@@ -3337,7 +3246,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.22",
+    "number": "9.21",
     "title": "The Three Masters",
     "blocks": [
      "Leonardo da Vinci painted the Mona Lisa during the day and dissected human cadavers in secret at night, recording in his notebooks the anatomical details he observed alongside designs for helicopters, tanks, and submarines four centuries ahead of any plausible implementation.",
@@ -3363,7 +3272,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.14"
    },
    {
-    "number": "9.23",
+    "number": "9.22",
     "title": "Cellini Casts the Perseus",
     "blocks": [
      "A hot-tempered Florentine goldsmith and sculptor named Benvenuto Cellini received from his Duke the commission to cast a bronze statue of Perseus brandishing the severed head of Medusa.",
@@ -3384,7 +3293,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.24",
+    "number": "9.23",
     "title": "The Northern Renaissance",
     "blocks": [
      "When the Renaissance crossed the Alps it acquired a different aesthetic.",
@@ -3409,7 +3318,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.15"
    },
    {
-    "number": "9.25",
+    "number": "9.24",
     "title": "Westward into the Unknown",
     "blocks": [
      "The Genoese navigator Columbus calculated, on the basis of mistakenly low estimates, that the planet was small enough to circumnavigate westward to Asia within a few weeks.",
@@ -3434,7 +3343,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.16"
    },
    {
-    "number": "9.26",
+    "number": "9.25",
     "title": "The Spanish Golden Century",
     "blocks": [
      "The Castilian writer Cervantes composed Don Quixote, in which an elderly gentleman addled by chivalric novels mounts a worn-out horse and charges windmills he sincerely believes to be giants, a satire universally credited as the first modern novel.",
@@ -3460,7 +3369,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.17"
    },
    {
-    "number": "9.27",
+    "number": "9.26",
     "title": "Ninety-Five Theses",
     "blocks": [
      "The German artisan Gutenberg invented movable metal type and printed the first European Bible, then went bankrupt before he could see the implications of his invention propagate.",
@@ -3487,14 +3396,18 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.18"
    },
    {
-    "number": "9.28",
+    "number": "9.27",
     "title": "The Astronomer and the Telescope",
     "blocks": [
      "The Polish astronomer Copernicus calculated, against every philosophical and theological intuition of his era, that the Earth was not the centre of the universe but instead orbited around the Sun.",
      "The conclusion terrified him sufficiently that he suppressed the manuscript until his deathbed, by which point he was reportedly too far gone to recognise the printed copy a friend pressed into his hands.",
      "The Italian astronomer Galileo, equipped with an improved telescope, observed the moons of Jupiter and the phases of Venus, each observation independently corroborating the Copernican model.",
      "The Roman Inquisition summoned him to confess heresy under the explicit threat of torture.",
-     "Galileo recanted publicly and was confined to house arrest for the remainder of his life, though tradition records him muttering, as he walked out of the courtroom, that the Earth still moved nevertheless."
+     "Galileo recanted publicly and was confined to house arrest for the remainder of his life, though tradition records him muttering, as he walked out of the courtroom, that the Earth still moved nevertheless.",
+     "The discipline of epistemology asks what counts as genuine knowledge, ontology asks what kinds of thing actually exist, and the methodology of any inquiry sets the terminology by which evidence is admitted or excluded.",
+     "A finding that strikes most readers as paradoxical may, on patient analysis, turn out to be the inevitable derivative of a single rigorous prerequisite, and the prospective scholar with sufficient proficiency in the technical vocabulary will recognise it at once.",
+     "The judicious investigator tolerates ambiguity rather than rushing toward false coherence, and the wholistic view of any subject preserves nuances the narrower disciplinary glance would lose.",
+     "A tautology is true by virtue of its own form, while a contradictory pair cannot both be true at once."
     ],
     "quiz": [
      {
@@ -3513,7 +3426,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.19"
    },
    {
-    "number": "9.29",
+    "number": "9.28",
     "title": "Alchemy",
     "blocks": [
      "Among the manuscripts Isaac Newton left at his death, the notes on physics occupy only a slender minority.",
@@ -3527,7 +3440,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.30",
+    "number": "9.29",
     "title": "Astrology and Tarot",
     "blocks": [
      "For countless generations the priests of ancient Mesopotamia climbed each evening to the roof of their temple to register the positions of the planets, convinced that the wandering of those distant lights corresponded, line by line, to the fates of kings on the dust below.",
@@ -3541,7 +3454,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.31",
+    "number": "9.30",
     "title": "The Glover's Son and the Virgin Queen",
     "blocks": [
      "The son of a small-town glove-maker grew up to write thirty-seven plays and one hundred fifty-four sonnets that effectively reshaped the English language itself.",
@@ -3567,7 +3480,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.20"
    },
    {
-    "number": "9.32",
+    "number": "9.31",
     "title": "The Lens and the Stock",
     "blocks": [
      "The Delft cloth merchant Anton van Leeuwenhoek ground his own glass lenses and constructed the most powerful microscope of his era, through which he first perceived bacteria, spermatozoa, and the single-celled organisms he called animalcules.",
@@ -3592,7 +3505,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.21"
    },
    {
-    "number": "9.33",
+    "number": "9.32",
     "title": "The Baroque and the Light",
     "blocks": [
      "Baroque painting abandoned the calm clarity of the Renaissance in favour of high contrast and emotional violence.",
@@ -3619,7 +3532,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.22"
    },
    {
-    "number": "9.34",
+    "number": "9.33",
     "title": "The Anatomy",
     "blocks": [
      "Medieval European authorities had prohibited the dissection of human cadavers, so European medical textbooks continued reproducing the anatomical errors of the Greek physician Galen for over a thousand years.",
@@ -3644,7 +3557,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.23"
    },
    {
-    "number": "9.35",
+    "number": "9.34",
     "title": "The Chicken and the Stove",
     "blocks": [
      "The English statesman Francis Bacon, founder of empiricism, insisted that all genuine knowledge must originate in observed experiment rather than received authority.",
@@ -3670,7 +3583,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.24"
    },
    {
-    "number": "9.36",
+    "number": "9.35",
     "title": "The Plague Year",
     "blocks": [
      "When the bubonic plague closed Cambridge, a young undergraduate named Isaac Newton retreated to the family farm and within eighteen months independently formulated universal gravitation, invented the differential and integral calculus, and demonstrated through prism experiments that ordinary white light contains every colour of the rainbow.",
@@ -3696,7 +3609,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.25"
    },
    {
-    "number": "9.37",
+    "number": "9.36",
     "title": "The Fire and the Dome",
     "blocks": [
      "A bakery on Pudding Lane caught fire one night and the resulting blaze consumed two thirds of the medieval City of London across the following five days, demolishing every wooden structure between St Paul's and the river.",
@@ -3721,7 +3634,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.26"
    },
    {
-    "number": "9.38",
+    "number": "9.37",
     "title": "The Parisian Cafés",
     "blocks": [
      "The intellectual centre of European Europe migrated from the monastery and the royal salon into the cafés of eighteenth-century Paris, where philosophers and writers congregated daily over coffee to argue the political principles of the coming century.",
@@ -3729,7 +3642,11 @@ const CHAPTER_CONTENT = {
      "Rousseau argued in The Social Contract that all human beings are born free yet are nevertheless universally enchained, and articulated the doctrine that political authority derives from the consent of the governed.",
      "Montesquieu proposed that legislative, executive, and judicial powers must be separated and held in mutual restraint to prevent tyranny.",
      "The Scottish economist Adam Smith, working in parallel, articulated the doctrine of the invisible hand by which market exchange spontaneously coordinates production.",
-     "Their combined writings opened the path to the French Revolution, American independence, and modern economics."
+     "Their combined writings opened the path to the French Revolution, American independence, and modern economics.",
+     "The Enlightenment generated the body of liberal political thought we now call liberalism, whose proponents argued for individual rights and the systematic secularization of state authority.",
+     "Each new proposal was scrutinised against historical evidence, and its proponents were obliged to elucidate the justification behind their schemes rather than relying on inherited dogma.",
+     "Conversely, conservative thinkers presumed that the propensity of human institutions to drift slowly was itself a virtue, and they sought to rationalize the existing order rather than overthrow it.",
+     "The ramifications of this debate echoed across every subsequent political manifesto, and Bentham's utilitarian doctrine, which measured ethical decisions by the aggregate welfare they produced, became the quantitative pole against which Romantic critics defined themselves."
     ],
     "quiz": [
      {
@@ -3748,7 +3665,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.27"
    },
    {
-    "number": "9.39",
+    "number": "9.38",
     "title": "The Baroque Composer",
     "blocks": [
      "Baroque music elaborated several independent melodic lines simultaneously through the discipline of counterpoint, each voice maintaining its own integrity while contributing to a harmonic whole.",
@@ -3773,7 +3690,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.28"
    },
    {
-    "number": "9.40",
+    "number": "9.39",
     "title": "The Three Viennese Masters",
     "blocks": [
      "The three composers who consolidated the classical symphony all converged on imperial Vienna across a single century.",
@@ -3799,7 +3716,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.29"
    },
    {
-    "number": "9.41",
+    "number": "9.40",
     "title": "The Engine and the Loom",
     "blocks": [
      "The Scottish engineer James Watt, repairing a worn Newcomen steam engine, perceived that adding a separate condensing chamber would multiply the efficiency of the entire mechanism several times over.",
@@ -3825,7 +3742,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.30"
    },
    {
-    "number": "9.42",
+    "number": "9.41",
     "title": "Guillotine and Empire",
     "blocks": [
      "The French king Louis XVI was conducted to the public scaffold in Paris and beheaded by guillotine before a cheering crowd, terminating a thousand years of Bourbon monarchy in a single afternoon.",
@@ -3849,7 +3766,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.31"
    },
    {
-    "number": "9.43",
+    "number": "9.42",
     "title": "The Year Without a Summer",
     "blocks": [
      "A circle of English poets sheltered at a villa on the shore of Lake Geneva during the summer of the Tambora ash cloud, when the unrelenting rain prevented every outdoor pursuit.",
@@ -3876,7 +3793,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.32"
    },
    {
-    "number": "9.44",
+    "number": "9.43",
     "title": "The Fossils and the Origin",
     "blocks": [
      "A twelve-year-old English girl named Mary Anning, daughter of a furniture repairman on the south coast of Dorset, excavated a five-metre fossilised marine reptile from the cliffs near her home and subsequently dug up dozens of additional extinct creatures whose existence the established theology of her era was theoretically not permitted to accommodate.",
@@ -3901,7 +3818,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.33"
    },
    {
-    "number": "9.45",
+    "number": "9.44",
     "title": "Darwin and the Universal Face",
     "blocks": [
      "Having finished On the Origin of Species, Darwin fixed his eye on a subtler question.",
@@ -3918,7 +3835,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.46",
+    "number": "9.45",
     "title": "The Victorian Novel",
     "blocks": [
      "The English novel reached its mature form across the Victorian century.",
@@ -3944,7 +3861,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.34"
    },
    {
-    "number": "9.47",
+    "number": "9.46",
     "title": "Marx, Nietzsche, and the Horse",
     "blocks": [
      "The German political economist Marx spent decades in the reading room of the British Museum drafting Das Kapital, in which he articulated the doctrine that capitalism would collapse under its own internal contradictions and that proletarian revolution was historically inevitable.",
@@ -3970,7 +3887,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.35"
    },
    {
-    "number": "9.48",
+    "number": "9.47",
     "title": "The Russian Triple",
     "blocks": [
      "The Russian aristocrat Tolstoy left his estate to labour alongside the peasants in his own fields, wrote War and Peace tracking several aristocratic families through the Napoleonic invasion, and authored Anna Karenina, in which a married woman destroys herself for love beneath the wheels of a train.",
@@ -3996,7 +3913,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.36"
    },
    {
-    "number": "9.49",
+    "number": "9.48",
     "title": "Romantic and Realist Paint",
     "blocks": [
      "After the French Revolution, painting split into competing schools.",
@@ -4022,7 +3939,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.37"
    },
    {
-    "number": "9.50",
+    "number": "9.49",
     "title": "The Impressionists",
     "blocks": [
      "A circle of young French painters whom the official Salon had rejected mounted an independent exhibition, and a hostile critic christened them Impressionists in mockery of a painting by Monet titled Impression, Sunrise.",
@@ -4049,7 +3966,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.38"
    },
    {
-    "number": "9.51",
+    "number": "9.50",
     "title": "The Opera House",
     "blocks": [
      "The nineteenth-century opera house became the centre of European bourgeois entertainment.",
@@ -4075,7 +3992,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.39"
    },
    {
-    "number": "9.52",
+    "number": "9.51",
     "title": "The Germs and the Pasteurised Milk",
     "blocks": [
      "The French chemist Pasteur demonstrated through controlled experiments that fermentation and infectious disease were both caused by microscopic living organisms invisible to the unaided eye, definitively refuting the doctrine of spontaneous generation and establishing the modern principle of microbial causality in disease.",
@@ -4101,7 +4018,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.40"
    },
    {
-    "number": "9.53",
+    "number": "9.52",
     "title": "Pasteur and the Living Yeast",
     "blocks": [
      "The wine and beer brewers of nineteenth-century France were tormented by a mystery.",
@@ -4119,7 +4036,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.54",
+    "number": "9.53",
     "title": "The Radioactive Notebook",
     "blocks": [
      "The Polish-French chemist Marie Curie isolated the element radium from several tons of uranium ore in a poorly ventilated laboratory shed, eventually winning Nobel prizes in both physics and chemistry, and continues to be the only person who has won the Nobel in two distinct scientific disciplines.",
@@ -4147,7 +4064,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.41"
    },
    {
-    "number": "9.55",
+    "number": "9.54",
     "title": "The Rules of the Game",
     "blocks": [
      "Modern team sports emerged largely from the public schools of nineteenth-century England, where masters used organised games to inculcate gentlemanly virtues into adolescent boys.",
@@ -4172,7 +4089,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.42"
    },
    {
-    "number": "9.56",
+    "number": "9.55",
     "title": "The Private Estate",
     "blocks": [
      "The Belgian king Leopold II personally acquired sovereignty over a vast territory in central Africa, designated the Congo Free State, that legally belonged to him rather than to the Belgian nation.",
@@ -4199,7 +4116,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.43"
    },
    {
-    "number": "9.57",
+    "number": "9.56",
     "title": "The Vienna of the Mind",
     "blocks": [
      "Early twentieth-century Vienna constituted a single experimental laboratory of the human interior.",
@@ -4225,7 +4142,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.44"
    },
    {
-    "number": "9.58",
+    "number": "9.57",
     "title": "The Irish Revival",
     "blocks": [
      "After centuries of English domination and the potato famine that had starved a million Irish to death while exporting two million more to America, Ireland appeared culturally exhausted.",
@@ -4250,7 +4167,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.45"
    },
    {
-    "number": "9.59",
+    "number": "9.58",
     "title": "The Modernist Sentence",
     "blocks": [
      "European fiction in the early twentieth century turned away from external event toward the texture of internal experience.",
@@ -4276,7 +4193,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.46"
    },
    {
-    "number": "9.60",
+    "number": "9.59",
     "title": "The Modern Canvas",
     "blocks": [
      "Twentieth-century painting, the most aggressively avant-garde movement in any art form, demolished five hundred years of single-viewpoint perspective.",
@@ -4304,7 +4221,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.47"
    },
    {
-    "number": "9.61",
+    "number": "9.60",
     "title": "The Trenches",
     "blocks": [
      "A Serbian nationalist named Princip shot the heir to the Austro-Hungarian throne in the streets of Sarajevo, and the resulting cascade of mutual defence treaties dragged virtually every European power into a continental war within weeks.",
@@ -4329,7 +4246,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.48"
    },
    {
-    "number": "9.62",
+    "number": "9.61",
     "title": "The Concentration Camp",
     "blocks": [
      "Post-war German hyperinflation rendered the currency so worthless that a loaf of bread required a wheelbarrow of banknotes.",
@@ -4354,7 +4271,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.49"
    },
    {
-    "number": "9.63",
+    "number": "9.62",
     "title": "The Camera Walks Out",
     "blocks": [
      "Post-war European cinema rebelled simultaneously in two countries against Hollywood polish.",
@@ -4384,7 +4301,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.50"
    },
    {
-    "number": "9.64",
+    "number": "9.63",
     "title": "The Social Sciences",
     "blocks": [
      "Modern social theory built itself from the wreckage of pre-modern Europe.",
@@ -4396,7 +4313,12 @@ const CHAPTER_CONTENT = {
      "The Scottish enlightenment had earlier proposed altruism and benevolence as the natural ethical pair to self-interest.",
      "Modern globalisation, the late-twentieth-century convergence of trade, communication, and capital flows across formerly separated economies, has both reduced absolute poverty in Asia and aggravated centuries of resentment in societies whose colonisation by European powers still informs their politics; the legitimacy of the international financial institutions that supervise globalisation remains permanently in question.",
      "The English economist Keynes proposed in his General Theory of Employment, Interest, and Money that government should run deficits in recessions to stimulate aggregate demand, an idea that became the foundation of every post-war Western economic policy and remains the orthodox response to recession to this day.",
-     "Contemporary social theory recognises that the empowerment of marginalised populations, not merely their accommodation, constitutes the only durable response to the asymmetric aggression and narcissism that unconstrained capitalist competition tends to generate."
+     "Contemporary social theory recognises that the empowerment of marginalised populations, not merely their accommodation, constitutes the only durable response to the asymmetric aggression and narcissism that unconstrained capitalist competition tends to generate.",
+     "Academic writing tolerates a degree of ambiguity that conversational prose would not, since the genuine analogy or analogous case often resists tidy definition.",
+     "A judicious researcher weighs the contradictory evidence on each side of a question without rationalizing it into a single neat narrative.",
+     "The propensity to assume that one's own conclusion is intrinsic to the data, rather than imposed onto it, is the most subtle hazard of the entire discipline.",
+     "The empirical scenario most experimenters hypothesize turns out to be only one of several feasible explanations, and the feasibility of a competing hypothesis often determines how the result is interpreted.",
+     "The genuine prevalence of a phenomenon is established only after the same finding has been replicated across multiple labs, and a tangible exemplification is preferred over the merely hypothetical, though neither is dispensable in a mature research programme."
     ],
     "quiz": [
      {
@@ -4415,7 +4337,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.51"
    },
    {
-    "number": "9.65",
+    "number": "9.64",
     "title": "The Long Light of the North",
     "blocks": [
      "The Scandinavian aesthetic was forged by long dark winters, abundant pale wood, and very little metal.",
@@ -4442,7 +4364,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.52"
    },
    {
-    "number": "9.66",
+    "number": "9.65",
     "title": "The Balkans Burn Again",
     "blocks": [
      "The federation of Yugoslavia held together six south Slavic republics, four languages, and three religions under the iron presidency of Tito; when he died, the federation began to disintegrate along precisely those ethnic and religious fault lines that he had welded shut.",
@@ -4468,7 +4390,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.53"
    },
    {
-    "number": "9.67",
+    "number": "9.66",
     "title": "The Wall Falls, the Borders Open",
     "blocks": [
      "Across forty years the Berlin Wall divided a single German city into a Western capitalist half and an Eastern communist half, until the East German government, unable to contain the swelling demonstrations on its own streets, abruptly suspended the border controls and the entire wall was demolished by the surrounding crowds across a single euphoric night.",
@@ -4493,7 +4415,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.54"
    },
    {
-    "number": "9.68",
+    "number": "9.67",
     "title": "The Grammar in Every Baby",
     "blocks": [
      "European linguistics across the twentieth century articulated the discipline that studies how human language actually operates.",
@@ -4523,7 +4445,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.55"
    },
    {
-    "number": "9.69",
+    "number": "9.68",
     "title": "Deciphering Lost Scripts",
     "blocks": [
      "A French soldier scrambling through the Egyptian campaign uncovered a slab of black basalt inscribed with the same passage in three different scripts: Egyptian hieroglyphic, an Egyptian cursive, and ancient Greek.",
@@ -4538,7 +4460,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.70",
+    "number": "9.69",
     "title": "Modern Linguistics",
     "blocks": [
      "The Swiss scholar Ferdinand de Saussure threw down a disorienting principle.",
@@ -4548,14 +4470,7 @@ const CHAPTER_CONTENT = {
      "The American Noam Chomsky later pressed the argument even further, contending that every human infant arrives equipped with an inherited universal grammar, a deep template common to all human languages that any specific tongue merely fills in with local vocabulary.",
      "That is why a small child can absorb fluent grammar that no adult could ever explicitly articulate.",
      "Linguists have also documented a more sombre statistic.",
-     "Every so often an indigenous language slips out of the world as its last living speaker dies, and each loss extinguishes an entire distinct way of perceiving reality itself."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.71",
-    "title": "Phonology and Translation",
-    "blocks": [
+     "Every so often an indigenous language slips out of the world as its last living speaker dies, and each loss extinguishes an entire distinct way of perceiving reality itself.",
      "Modern linguists distinguish phonology, which catalogues the sound system of each language, from morphology, which dissects the internal architecture of every word, and from the broader study of accent, articulation, and conversational fluency.",
      "The transcription of speech into a standardised alphabet allows even unwritten languages to be studied and preserved, while the etymology of any particular word tracks its semantic drift across the generations.",
      "Verbal proficiency in a foreign tongue depends as much on patient exposure as on explicit memorization of grammar rules."
@@ -4563,7 +4478,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.72",
+    "number": "9.70",
     "title": "Esperanto",
     "blocks": [
      "A young Polish eye doctor named Ludwik Zamenhof grew up in a city in which Poles, Jews, Germans, and Russians coexisted in mutual suspicion, fragmented above all by the languages that divided them.",
@@ -4577,7 +4492,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.73",
+    "number": "9.71",
     "title": "The Radium Craze",
     "blocks": [
      "Marie Curie's isolation of the self-luminous element radium triggered one of the most absurd episodes in consumer history.",
@@ -4587,61 +4502,6 @@ const CHAPTER_CONTENT = {
      "These workers, later christened the Radium Girls, gradually developed disfiguring jaw necrosis, lost their teeth, and watched their skeletons crumble, while the corporation that employed them denied responsibility and suppressed the medical findings.",
      "A handful of dying women dragged their employer through the courts and established a landmark legal precedent: a worker may sue the employer for occupational injury.",
      "They paid with their lives for the first foundation stone of modern workplace safety law."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.74",
-    "title": "Enlightenment Political Thought",
-    "blocks": [
-     "The Enlightenment generated the body of liberal political thought we now call liberalism, whose proponents argued for individual rights and the systematic secularization of state authority.",
-     "Each new proposal was scrutinised against historical evidence, and its proponents were obliged to elucidate the justification behind their schemes rather than relying on inherited dogma.",
-     "Conversely, conservative thinkers presumed that the propensity of human institutions to drift slowly was itself a virtue, and they sought to rationalize the existing order rather than overthrow it.",
-     "The ramifications of this debate echoed across every subsequent political manifesto, and Bentham's utilitarian doctrine, which measured ethical decisions by the aggregate welfare they produced, became the quantitative pole against which Romantic critics defined themselves."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.75",
-    "title": "The Philosophy of Method",
-    "blocks": [
-     "The discipline of epistemology asks what counts as genuine knowledge, ontology asks what kinds of thing actually exist, and the methodology of any inquiry sets the terminology by which evidence is admitted or excluded.",
-     "A finding that strikes most readers as paradoxical may, on patient analysis, turn out to be the inevitable derivative of a single rigorous prerequisite, and the prospective scholar with sufficient proficiency in the technical vocabulary will recognise it at once.",
-     "The judicious investigator tolerates ambiguity rather than rushing toward false coherence, and the wholistic view of any subject preserves nuances the narrower disciplinary glance would lose.",
-     "A tautology is true by virtue of its own form, while a contradictory pair cannot both be true at once."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.76",
-    "title": "Logic and Notation",
-    "blocks": [
-     "Logical notation expresses relations between propositions with a precision ordinary prose cannot match.",
-     "The logarithm and the exponent are inverse operations that compress and expand multiplicative growth onto a manageable scale, and any quantitative argument is improved by clear notational discipline.",
-     "A finding judged redundant in one framework may become indispensable in another, and the analogous structure between two unrelated systems frequently turns out to be the deepest invitation to a new theorem."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.77",
-    "title": "Epistemic Posture for Academic Prose",
-    "blocks": [
-     "Academic writing tolerates a degree of ambiguity that conversational prose would not, since the genuine analogy or analogous case often resists tidy definition.",
-     "A judicious researcher weighs the contradictory evidence on each side of a question without rationalizing it into a single neat narrative.",
-     "The propensity to assume that one's own conclusion is intrinsic to the data, rather than imposed onto it, is the most subtle hazard of the entire discipline.",
-     "The empirical scenario most experimenters hypothesize turns out to be only one of several feasible explanations, and the feasibility of a competing hypothesis often determines how the result is interpreted.",
-     "The genuine prevalence of a phenomenon is established only after the same finding has been replicated across multiple labs, and a tangible exemplification is preferred over the merely hypothetical, though neither is dispensable in a mature research programme."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.78",
-    "title": "Resilience and the Long Arc of Learning",
-    "blocks": [
-     "Resilient learners persist through repeated failure, and the resilience of any community to economic or epidemiological shocks depends partly on its diversification of livelihoods.",
-     "The resonant note in a teacher's example often outlasts the textbook's bare statement, and the yearning to understand a single hard problem can sustain years of patient solitary study.",
-     "A grandiose self-image and a zealous attachment to one's own opinions are well-known obstacles to disciplined inquiry, but a measured zeal for the subject is the engine that carries a student to her natural zenith.",
-     "The reception of any new finding by the wider community depends on whether the methodology has been described in terms the reviewers can scrutinize, and the viability of an entire research programme is gauged by how often it furnishes punctual and verifiable predictions."
     ],
     "quiz": []
    }
@@ -4997,7 +4857,11 @@ const CHAPTER_CONTENT = {
     "blocks": [
      "The Scottish-American Alexander Graham Bell, attempting to design a hearing aid for his deaf mother, accidentally invented the telephone instead and demonstrated for the first time that the human voice could be transmitted across an electrical wire.",
      "The Wright brothers, who repaired bicycles in Ohio for a living, conducted patient aerodynamic experiments on the dunes of North Carolina until they achieved the first sustained powered flight in a wooden glider whose wings they had warped through cable-and-pulley control, founding the entire modern aviation industry.",
-     "Henry Ford devised the moving automobile assembly line in Detroit, dropping the price of the Model T to a level that ordinary American workers could afford, and effectively converted the automobile from an aristocratic toy into the everyday means of transport that has restructured every American city built afterward."
+     "Henry Ford devised the moving automobile assembly line in Detroit, dropping the price of the Model T to a level that ordinary American workers could afford, and effectively converted the automobile from an aristocratic toy into the everyday means of transport that has restructured every American city built afterward.",
+     "American industrialization grew on the back of manufacturing labor that was incrementally automated across the twentieth century.",
+     "The transportation network spread cost-effective freight movement across the continent, while standardised maintenance routines kept the new assembly lines from stagnating.",
+     "Bureaucratic enforcement of safety legislation, the introduction of mandatory inspections, and incremental liability reform together reshaped the working day.",
+     "The cumulative globalization of supply chains has since integrated regional economies into a single market, with logistics coordination reducing the margin between input and finished good."
     ],
     "quiz": [
      {
@@ -5193,7 +5057,10 @@ const CHAPTER_CONTENT = {
      "A region of small fruit orchards south of San Francisco transformed across a few decades into the technological centre of the planet.",
      "Several young engineers assembled the first commercially viable personal computers from kits in their garages: Jobs and Wozniak founded Apple, while Gates and Allen built the operating system that ran on a competing IBM machine.",
      "The American Defense Department had connected a small network of university computers across the country into ARPANET, the original ancestor of the global internet, and a British computer scientist working at the European nuclear research facility eventually devised the World Wide Web protocol that permitted ordinary citizens to navigate the network through hyperlinks.",
-     "The cumulative effect across roughly two decades was to migrate computing from government laboratories into the pockets of every literate human being on the planet."
+     "The cumulative effect across roughly two decades was to migrate computing from government laboratories into the pockets of every literate human being on the planet.",
+     "American technology firms drove the digitization of every consumer transaction, optimised retail systems through automated checkout, deployed encryption to protect sensitive data, and pursued telecommunications infrastructure whose connectivity and interoperability now bind every household into a single global interface.",
+     "Branding strategies depend on demographic segmentation, and turnover in the start-up sector is calibrated against the latency of consumer attention.",
+     "Biometric authentication, virtualization of computing resources, and routine encryption have made cloud computing economically inevitable, while nanotechnology research, once speculative, has begun to deliver tangible engineered surfaces."
     ],
     "quiz": [
      {
@@ -5248,7 +5115,11 @@ const CHAPTER_CONTENT = {
      "The book ignited the modern environmental movement, generated the United States Environmental Protection Agency, and prompted the federal prohibition of DDT.",
      "Decades later, ecologists reintroduced the grey wolf into Yellowstone National Park, where the absence of large predators had permitted elk populations to overgraze every accessible riverbank.",
      "The wolves restored the trophic balance of the entire ecosystem, the streams recovered their vegetation, and the resident beaver populations returned.",
-     "Meanwhile honeybees have been disappearing from American commercial pollination operations through a combination of pesticide exposure and parasitic mite infestation, threatening the entire structure of American agriculture."
+     "Meanwhile honeybees have been disappearing from American commercial pollination operations through a combination of pesticide exposure and parasitic mite infestation, threatening the entire structure of American agriculture.",
+     "An adaptive system reorganises itself in response to a shifting environment.",
+     "Once the carrying capacity of any habitat is reached, further inputs only produce saturation, and additional resources cannot translate into new growth without prior structural change.",
+     "A solvent in the chemical sense is a liquid that absorbs a dissolved substance without chemical change; a solvent firm in the financial sense holds sufficient assets to meet its obligations.",
+     "Both senses share the underlying intuition of capacity to absorb something else without collapsing."
     ],
     "quiz": [
      {
@@ -5301,7 +5172,10 @@ const CHAPTER_CONTENT = {
      "Across the twentieth century these studios consolidated the entire industrial pipeline from script through production through global distribution into the most dominant cultural export the planet has ever seen.",
      "The Disney animation studio constructed its first feature with Snow White and the Seven Dwarfs, then expanded into theme parks, television networks, and merchandise empires until Disney effectively owned a substantial proportion of childhood worldwide.",
      "The Broadway theatre district in midtown Manhattan generated musicals fusing song, dialogue, choreography, and elaborate stage production: Phantom of the Opera, The Lion King, Hamilton.",
-     "American film and popular music have so saturated global culture that adolescents in countries the studios have never visited can sing along with every chorus, while a small industry of editorial commentary in the mainstream press tracks every box-office decision."
+     "American film and popular music have so saturated global culture that adolescents in countries the studios have never visited can sing along with every chorus, while a small industry of editorial commentary in the mainstream press tracks every box-office decision.",
+     "The sensationalism of cable news cycles has long privileged immediate drama over patient analysis, and the counterculture of the late twentieth century pushed back against the standardising effect of mass television.",
+     "Status anxiety, status hierarchies, and the symbolic display of consumption together shape every advertising decision, and the stereotype that any new minority is supposed to occupy quietly resists every campaign to dismantle it.",
+     "American literacy nonetheless climbed steadily on the back of compulsory schooling, and the literary canon read in every public-school classroom has produced waves of renowned essayists who write under both real names and pseudonyms."
     ],
     "quiz": [
      {
@@ -5686,7 +5560,10 @@ const CHAPTER_CONTENT = {
      "The whole weight of proof was thereby loaded onto the prosecution, the defendant absolved of any obligation to demonstrate his innocence, and a jury of ordinary citizens, summoned at random from the surrounding population, installed as the final barrier between the state and the individual.",
      "When provincial police neglected to inform a suspect of his right to remain silent, the Supreme Court annulled the resulting confession, and every American officer ever since has been compelled to recite, at the moment of arrest, the four short sentences known as the Miranda warning.",
      "The football celebrity tried for the murder of his former wife illustrated the same architecture in reverse: although the prosecution's case appeared overwhelming, the defence painstakingly dismantled the procedural integrity of the police investigation along racial fault lines that no courtroom could reconcile, and the jury acquitted him in defiance of the apparent evidence.",
-     "The law, in the end, defends not the truth itself but the citizen against the careless or vindictive exercise of authority."
+     "The law, in the end, defends not the truth itself but the citizen against the careless or vindictive exercise of authority.",
+     "The status of an asset on a corporate balance sheet, the ownership claims competing parties may assert over it, and the breach of contract that follows when those claims diverge are all matters routinely adjudicated by American courts.",
+     "Bureaucratic enforcement of disclosure rules limits opportunistic concealment, and stringent compliance reviews discipline the behaviour of executives whose tenure depends on quarterly results.",
+     "Liability insurance permits firms to absorb the cost of occasional litigation without becoming insolvent."
     ],
     "quiz": []
    },
@@ -5699,7 +5576,12 @@ const CHAPTER_CONTENT = {
      "The same logic has manufactured colossal fortunes and engineered equally spectacular collapses.",
      "The energy conglomerate Enron quietly buried its crippling debts inside an opaque thicket of shell subsidiaries, repackaged them as profits, and unravelled in a single weekend when the deception was at last exposed, prompting federal auditors to redraw the rules of corporate disclosure.",
      "Two decades later Wall Street bundled the mortgages of borrowers manifestly unable to repay them into elegantly named financial products, distributed them across the global banking system, and detonated a worldwide recession the instant the underlying borrowers defaulted.",
-     "When Tim Cook inherited Apple he invented nothing dramatic, but optimised the company's supply chain into a precision instrument so unforgiving that Apple became the most profitable corporation ever assembled."
+     "When Tim Cook inherited Apple he invented nothing dramatic, but optimised the company's supply chain into a precision instrument so unforgiving that Apple became the most profitable corporation ever assembled.",
+     "American business pursued aggressive entrepreneurship and innovation-driven productivity, mobilising capital through stock markets whose liquidity and pricing models required constant recalibration.",
+     "Manufacturing chains stretched across continents under the disciplines of logistics and benchmarking, and the fiscal and taxation policies of each administration determined whether the privatization or the decentralization of public services would dominate the cycle.",
+     "Mergers, valuations, and changes of ownership reshape the corporate landscape, while compliance with federal regulation closes the doors against negligent breaches.",
+     "The standardization of accounting rules, the optimization of supply-chain logistics, and the synergy between subsidiaries are all monitored against quarterly turnover.",
+     "Each consumer brand sustains itself through demographic segmentation and careful positioning against competing options."
     ],
     "quiz": []
    },
@@ -5713,14 +5595,7 @@ const CHAPTER_CONTENT = {
      "The same instruments, however, mislead anyone who confuses correlation with causation.",
      "Ice-cream sales and drowning deaths surge together every summer, not because ice cream drowns its consumers but because the heat of summer drives both.",
      "Today an algorithmic engine ingests the viewing history of hundreds of millions of subscribers and predicts, through matrix arithmetic, which programme will hold the viewer for one more episode.",
-     "We inhabit, increasingly, an existence in which everything is quantified, anticipated, and recommended for us before we have noticed wanting it."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.44",
-    "title": "Statistics and Quantitative Methods",
-    "blocks": [
+     "We inhabit, increasingly, an existence in which everything is quantified, anticipated, and recommended for us before we have noticed wanting it.",
      "Quantitative researchers compute the mean, the variance, and the ratio of every observed variable, then test the deviation of new measurements against the expected distribution.",
      "Normalization rescales raw data into a common range, and the resulting probability distribution permits inference about populations the researcher has never directly polled.",
      "Generalization always carries the risk that the original sample failed to be sufficiently homogeneous, and the patient analyst scrutinises any apparent fluctuation that strays beyond the expected approximation.",
@@ -5729,7 +5604,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.45",
+    "number": "10.44",
     "title": "Modern Urban Planning",
     "blocks": [
      "For most of the twentieth century the city was conceived as a machine for the automobile: arterial roads were carved through old neighbourhoods, pedestrians compressed onto narrow pavements, and the sidewalk café displaced by the traffic island.",
@@ -5737,12 +5612,16 @@ const CHAPTER_CONTENT = {
      "In Manhattan an obsolete freight railway suspended above the West Side was patiently transfigured, segment by segment, into a linear park called the High Line, and the property values along the adjacent blocks vaulted upward almost overnight, furnishing a model of post-industrial revitalisation that has since been imitated from Seoul to São Paulo.",
      "Barcelona retorted with the superblock, sealing off interior streets from through traffic and restoring them to pedestrians, café tables, and children improvising games on the asphalt.",
      "Singapore meanwhile housed the overwhelming majority of its citizens in carefully designed public apartments while throttling private car ownership through punitive licensing.",
-     "Beneath each of these distinct gambits runs a single reorientation: the city was reconceived as an instrument for the people who inhabit it rather than for the vehicles that traverse it."
+     "Beneath each of these distinct gambits runs a single reorientation: the city was reconceived as an instrument for the people who inhabit it rather than for the vehicles that traverse it.",
+     "The arrival of urbanization across North America pulled rural populations into the metropolitan core, where gentrification has repeatedly displaced longer-established residents from once-affordable neighbourhoods.",
+     "Renovation and revitalization initiatives have nonetheless begun to balance the loss, returning pedestrianization to busy streets and easing the residential strain in declining districts.",
+     "Municipal zoning bylaws constrain the proximity of incompatible uses, and federal advocacy groups continue to scrutinise the affordability of urban housing.",
+     "The cityscape that results is more pedestrian-friendly than any twentieth-century plan envisaged."
     ],
     "quiz": []
    },
    {
-    "number": "10.46",
+    "number": "10.45",
     "title": "Environmental Engineering and Water",
     "blocks": [
      "The most clandestine artery of the modern metropolis is its water supply.",
@@ -5755,7 +5634,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.47",
+    "number": "10.46",
     "title": "Materials Science",
     "blocks": [
      "Each human epoch is conventionally christened for the dominant material of its tools, from stone to bronze to iron, and the twentieth century ought by the same convention to be christened the age of synthetic materials.",
@@ -5763,14 +5642,7 @@ const CHAPTER_CONTENT = {
      "Women's stockings were liberated overnight from any dependence on the silkworm, and humanity had, for the first recorded time, deliberately manufactured a substance unknown to the natural world.",
      "Engineers at Bell Laboratories implanted minute impurities into a wafer of silicon to construct the transistor, a microscopic switch that herded electrical current on command, and every modern electronic device has since been erected on billions of them.",
      "The current frontier flirts with graphene, a sheet of pure carbon a single atom thick yet several hundred times stronger than steel, and conducting electricity more freely than any metal previously isolated.",
-     "Every breakthrough in material redraws, almost silently, the boundary of what becomes physically possible for our species."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.48",
-    "title": "The Properties of Materials",
-    "blocks": [
+     "Every breakthrough in material redraws, almost silently, the boundary of what becomes physically possible for our species.",
      "Materials engineers select alloys by their ductility under tension, the viscosity of their molten phase, the lubrication required to machine them without overheating, and the conductivity of the finished part.",
      "Plasticity allows a material to absorb deformation without breaking, while a brittle ceramic shatters at a single impact.",
      "A modern manufacturing line prototypes a new composite through additive techniques and then submits it to standardised durability and compressive testing under controlled load.",
@@ -5780,100 +5652,18 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.49",
+    "number": "10.47",
     "title": "Sustainable Energy",
     "blocks": [
      "After two centuries of incinerating coal and oil humanity has at last recognised that the buried fuels are finite and that the act of combusting them is gradually scorching the planet they inhabit.",
      "Engineers have accordingly pivoted toward sources that are, for any human horizon, inexhaustible: enormous wind turbines pivot quietly above the open sea, photovoltaic panels convert sunlight directly into electricity, geothermal stations siphon heat from kilometres beneath the crust, and tidal generators harness the gravitational pull of the moon itself.",
      "The dominant difficulty has migrated from generation to storage, because the wind does not blow obediently and the sun refuses to shine at night.",
      "Vast batteries and pumped-hydro reservoirs, into which surplus electricity drives water uphill so that it can be released through turbines on demand, have therefore quietly become the central technologies of the transition.",
-     "Several Scandinavian countries already run their grids almost entirely on hydroelectricity and wind, having converted energy from a substance to be excavated and combusted into a resource continuously borrowed from the natural world."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.50",
-    "title": "Energy and Meteorology",
-    "blocks": [
+     "Several Scandinavian countries already run their grids almost entirely on hydroelectricity and wind, having converted energy from a substance to be excavated and combusted into a resource continuously borrowed from the natural world.",
      "The transition to renewable energy depends on the generator running on wind or solar input, the hydroelectric reservoir storing the surplus, and reforestation projects that gradually augment the planet's standing biomass.",
      "National policies that fail to incentivise sustainability cannot halt the chronic loss of forest cover.",
      "Meteorological instruments calibrate the barometer to detect the air pressure that drives every cyclone, and weather satellites map the troposphere and stratosphere through which storm systems and meteor showers transit.",
      "Humidity and evaporation rates close to the surface are critical inputs to every forecast model, and the integration of biospheric carbon dynamics into climate scenarios has revised expectations for the coming century."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.51",
-    "title": "Urbanisation and City Planning",
-    "blocks": [
-     "The arrival of urbanization across North America pulled rural populations into the metropolitan core, where gentrification has repeatedly displaced longer-established residents from once-affordable neighbourhoods.",
-     "Renovation and revitalization initiatives have nonetheless begun to balance the loss, returning pedestrianization to busy streets and easing the residential strain in declining districts.",
-     "Municipal zoning bylaws constrain the proximity of incompatible uses, and federal advocacy groups continue to scrutinise the affordability of urban housing.",
-     "The cityscape that results is more pedestrian-friendly than any twentieth-century plan envisaged."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.52",
-    "title": "The Economy and Business",
-    "blocks": [
-     "American business pursued aggressive entrepreneurship and innovation-driven productivity, mobilising capital through stock markets whose liquidity and pricing models required constant recalibration.",
-     "Manufacturing chains stretched across continents under the disciplines of logistics and benchmarking, and the fiscal and taxation policies of each administration determined whether the privatization or the decentralization of public services would dominate the cycle.",
-     "Mergers, valuations, and changes of ownership reshape the corporate landscape, while compliance with federal regulation closes the doors against negligent breaches.",
-     "The standardization of accounting rules, the optimization of supply-chain logistics, and the synergy between subsidiaries are all monitored against quarterly turnover.",
-     "Each consumer brand sustains itself through demographic segmentation and careful positioning against competing options."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.53",
-    "title": "Digital Infrastructure",
-    "blocks": [
-     "American technology firms drove the digitization of every consumer transaction, optimised retail systems through automated checkout, deployed encryption to protect sensitive data, and pursued telecommunications infrastructure whose connectivity and interoperability now bind every household into a single global interface.",
-     "Branding strategies depend on demographic segmentation, and turnover in the start-up sector is calibrated against the latency of consumer attention.",
-     "Biometric authentication, virtualization of computing resources, and routine encryption have made cloud computing economically inevitable, while nanotechnology research, once speculative, has begun to deliver tangible engineered surfaces."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.54",
-    "title": "Industrial Labour and Transport",
-    "blocks": [
-     "American industrialization grew on the back of manufacturing labor that was incrementally automated across the twentieth century.",
-     "The transportation network spread cost-effective freight movement across the continent, while standardised maintenance routines kept the new assembly lines from stagnating.",
-     "Bureaucratic enforcement of safety legislation, the introduction of mandatory inspections, and incremental liability reform together reshaped the working day.",
-     "The cumulative globalization of supply chains has since integrated regional economies into a single market, with logistics coordination reducing the margin between input and finished good."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.55",
-    "title": "Media, Culture, and Counterculture",
-    "blocks": [
-     "The sensationalism of cable news cycles has long privileged immediate drama over patient analysis, and the counterculture of the late twentieth century pushed back against the standardising effect of mass television.",
-     "Status anxiety, status hierarchies, and the symbolic display of consumption together shape every advertising decision, and the stereotype that any new minority is supposed to occupy quietly resists every campaign to dismantle it.",
-     "American literacy nonetheless climbed steadily on the back of compulsory schooling, and the literary canon read in every public-school classroom has produced waves of renowned essayists who write under both real names and pseudonyms."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.56",
-    "title": "Status, Ownership, and Breach",
-    "blocks": [
-     "The status of an asset on a corporate balance sheet, the ownership claims competing parties may assert over it, and the breach of contract that follows when those claims diverge are all matters routinely adjudicated by American courts.",
-     "Bureaucratic enforcement of disclosure rules limits opportunistic concealment, and stringent compliance reviews discipline the behaviour of executives whose tenure depends on quarterly results.",
-     "Liability insurance permits firms to absorb the cost of occasional litigation without becoming insolvent."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.57",
-    "title": "Adaptive Systems and Saturation",
-    "blocks": [
-     "An adaptive system reorganises itself in response to a shifting environment.",
-     "Once the carrying capacity of any habitat is reached, further inputs only produce saturation, and additional resources cannot translate into new growth without prior structural change.",
-     "A solvent in the chemical sense is a liquid that absorbs a dissolved substance without chemical change; a solvent firm in the financial sense holds sufficient assets to meet its obligations.",
-     "Both senses share the underlying intuition of capacity to absorb something else without collapsing."
     ],
     "quiz": []
    }
