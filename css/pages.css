@@ -1989,9 +1989,10 @@
   font-weight: 400; line-height: 1.42; letter-spacing: 0.02em;
   text-align: center; color: #3f3628;
   width: 100%; max-width: none; margin: auto 0;
-  display: -webkit-box; -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5; overflow: hidden;
 }
+/* When open, the quote/example can run long: let each text zone scroll inside
+   its painted box instead of clipping the words. */
+.note-card.is-open .note-quote-inner { overflow-y: auto; -webkit-overflow-scrolling: touch; justify-content: flex-start; }
 /* target word — low-saturation light gold, classical and restrained */
 .note-card .quote-word {
   color: #9a7b32;
@@ -2038,6 +2039,7 @@
   display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch;
   overflow: hidden; cursor: pointer; text-align: left;
 }
+.note-card.is-open .note-word { overflow-y: auto; -webkit-overflow-scrolling: touch; }
 /* ---- right-bottom: example + 中文 — CENTRED in its zone ---- */
 .note-card .note-example {
   position: absolute;
@@ -2046,6 +2048,8 @@
   display: flex; flex-direction: column; justify-content: center;
   overflow: hidden; cursor: pointer; text-align: left;
 }
+/* open card → full example text, scrollable inside the box (no clamp/clip) */
+.note-card.is-open .note-example { overflow-y: auto; -webkit-overflow-scrolling: touch; justify-content: flex-start; }
 .note-card .word-example {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(15px, 1.25vw, 23px);
@@ -2061,6 +2065,9 @@
   display: -webkit-box; -webkit-box-orient: vertical;
   -webkit-line-clamp: 2; overflow: hidden;
 }
+/* open → reveal all lines (the box scrolls) */
+.note-card.is-open .word-example { -webkit-line-clamp: unset; display: block; overflow: visible; }
+.note-card.is-open .word-example-zh { -webkit-line-clamp: unset; display: block; overflow: visible; }
 .note-card .word-title {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(26px, 2.2vw, 46px);

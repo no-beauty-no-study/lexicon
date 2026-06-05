@@ -1187,7 +1187,9 @@ const Views = (function () {
         else if (fromOrigin === "note") toIndexBtn.innerHTML = '<span class="nav-glyph">❖</span>Notes';
         toIndexBtn.addEventListener("click", (e) => {
           e.stopPropagation();
-          window.__navDir = (fromOrigin === "garden" || fromOrigin === "note") ? "up" : "fade";
+          // Returning to the index turns the page BACK (slides right); garden /
+          // notes origins flow up to their deck.
+          window.__navDir = (fromOrigin === "garden" || fromOrigin === "note") ? "up" : "back";
           window.go(isBrowse ? browseBackHref : "#chapters");
         });
       }
@@ -1230,6 +1232,28 @@ const Views = (function () {
         }
         window.go(ChapterNav.nextAfterReading(chapterId, sectionNum));
       });
+
+      // BROWSE: left/right swipe turns the page (iPad reading by hand) — swipe
+      // LEFT = Next, swipe RIGHT = Prev. Only fires on a clear horizontal drag
+      // so it never steals a word-tap or a vertical scroll.
+      if (isBrowse) {
+        let sx = 0, sy = 0, st = 0, tracking = false;
+        host.addEventListener("touchstart", (e) => {
+          if (e.touches.length !== 1) { tracking = false; return; }
+          const t = e.touches[0]; sx = t.clientX; sy = t.clientY; st = Date.now(); tracking = true;
+        }, { passive: true });
+        host.addEventListener("touchend", (e) => {
+          if (!tracking) return; tracking = false;
+          const t = e.changedTouches[0]; if (!t) return;
+          const dx = t.clientX - sx, dy = t.clientY - sy;
+          if (Date.now() - st > 700) return;
+          if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.7) return;   // not a clean horizontal swipe
+          if (e.target.closest(".word-drawer, .qx-scrim, .reading-controls, input")) return;
+          const btn = dx < 0 ? host.querySelector("[data-next]") : host.querySelector("[data-prev]");
+          if (btn) btn.click();
+        }, { passive: true });
+      }
+
       const quizBtn = host.querySelector("[data-quiz]");
       if (quizBtn) quizBtn.addEventListener("click", (e) => {
         e.stopPropagation();
