@@ -3017,7 +3017,19 @@ const Views = (function () {
         if (phase === "word") { revealQ(); return; }
         const opt = e.target.closest(".quiz-option");
         if (phase === "choosing") { if (opt) answerReview(opt); return; }
-        if (phase === "answered") { if (opt) studyFlip(opt); else stageA(); return; }
+        if (phase === "answered") {
+          if (opt) {
+            // First tap reveals the English word; a second tap (word already
+            // showing) opens that word's card — like reading.
+            const en = opt.dataset.en || "";
+            if (opt.dataset.flip === "en" && en && typeof WordCard !== "undefined") {
+              WordCard.openBigCard(en, { from: "review" });
+            } else {
+              studyFlip(opt);
+            }
+          } else { stageA(); }
+          return;
+        }
       });
 
       // ============ between stages — ask whether to spell ============

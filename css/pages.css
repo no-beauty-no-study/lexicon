@@ -2481,13 +2481,16 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 }
 
 /* Review choice options reuse the site's paper-grading quiz-option look */
-.review-art .quiz-options { margin: 8px auto 0; padding: 0; list-style: none; max-width: 460px; text-align: left; }
+.review-art .quiz-options { margin: 8px auto 0; padding: 0; list-style: none; width: min(86%, 460px); max-width: 460px; text-align: left; }
 .review-art .quiz-option {
-  position: relative; display: flex; align-items: baseline; gap: 0.6em;
-  width: 100%; max-width: 460px; box-sizing: border-box; min-height: 0; margin: 0.5em auto; padding: 0.04em 0.4em;
+  position: relative; display: flex; align-items: flex-start; gap: 0.6em;
+  width: 100%; max-width: none; box-sizing: border-box;
+  min-height: 2.5em;                 /* reserve ~2 lines so flipping zh↔en never jumps the column */
+  margin: 0.5em 0; padding: 0.18em 0.4em;
   font-family: var(--font-body); font-size: 22px; line-height: 1.34;
   letter-spacing: 0.022em; color: #33363A; cursor: pointer; background: transparent; border: 0;
 }
+.review-art .quiz-option-text { flex: 1 1 auto; }
 .review-art .quiz-option:hover { color: #2f281f; }
 .review-art .quiz-option-letter { width: 1.85em; color: #8a7653; letter-spacing: 0.12em; flex: 0 0 auto; }
 /* correct/wrong visual is shared with the reading quiz via :is(.reading-art,
