@@ -1,4 +1,4 @@
-/* Reading content. */
+/* Reading content (sections in chronological order). */
 const CHAPTER_CONTENT = {
  "universe": {
   "number": "1",
@@ -434,21 +434,6 @@ const CHAPTER_CONTENT = {
    },
    {
     "number": "2.7",
-    "title": "The Tunguska Event",
-    "blocks": [
-     "At dawn over a remote stretch of central Siberia a flash brighter than the sun erupted across the sky, followed within seconds by a concussion that flattened a vast tract of pristine forest in a single instant, toppling enormous numbers of trees in a radial pattern, shattering windows hundreds of kilometres away, and hurling distant herdsmen off their feet.",
-     "The blast was equivalent in raw violence to a sustained nuclear arsenal.",
-     "Yet when scientists at last reached the remote site, decades after the event, they confronted a single inexplicable absence.",
-     "There was no impact crater.",
-     "An event sufficient to flatten a vast tract of forest had left no hole in the ground.",
-     "The current consensus is that an incoming asteroid or comet detonated some kilometres above the surface, with the result that the shock wave reached the ground but the original object itself never did.",
-     "The precise nature, size, and composition of the object, however, remain undetermined.",
-     "Had the same fragment arrived only hours later, after the Earth had rotated further on its axis, the target beneath it would have been a populous European city."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "2.8",
     "title": "How a Tree Made You",
     "blocks": [
      "Once the giants were gone, the planet belonged to the mammals.",
@@ -480,6 +465,21 @@ const CHAPTER_CONTENT = {
      }
     ],
     "audio_prefix": "assets/audio/ch2/2.7"
+   },
+   {
+    "number": "2.8",
+    "title": "The Tunguska Event",
+    "blocks": [
+     "At dawn over a remote stretch of central Siberia a flash brighter than the sun erupted across the sky, followed within seconds by a concussion that flattened a vast tract of pristine forest in a single instant, toppling enormous numbers of trees in a radial pattern, shattering windows hundreds of kilometres away, and hurling distant herdsmen off their feet.",
+     "The blast was equivalent in raw violence to a sustained nuclear arsenal.",
+     "Yet when scientists at last reached the remote site, decades after the event, they confronted a single inexplicable absence.",
+     "There was no impact crater.",
+     "An event sufficient to flatten a vast tract of forest had left no hole in the ground.",
+     "The current consensus is that an incoming asteroid or comet detonated some kilometres above the surface, with the result that the shock wave reached the ground but the original object itself never did.",
+     "The precise nature, size, and composition of the object, however, remain undetermined.",
+     "Had the same fragment arrived only hours later, after the Earth had rotated further on its axis, the target beneath it would have been a populous European city."
+    ],
+    "quiz": []
    }
   ]
  },
@@ -665,136 +665,6 @@ const CHAPTER_CONTENT = {
    },
    {
     "number": "3.8",
-    "title": "Sleep and the Body Clock",
-    "blocks": [
-     "Buried deep inside every human skull a small invisible clock keeps time, indifferent to whether the sun is up.",
-     "A cluster of neurons called the suprachiasmatic nucleus oscillates at its own approximately daily rhythm, dispatching orders to the rest of the body about when to feel awake and when to surrender to sleep.",
-     "After dusk the pineal gland in the brain secretes the hormone melatonin, drowsiness creeps quietly into the limbs, and the body prepares for shutdown.",
-     "The trouble is that human ingenuity has gifted us electric lighting and the luminous screens of telephones, whose blue wavelengths impersonate sunlight so convincingly that the brain is duped into believing the day still continues, and the entire modern biological clock has accordingly been thrown into chronic disarray.",
-     "Insomnia has consequently swelled into an epidemic.",
-     "Sleep itself, contrary to its idle reputation, is not the brain switching off between shifts but instead one of its busiest stretches of work.",
-     "During the deepest stages cerebrospinal fluid floods the tissue, flushing out the metabolic waste accumulated during the day, while the rapid-eye-movement phase quietly sorts, compresses, and consolidates the short-term memories of the previous hours into long-term storage.",
-     "The student who sleeps too little fails to retain what he has learned not because he is lazy but because his brain has had no chance to archive the lesson before the next one arrives."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.9",
-    "title": "Memory and Forgetting",
-    "blocks": [
-     "A pioneering German psychologist named Hermann Ebbinghaus, faced with an entirely empty field, conscripted himself into service as his own laboratory animal.",
-     "He memorised long lists of meaningless syllables and recorded, day after day, how rapidly each one slipped from his grasp.",
-     "From the resulting data he plotted the first forgetting curve in the history of psychology and exposed an inconvenient truth: retention collapses sharply across the earliest interval and afterwards drifts downward much more gently.",
-     "From this counter-intuitive shape comes a powerful study technique.",
-     "Rather than rehearsing the material many times in immediate succession, the learner ought to revisit it at the precise moment when forgetting is about to seize it, so that each retrieval reinforces the trace a little more durably than the last.",
-     "This is called spaced repetition.",
-     "The orators of ancient Greece, meanwhile, had devised an entirely different solution called the memory palace.",
-     "They mentally lodged each item to be remembered inside a particular room of a familiar building, then strolled through the building in the mind whenever they needed to retrieve the contents.",
-     "Both techniques exploit the same modern neurological fact: a memory is not a fixed recording but a structure the brain rebuilds every time it is summoned, and the more often the structure is rebuilt the firmer its foundations become.",
-     "Memorization reinforced by spaced retrieval rather than rereading is a far more reliable route to long-term retention, and the intrinsic motivation to learn outlasts the extrinsic incentive of a grade.",
-     "Procrastination is the predictable derivative of low intrinsic interest.",
-     "Metacognition, the patient monitoring of one's own thought, is itself a learnable habit, and the empirical literature confirms that a brief distraction during practice can deepen rather than weaken retention, provided the learner returns promptly to the task.",
-     "The retrieval cue, not the original encoding, often determines whether a memory will be accessible at all.",
-     "Comprehension of the material itself is the prerequisite for any productive review session."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.10",
-    "title": "Neuroscience",
-    "blocks": [
-     "Tucked inside the skull, the brain stitches together vast numbers of neurons through tiny chemical gaps called synapses, the simultaneous connections inside it outnumbering the stars of the entire Milky Way.",
-     "A famous railway worker was tamping powder one afternoon when an iron rod fired upward through his frontal lobe and exited out the top of his head.",
-     "Astonishingly, he survived.",
-     "But the mild, reliable young man his colleagues had known swung overnight into someone impulsive, profane, and uncontrollable, and his transformation handed neuroscience its first hard evidence that character and moral judgement reside in specific regions of the brain rather than hovering immaterially somewhere above the body.",
-     "Subsequent research has traced the circuitry.",
-     "Fear is triggered by a small structure called the amygdala.",
-     "Memories are consolidated by the hippocampus.",
-     "Rational decision-making is supervised by the prefrontal cortex.",
-     "The most counter-intuitive discovery, however, is that the brain rebuilds itself throughout life, a property called neuroplasticity.",
-     "The visual cortex of a blind person is gradually rewired to process touch and sound, and the motor regions of a stroke patient can be coaxed into taking over the functions of damaged tissue.",
-     "Learning any new skill, in this sense, is the physical rewiring of one's own brain at the cellular level.",
-     "Twentieth-century behaviorism reduced learning to stimulus-response associations measurable in a pigeon's pecking, treating cognition itself as an unverifiable black box.",
-     "Later constructivism rebuilt the field by treating the learner as actively assembling internal models.",
-     "The contemporary electroencephalogram tracks attentional and inhibitory networks in real time, while functional imaging traces neurogenesis in the adult hippocampus and the lateralization of language between the cerebral hemispheres.",
-     "Sensory and perceptual processes turn out to be neither purely intrinsic nor purely extrinsic but the integration of both, and metacognition, the patient monitoring of one's own thought, is now an active research field.",
-     "Behavioral conditioning, once the only respectable handle on the mind, has been complemented rather than replaced by these neural methods."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.11",
-    "title": "The Microbiome and the Gut",
-    "blocks": [
-     "The human intestine quietly accommodates trillions of bacteria whose combined cell count rivals that of the human cells in the entire body and whose combined mass piles up to roughly a kilogram.",
-     "For most of medical history the bacteria were dismissed as adversaries to be eradicated on sight.",
-     "Only recently have researchers established that this enormous resident community, the gut microbiome, behaves as an indispensable organ in its own right.",
-     "It digests dietary fibres that human enzymes cannot break apart, synthesises essential vitamins, and patiently trains the immune system to distinguish friend from foe.",
-     "More disorienting still, the gut and the brain converse directly along a dedicated nerve highway, and the microbes themselves manufacture chemical messengers that influence mood and appetite, so the colloquial reference to a gut feeling may quietly carry literal biological weight.",
-     "When the gut bacteria of a slim mouse are transplanted into an obese mouse, the obese mouse begins to lose weight.",
-     "Within a few days of a dietary shift the entire community reshuffles itself.",
-     "Every meal you eat, in effect, reshapes an invisible ecosystem residing inside you."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.12",
-    "title": "Smell and Memory",
-    "blocks": [
-     "The human nose discriminates among an enormous range of separate scents, vastly more than the colours the eye can resolve.",
-     "A familiar smell will jolt a powerful and uncannily specific memory into consciousness because olfactory information takes a private shortcut through the brain.",
-     "Instead of routing through the thalamus like every other sense, the smell signal projects directly into the amygdala and the hippocampus, the very regions that store emotion and long-term memory, so the recovered memory arrives with its original feeling already attached.",
-     "The French novelist Marcel Proust wrote a celebrated passage in which the scent of a small cake dipped in tea returns the whole of his childhood in a single overwhelming instant, and the phenomenon has been christened the Proust effect in his honour.",
-     "Every individual's catalogue of olfactory memory is intensely private, because each scent fuses indelibly to the situation and the emotional state in which it was first encountered, and the association is essentially unbreakable for the rest of a lifetime.",
-     "A perfume, an old book, the wet pavement after summer rain, each opens a corridor in the brain that no deliberate effort of recall ever quite enters on its own."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.13",
-    "title": "Sound and Hearing",
-    "blocks": [
-     "Sound is nothing more than the vibration of air, and deep within the ear a spiral organ shaped like the shell of a snail houses thousands of microscopic hair cells, each tuned to a different frequency.",
-     "Incoming vibrations agitate different hairs along the spiral, and the brain receives a coded electrical signal that has quietly translated atmospheric motion into perceived pitch.",
-     "The same brain possesses the remarkable knack of locking onto a single voice in a crowded noisy room and filtering out everything else, a faculty known as the cocktail party effect that engineers required generations of patient computation to begin to imitate.",
-     "Whales have pushed the use of sound to its outer limits.",
-     "Their low-frequency songs propagate across vast stretches of ocean, every member of a population sings the same song, and the population collaboratively revises the melody from one year to the next.",
-     "The noise of the modern city, by contrast, persecutes its inhabitants.",
-     "Prolonged exposure to traffic noise measurably raises blood pressure, disrupts sleep, and degrades hearing itself.",
-     "Silence has accordingly mutated into an increasingly luxurious resource."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.14",
-    "title": "DNA and Genes",
-    "blocks": [
-     "Inside the nucleus of every cell coils a long chain called DNA, whose four chemical letters spell out, in arrangements of breathtaking compactness, the complete instructions for assembling an entire human being.",
-     "A single cell holds a chain longer than a small child, folded tightly into a region too small to see.",
-     "Two young researchers at Cambridge, James Watson and Francis Crick, leaning heavily on the X-ray crystallography of a female colleague named Rosalind Franklin whose name went unrecorded for decades, deduced that DNA takes the form of a double helix: two intertwined strands of complementary bases that, when separated, each serve as a template for the synthesis of a fresh partner, so that one cell becomes two with the inherited code preserved intact.",
-     "A long patient international effort subsequently sequenced the entire human genome, the biological equivalent of a lunar landing.",
-     "The biochemist Jennifer Doudna later refined the CRISPR system, originally a bacterial defence against invading viruses, into a precise pair of molecular scissors capable of editing any gene at any location, conferring on our species the power to rewrite its own inheritance and dropping it, for the first time, onto the moral question of whether it should."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.15",
-    "title": "Child Cognitive Development",
-    "blocks": [
-     "The Swiss psychologist Jean Piaget patiently devoted decades to observing children, including his own, and demonstrated that small children are not simply little adults who have not yet been told everything, but instead reason according to a logic profoundly different from the adult one, climbing through fixed developmental stages on their way upward.",
-     "A young infant has not yet acquired the concept of object permanence: a thing that disappears from sight has, for the infant, ceased to exist altogether, which is precisely why the game of peekaboo strikes the infant as so dramatic.",
-     "A slightly older child sincerely believes that the same volume of water poured into a tall narrow glass has somehow increased on the way over, because the child has not yet grasped the abstract notion that quantity is conserved across changes of shape.",
-     "Linguists have also identified a critical window for language acquisition.",
-     "Children deprived of normal linguistic input during this window, in the rare and harrowing documented cases of extreme childhood isolation, never quite master the grammar of any subsequent language, and once the window has slammed shut it cannot be coaxed open again.",
-     "Personality research has long distinguished the extrovert who draws energy from social stimulation from the introvert who recovers in solitude, while subconscious patterns of conformity, formed in childhood, partly determine each adult's stereotyping of strangers.",
-     "Motivation may be intrinsic, springing from genuine interest, or extrinsic, driven by reward; the intergroup distinction between an in-group and an out-group emerges remarkably early.",
-     "The propensity to procrastinate falls predictably as intrinsic motivation rises, and the patient cultivation of empathy quietly enlarges the ethical horizon of the developing child.",
-     "A subjective report of one's own state can be checked against quantitative behavioural measures, but the two seldom agree perfectly."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "3.16",
     "title": "The Nile and the Pharaoh",
     "blocks": [
      "Once every summer, the great river that traverses northeastern Africa flooded reliably across its lower valley, depositing a layer of fertile silt onto the narrow strip of cultivable soil along either bank, and finally fanning out into the broad Nile delta where the river meets the Mediterranean.",
@@ -822,7 +692,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.7"
    },
    {
-    "number": "3.17",
+    "number": "3.9",
     "title": "The Caravans and the Books",
     "blocks": [
      "On the southern edge of the Sahara, where the desert begins to yield to the savannah, a trading city named Timbuktu flourished across the fourteenth century.",
@@ -852,7 +722,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.8"
    },
    {
-    "number": "3.18",
+    "number": "3.10",
     "title": "The Ships at the Coast",
     "blocks": [
      "European ships began calling regularly at the West African coast from the late fifteenth century, exchanging guns, rum, and bolts of cloth for captured human beings.",
@@ -879,7 +749,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.9"
    },
    {
-    "number": "3.19",
+    "number": "3.11",
     "title": "The Lines on the Map",
     "blocks": [
      "At the end of the nineteenth century the European powers gathered around a single map in Berlin and drew the boundaries of their African colonies with rulers and pencils, deliberately ignoring the tribal, linguistic, and ethnic frontiers that the continent had developed across thousands of years.",
@@ -911,7 +781,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.10"
    },
    {
-    "number": "3.20",
+    "number": "3.12",
     "title": "Mandela and the Long Patience",
     "blocks": [
      "Across the middle of the twentieth century, almost every African colony achieved nominal independence, yet the borders the Europeans had drawn left so many ethnic groups divided between separate countries that internal conflict has scarcely ceased anywhere on the continent since.",
@@ -937,7 +807,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.11"
    },
    {
-    "number": "3.21",
+    "number": "3.13",
     "title": "The Beat That Came Back",
     "blocks": [
      "The rhythmic patterns enslaved Africans carried into the holds of the slave ships eventually transformed, in the cotton fields and ghettos of the Americas, into blues, jazz, soul, and hip-hop, and from there reflected back across the Atlantic to the continent of origin.",
@@ -963,7 +833,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.12"
    },
    {
-    "number": "3.22",
+    "number": "3.14",
     "title": "The Wounds That Will Not Close",
     "blocks": [
      "Some wounds inflicted on Africa in the late twentieth century have refused to close on schedule.",
@@ -990,7 +860,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch3/3.13"
    },
    {
-    "number": "3.23",
+    "number": "3.15",
     "title": "The Continent That Did Not Wait",
     "blocks": [
      "What Rwanda built after the genocide nobody anticipated.",
@@ -1015,6 +885,136 @@ const CHAPTER_CONTENT = {
      }
     ],
     "audio_prefix": "assets/audio/ch3/3.14"
+   },
+   {
+    "number": "3.16",
+    "title": "Sleep and the Body Clock",
+    "blocks": [
+     "Buried deep inside every human skull a small invisible clock keeps time, indifferent to whether the sun is up.",
+     "A cluster of neurons called the suprachiasmatic nucleus oscillates at its own approximately daily rhythm, dispatching orders to the rest of the body about when to feel awake and when to surrender to sleep.",
+     "After dusk the pineal gland in the brain secretes the hormone melatonin, drowsiness creeps quietly into the limbs, and the body prepares for shutdown.",
+     "The trouble is that human ingenuity has gifted us electric lighting and the luminous screens of telephones, whose blue wavelengths impersonate sunlight so convincingly that the brain is duped into believing the day still continues, and the entire modern biological clock has accordingly been thrown into chronic disarray.",
+     "Insomnia has consequently swelled into an epidemic.",
+     "Sleep itself, contrary to its idle reputation, is not the brain switching off between shifts but instead one of its busiest stretches of work.",
+     "During the deepest stages cerebrospinal fluid floods the tissue, flushing out the metabolic waste accumulated during the day, while the rapid-eye-movement phase quietly sorts, compresses, and consolidates the short-term memories of the previous hours into long-term storage.",
+     "The student who sleeps too little fails to retain what he has learned not because he is lazy but because his brain has had no chance to archive the lesson before the next one arrives."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "3.17",
+    "title": "Memory and Forgetting",
+    "blocks": [
+     "A pioneering German psychologist named Hermann Ebbinghaus, faced with an entirely empty field, conscripted himself into service as his own laboratory animal.",
+     "He memorised long lists of meaningless syllables and recorded, day after day, how rapidly each one slipped from his grasp.",
+     "From the resulting data he plotted the first forgetting curve in the history of psychology and exposed an inconvenient truth: retention collapses sharply across the earliest interval and afterwards drifts downward much more gently.",
+     "From this counter-intuitive shape comes a powerful study technique.",
+     "Rather than rehearsing the material many times in immediate succession, the learner ought to revisit it at the precise moment when forgetting is about to seize it, so that each retrieval reinforces the trace a little more durably than the last.",
+     "This is called spaced repetition.",
+     "The orators of ancient Greece, meanwhile, had devised an entirely different solution called the memory palace.",
+     "They mentally lodged each item to be remembered inside a particular room of a familiar building, then strolled through the building in the mind whenever they needed to retrieve the contents.",
+     "Both techniques exploit the same modern neurological fact: a memory is not a fixed recording but a structure the brain rebuilds every time it is summoned, and the more often the structure is rebuilt the firmer its foundations become.",
+     "Memorization reinforced by spaced retrieval rather than rereading is a far more reliable route to long-term retention, and the intrinsic motivation to learn outlasts the extrinsic incentive of a grade.",
+     "Procrastination is the predictable derivative of low intrinsic interest.",
+     "Metacognition, the patient monitoring of one's own thought, is itself a learnable habit, and the empirical literature confirms that a brief distraction during practice can deepen rather than weaken retention, provided the learner returns promptly to the task.",
+     "The retrieval cue, not the original encoding, often determines whether a memory will be accessible at all.",
+     "Comprehension of the material itself is the prerequisite for any productive review session."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "3.18",
+    "title": "Neuroscience",
+    "blocks": [
+     "Tucked inside the skull, the brain stitches together vast numbers of neurons through tiny chemical gaps called synapses, the simultaneous connections inside it outnumbering the stars of the entire Milky Way.",
+     "A famous railway worker was tamping powder one afternoon when an iron rod fired upward through his frontal lobe and exited out the top of his head.",
+     "Astonishingly, he survived.",
+     "But the mild, reliable young man his colleagues had known swung overnight into someone impulsive, profane, and uncontrollable, and his transformation handed neuroscience its first hard evidence that character and moral judgement reside in specific regions of the brain rather than hovering immaterially somewhere above the body.",
+     "Subsequent research has traced the circuitry.",
+     "Fear is triggered by a small structure called the amygdala.",
+     "Memories are consolidated by the hippocampus.",
+     "Rational decision-making is supervised by the prefrontal cortex.",
+     "The most counter-intuitive discovery, however, is that the brain rebuilds itself throughout life, a property called neuroplasticity.",
+     "The visual cortex of a blind person is gradually rewired to process touch and sound, and the motor regions of a stroke patient can be coaxed into taking over the functions of damaged tissue.",
+     "Learning any new skill, in this sense, is the physical rewiring of one's own brain at the cellular level.",
+     "Twentieth-century behaviorism reduced learning to stimulus-response associations measurable in a pigeon's pecking, treating cognition itself as an unverifiable black box.",
+     "Later constructivism rebuilt the field by treating the learner as actively assembling internal models.",
+     "The contemporary electroencephalogram tracks attentional and inhibitory networks in real time, while functional imaging traces neurogenesis in the adult hippocampus and the lateralization of language between the cerebral hemispheres.",
+     "Sensory and perceptual processes turn out to be neither purely intrinsic nor purely extrinsic but the integration of both, and metacognition, the patient monitoring of one's own thought, is now an active research field.",
+     "Behavioral conditioning, once the only respectable handle on the mind, has been complemented rather than replaced by these neural methods."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "3.19",
+    "title": "The Microbiome and the Gut",
+    "blocks": [
+     "The human intestine quietly accommodates trillions of bacteria whose combined cell count rivals that of the human cells in the entire body and whose combined mass piles up to roughly a kilogram.",
+     "For most of medical history the bacteria were dismissed as adversaries to be eradicated on sight.",
+     "Only recently have researchers established that this enormous resident community, the gut microbiome, behaves as an indispensable organ in its own right.",
+     "It digests dietary fibres that human enzymes cannot break apart, synthesises essential vitamins, and patiently trains the immune system to distinguish friend from foe.",
+     "More disorienting still, the gut and the brain converse directly along a dedicated nerve highway, and the microbes themselves manufacture chemical messengers that influence mood and appetite, so the colloquial reference to a gut feeling may quietly carry literal biological weight.",
+     "When the gut bacteria of a slim mouse are transplanted into an obese mouse, the obese mouse begins to lose weight.",
+     "Within a few days of a dietary shift the entire community reshuffles itself.",
+     "Every meal you eat, in effect, reshapes an invisible ecosystem residing inside you."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "3.20",
+    "title": "Smell and Memory",
+    "blocks": [
+     "The human nose discriminates among an enormous range of separate scents, vastly more than the colours the eye can resolve.",
+     "A familiar smell will jolt a powerful and uncannily specific memory into consciousness because olfactory information takes a private shortcut through the brain.",
+     "Instead of routing through the thalamus like every other sense, the smell signal projects directly into the amygdala and the hippocampus, the very regions that store emotion and long-term memory, so the recovered memory arrives with its original feeling already attached.",
+     "The French novelist Marcel Proust wrote a celebrated passage in which the scent of a small cake dipped in tea returns the whole of his childhood in a single overwhelming instant, and the phenomenon has been christened the Proust effect in his honour.",
+     "Every individual's catalogue of olfactory memory is intensely private, because each scent fuses indelibly to the situation and the emotional state in which it was first encountered, and the association is essentially unbreakable for the rest of a lifetime.",
+     "A perfume, an old book, the wet pavement after summer rain, each opens a corridor in the brain that no deliberate effort of recall ever quite enters on its own."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "3.21",
+    "title": "Sound and Hearing",
+    "blocks": [
+     "Sound is nothing more than the vibration of air, and deep within the ear a spiral organ shaped like the shell of a snail houses thousands of microscopic hair cells, each tuned to a different frequency.",
+     "Incoming vibrations agitate different hairs along the spiral, and the brain receives a coded electrical signal that has quietly translated atmospheric motion into perceived pitch.",
+     "The same brain possesses the remarkable knack of locking onto a single voice in a crowded noisy room and filtering out everything else, a faculty known as the cocktail party effect that engineers required generations of patient computation to begin to imitate.",
+     "Whales have pushed the use of sound to its outer limits.",
+     "Their low-frequency songs propagate across vast stretches of ocean, every member of a population sings the same song, and the population collaboratively revises the melody from one year to the next.",
+     "The noise of the modern city, by contrast, persecutes its inhabitants.",
+     "Prolonged exposure to traffic noise measurably raises blood pressure, disrupts sleep, and degrades hearing itself.",
+     "Silence has accordingly mutated into an increasingly luxurious resource."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "3.22",
+    "title": "DNA and Genes",
+    "blocks": [
+     "Inside the nucleus of every cell coils a long chain called DNA, whose four chemical letters spell out, in arrangements of breathtaking compactness, the complete instructions for assembling an entire human being.",
+     "A single cell holds a chain longer than a small child, folded tightly into a region too small to see.",
+     "Two young researchers at Cambridge, James Watson and Francis Crick, leaning heavily on the X-ray crystallography of a female colleague named Rosalind Franklin whose name went unrecorded for decades, deduced that DNA takes the form of a double helix: two intertwined strands of complementary bases that, when separated, each serve as a template for the synthesis of a fresh partner, so that one cell becomes two with the inherited code preserved intact.",
+     "A long patient international effort subsequently sequenced the entire human genome, the biological equivalent of a lunar landing.",
+     "The biochemist Jennifer Doudna later refined the CRISPR system, originally a bacterial defence against invading viruses, into a precise pair of molecular scissors capable of editing any gene at any location, conferring on our species the power to rewrite its own inheritance and dropping it, for the first time, onto the moral question of whether it should."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "3.23",
+    "title": "Child Cognitive Development",
+    "blocks": [
+     "The Swiss psychologist Jean Piaget patiently devoted decades to observing children, including his own, and demonstrated that small children are not simply little adults who have not yet been told everything, but instead reason according to a logic profoundly different from the adult one, climbing through fixed developmental stages on their way upward.",
+     "A young infant has not yet acquired the concept of object permanence: a thing that disappears from sight has, for the infant, ceased to exist altogether, which is precisely why the game of peekaboo strikes the infant as so dramatic.",
+     "A slightly older child sincerely believes that the same volume of water poured into a tall narrow glass has somehow increased on the way over, because the child has not yet grasped the abstract notion that quantity is conserved across changes of shape.",
+     "Linguists have also identified a critical window for language acquisition.",
+     "Children deprived of normal linguistic input during this window, in the rare and harrowing documented cases of extreme childhood isolation, never quite master the grammar of any subsequent language, and once the window has slammed shut it cannot be coaxed open again.",
+     "Personality research has long distinguished the extrovert who draws energy from social stimulation from the introvert who recovers in solitude, while subconscious patterns of conformity, formed in childhood, partly determine each adult's stereotyping of strangers.",
+     "Motivation may be intrinsic, springing from genuine interest, or extrinsic, driven by reward; the intergroup distinction between an in-group and an out-group emerges remarkably early.",
+     "The propensity to procrastinate falls predictably as intrinsic motivation rises, and the patient cultivation of empathy quietly enlarges the ethical horizon of the developing child.",
+     "A subjective report of one's own state can be checked against quantitative behavioural measures, but the two seldom agree perfectly."
+    ],
+    "quiz": []
    }
   ]
  },
@@ -2732,7 +2732,7 @@ const CHAPTER_CONTENT = {
    },
    {
     "number": "7.25",
-    "title": "sealyra",
+    "title": "Sealyra",
     "blocks": [
      "To curb the demographic explosion that had accompanied the early decades of the People's Republic, the central authorities instituted what is colloquially known as the one-child policy, restricting most urban families to a single offspring under penalty of considerable administrative sanction. sealyra was born into precisely this demographic interlude, an only daughter saturated from infancy with the undivided expectations and resources of two parents and four grandparents, an entire generational pyramid converging on a single small recipient.",
      "She matriculated through the formal Chinese educational apparatus, qualified for an art conservatoire as an adolescent, and proceeded into a tertiary programme in visual communication design.",
@@ -3212,39 +3212,6 @@ const CHAPTER_CONTENT = {
    },
    {
     "number": "9.16",
-    "title": "Epidemiology and Plague",
-    "blocks": [
-     "When cholera tore through industrialising London, the prevailing theory blamed foul air, the so-called miasma, exhaled by rotting matter.",
-     "A physician named John Snow flatly refused to accept it.",
-     "He mapped every recorded death on a chart of the surrounding streets and watched, line by line, a tight cluster emerge around a single neighbourhood water pump.",
-     "He persuaded the authorities to remove the handle of the pump, the epidemic subsided within days, and the discipline of epidemiology was born along with it.",
-     "Looking backward across history, the bubonic plague killed roughly a third of medieval Europe and so thoroughly undermined the moral authority of the church that the entire medieval order began to collapse upon itself.",
-     "Smallpox accompanying the Spanish into the Americas exterminated indigenous populations on a scale large enough to deliver an entire empire into the hands of a small ragged expedition.",
-     "The great influenza outbreak after the First World War killed more people than the war itself.",
-     "Each great epidemic, far from being merely a tragedy of mortality, quietly reshapes wage rates, religious authority, town planning, and even habits as small as washing one's hands."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.17",
-    "title": "Vaccines and Modern Medicine",
-    "blocks": [
-     "An observant English country doctor named Edward Jenner noticed that the milkmaids who handled cattle every day almost never contracted the lethal disease smallpox, having previously caught a much milder bovine disease called cowpox.",
-     "He boldly inoculated a small boy with cowpox lymph, then exposed the same boy to the genuine smallpox virus, and watched the boy emerge entirely immune.",
-     "The technique he had invented is called vaccination, the English word descending from the Latin vacca for cow.",
-     "The underlying principle is to display to the immune system a preview of a dangerous pathogen so that the body manufactures matching antibodies in advance, so when the real pathogen at last arrives the defending army already recognises it on sight.",
-     "A coordinated global vaccination campaign has driven smallpox into complete extinction, the only human infectious disease ever eradicated from the planet.",
-     "Generations after Jenner, a radical new technology called messenger RNA was deployed against the recent coronavirus pandemic.",
-     "Instead of injecting the virus itself, scientists encoded the genetic instructions for one viral protein and let each patient's own cells manufacture the preview, compressing into months a development cycle that traditionally demanded a decade.",
-     "Modern medicine distinguishes acute pathology that strikes suddenly from chronic conditions that linger across years.",
-     "Malnutrition is the persistent shortage of essential nutrients in the diet, and vaccination programmes combined with antibiotic therapy have driven down the global burden of infection.",
-     "Pathology laboratories process tissue samples and digestion-related tests at industrial scale, while public health rehabilitates millions of patients each year through coordinated outpatient care.",
-     "Susceptibility to common pathogens is partly genetic and partly dietary, and the verification of every new treatment now passes through stringent regulatory review."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.18",
     "title": "The Dome and the Medici",
     "blocks": [
      "The Florentine cathedral had stood for a century with a vast circular opening at its centre that no architect could figure out how to roof.",
@@ -3271,7 +3238,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.13"
    },
    {
-    "number": "9.19",
+    "number": "9.17",
     "title": "Leonardo da Vinci",
     "blocks": [
      "Born illegitimate, Leonardo da Vinci was permanently barred from the formal universities of his era, and the exclusion freed him from any obligation to respect the boundaries between academic disciplines.",
@@ -3284,7 +3251,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.20",
+    "number": "9.18",
     "title": "Michelangelo",
     "blocks": [
      "All his life Michelangelo insisted he was only a sculptor, and resented even the Pope for coercing him into painting the ceiling of the Sistine Chapel against his preference.",
@@ -3297,7 +3264,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.21",
+    "number": "9.19",
     "title": "The Three Masters",
     "blocks": [
      "Leonardo da Vinci painted the Mona Lisa during the day and dissected human cadavers in secret at night, recording in his notebooks the anatomical details he observed alongside designs for helicopters, tanks, and submarines four centuries ahead of any plausible implementation.",
@@ -3323,7 +3290,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.14"
    },
    {
-    "number": "9.22",
+    "number": "9.20",
     "title": "Cellini Casts the Perseus",
     "blocks": [
      "A hot-tempered Florentine goldsmith and sculptor named Benvenuto Cellini received from his Duke the commission to cast a bronze statue of Perseus brandishing the severed head of Medusa.",
@@ -3344,7 +3311,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.23",
+    "number": "9.21",
     "title": "The Northern Renaissance",
     "blocks": [
      "When the Renaissance crossed the Alps it acquired a different aesthetic.",
@@ -3369,7 +3336,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.15"
    },
    {
-    "number": "9.24",
+    "number": "9.22",
     "title": "Westward into the Unknown",
     "blocks": [
      "The Genoese navigator Columbus calculated, on the basis of mistakenly low estimates, that the planet was small enough to circumnavigate westward to Asia within a few weeks.",
@@ -3394,7 +3361,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.16"
    },
    {
-    "number": "9.25",
+    "number": "9.23",
     "title": "The Spanish Golden Century",
     "blocks": [
      "The Castilian writer Cervantes composed Don Quixote, in which an elderly gentleman addled by chivalric novels mounts a worn-out horse and charges windmills he sincerely believes to be giants, a satire universally credited as the first modern novel.",
@@ -3420,7 +3387,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.17"
    },
    {
-    "number": "9.26",
+    "number": "9.24",
     "title": "Ninety-Five Theses",
     "blocks": [
      "The German artisan Gutenberg invented movable metal type and printed the first European Bible, then went bankrupt before he could see the implications of his invention propagate.",
@@ -3447,7 +3414,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.18"
    },
    {
-    "number": "9.27",
+    "number": "9.25",
     "title": "The Astronomer and the Telescope",
     "blocks": [
      "The Polish astronomer Copernicus calculated, against every philosophical and theological intuition of his era, that the Earth was not the centre of the universe but instead orbited around the Sun.",
@@ -3477,7 +3444,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.19"
    },
    {
-    "number": "9.28",
+    "number": "9.26",
     "title": "Alchemy",
     "blocks": [
      "Among the manuscripts Isaac Newton left at his death, the notes on physics occupy only a slender minority.",
@@ -3491,7 +3458,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.29",
+    "number": "9.27",
     "title": "Astrology and Tarot",
     "blocks": [
      "For countless generations the priests of ancient Mesopotamia climbed each evening to the roof of their temple to register the positions of the planets, convinced that the wandering of those distant lights corresponded, line by line, to the fates of kings on the dust below.",
@@ -3505,7 +3472,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.30",
+    "number": "9.28",
     "title": "The Glover's Son and the Virgin Queen",
     "blocks": [
      "The son of a small-town glove-maker grew up to write thirty-seven plays and one hundred fifty-four sonnets that effectively reshaped the English language itself.",
@@ -3531,7 +3498,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.20"
    },
    {
-    "number": "9.31",
+    "number": "9.29",
     "title": "The Lens and the Stock",
     "blocks": [
      "The Delft cloth merchant Anton van Leeuwenhoek ground his own glass lenses and constructed the most powerful microscope of his era, through which he first perceived bacteria, spermatozoa, and the single-celled organisms he called animalcules.",
@@ -3556,7 +3523,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.21"
    },
    {
-    "number": "9.32",
+    "number": "9.30",
     "title": "The Baroque and the Light",
     "blocks": [
      "Baroque painting abandoned the calm clarity of the Renaissance in favour of high contrast and emotional violence.",
@@ -3583,7 +3550,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.22"
    },
    {
-    "number": "9.33",
+    "number": "9.31",
     "title": "The Anatomy",
     "blocks": [
      "Medieval European authorities had prohibited the dissection of human cadavers, so European medical textbooks continued reproducing the anatomical errors of the Greek physician Galen for over a thousand years.",
@@ -3608,7 +3575,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.23"
    },
    {
-    "number": "9.34",
+    "number": "9.32",
     "title": "The Chicken and the Stove",
     "blocks": [
      "The English statesman Francis Bacon, founder of empiricism, insisted that all genuine knowledge must originate in observed experiment rather than received authority.",
@@ -3634,7 +3601,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.24"
    },
    {
-    "number": "9.35",
+    "number": "9.33",
     "title": "The Plague Year",
     "blocks": [
      "When the bubonic plague closed Cambridge, a young undergraduate named Isaac Newton retreated to the family farm and within eighteen months independently formulated universal gravitation, invented the differential and integral calculus, and demonstrated through prism experiments that ordinary white light contains every colour of the rainbow.",
@@ -3660,7 +3627,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.25"
    },
    {
-    "number": "9.36",
+    "number": "9.34",
     "title": "The Fire and the Dome",
     "blocks": [
      "A bakery on Pudding Lane caught fire one night and the resulting blaze consumed two thirds of the medieval City of London across the following five days, demolishing every wooden structure between St Paul's and the river.",
@@ -3685,7 +3652,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.26"
    },
    {
-    "number": "9.37",
+    "number": "9.35",
     "title": "The Parisian Cafés",
     "blocks": [
      "The intellectual centre of European Europe migrated from the monastery and the royal salon into the cafés of eighteenth-century Paris, where philosophers and writers congregated daily over coffee to argue the political principles of the coming century.",
@@ -3716,7 +3683,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.27"
    },
    {
-    "number": "9.38",
+    "number": "9.36",
     "title": "The Baroque Composer",
     "blocks": [
      "Baroque music elaborated several independent melodic lines simultaneously through the discipline of counterpoint, each voice maintaining its own integrity while contributing to a harmonic whole.",
@@ -3741,7 +3708,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.28"
    },
    {
-    "number": "9.39",
+    "number": "9.37",
     "title": "The Three Viennese Masters",
     "blocks": [
      "The three composers who consolidated the classical symphony all converged on imperial Vienna across a single century.",
@@ -3767,7 +3734,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.29"
    },
    {
-    "number": "9.40",
+    "number": "9.38",
     "title": "The Engine and the Loom",
     "blocks": [
      "The Scottish engineer James Watt, repairing a worn Newcomen steam engine, perceived that adding a separate condensing chamber would multiply the efficiency of the entire mechanism several times over.",
@@ -3793,7 +3760,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.30"
    },
    {
-    "number": "9.41",
+    "number": "9.39",
     "title": "Guillotine and Empire",
     "blocks": [
      "The French king Louis XVI was conducted to the public scaffold in Paris and beheaded by guillotine before a cheering crowd, terminating a thousand years of Bourbon monarchy in a single afternoon.",
@@ -3817,7 +3784,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.31"
    },
    {
-    "number": "9.42",
+    "number": "9.40",
     "title": "The Year Without a Summer",
     "blocks": [
      "A circle of English poets sheltered at a villa on the shore of Lake Geneva during the summer of the Tambora ash cloud, when the unrelenting rain prevented every outdoor pursuit.",
@@ -3844,7 +3811,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.32"
    },
    {
-    "number": "9.43",
+    "number": "9.41",
     "title": "The Fossils and the Origin",
     "blocks": [
      "A twelve-year-old English girl named Mary Anning, daughter of a furniture repairman on the south coast of Dorset, excavated a five-metre fossilised marine reptile from the cliffs near her home and subsequently dug up dozens of additional extinct creatures whose existence the established theology of her era was theoretically not permitted to accommodate.",
@@ -3869,7 +3836,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.33"
    },
    {
-    "number": "9.44",
+    "number": "9.42",
     "title": "Darwin and the Universal Face",
     "blocks": [
      "Having finished On the Origin of Species, Darwin fixed his eye on a subtler question.",
@@ -3886,7 +3853,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.45",
+    "number": "9.43",
     "title": "The Victorian Novel",
     "blocks": [
      "The English novel reached its mature form across the Victorian century.",
@@ -3912,7 +3879,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.34"
    },
    {
-    "number": "9.46",
+    "number": "9.44",
     "title": "Marx, Nietzsche, and the Horse",
     "blocks": [
      "The German political economist Marx spent decades in the reading room of the British Museum drafting Das Kapital, in which he articulated the doctrine that capitalism would collapse under its own internal contradictions and that proletarian revolution was historically inevitable.",
@@ -3938,7 +3905,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.35"
    },
    {
-    "number": "9.47",
+    "number": "9.45",
     "title": "The Russian Triple",
     "blocks": [
      "The Russian aristocrat Tolstoy left his estate to labour alongside the peasants in his own fields, wrote War and Peace tracking several aristocratic families through the Napoleonic invasion, and authored Anna Karenina, in which a married woman destroys herself for love beneath the wheels of a train.",
@@ -3964,7 +3931,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.36"
    },
    {
-    "number": "9.48",
+    "number": "9.46",
     "title": "Romantic and Realist Paint",
     "blocks": [
      "After the French Revolution, painting split into competing schools.",
@@ -3990,7 +3957,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.37"
    },
    {
-    "number": "9.49",
+    "number": "9.47",
     "title": "The Impressionists",
     "blocks": [
      "A circle of young French painters whom the official Salon had rejected mounted an independent exhibition, and a hostile critic christened them Impressionists in mockery of a painting by Monet titled Impression, Sunrise.",
@@ -4017,7 +3984,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.38"
    },
    {
-    "number": "9.50",
+    "number": "9.48",
     "title": "The Opera House",
     "blocks": [
      "The nineteenth-century opera house became the centre of European bourgeois entertainment.",
@@ -4043,7 +4010,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.39"
    },
    {
-    "number": "9.51",
+    "number": "9.49",
     "title": "The Germs and the Pasteurised Milk",
     "blocks": [
      "The French chemist Pasteur demonstrated through controlled experiments that fermentation and infectious disease were both caused by microscopic living organisms invisible to the unaided eye, definitively refuting the doctrine of spontaneous generation and establishing the modern principle of microbial causality in disease.",
@@ -4069,7 +4036,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.40"
    },
    {
-    "number": "9.52",
+    "number": "9.50",
     "title": "Pasteur and the Living Yeast",
     "blocks": [
      "The wine and beer brewers of nineteenth-century France were tormented by a mystery.",
@@ -4083,6 +4050,39 @@ const CHAPTER_CONTENT = {
      "Pasteur devised a simple technique of warming the liquid just enough to kill the contaminating microbes without destroying the flavour, a method now called pasteurisation in his honour, and every carton of milk on every modern shelf has relied on it ever since.",
      "He then reasoned, almost casually, that since invisible microbes could spoil wine, perhaps invisible microbes could also breed disease inside the human body.",
      "The intuition rewrote the whole of modern medicine."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "9.51",
+    "title": "Epidemiology and Plague",
+    "blocks": [
+     "When cholera tore through industrialising London, the prevailing theory blamed foul air, the so-called miasma, exhaled by rotting matter.",
+     "A physician named John Snow flatly refused to accept it.",
+     "He mapped every recorded death on a chart of the surrounding streets and watched, line by line, a tight cluster emerge around a single neighbourhood water pump.",
+     "He persuaded the authorities to remove the handle of the pump, the epidemic subsided within days, and the discipline of epidemiology was born along with it.",
+     "Looking backward across history, the bubonic plague killed roughly a third of medieval Europe and so thoroughly undermined the moral authority of the church that the entire medieval order began to collapse upon itself.",
+     "Smallpox accompanying the Spanish into the Americas exterminated indigenous populations on a scale large enough to deliver an entire empire into the hands of a small ragged expedition.",
+     "The great influenza outbreak after the First World War killed more people than the war itself.",
+     "Each great epidemic, far from being merely a tragedy of mortality, quietly reshapes wage rates, religious authority, town planning, and even habits as small as washing one's hands."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "9.52",
+    "title": "Vaccines and Modern Medicine",
+    "blocks": [
+     "An observant English country doctor named Edward Jenner noticed that the milkmaids who handled cattle every day almost never contracted the lethal disease smallpox, having previously caught a much milder bovine disease called cowpox.",
+     "He boldly inoculated a small boy with cowpox lymph, then exposed the same boy to the genuine smallpox virus, and watched the boy emerge entirely immune.",
+     "The technique he had invented is called vaccination, the English word descending from the Latin vacca for cow.",
+     "The underlying principle is to display to the immune system a preview of a dangerous pathogen so that the body manufactures matching antibodies in advance, so when the real pathogen at last arrives the defending army already recognises it on sight.",
+     "A coordinated global vaccination campaign has driven smallpox into complete extinction, the only human infectious disease ever eradicated from the planet.",
+     "Generations after Jenner, a radical new technology called messenger RNA was deployed against the recent coronavirus pandemic.",
+     "Instead of injecting the virus itself, scientists encoded the genetic instructions for one viral protein and let each patient's own cells manufacture the preview, compressing into months a development cycle that traditionally demanded a decade.",
+     "Modern medicine distinguishes acute pathology that strikes suddenly from chronic conditions that linger across years.",
+     "Malnutrition is the persistent shortage of essential nutrients in the diet, and vaccination programmes combined with antibiotic therapy have driven down the global burden of infection.",
+     "Pathology laboratories process tissue samples and digestion-related tests at industrial scale, while public health rehabilitates millions of patients each year through coordinated outpatient care.",
+     "Susceptibility to common pathogens is partly genetic and partly dietary, and the verification of every new treatment now passes through stringent regulatory review."
     ],
     "quiz": []
    },
@@ -4116,6 +4116,20 @@ const CHAPTER_CONTENT = {
    },
    {
     "number": "9.54",
+    "title": "The Radium Craze",
+    "blocks": [
+     "Marie Curie's isolation of the self-luminous element radium triggered one of the most absurd episodes in consumer history.",
+     "Manufacturers cheerfully laced radium into toothpaste, face cream, chocolate, and bottled spring water, advertising the element as a universal tonic capable of restoring youth and energising any flagging metabolism.",
+     "A wealthy American named Eben Byers swallowed several bottles of radium-laced water every day for years and ultimately lost most of his jaw to radiation necrosis, dying in a manner so gruesome that the public was at last shaken into recognising radium as a violent poison.",
+     "Meanwhile, in a watch-dial factory, a workforce of young women painted luminous numerals onto wristwatches with a paint laced with radium, and their supervisors instructed them to lick the tip of each brush to keep the bristles pointed, never warning them that the luminous powder was quietly eating their bones from inside.",
+     "These workers, later christened the Radium Girls, gradually developed disfiguring jaw necrosis, lost their teeth, and watched their skeletons crumble, while the corporation that employed them denied responsibility and suppressed the medical findings.",
+     "A handful of dying women dragged their employer through the courts and established a landmark legal precedent: a worker may sue the employer for occupational injury.",
+     "They paid with their lives for the first foundation stone of modern workplace safety law."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "9.55",
     "title": "The Rules of the Game",
     "blocks": [
      "Modern team sports emerged largely from the public schools of nineteenth-century England, where masters used organised games to inculcate gentlemanly virtues into adolescent boys.",
@@ -4140,7 +4154,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.42"
    },
    {
-    "number": "9.55",
+    "number": "9.56",
     "title": "The Private Estate",
     "blocks": [
      "The Belgian king Leopold II personally acquired sovereignty over a vast territory in central Africa, designated the Congo Free State, that legally belonged to him rather than to the Belgian nation.",
@@ -4167,7 +4181,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.43"
    },
    {
-    "number": "9.56",
+    "number": "9.57",
     "title": "The Vienna of the Mind",
     "blocks": [
      "Early twentieth-century Vienna constituted a single experimental laboratory of the human interior.",
@@ -4193,7 +4207,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.44"
    },
    {
-    "number": "9.57",
+    "number": "9.58",
     "title": "The Irish Revival",
     "blocks": [
      "After centuries of English domination and the potato famine that had starved a million Irish to death while exporting two million more to America, Ireland appeared culturally exhausted.",
@@ -4218,7 +4232,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.45"
    },
    {
-    "number": "9.58",
+    "number": "9.59",
     "title": "The Modernist Sentence",
     "blocks": [
      "European fiction in the early twentieth century turned away from external event toward the texture of internal experience.",
@@ -4244,7 +4258,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.46"
    },
    {
-    "number": "9.59",
+    "number": "9.60",
     "title": "The Modern Canvas",
     "blocks": [
      "Twentieth-century painting, the most aggressively avant-garde movement in any art form, demolished five hundred years of single-viewpoint perspective.",
@@ -4272,7 +4286,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.47"
    },
    {
-    "number": "9.60",
+    "number": "9.61",
     "title": "The Trenches",
     "blocks": [
      "A Serbian nationalist named Princip shot the heir to the Austro-Hungarian throne in the streets of Sarajevo, and the resulting cascade of mutual defence treaties dragged virtually every European power into a continental war within weeks.",
@@ -4297,7 +4311,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.48"
    },
    {
-    "number": "9.61",
+    "number": "9.62",
     "title": "The Concentration Camp",
     "blocks": [
      "Post-war German hyperinflation rendered the currency so worthless that a loaf of bread required a wheelbarrow of banknotes.",
@@ -4322,7 +4336,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.49"
    },
    {
-    "number": "9.62",
+    "number": "9.63",
     "title": "The Camera Walks Out",
     "blocks": [
      "Post-war European cinema rebelled simultaneously in two countries against Hollywood polish.",
@@ -4352,7 +4366,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.50"
    },
    {
-    "number": "9.63",
+    "number": "9.64",
     "title": "The Social Sciences",
     "blocks": [
      "Modern social theory built itself from the wreckage of pre-modern Europe.",
@@ -4388,7 +4402,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.51"
    },
    {
-    "number": "9.64",
+    "number": "9.65",
     "title": "The Long Light of the North",
     "blocks": [
      "The Scandinavian aesthetic was forged by long dark winters, abundant pale wood, and very little metal.",
@@ -4415,7 +4429,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.52"
    },
    {
-    "number": "9.65",
+    "number": "9.66",
     "title": "The Balkans Burn Again",
     "blocks": [
      "The federation of Yugoslavia held together six south Slavic republics, four languages, and three religions under the iron presidency of Tito; when he died, the federation began to disintegrate along precisely those ethnic and religious fault lines that he had welded shut.",
@@ -4441,7 +4455,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.53"
    },
    {
-    "number": "9.66",
+    "number": "9.67",
     "title": "The Wall Falls, the Borders Open",
     "blocks": [
      "Across forty years the Berlin Wall divided a single German city into a Western capitalist half and an Eastern communist half, until the East German government, unable to contain the swelling demonstrations on its own streets, abruptly suspended the border controls and the entire wall was demolished by the surrounding crowds across a single euphoric night.",
@@ -4466,7 +4480,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.54"
    },
    {
-    "number": "9.67",
+    "number": "9.68",
     "title": "The Grammar in Every Baby",
     "blocks": [
      "European linguistics across the twentieth century articulated the discipline that studies how human language actually operates.",
@@ -4496,7 +4510,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch9/9.55"
    },
    {
-    "number": "9.68",
+    "number": "9.69",
     "title": "Deciphering Lost Scripts",
     "blocks": [
      "A French soldier scrambling through the Egyptian campaign uncovered a slab of black basalt inscribed with the same passage in three different scripts: Egyptian hieroglyphic, an Egyptian cursive, and ancient Greek.",
@@ -4511,7 +4525,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.69",
+    "number": "9.70",
     "title": "Modern Linguistics",
     "blocks": [
      "The Swiss scholar Ferdinand de Saussure threw down a disorienting principle.",
@@ -4529,7 +4543,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "9.70",
+    "number": "9.71",
     "title": "Esperanto",
     "blocks": [
      "A young Polish eye doctor named Ludwik Zamenhof grew up in a city in which Poles, Jews, Germans, and Russians coexisted in mutual suspicion, fragmented above all by the languages that divided them.",
@@ -4539,20 +4553,6 @@ const CHAPTER_CONTENT = {
      "It never became the universal tongue Zamenhof had imagined, partly because English, propped up by the British Empire and later American power, quietly seized that role instead.",
      "Yet Esperanto endures.",
      "Several thousand people still speak it fluently to this day, and a handful of children have been raised by their parents as native speakers of a language an ophthalmologist devised from scratch one evening at his desk."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "9.71",
-    "title": "The Radium Craze",
-    "blocks": [
-     "Marie Curie's isolation of the self-luminous element radium triggered one of the most absurd episodes in consumer history.",
-     "Manufacturers cheerfully laced radium into toothpaste, face cream, chocolate, and bottled spring water, advertising the element as a universal tonic capable of restoring youth and energising any flagging metabolism.",
-     "A wealthy American named Eben Byers swallowed several bottles of radium-laced water every day for years and ultimately lost most of his jaw to radiation necrosis, dying in a manner so gruesome that the public was at last shaken into recognising radium as a violent poison.",
-     "Meanwhile, in a watch-dial factory, a workforce of young women painted luminous numerals onto wristwatches with a paint laced with radium, and their supervisors instructed them to lick the tip of each brush to keep the bristles pointed, never warning them that the luminous powder was quietly eating their bones from inside.",
-     "These workers, later christened the Radium Girls, gradually developed disfiguring jaw necrosis, lost their teeth, and watched their skeletons crumble, while the corporation that employed them denied responsibility and suppressed the medical findings.",
-     "A handful of dying women dragged their employer through the courts and established a landmark legal precedent: a worker may sue the employer for occupational injury.",
-     "They paid with their lives for the first foundation stone of modern workplace safety law."
     ],
     "quiz": []
    }
@@ -4798,6 +4798,17 @@ const CHAPTER_CONTENT = {
    },
    {
     "number": "10.10",
+    "title": "Benjamin Franklin",
+    "blocks": [
+     "Born into a poor Boston household, Benjamin Franklin was withdrawn from school as a small child to apprentice in his elder brother's print shop and proceeded, in defiance of his interrupted education, to instruct himself by devouring every borrowed book within reach.",
+     "During a thunderstorm he famously flew a kite trailing a brass key, demonstrated that the lightning ripping across the sky and the electrical fluid he could conjure in his Philadelphia laboratory were one and the same phenomenon, and casually invented the lightning rod, which has since rescued countless church spires from incineration.",
+     "He deliberately refused to patent any of his inventions, arguing that since he himself had benefited from the inventions of others his own ought likewise to be freely available to anyone who could use them: bifocal spectacles, an efficient stove, the swim fin, a glass musical instrument played with damp fingers.",
+     "He proved equally formidable as a diplomat, crossing the Atlantic at an age when most men retire and negotiating the decisive French support that ultimately delivered the new United States from the British Empire."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "10.11",
     "title": "The Gold and the Tears",
     "blocks": [
      "Word that gold had been discovered in California provoked hundreds of thousands of prospectors to migrate westward by wagon train and clipper ship, transforming the small port of San Francisco into an instant metropolis.",
@@ -4823,7 +4834,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.10"
    },
    {
-    "number": "10.11",
+    "number": "10.12",
     "title": "The War Over Slavery",
     "blocks": [
      "The economic basis of the southern United States had become the cotton plantation, whose operation absolutely required the unpaid labour of several million enslaved Africans.",
@@ -4850,7 +4861,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.11"
    },
    {
-    "number": "10.12",
+    "number": "10.13",
     "title": "The Music Out of the Field",
     "blocks": [
      "The work songs of enslaved Africans labouring in cotton fields, the call-and-response hollers that synchronised the rhythm of group labour, and the spirituals adapted from biblical text, transformed across generations into the secular music known as the blues.",
@@ -4877,7 +4888,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.12"
    },
    {
-    "number": "10.13",
+    "number": "10.14",
     "title": "The Light and the Spark",
     "blocks": [
      "The American inventor Edison opened a research laboratory in New Jersey and generated the first commercially viable incandescent light bulb, the phonograph, and the motion picture camera, eventually accumulating over a thousand patents.",
@@ -4903,7 +4914,22 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.13"
    },
    {
-    "number": "10.14",
+    "number": "10.15",
+    "title": "Nikola Tesla",
+    "blocks": [
+     "Nikola Tesla disembarked in New York from a Serbian village with a few coins in his pocket and a head crowded with diagrams that would, given time, remake the entire planet.",
+     "He worked briefly under Thomas Edison and quarrelled with him irreparably over the merits of direct against alternating current.",
+     "Edison's direct current could only crawl across short distances before fading.",
+     "Tesla, calmly defiant, maintained that alternating current would deliver electricity across hundreds of kilometres without flinching, and to discredit him Edison publicly electrocuted stray animals using alternating current in a grotesque campaign of fear.",
+     "The laws of physics, however, sided unambiguously with Tesla, and every modern electrical grid on the planet now runs on alternating current.",
+     "Tesla also conceived wireless power transmission, remote control, and the polyphase induction motor, several of his proposals so far ahead of their epoch that the technology of his time could not even begin to realise them.",
+     "He proved hopelessly incapable of converting his inventions into a successful business, was repeatedly outmanoeuvred by sharper commercial minds, and died alone in a Manhattan hotel room with only his pet pigeons for company.",
+     "Long afterward an electric-car company adopted his name, restoring to a forgotten genius a measure of the recognition his contemporaries had withheld."
+    ],
+    "quiz": []
+   },
+   {
+    "number": "10.16",
     "title": "The Telephone, the Aeroplane, the Assembly Line",
     "blocks": [
      "The Scottish-American Alexander Graham Bell, attempting to design a hearing aid for his deaf mother, accidentally invented the telephone instead and demonstrated for the first time that the human voice could be transmitted across an electrical wire.",
@@ -4931,7 +4957,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.14"
    },
    {
-    "number": "10.15",
+    "number": "10.17",
     "title": "The Tycoon and the Library",
     "blocks": [
      "John D.",
@@ -4957,7 +4983,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.15"
    },
    {
-    "number": "10.16",
+    "number": "10.18",
     "title": "The Crash and the War",
     "blocks": [
      "The collapse of the New York stock market initiated a decade of unemployment, bank failures, and agricultural devastation now remembered as the Great Depression.",
@@ -4981,7 +5007,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.16"
    },
    {
-    "number": "10.17",
+    "number": "10.19",
     "title": "Jesse Owens at Berlin",
     "blocks": [
      "The Berlin Olympics, staged on the eve of the Second World War, had been meticulously engineered by Hitler into a propaganda showcase for the supremacy of the Aryan race, and the dictator intended to prove to the watching world that white Europeans stood biologically above every other people on the planet.",
@@ -4997,7 +5023,7 @@ const CHAPTER_CONTENT = {
     "quiz": []
    },
    {
-    "number": "10.18",
+    "number": "10.20",
     "title": "The Bomb",
     "blocks": [
      "Albert Einstein, having fled Nazi Germany for the institute at Princeton, wrote to President Roosevelt warning that German physicists might exploit nuclear fission to construct a weapon of unprecedented destructive capacity.",
@@ -5023,7 +5049,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.17"
    },
    {
-    "number": "10.19",
+    "number": "10.21",
     "title": "The Race to the Moon",
     "blocks": [
      "When the Soviet Union launched the first artificial satellite into low Earth orbit and the first cosmonaut into space, the United States, perceiving itself overtaken, established the National Aeronautics and Space Administration and committed to landing astronauts on the surface of the Moon.",
@@ -5048,7 +5074,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.18"
    },
    {
-    "number": "10.20",
+    "number": "10.22",
     "title": "The Mind in the Laboratory",
     "blocks": [
      "Twentieth-century American psychology laboratories conducted a series of experiments that progressively dismantled the optimistic conception of the human mind.",
@@ -5076,7 +5102,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.19"
    },
    {
-    "number": "10.21",
+    "number": "10.23",
     "title": "The Code of Life",
     "blocks": [
      "The American biologist Watson and the British physicist Crick, working at Cambridge with crucial X-ray crystallographic data produced by Rosalind Franklin, deduced that the molecule of heredity, DNA, takes the form of a double helix, two intertwined strands of complementary base pairs.",
@@ -5102,7 +5128,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.20"
    },
    {
-    "number": "10.22",
+    "number": "10.24",
     "title": "The Garage",
     "blocks": [
      "A region of small fruit orchards south of San Francisco transformed across a few decades into the technological centre of the planet.",
@@ -5130,7 +5156,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.21"
    },
    {
-    "number": "10.23",
+    "number": "10.25",
     "title": "The Pocket Computer",
     "blocks": [
      "Steve Jobs returned to Apple after a decade of exile and presented the iPhone, integrating a touch-sensitive screen, a personal computer, a phone, a camera, and a portable internet terminal into a single device that fits inside an ordinary pocket.",
@@ -5159,7 +5185,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.22"
    },
    {
-    "number": "10.24",
+    "number": "10.26",
     "title": "The Silent Spring",
     "blocks": [
      "The marine biologist Rachel Carson published a book demonstrating that the pesticide DDT, sprayed liberally on American agricultural land across the post-war decades, was accumulating in the tissues of insectivorous birds and thinning the shells of their eggs to the point that virtually no chicks were hatching.",
@@ -5189,7 +5215,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.23"
    },
    {
-    "number": "10.25",
+    "number": "10.27",
     "title": "The Splatter and the Soup Can",
     "blocks": [
      "After the Second World War the centre of the visual art world migrated from Paris to New York.",
@@ -5216,7 +5242,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.24"
    },
    {
-    "number": "10.26",
+    "number": "10.28",
     "title": "Hollywood",
     "blocks": [
      "A handful of Jewish immigrant entrepreneurs migrated west from New York to the small Los Angeles suburb of Hollywood and established the first film studios there.",
@@ -5245,7 +5271,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.25"
    },
    {
-    "number": "10.27",
+    "number": "10.29",
     "title": "The Building Reaches Up",
     "blocks": [
      "After the Chicago Fire, engineers invented the steel-skeleton load-bearing structure, which permitted buildings to ascend dozens of storeys above the ground without requiring stone walls thick enough to support their own weight, and the Manhattan skyline began to climb.",
@@ -5269,7 +5295,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.26"
    },
    {
-    "number": "10.28",
+    "number": "10.30",
     "title": "The University",
     "blocks": [
      "Eight private universities along the northeastern American coast collectively form what is now known as the Ivy League, distinguished by enormous accumulated endowments, selective admissions, and tenured faculty who can pursue unpopular research without dismissal.",
@@ -5294,7 +5320,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.27"
    },
    {
-    "number": "10.29",
+    "number": "10.31",
     "title": "The Long Vote",
     "blocks": [
      "American women acquired the legal right to vote only after a prolonged campaign of demonstrations, hunger strikes, and imprisonment by suffragettes, who were granted the franchise nationally through the Nineteenth Amendment.",
@@ -5319,7 +5345,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.28"
    },
    {
-    "number": "10.30",
+    "number": "10.32",
     "title": "The Long Out",
     "blocks": [
      "A confrontation between police and the patrons of a Manhattan bar called the Stonewall Inn precipitated several nights of street protest by the lesbian, gay, bisexual, and transgender community, and inaugurated the modern LGBTQ rights movement.",
@@ -5344,7 +5370,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.29"
    },
    {
-    "number": "10.31",
+    "number": "10.33",
     "title": "The Bill Arrives",
     "blocks": [
      "A coordinated attack by hijacked passenger aircraft demolished the World Trade Center towers in Manhattan and damaged the Pentagon in Washington, killing approximately three thousand civilians.",
@@ -5372,7 +5398,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.30"
    },
    {
-    "number": "10.32",
+    "number": "10.34",
     "title": "The Brain in the Scanner",
     "blocks": [
      "Late twentieth-century American neuroscience finally acquired the instruments to perceive the human brain at work in real time.",
@@ -5400,7 +5426,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.31"
    },
    {
-    "number": "10.33",
+    "number": "10.35",
     "title": "The Trial of the Century",
     "blocks": [
      "The American legal system became the most televised theatre on the planet in the late twentieth century.",
@@ -5429,7 +5455,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.32"
    },
    {
-    "number": "10.34",
+    "number": "10.36",
     "title": "MBA and Wall Street",
     "blocks": [
      "Across the post-war decades the American Master of Business Administration evolved into the standard credential for entry into senior corporate management.",
@@ -5459,7 +5485,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.33"
    },
    {
-    "number": "10.35",
+    "number": "10.37",
     "title": "The Survey and the Number",
     "blocks": [
      "Modern American social science depends absolutely on statistics, and the foundation of any survey is the principle that a representative sample of a few thousand respondents can predict the behaviour of a population a thousand times larger.",
@@ -5489,7 +5515,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.34"
    },
    {
-    "number": "10.36",
+    "number": "10.38",
     "title": "The High Line and the Block",
     "blocks": [
      "American urban planners across the twenty-first century have begun to revisit the assumptions on which the twentieth-century car-centric city was constructed.",
@@ -5517,7 +5543,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.35"
    },
    {
-    "number": "10.37",
+    "number": "10.39",
     "title": "Sponge City and the Vertical Farm",
     "blocks": [
      "Across the twentieth century, the city of Los Angeles drew its drinking water from an aqueduct hundreds of miles long that despoiled the agricultural valleys to its north and depleted every aquifer the canal could reach, a strategy that antedates almost every modern environmental regulation.",
@@ -5547,7 +5573,7 @@ const CHAPTER_CONTENT = {
     "audio_prefix": "assets/audio/ch10/10.36"
    },
    {
-    "number": "10.38",
+    "number": "10.40",
     "title": "The Lab Coat and the Material",
     "blocks": [
      "The American materials sciences of the twentieth century produced inventions that quietly restructured every domestic interior.",
@@ -5576,32 +5602,6 @@ const CHAPTER_CONTENT = {
      }
     ],
     "audio_prefix": "assets/audio/ch10/10.37"
-   },
-   {
-    "number": "10.39",
-    "title": "Benjamin Franklin",
-    "blocks": [
-     "Born into a poor Boston household, Benjamin Franklin was withdrawn from school as a small child to apprentice in his elder brother's print shop and proceeded, in defiance of his interrupted education, to instruct himself by devouring every borrowed book within reach.",
-     "During a thunderstorm he famously flew a kite trailing a brass key, demonstrated that the lightning ripping across the sky and the electrical fluid he could conjure in his Philadelphia laboratory were one and the same phenomenon, and casually invented the lightning rod, which has since rescued countless church spires from incineration.",
-     "He deliberately refused to patent any of his inventions, arguing that since he himself had benefited from the inventions of others his own ought likewise to be freely available to anyone who could use them: bifocal spectacles, an efficient stove, the swim fin, a glass musical instrument played with damp fingers.",
-     "He proved equally formidable as a diplomat, crossing the Atlantic at an age when most men retire and negotiating the decisive French support that ultimately delivered the new United States from the British Empire."
-    ],
-    "quiz": []
-   },
-   {
-    "number": "10.40",
-    "title": "Nikola Tesla",
-    "blocks": [
-     "Nikola Tesla disembarked in New York from a Serbian village with a few coins in his pocket and a head crowded with diagrams that would, given time, remake the entire planet.",
-     "He worked briefly under Thomas Edison and quarrelled with him irreparably over the merits of direct against alternating current.",
-     "Edison's direct current could only crawl across short distances before fading.",
-     "Tesla, calmly defiant, maintained that alternating current would deliver electricity across hundreds of kilometres without flinching, and to discredit him Edison publicly electrocuted stray animals using alternating current in a grotesque campaign of fear.",
-     "The laws of physics, however, sided unambiguously with Tesla, and every modern electrical grid on the planet now runs on alternating current.",
-     "Tesla also conceived wireless power transmission, remote control, and the polyphase induction motor, several of his proposals so far ahead of their epoch that the technology of his time could not even begin to realise them.",
-     "He proved hopelessly incapable of converting his inventions into a successful business, was repeatedly outmanoeuvred by sharper commercial minds, and died alone in a Manhattan hotel room with only his pet pigeons for company.",
-     "Long afterward an electric-car company adopted his name, restoring to a forgotten genius a measure of the recognition his contemporaries had withheld."
-    ],
-    "quiz": []
    },
    {
     "number": "10.41",
