@@ -2632,3 +2632,36 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 /* Don't let the ✤ / × margin mark be clipped on the left */
 .reading-art .quiz-options { padding-left: 1.8em; }
 .review-art  .quiz-options { padding-left: 1.8em; }
+
+/* ============================================================
+   PATHS — the e-book channel landing: a grid of protagonist tiles.
+   ============================================================ */
+.page.paths-art { background: #ece3cf url("../assets/bg/ui/page-blank.jpg") center center / cover no-repeat; }
+.paths-art .paths-scroll {
+  position: absolute; inset: 6% 6% 11% 6%;
+  overflow-y: auto; -webkit-overflow-scrolling: touch; pointer-events: auto;
+}
+.paths-art .paths-title {
+  text-align: center; margin: 0 0 20px;
+  font-family: var(--font-display), Georgia, serif; font-weight: 500;
+  font-size: clamp(24px, 3vw, 38px); letter-spacing: 0.18em; color: #3f3628;
+}
+.paths-art .paths-list {
+  list-style: none; margin: 0 auto; padding: 0; max-width: 920px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px;
+}
+.paths-art .path-card {
+  position: relative; aspect-ratio: 3 / 4; border-radius: 10px; overflow: hidden;
+  cursor: pointer; background: #d8cdb4 center center / cover no-repeat;
+  border: 1.5px solid rgba(159, 130, 75, 0.55);
+  box-shadow: 0 5px 16px rgba(80, 66, 40, 0.22);
+  transition: transform 170ms ease, box-shadow 170ms ease;
+}
+.paths-art .path-card:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(80, 66, 40, 0.32); }
+.paths-art .path-card-title {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 8px 10px;
+  background: linear-gradient(to top, rgba(40, 28, 12, 0.74), rgba(40, 28, 12, 0.12) 70%, transparent);
+  color: #fbf4e4; font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(15px, 1.5vw, 20px); letter-spacing: 0.08em; text-align: center;
+}
+.paths-art .paths-empty { color: #8a7a5c; text-align: center; font-style: italic; }
