@@ -838,7 +838,7 @@
       <div class="ui-zone zone-toc-btn-09 toc-btn-zone" data-zone="btn 09"></div>
       <div class="ui-zone zone-toc-btn-10 toc-btn-zone" data-zone="btn 10"></div>
       <nav class="ui-bottom-nav">
-        <button type="button" data-go="#select"><span class="nav-glyph">‹</span>Back</button>
+        <button type="button" data-go="#paths"><span class="nav-glyph">❦</span>Paths</button>
         <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
       </nav>
     </div>
@@ -1025,6 +1025,19 @@
   </main>
 </template>
 
+<template id="view-paths">
+  <main class="page paths-art" data-page="paths">
+    <div class="paths-scroll">
+      <h1 class="paths-title">Paths</h1>
+      <ul class="paths-list" aria-label="Story paths"></ul>
+    </div>
+    <nav class="ui-bottom-nav is-two">
+      <button type="button" data-go="#chapters?browse=1"><span class="nav-glyph">‹</span>Back</button>
+      <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+    </nav>
+  </main>
+</template>
+
 <template id="view-word-garden">
   <main class="page art-bg wg-art" data-page="word-garden">
     <div class="master-frame">
@@ -1107,6 +1120,7 @@
 <script src="data/readingComprehensionZh.js"></script>
 <script src="data/vocabDrill.js"></script>
 <script src="data/readingTranslations.js"></script>
+<script src="data/paths.js"></script>
 <script src="data/mockWords.js"></script>
 <script src="data/wordLibrary.js"></script>
 <script src="data/wordIndex.js"></script>

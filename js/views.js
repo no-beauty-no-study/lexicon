@@ -741,8 +741,10 @@ const Views = (function () {
         localStorage.setItem("tpl.lastSection", JSON.stringify(ls));
       } catch (_) {}
 
-      const bg = typeof getChapterBackground === "function"
+      let bg = typeof getChapterBackground === "function"
                  ? getChapterBackground(chapterId, illustrationId) : null;
+      // Paths (e-book) carry their own protagonist art.
+      if (!bg && window.PATHS_BY_ID && PATHS_BY_ID[chapterId]) bg = PATHS_BY_ID[chapterId].image;
       if (bg) host.style.backgroundImage = `url("${bg}")`;
 
       host.querySelector("[data-chapter-number]").textContent = "Chapter " + book.number;
@@ -1134,15 +1136,17 @@ const Views = (function () {
       //   • BROWSE (entered from the chapter index, ?browse=1): just a
       //     reader. No Quiz / Save / Load (anti-cheat). Only Prev · Back
       //     (return to the index) · Next — rebuilt here as 3 cells.
+      // E-BOOK (the Paths channel): a pure reader — no Quiz, no test.
+      const isEbook = params.ebook === "1";
       if (isBrowse) {
         const nav = host.querySelector(".ui-bottom-nav");
         if (nav) {
           nav.innerHTML =
               '<button type="button" data-prev><span class="nav-glyph">‹</span>Prev</button>'
             + '<button type="button" data-toindex><span class="nav-glyph">❖</span>Back</button>'
-            + '<button type="button" data-idxquiz><span class="nav-glyph">✦</span>Quiz</button>'
+            + (isEbook ? "" : '<button type="button" data-idxquiz><span class="nav-glyph">✦</span>Quiz</button>')
             + '<button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>';
-          nav.style.setProperty("--nav-count", "4");
+          nav.style.setProperty("--nav-count", isEbook ? "3" : "4");
           const iq = nav.querySelector("[data-idxquiz]");
           if (iq) iq.addEventListener("click", (e) => {
             e.stopPropagation(); window.__navDir = "forward";
@@ -1167,11 +1171,18 @@ const Views = (function () {
       const prevBtn = host.querySelector("[data-prev]");
       if (prevBtn) prevBtn.addEventListener("click", (e) => {
         e.stopPropagation();
+        window.__navDir = "back";
+        if (isEbook) {   // walk within the path; before the first section → back to Paths
+          const list = (ChapterNav && ChapterNav.sectionsOf) ? ChapterNav.sectionsOf(chapterId) : [];
+          const i = list.findIndex(s => s.number === sectionNum);
+          if (i > 0) window.go(`#reading?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(list[i-1].number)}&browse=1&ebook=1&from=paths`);
+          else window.go("#paths");
+          return;
+        }
         let href = ChapterNav.prevReading(chapterId, sectionNum);
         if (isBrowse) {
           href += href.indexOf("?") >= 0 ? "&browse=1" : "?browse=1";
         }
-        window.__navDir = "back";
         window.go(href);
       });
       // Back — return to the chapter index (soft crossfade, not a turn).
@@ -1180,11 +1191,13 @@ const Views = (function () {
       const fromOrigin = params.from || "";
       const browseBackHref = fromOrigin === "garden" ? "#word-garden"
         : fromOrigin === "note" ? "#notes"
+        : fromOrigin === "paths" ? "#paths"
         : "#chapters?browse=1";
       const toIndexBtn = host.querySelector("[data-toindex]");
       if (toIndexBtn) {
         if (fromOrigin === "garden") toIndexBtn.innerHTML = '<span class="nav-glyph">❖</span>Garden';
         else if (fromOrigin === "note") toIndexBtn.innerHTML = '<span class="nav-glyph">❖</span>Notes';
+        else if (fromOrigin === "paths") toIndexBtn.innerHTML = '<span class="nav-glyph">❖</span>Paths';
         toIndexBtn.addEventListener("click", (e) => {
           e.stopPropagation();
           // Returning to the index turns the page BACK (slides right); garden /
@@ -1199,6 +1212,7 @@ const Views = (function () {
         e.stopPropagation();
         window.__navDir = "forward";   // turn the page onward
         if (isBrowse) {
+          const ebkFlag = isEbook ? "&ebook=1&from=paths" : "";
           // Browse-mode Next: walk SECTIONS first (1.1 → 1.2 → 1.3 …),
           // hop to the next chapter only when this chapter's sections
           // are exhausted, return to the index when the whole book is.
@@ -1211,10 +1225,11 @@ const Views = (function () {
             window.go(
               `#reading?chapter=${encodeURIComponent(chapterId)}`
               + `&section=${encodeURIComponent(ns.number)}`
-              + `&browse=1`
+              + `&browse=1` + ebkFlag
             );
             return;
           }
+          if (isEbook) { window.go("#paths"); return; }   // end of a path → back to the Paths deck
           if (typeof CHAPTERS !== "undefined") {
             const j = CHAPTERS.findIndex(c => c.id === chapterId);
             if (j >= 0 && j + 1 < CHAPTERS.length) {
@@ -3475,8 +3490,24 @@ const Views = (function () {
     } catch (_) {}
   }
 
+  /* ---------- paths (the e-book channel landing) ---------- */
+  const paths = {
+    init(host) {
+      const list = host.querySelector(".paths-list");
+      if (!list) return;
+      const items = (window.PATHS || []);
+      list.innerHTML = items.map(p => `
+        <li class="path-card" role="button" tabindex="0"
+            data-go="#reading?chapter=${encodeURIComponent(p.id)}&section=${encodeURIComponent(p.firstSection || "1")}&browse=1&ebook=1&from=paths"
+            style="${p.image ? `background-image:url('${p.image}')` : ""}">
+          <span class="path-card-title">${esc(p.title || p.id)}</span>
+        </li>`).join("")
+        || `<li class="paths-empty">No paths yet.</li>`;
+    },
+  };
+
   return {
-    splash, menu, select, chapters,
+    splash, menu, select, chapters, paths,
     reading, quiz, quizstatus, notes, review, comprehension,
     "word-garden": wordGarden,
     save, load, voices,
