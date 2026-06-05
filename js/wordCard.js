@@ -205,7 +205,12 @@ const WordCard = (function () {
   let cardStack = [], lastCtx = null;                   // drawer back-history (maze)
 
   function ensureDrawer() {
-    const page = document.querySelector(".stage .page");
+    // The ACTIVE page — never an outgoing `.page-leaving` one. During a page
+    // turn both pages briefly coexist and the leaving page is first in the DOM;
+    // attaching the drawer there would build + read the card on a hidden page
+    // ("有声音但不弹"). Pick the last non-leaving page.
+    const live = document.querySelectorAll(".stage .page:not(.page-leaving)");
+    const page = live[live.length - 1] || document.querySelector(".stage .page");
     if (drawerEl && hostPage === page) return;
     if (drawerEl && hostPage !== page) {
       try { drawerEl.remove(); scrimEl.remove(); } catch (_) {}
