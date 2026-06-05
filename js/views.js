@@ -2360,6 +2360,30 @@ const Views = (function () {
     const st  = sec ? sec.title : "";
     return `Chapter ${num} · ${sn}${st ? " " + st : ""}`.trim();
   }
+  // Does a section's prose actually contain this word (surface or inflected)?
+  function sectionHasWord(sec, word) {
+    if (!sec || !Array.isArray(sec.blocks) || !word) return false;
+    const re = new RegExp("\\b" + rgx(word) + "\\b", "i");
+    if (sec.blocks.some(b => re.test(b))) return true;
+    return sec.blocks.some(b => (b.match(/\b[A-Za-z][A-Za-z'-]+\b/g) || []).some(t => resolvesTo(t, word)));
+  }
+  // A note stores the section it was folded from, but chronological renumbering
+  // can leave that number pointing at a different section. If the stored scope
+  // no longer contains the word, find the section that actually does — so the
+  // excerpt and the OPEN jump both land on the right page.
+  function resolveScope(word, scope) {
+    if (typeof CHAPTER_CONTENT === "undefined" || !word) return scope;
+    if (scope && scope.chapter && scope.section) {
+      const sec = (typeof ChapterNav !== "undefined") ? ChapterNav.findSection(scope.chapter, scope.section) : null;
+      if (sectionHasWord(sec, word)) return scope;
+    }
+    for (const cid in CHAPTER_CONTENT) {
+      for (const sec of (CHAPTER_CONTENT[cid].sections || [])) {
+        if (sectionHasWord(sec, word)) return { chapter: cid, section: sec.number };
+      }
+    }
+    return scope;
+  }
 
   const notes = {
     init(host) {
@@ -2387,7 +2411,7 @@ const Views = (function () {
           const entry = resolveWordEntry(id);
           const word  = (entry && entry.word) || id;
           byId[id] = entry || { word: id };
-          const scope = Storage.findScopeOf ? Storage.findScopeOf(id) : null;
+          const scope = resolveScope(word, Storage.findScopeOf ? Storage.findScopeOf(id) : null);
           const src   = sourceLabel(scope);
           const idxStr = (i + 1 < 10 ? "0" : "") + (i + 1);
           const phrases = entry ? getPhrasePairs(entry).slice(0, 2) : [];
@@ -2455,7 +2479,7 @@ const Views = (function () {
         if (e.target.closest(".note-word")) {
           e.stopPropagation();
           const entry = byId[card.dataset.id];
-          const scope = Storage.findScopeOf ? Storage.findScopeOf(card.dataset.id) : null;
+          const scope = resolveScope((entry && entry.word) || card.dataset.id, Storage.findScopeOf ? Storage.findScopeOf(card.dataset.id) : null);
           if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry, Object.assign({ from: "note" }, scope || {}));
         }
       });
