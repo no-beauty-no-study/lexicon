@@ -2637,32 +2637,32 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
    FOLLOW — the visual-novel relay station. The painted PATHS frame
    (assets/bg/ui/follow-station.png) carries three slots, measured on
    the 1448×1086 art and expressed here as % so they scale with the page:
-     · label slot   x563 y286 w324 h78   → the word "Follow"
+     · top slot     x563 y286 w324 h78   → Restart · Follow (each half)
      · list  slot   x301 y416 w854 h527  → five protagonist portraits
      · footer slot  x368 y984 w710 h92   → Save · Load · Menu
    ============================================================ */
 .follow-art .follow-frame { position: absolute; inset: 0; pointer-events: none; }
 .follow-art .follow-frame > * { pointer-events: auto; }
 
-.follow-art .follow-label {
+/* Top slot — Restart | Follow, two equal halves, centred, NO divider. */
+.follow-art .follow-top {
   position: absolute;
   left: 38.881%; top: 26.34%; width: 22.376%; height: 7.182%;
-  display: flex; align-items: center; justify-content: center; gap: 0.4em;
+  display: flex; align-items: center; justify-content: center;
+}
+.follow-art .follow-top-btn {
+  flex: 1 1 0; height: 100%;
+  background: transparent; border: 0; cursor: pointer;
   font-family: var(--font-display), Georgia, serif; font-weight: 600;
-  font-size: clamp(20px, 2.9vw, 40px); letter-spacing: 0.12em;
-  color: #5a4a30;
-  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.65), 0 2px 6px rgba(70, 52, 26, 0.22);
+  font-size: clamp(13px, 1.6vw, 22px); letter-spacing: 0.08em;
+  color: #5a4a30; transition: color 140ms ease, transform 140ms ease;
+  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.55);
 }
-.follow-art .follow-label::before,
-.follow-art .follow-label::after {
-  content: "❧"; font-size: 0.5em; color: var(--color-gold-soft);
-  opacity: 0.8; transform: translateY(-0.1em);
-}
-.follow-art .follow-label::after { transform: scaleX(-1) translateY(-0.1em); }
+.follow-art .follow-top-btn:hover { color: #1f1a12; transform: translateY(-1px); }
 
 .follow-art .follow-list {
   position: absolute;
-  left: 20.787%; top: 38.305%; width: 58.978%; height: 48.527%;
+  left: 20.787%; top: 34.3%; width: 58.978%; height: 51%;
   list-style: none; margin: 0; padding: 0;
   display: flex; flex-direction: column; gap: 1.4%;
 }
@@ -2700,15 +2700,22 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .follow-art .follow-ui {
   position: absolute;
   left: 25.414%; top: 90.608%; width: 49.033%; height: 8.471%;
-  display: flex; align-items: center; justify-content: space-evenly; gap: 2%;
+  display: flex; align-items: center;
 }
 .follow-art .follow-ui-btn {
-  flex: 1 1 0;
+  position: relative; flex: 1 1 0; height: 100%;
   background: transparent; border: 0; cursor: pointer;
   font-family: var(--font-display), Georgia, serif; font-weight: 500;
   font-size: clamp(13px, 1.5vw, 20px); letter-spacing: 0.08em;
   color: #4a3f2c; transition: color 140ms ease, transform 140ms ease;
   display: flex; align-items: center; justify-content: center; gap: 0.3em;
+}
+/* thin gold vertical rule between cells — same as the other nav bars */
+.follow-art .follow-ui-btn + .follow-ui-btn::before {
+  content: ""; position: absolute; left: 0; top: 22%; bottom: 22%; width: 1px;
+  background: linear-gradient(180deg, transparent 0%,
+    rgba(126, 105, 74, 0.45) 18%, rgba(126, 105, 74, 0.45) 82%, transparent 100%);
+  pointer-events: none;
 }
 .follow-art .follow-ui-btn:hover { color: #1f1a12; transform: translateY(-2px); }
 .follow-art .follow-ui-btn .nav-glyph { opacity: 0.7; }

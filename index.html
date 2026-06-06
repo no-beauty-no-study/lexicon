@@ -121,18 +121,18 @@
      the inner pair drop, and Follow Paths sits at the low centre. All five
      touch into one connected curve (not a flat row). */
   .menu-btn {
-    position: absolute; width: 16.5%;
+    position: absolute; width: 13.5%;
     aspect-ratio: 549 / 596;
     transform: translate(-50%, -50%);
     background: transparent; border: 0; padding: 0;
     cursor: pointer; z-index: 8;
   }
   .menu-btn:focus { outline: none; }
-  .menu-btn.left   { left: 13.5%; top: 30.5%; }  /* Start Reading  (arc top-left)  */
-  .menu-btn.quiz   { left: 30.5%; top: 50%;   }  /* Begin Trial    (arc mid-left)  */
-  .menu-btn.paths  { left: 50%;   top: 55%;   }  /* Follow Paths   (arc low centre)*/
-  .menu-btn.recall { left: 69.5%; top: 50%;   }  /* Words Recall   (arc mid-right) */
-  .menu-btn.right  { left: 86.5%; top: 30.5%; }  /* Enter Chapter  (arc top-right) */
+  .menu-btn.left   { left: 17.5%; top: 47.5%; }  /* Start Reading  (arc top-left)  */
+  .menu-btn.quiz   { left: 33.5%; top: 62.5%; }  /* Begin Trial    (arc mid-left)  */
+  .menu-btn.paths  { left: 50%;   top: 67.5%; }  /* Follow Paths   (arc low centre)*/
+  .menu-btn.recall { left: 66.5%; top: 62.5%; }  /* Words Recall   (arc mid-right) */
+  .menu-btn.right  { left: 82.5%; top: 47.5%; }  /* Enter Chapter  (arc top-right) */
   .menu-btn .menu-btn-inner {
     background-size: contain; background-position: center; background-repeat: no-repeat;
     filter: drop-shadow(0 5px 13px rgba(40, 28, 12, 0.34));
@@ -1057,11 +1057,16 @@
          · foot UI slot       → Save · Load · Menu -->
   <main class="page art-bg follow-art" data-page="paths">
     <div class="follow-frame">
-      <div class="follow-label">Follow</div>
+      <!-- Top slot (the original label frame): Restart · Follow, each half, no divider. -->
+      <nav class="follow-top">
+        <button type="button" class="follow-top-btn" data-follow-restart>Restart</button>
+        <button type="button" class="follow-top-btn" data-follow-go>Follow</button>
+      </nav>
       <ul class="follow-list" aria-label="Story paths"></ul>
       <nav class="follow-ui">
-        <button type="button" class="follow-ui-btn" data-follow-restart><span class="nav-glyph">↺</span>Restart</button>
-        <button type="button" class="follow-ui-btn" data-follow-go><span class="nav-glyph">❧</span>Follow</button>
+        <button type="button" class="follow-ui-btn" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
+        <button type="button" class="follow-ui-btn" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
+        <button type="button" class="follow-ui-btn" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
       </nav>
     </div>
   </main>
