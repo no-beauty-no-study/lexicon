@@ -703,6 +703,8 @@ const Views = (function () {
                        ? getChapterOrDefault(chapterId) : { number: "01", title: chapterId };
       const section = ChapterNav.findSection(chapterId, sectionNum);
       const isBrowse = params.browse === "1";
+      const isEbook  = params.ebook === "1";   // the Paths visual-novel channel
+      const fromOrigin = params.from || "";
 
       // Multi-illustration chapters (e.g. Europe's France / Empress /
       // Alice) split their sections into N even bands by chapter count
@@ -970,6 +972,20 @@ const Views = (function () {
       const titleZone = host.querySelector(".zone-reading-title");
       let curIdx = -1;
       let revealFrontier = 0;   // how many sentences have been shown so far
+
+      // Remember the CURRENT SENTENCE (not just the section) so Save/Load can
+      // restore the exact line — essential for the 文游: save before a choice,
+      // load back to that very sentence if it goes wrong. Kept separate from
+      // tpl.lastRead (which is the study index's section-level resume).
+      function persistReadPos() {
+        try {
+          localStorage.setItem("tpl.readPos", JSON.stringify({
+            chapter: chapterId, section: sectionNum, line: Math.max(0, curIdx),
+            ebook: isEbook ? 1 : 0, from: fromOrigin,
+          }));
+        } catch (_) {}
+      }
+      persistReadPos();
       let autoOn = false;
       let autoTimer = null;
 
@@ -993,6 +1009,7 @@ const Views = (function () {
         titleZone && titleZone.classList.add("is-revealed");
         try { b.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
         curIdx = i;
+        persistReadPos();
         let ended = false;
         const done = () => {
           if (ended) return; ended = true;
@@ -1137,7 +1154,6 @@ const Views = (function () {
       //     reader. No Quiz / Save / Load (anti-cheat). Only Prev · Back
       //     (return to the index) · Next — rebuilt here as 3 cells.
       // E-BOOK (the Paths channel): a pure reader — no Quiz, no test.
-      const isEbook = params.ebook === "1";
       if (isBrowse) {
         const nav = host.querySelector(".ui-bottom-nav");
         if (nav) {
@@ -1191,7 +1207,6 @@ const Views = (function () {
       // Back — return to the chapter index (soft crossfade, not a turn).
       // Browse "Back" returns to WHERE you came from: the Words Garden, the
       // Notes deck, or the chapter index — never the story path.
-      const fromOrigin = params.from || "";
       const browseBackHref = fromOrigin === "garden" ? "#word-garden"
         : fromOrigin === "note" ? "#notes"
         : fromOrigin === "paths" ? "#paths"
@@ -1285,6 +1300,22 @@ const Views = (function () {
       // Arrived from a Notes card "Open Chapter": show the whole section
       // (all sentences fully visible) and spotlight the saved word on its
       // sentence for ~2s.
+      // Load (文游 save): resume at the exact saved SENTENCE — reveal everything
+      // up to it, mark it current, and scroll it into view.
+      if (params.line != null && blocks.length) {
+        const ln = Math.max(0, Math.min(blocks.length - 1, parseInt(params.line, 10) || 0));
+        for (let k = 0; k <= ln; k++) blocks[k].classList.add("is-revealed", "is-read");
+        revealFrontier = ln + 1; curIdx = ln; persistReadPos();
+        titleZone && titleZone.classList.add("is-revealed");
+        const t = blocks[ln];
+        if (t) {
+          t.classList.remove("is-read"); t.classList.add("is-current");
+          setTimeout(() => {
+            try { t.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (_) {}
+            t.classList.remove("is-current"); t.classList.add("is-read");
+          }, 450);
+        }
+      }
       if (params.word) {
         blocks.forEach(b => b.classList.add("is-revealed", "is-read"));
         revealFrontier = blocks.length;     // whole section already shown
@@ -2668,9 +2699,7 @@ const Views = (function () {
     }
     const ch = (typeof getChapter === "function" && getChapter(slot.chapter))
              || { title: slot.chapter, number: "??" };
-    const meta = slot.section
-      ? `Section ${esc(slot.section)} · ${esc(slot.time || slot.savedAt || "")}`
-      : `${esc(slot.position || "Page 1")} · ${esc(slot.time || slot.savedAt || "")}`;
+    const meta = `${esc(slot.position || (slot.section ? "Section " + slot.section : "Page 1"))} · ${esc(slot.time || slot.savedAt || "")}`;
     return `<div class="slot ornate-panel is-strip is-clickable ${accent}" data-index="${i}">
       <div class="slot-no">Slot ${pad(i + 1)} · Ch ${ch.number}</div>
       <div class="slot-chapter">${esc(ch.title)}</div>
@@ -2688,14 +2717,21 @@ const Views = (function () {
       if (!card) return;
       const i = +card.dataset.index;
       if (mode === "save") {
-        let last = null;
-        try { last = JSON.parse(localStorage.getItem("tpl.lastRead") || "null"); } catch (_) {}
-        const chapterId = (last && last.chapter) || "universe";
-        const sec       = (last && last.section) || "1.1";
+        // Prefer the exact sentence position (tpl.readPos); fall back to the
+        // section-level resume.
+        let pos = null;
+        try { pos = JSON.parse(localStorage.getItem("tpl.readPos") || "null"); } catch (_) {}
+        if (!pos) { try { pos = JSON.parse(localStorage.getItem("tpl.lastRead") || "null"); } catch (_) {} }
+        const chapterId = (pos && pos.chapter) || "universe";
+        const sec       = (pos && pos.section) || "1.1";
+        const line      = (pos && typeof pos.line === "number") ? pos.line : 0;
         Storage.setSlot(i, {
           chapter: chapterId,
           section: sec,
-          position: `Section ${sec}`,
+          line,
+          ebook: pos && pos.ebook ? 1 : 0,
+          from: (pos && pos.from) || "",
+          position: `${sec} · line ${line + 1}`,
           time: nowStr(),
         });
         window.toast && window.toast("Saved to Slot " + pad(i + 1));
@@ -2704,7 +2740,10 @@ const Views = (function () {
         const slot = Storage.getSlots()[i];
         if (!slot) { window.toast && window.toast("Empty Slot"); return; }
         const sec = slot.section || "1.1";
-        window.go(`#reading?chapter=${encodeURIComponent(slot.chapter)}&section=${encodeURIComponent(sec)}`);
+        const line = (typeof slot.line === "number") ? slot.line : 0;
+        let href = `#reading?chapter=${encodeURIComponent(slot.chapter)}&section=${encodeURIComponent(sec)}&line=${line}`;
+        if (slot.ebook) href += `&browse=1&ebook=1&from=${encodeURIComponent(slot.from || "paths")}`;
+        window.go(href);
       }
     });
   }
