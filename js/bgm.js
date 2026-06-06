@@ -6,52 +6,15 @@
 (function () {
   const BGM_DIR = "assets/bgm/";
 
-  const UI_TRACK = "01_ui_cover_select_save_load.mp3";
-  const BY_VIEW = {
-    "splash":      UI_TRACK,
-    "menu":        UI_TRACK,
-    "select":      UI_TRACK,
-    "save":        UI_TRACK,
-    "load":        UI_TRACK,
-    "notes":       "02_note.mp3",
-    "word-garden": "03_words_garden.mp3",
-    "chapters":    "04_story_lobby.mp3",
-    "quiz":        "05_choice_quiz_all_fast_short.mp3",
-  };
-  const READING_BY_CHAPTER = {
-    "universe":          "06_reading_universe_dark.mp3",
-    "earth-history":     "08_reading_earth_sunlit.mp3",
-    "africa":            "10_reading_africa_sunflower.mp3",
-    "antarctica":        "12_reading_antarctica_ice.mp3",
-    "australia-pacific": "14_reading_australia_garden.mp3",
-    "south-america":     "16_reading_southamerica_clocktower.mp3",
-    "asia":              "18_reading_asia_alice_key.mp3",
-    "oceans":            "20_reading_ocean_cafe_swing.mp3",
-    "europe":            "21_reading_europe_empress.mp3",
-    "north-america":     "23_reading_northamerica_skip.mp3",
-  };
-
-  const DEFAULT_VOLUME = 0.32;
-
-  // Full track inventory — used by nextTrack() for manual cycling
-  // when the player wants something other than the per-view default.
-  const ALL_TRACKS = [
-    UI_TRACK,
-    "02_note.mp3",
-    "03_words_garden.mp3",
-    "04_story_lobby.mp3",
-    "05_choice_quiz_all_fast_short.mp3",
-    "06_reading_universe_dark.mp3",
-    "08_reading_earth_sunlit.mp3",
-    "10_reading_africa_sunflower.mp3",
-    "12_reading_antarctica_ice.mp3",
-    "14_reading_australia_garden.mp3",
-    "16_reading_southamerica_clocktower.mp3",
-    "18_reading_asia_alice_key.mp3",
-    "20_reading_ocean_cafe_swing.mp3",
-    "21_reading_europe_empress.mp3",
-    "23_reading_northamerica_skip.mp3",
-  ];
+  // ── TRACKS CLEARED ──────────────────────────────────────────────
+  // The old score was removed; a new batch is being prepared and will be
+  // re-mapped per scene (一句话=一幕), not per chapter. Until those land,
+  // every map is empty so the app plays nothing and never 404s. Re-add
+  // filenames here (and a scene→track rule in trackForView) when ready.
+  const UI_TRACK = null;
+  const BY_VIEW = {};
+  const READING_BY_CHAPTER = {};
+  const ALL_TRACKS = [];
 
   let audio        = null;
   let currentTrack = null;
@@ -109,8 +72,8 @@
 
   function trackForView(name, params) {
     if (name === "reading") {
-      const ch = (params && params.chapter) || "universe";
-      return READING_BY_CHAPTER[ch] || READING_BY_CHAPTER.universe;
+      const ch = (params && params.chapter) || "";
+      return READING_BY_CHAPTER[ch] || null;
     }
     return BY_VIEW[name] || UI_TRACK;
   }
@@ -126,6 +89,8 @@
 
   function applyForView(name, params) {
     const track = manualTrack || trackForView(name, params);
+    // No score loaded yet → make sure nothing is playing and bail.
+    if (!track) { if (audio && !audio.paused) fade(0, 200, () => { try { audio.pause(); } catch (_) {} currentTrack = null; }); return; }
     ensureAudio();
     if (track === currentTrack) {
       if (audio.paused) playNow();
@@ -161,6 +126,7 @@
   }
   function getVolume() { return userVolume; }
   function nextTrack() {
+    if (!ALL_TRACKS.length) return null;   // no score loaded
     ensureAudio();
     const i = ALL_TRACKS.indexOf(currentTrack);
     const next = ALL_TRACKS[(i + 1 + ALL_TRACKS.length) % ALL_TRACKS.length];

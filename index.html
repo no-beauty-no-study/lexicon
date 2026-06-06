@@ -128,11 +128,11 @@
     cursor: pointer; z-index: 8;
   }
   .menu-btn:focus { outline: none; }
-  .menu-btn.left   { left: 17.5%; top: 47.5%; }  /* Start Reading  (arc top-left)  */
-  .menu-btn.quiz   { left: 33.5%; top: 62.5%; }  /* Begin Trial    (arc mid-left)  */
-  .menu-btn.paths  { left: 50%;   top: 67.5%; }  /* Follow Paths   (arc low centre)*/
-  .menu-btn.recall { left: 66.5%; top: 62.5%; }  /* Words Recall   (arc mid-right) */
-  .menu-btn.right  { left: 82.5%; top: 47.5%; }  /* Enter Chapter  (arc top-right) */
+  .menu-btn.left   { left: 17.5%; top: 47.5%; }  /* Start Reading  (arc top, unchanged) */
+  .menu-btn.quiz   { left: 33.5%; top: 66%;   }  /* Begin Trial    (arc mid, lower)     */
+  .menu-btn.paths  { left: 50%;   top: 77%;   }  /* Follow Paths   (arc point, lowest)  */
+  .menu-btn.recall { left: 66.5%; top: 66%;   }  /* Words Recall   (arc mid, lower)     */
+  .menu-btn.right  { left: 82.5%; top: 47.5%; }  /* Enter Chapter  (arc top, unchanged) */
   .menu-btn .menu-btn-inner {
     background-size: contain; background-position: center; background-repeat: no-repeat;
     filter: drop-shadow(0 5px 13px rgba(40, 28, 12, 0.34));
@@ -1155,6 +1155,7 @@
 <script src="data/vocabDrill.js"></script>
 <script src="data/readingTranslations.js"></script>
 <script src="data/paths.js"></script>
+<script src="data/paths-content.js"></script>
 <script src="data/mockWords.js"></script>
 <script src="data/wordLibrary.js"></script>
 <script src="data/wordIndex.js"></script>
