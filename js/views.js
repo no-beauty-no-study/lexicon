@@ -229,6 +229,7 @@ const Views = (function () {
             if (a === "resume")      window.go("#select");
             else if (a === "quiz")   window.go(quizContinueHref());
             else if (a === "recall") window.go("#review?from=menu");
+            else if (a === "paths")  window.go("#paths");
             else                     window.go("#chapters?browse=1");
           }, 540);
         });
@@ -616,6 +617,48 @@ const Views = (function () {
           if (mode === "select") { e.preventDefault(); setSel(sel + (e.deltaY > 0 ? 1 : -1)); }
         }, { passive: false });
       });
+
+      // === index Paths button — direct Open-Chapter-style entry (no station) ===
+      // Tap reveals a path number (1..N), slide to choose, tap to enter that
+      // path's e-book reading. Skips the five-portrait relay station entirely.
+      const pathsBtn = host.querySelector("[data-paths-open]");
+      const pitems = (window.PATHS || []);
+      if (pathsBtn && pitems.length) {
+        const pNum = pathsBtn.querySelector(".paths-sel-num");
+        let psel = 0;
+        function pSet(i) { psel = Math.max(0, Math.min(pitems.length - 1, i)); if (pNum) pNum.textContent = String(psel + 1); }
+        pSet(0);
+        function pGo() {
+          const p = pitems[psel];
+          window.__navDir = "forward";
+          window.go(`#reading?chapter=${encodeURIComponent(p.id)}&section=${encodeURIComponent(p.firstSection || "1")}&browse=1&ebook=1&from=chapters`);
+        }
+        let pmode = "label", pdY = 0, pdX = 0, pmoved = 0, pdrag = null, pacc = 0;
+        pathsBtn.addEventListener("pointerdown", (e) => {
+          pdY = e.clientY; pdX = e.clientX; pmoved = 0;
+          if (pmode === "select") { pdrag = e.clientY; pacc = 0; try { pathsBtn.setPointerCapture(e.pointerId); } catch (_) {} }
+        });
+        pathsBtn.addEventListener("pointermove", (e) => {
+          pmoved = Math.max(pmoved, Math.abs(e.clientY - pdY) + Math.abs(e.clientX - pdX));
+          if (pmode === "select" && pdrag != null) {
+            pacc += (e.clientY - pdrag); pdrag = e.clientY;
+            while (pacc >= 22) { pacc -= 22; pSet(psel + 1); }
+            while (pacc <= -22) { pacc += 22; pSet(psel - 1); }
+          }
+        });
+        pathsBtn.addEventListener("pointerup", (e) => {
+          const wasDrag = pmoved > 8; pdrag = null;
+          if (pmode === "label") { pmode = "select"; pathsBtn.dataset.mode = "select"; return; }
+          const up = e.target.closest(".paths-sel-arrow.up");
+          const dn = e.target.closest(".paths-sel-arrow.dn");
+          if (up) { pSet(psel - 1); return; }
+          if (dn) { pSet(psel + 1); return; }
+          if (!wasDrag) pGo();
+        });
+        pathsBtn.addEventListener("wheel", (e) => {
+          if (pmode === "select") { e.preventDefault(); pSet(psel + (e.deltaY > 0 ? 1 : -1)); }
+        }, { passive: false });
+      }
     },
   };
 
@@ -1191,11 +1234,12 @@ const Views = (function () {
       if (prevBtn) prevBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         window.__navDir = "back";
-        if (isEbook) {   // walk within the path; before the first section → back to Paths
+        if (isEbook) {   // walk within the path; before the first section → back to origin
           const list = (ChapterNav && ChapterNav.sectionsOf) ? ChapterNav.sectionsOf(chapterId) : [];
           const i = list.findIndex(s => s.number === sectionNum);
-          if (i > 0) window.go(`#reading?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(list[i-1].number)}&browse=1&ebook=1&from=paths`);
-          else window.go("#paths");
+          const fr = encodeURIComponent(fromOrigin || "paths");
+          if (i > 0) window.go(`#reading?chapter=${encodeURIComponent(chapterId)}&section=${encodeURIComponent(list[i-1].number)}&browse=1&ebook=1&from=${fr}`);
+          else window.go(fromOrigin === "chapters" ? "#chapters?browse=1" : "#paths");
           return;
         }
         let href = ChapterNav.prevReading(chapterId, sectionNum);
@@ -1230,7 +1274,7 @@ const Views = (function () {
         e.stopPropagation();
         window.__navDir = "forward";   // turn the page onward
         if (isBrowse) {
-          const ebkFlag = isEbook ? "&ebook=1&from=paths" : "";
+          const ebkFlag = isEbook ? "&ebook=1&from=" + encodeURIComponent(fromOrigin || "paths") : "";
           // Browse-mode Next: walk SECTIONS first (1.1 → 1.2 → 1.3 …),
           // hop to the next chapter only when this chapter's sections
           // are exhausted, return to the index when the whole book is.
@@ -1247,7 +1291,7 @@ const Views = (function () {
             );
             return;
           }
-          if (isEbook) { window.go("#paths"); return; }   // end of a path → back to the Paths deck
+          if (isEbook) { window.go(fromOrigin === "chapters" ? "#chapters?browse=1" : "#paths"); return; }   // end of a path → back to origin
           if (typeof CHAPTERS !== "undefined") {
             const j = CHAPTERS.findIndex(c => c.id === chapterId);
             if (j >= 0 && j + 1 < CHAPTERS.length) {
@@ -3532,56 +3576,29 @@ const Views = (function () {
     } catch (_) {}
   }
 
-  /* ---------- paths (the e-book channel landing) ---------- */
+  /* ---------- paths (the "Follow" relay station) ----------
+     Five protagonist portraits stacked in the painted PATHS frame; tap a
+     face to open that path's e-book reading. Save / Load / Menu live at the
+     foot (data-go handled by the global nav). */
   const paths = {
     init(host) {
-      const list = host.querySelector(".paths-list");
+      const list = host.querySelector(".follow-list");
       if (!list) return;
       const items = (window.PATHS || []);
-      if (!items.length) { list.innerHTML = `<li class="paths-empty">No paths yet.</li>`; return; }
+      if (!items.length) { list.innerHTML = `<li class="follow-empty">No paths yet.</li>`; return; }
       list.innerHTML = items.map(p => `
-        <li class="path-card" data-id="${esc(p.id)}" style="${p.image ? `background-image:url('${p.image}')` : ""}">
-          <button type="button" class="path-open" data-mode="label">
-            <span class="path-open-name">${esc(p.title || p.id)}</span>
-            <span class="path-open-sel" aria-hidden="true">
-              <span class="path-sel-arrow up">▲</span>
-              <span class="path-sel-num"></span>
-              <span class="path-sel-arrow dn">▼</span>
-            </span>
-          </button>
+        <li class="follow-portrait" data-id="${esc(p.id)}"
+            style="background-image:url('assets/portraits/${esc(p.id)}.jpg')">
+          <span class="follow-portrait-name">${esc(p.title || p.id)}</span>
         </li>`).join("");
-      // Each tile behaves like the index "Open Chapter": tap → the section number
-      // appears, slide it (drag / wheel / ▲▼) to pick, tap again to enter.
       items.forEach(p => {
-        const li = list.querySelector(`.path-card[data-id="${cssEsc(p.id)}"]`);
+        const li = list.querySelector(`.follow-portrait[data-id="${cssEsc(p.id)}"]`);
         if (!li) return;
-        const btn = li.querySelector(".path-open");
-        const numEl = li.querySelector(".path-sel-num");
-        const secs = (typeof ChapterNav !== "undefined" && ChapterNav.sectionsOf) ? (ChapterNav.sectionsOf(p.id) || []) : [];
-        let sel = 0;
-        function setSel(i) { sel = Math.max(0, Math.min(secs.length - 1, i)); if (numEl) numEl.textContent = (secs[sel] && secs[sel].number) || p.firstSection || "1"; }
-        setSel(0);
-        function go() {
-          const sec = (secs[sel] && secs[sel].number) || p.firstSection || "1";
+        li.addEventListener("click", () => {
+          const sec = p.firstSection || "1";
           window.__navDir = "forward";
           window.go(`#reading?chapter=${encodeURIComponent(p.id)}&section=${encodeURIComponent(sec)}&browse=1&ebook=1&from=paths`);
-        }
-        if (secs.length <= 1) { btn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); go(); }); return; }
-        let mode = "label", downY = 0, downX = 0, moved = 0, dragY = null, acc = 0;
-        btn.addEventListener("pointerdown", (e) => { downY = e.clientY; downX = e.clientX; moved = 0; if (mode === "select") { dragY = e.clientY; acc = 0; try { btn.setPointerCapture(e.pointerId); } catch (_) {} } });
-        btn.addEventListener("pointermove", (e) => {
-          moved = Math.max(moved, Math.abs(e.clientY - downY) + Math.abs(e.clientX - downX));
-          if (mode === "select" && dragY != null) { acc += (e.clientY - dragY); dragY = e.clientY; while (acc >= 22) { acc -= 22; setSel(sel + 1); } while (acc <= -22) { acc += 22; setSel(sel - 1); } }
         });
-        btn.addEventListener("pointerup", (e) => {
-          const wasDrag = moved > 8; dragY = null;
-          if (mode === "label") { mode = "select"; btn.dataset.mode = "select"; return; }
-          const up = e.target.closest(".path-sel-arrow.up"), dn = e.target.closest(".path-sel-arrow.dn");
-          if (up) { setSel(sel - 1); return; }
-          if (dn) { setSel(sel + 1); return; }
-          if (!wasDrag) go();
-        });
-        btn.addEventListener("wheel", (e) => { if (mode === "select") { e.preventDefault(); setSel(sel + (e.deltaY > 0 ? 1 : -1)); } }, { passive: false });
       });
     },
   };
