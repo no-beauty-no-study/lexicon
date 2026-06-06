@@ -163,10 +163,12 @@
     0%   { transform: translateY(0)    scale(1);     filter: brightness(1); }
     100% { transform: translateY(-3px) scale(1.012); filter: brightness(1.05); }
   }
-  /* HOVER — the painted button lifts + warms (pauses the idle breathe), so
-     pointing at it reads as "this is alive and pressable". */
+  /* HOVER — the painted button lifts + warms. Must REMOVE the breathe
+     animation (not merely pause it): a paused animation still applies its own
+     transform/filter and would override the hover lift, which is why the top
+     (animated) pair never reacted while the bottom pair did. */
   .menu-btn:hover .menu-btn-inner {
-    animation-play-state: paused;
+    animation: none;
     transform: translateY(-6px) scale(1.05);
     filter: brightness(1.12) drop-shadow(0 12px 22px rgba(40, 28, 12, 0.34));
   }
@@ -180,7 +182,7 @@
      brightness(0.85) + contrast(1.08) sells "depressed". 60ms
      transition so the press is snappy, not floaty. */
   .menu-btn:active .menu-btn-inner {
-    animation-play-state: paused;
+    animation: none;
     transition: transform 60ms ease-out, filter 60ms ease-out;
     transform: translateY(5px) scale(0.93);
     filter: brightness(0.85) contrast(1.08);
