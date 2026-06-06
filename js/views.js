@@ -1144,9 +1144,12 @@ const Views = (function () {
           nav.innerHTML =
               '<button type="button" data-prev><span class="nav-glyph">‹</span>Prev</button>'
             + '<button type="button" data-toindex><span class="nav-glyph">❖</span>Back</button>'
-            + (isEbook ? "" : '<button type="button" data-idxquiz><span class="nav-glyph">✦</span>Quiz</button>')
+            + (isEbook
+                ? '<button type="button" data-go="#save"><span class="nav-glyph">❦</span>Save</button>'
+                + '<button type="button" data-go="#load"><span class="nav-glyph">❧</span>Load</button>'
+                : '<button type="button" data-idxquiz><span class="nav-glyph">✦</span>Quiz</button>')
             + '<button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>';
-          nav.style.setProperty("--nav-count", isEbook ? "3" : "4");
+          nav.style.setProperty("--nav-count", isEbook ? "5" : "4");
           const iq = nav.querySelector("[data-idxquiz]");
           if (iq) iq.addEventListener("click", (e) => {
             e.stopPropagation(); window.__navDir = "forward";
@@ -3496,13 +3499,51 @@ const Views = (function () {
       const list = host.querySelector(".paths-list");
       if (!list) return;
       const items = (window.PATHS || []);
+      if (!items.length) { list.innerHTML = `<li class="paths-empty">No paths yet.</li>`; return; }
       list.innerHTML = items.map(p => `
-        <li class="path-card" role="button" tabindex="0"
-            data-go="#reading?chapter=${encodeURIComponent(p.id)}&section=${encodeURIComponent(p.firstSection || "1")}&browse=1&ebook=1&from=paths"
-            style="${p.image ? `background-image:url('${p.image}')` : ""}">
-          <span class="path-card-title">${esc(p.title || p.id)}</span>
-        </li>`).join("")
-        || `<li class="paths-empty">No paths yet.</li>`;
+        <li class="path-card" data-id="${esc(p.id)}" style="${p.image ? `background-image:url('${p.image}')` : ""}">
+          <button type="button" class="path-open" data-mode="label">
+            <span class="path-open-name">${esc(p.title || p.id)}</span>
+            <span class="path-open-sel" aria-hidden="true">
+              <span class="path-sel-arrow up">▲</span>
+              <span class="path-sel-num"></span>
+              <span class="path-sel-arrow dn">▼</span>
+            </span>
+          </button>
+        </li>`).join("");
+      // Each tile behaves like the index "Open Chapter": tap → the section number
+      // appears, slide it (drag / wheel / ▲▼) to pick, tap again to enter.
+      items.forEach(p => {
+        const li = list.querySelector(`.path-card[data-id="${cssEsc(p.id)}"]`);
+        if (!li) return;
+        const btn = li.querySelector(".path-open");
+        const numEl = li.querySelector(".path-sel-num");
+        const secs = (typeof ChapterNav !== "undefined" && ChapterNav.sectionsOf) ? (ChapterNav.sectionsOf(p.id) || []) : [];
+        let sel = 0;
+        function setSel(i) { sel = Math.max(0, Math.min(secs.length - 1, i)); if (numEl) numEl.textContent = (secs[sel] && secs[sel].number) || p.firstSection || "1"; }
+        setSel(0);
+        function go() {
+          const sec = (secs[sel] && secs[sel].number) || p.firstSection || "1";
+          window.__navDir = "forward";
+          window.go(`#reading?chapter=${encodeURIComponent(p.id)}&section=${encodeURIComponent(sec)}&browse=1&ebook=1&from=paths`);
+        }
+        if (secs.length <= 1) { btn.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); go(); }); return; }
+        let mode = "label", downY = 0, downX = 0, moved = 0, dragY = null, acc = 0;
+        btn.addEventListener("pointerdown", (e) => { downY = e.clientY; downX = e.clientX; moved = 0; if (mode === "select") { dragY = e.clientY; acc = 0; try { btn.setPointerCapture(e.pointerId); } catch (_) {} } });
+        btn.addEventListener("pointermove", (e) => {
+          moved = Math.max(moved, Math.abs(e.clientY - downY) + Math.abs(e.clientX - downX));
+          if (mode === "select" && dragY != null) { acc += (e.clientY - dragY); dragY = e.clientY; while (acc >= 22) { acc -= 22; setSel(sel + 1); } while (acc <= -22) { acc += 22; setSel(sel - 1); } }
+        });
+        btn.addEventListener("pointerup", (e) => {
+          const wasDrag = moved > 8; dragY = null;
+          if (mode === "label") { mode = "select"; btn.dataset.mode = "select"; return; }
+          const up = e.target.closest(".path-sel-arrow.up"), dn = e.target.closest(".path-sel-arrow.dn");
+          if (up) { setSel(sel - 1); return; }
+          if (dn) { setSel(sel + 1); return; }
+          if (!wasDrag) go();
+        });
+        btn.addEventListener("wheel", (e) => { if (mode === "select") { e.preventDefault(); setSel(sel + (e.deltaY > 0 ? 1 : -1)); } }, { passive: false });
+      });
     },
   };
 

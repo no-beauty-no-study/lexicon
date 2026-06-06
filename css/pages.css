@@ -2665,3 +2665,28 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
   font-size: clamp(15px, 1.5vw, 20px); letter-spacing: 0.08em; text-align: center;
 }
 .paths-art .paths-empty { color: #8a7a5c; text-align: center; font-style: italic; }
+
+/* path tile = an Open-Chapter-style button: protagonist name at the foot,
+   tap to morph into a slidable section number, tap again to enter. */
+.paths-art .path-open {
+  position: absolute; inset: 0; display: block;
+  background: transparent; border: 0; padding: 0; cursor: pointer; touch-action: none;
+}
+.paths-art .path-open-name {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 8px 10px;
+  background: linear-gradient(to top, rgba(40, 28, 12, 0.74), rgba(40, 28, 12, 0.12) 70%, transparent);
+  color: #fbf4e4; font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(15px, 1.5vw, 20px); letter-spacing: 0.08em; text-align: center;
+}
+.paths-art .path-open[data-mode="select"] .path-open-name { display: none; }
+.paths-art .path-open-sel { display: none; }
+.paths-art .path-open[data-mode="select"] .path-open-sel {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  background: rgba(40, 28, 12, 0.5); user-select: none; -webkit-user-select: none;
+}
+.paths-art .path-sel-num {
+  font-family: var(--font-display), Georgia, serif; font-weight: 700;
+  font-size: clamp(28px, 4vw, 54px); letter-spacing: 0.04em; color: #fbf4e4; line-height: 1.1;
+}
+.paths-art .path-sel-arrow { font-size: 12px; line-height: 1; color: rgba(255, 244, 220, 0.8); }

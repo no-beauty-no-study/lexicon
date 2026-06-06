@@ -23,10 +23,12 @@ const PATHS = [
   // and word-card all work for free — but they're NOT in the CHAPTERS index, so
   // they only appear under #paths.
   PATHS.forEach((p, i) => {
-    p.firstSection = "1";
     const secs = (p.sections && p.sections.length) ? p.sections.slice()
                : [{ title: p.title, blocks: [], quiz: [] }];
-    secs.forEach((s, j) => { s.number = String(j + 1); if (!s.quiz) s.quiz = []; });
+    // Keep author-provided numbers (main line "1","2","3","4"; character branches
+    // "1.1" 男主, "2.1" 男二 …); only auto-number if none was given.
+    secs.forEach((s, j) => { if (!s.number) s.number = String(j + 1); if (!s.quiz) s.quiz = []; });
+    p.firstSection = secs[0].number;
     try {
       if (typeof CHAPTER_CONTENT !== "undefined")
         CHAPTER_CONTENT[p.id] = { number: String(i + 1), title: p.title, id: p.id, sections: secs, _path: true };
