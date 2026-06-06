@@ -2647,11 +2647,18 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .follow-art .follow-label {
   position: absolute;
   left: 38.881%; top: 26.34%; width: 22.376%; height: 7.182%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display), Georgia, serif; font-weight: 500;
-  font-size: clamp(18px, 2.4vw, 34px); letter-spacing: 0.16em;
-  color: #4a3f2c; text-shadow: 0 1px 0 rgba(255, 250, 235, 0.6);
+  display: flex; align-items: center; justify-content: center; gap: 0.4em;
+  font-family: var(--font-display), Georgia, serif; font-weight: 600;
+  font-size: clamp(20px, 2.9vw, 40px); letter-spacing: 0.12em;
+  color: #5a4a30;
+  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.65), 0 2px 6px rgba(70, 52, 26, 0.22);
 }
+.follow-art .follow-label::before,
+.follow-art .follow-label::after {
+  content: "❧"; font-size: 0.5em; color: var(--color-gold-soft);
+  opacity: 0.8; transform: translateY(-0.1em);
+}
+.follow-art .follow-label::after { transform: scaleX(-1) translateY(-0.1em); }
 
 .follow-art .follow-list {
   position: absolute;
@@ -2667,12 +2674,21 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
   background: #d8cdb4 center 32% / cover no-repeat;
   transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
 }
+/* Shiro and Kye are drawn looking down, so the default upper-third crop
+   misses their eyes — pull the focal slice lower for those two. */
+.follow-art .follow-portrait[data-id="shiro"] { background-position: center 48%; }
+.follow-art .follow-portrait[data-id="kye"]   { background-position: center 45%; }
 .follow-art .follow-portrait:hover {
   transform: translateX(6px) scale(1.012);
   box-shadow: 0 6px 18px rgba(70, 56, 32, 0.4);
   filter: brightness(1.06);
 }
 .follow-art .follow-portrait:active { transform: translateX(3px) scale(0.995); }
+.follow-art .follow-portrait.is-selected {
+  border-color: rgba(196, 158, 84, 0.95);
+  box-shadow: 0 0 0 2px rgba(196, 158, 84, 0.85), 0 6px 18px rgba(70, 56, 32, 0.42);
+  filter: brightness(1.04);
+}
 .follow-art .follow-portrait-name {
   position: absolute; left: 0; right: 0; bottom: 0;
   padding: 0.35em 0.9em 0.3em;

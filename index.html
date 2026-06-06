@@ -116,28 +116,23 @@
                        background-size: cover; background-position: center; }
   .page.notes-art::before, .page.notes-art::after { display: none; }
 
-  /* FIVE framed-plaque buttons, all the same painted-card style so the
-     cover reads as one set (per "为了一致性五个都换掉"). Two heroes on the
-     upper margins, three plaques across the foot — Begin Trial · Follow
-     Paths · Words Recall. Every card is a self-framed PNG, so they all use
-     `contain` + drop-shadow (no edge-to-edge fill). */
+  /* FIVE framed-plaque buttons (transparent cut-outs) laid in a downward
+     arc — a 半圆/倒三角 ∪ that frames the princess: the outer pair ride high,
+     the inner pair drop, and Follow Paths sits at the low centre. All five
+     touch into one connected curve (not a flat row). */
   .menu-btn {
-    position: absolute; width: 18%;
+    position: absolute; width: 16.5%;
     aspect-ratio: 549 / 596;
+    transform: translate(-50%, -50%);
     background: transparent; border: 0; padding: 0;
     cursor: pointer; z-index: 8;
   }
   .menu-btn:focus { outline: none; }
-  /* Upper hero pair, flanking the princess oval. */
-  .menu-btn.left  { top: 39%; left: 13%;  transform: translateY(-50%); }
-  .menu-btn.right { top: 39%; right: 13%; transform: translateY(-50%); }
-  /* Three plaques across the foot — Trial (left), Paths (centre), Recall (right). */
-  .menu-btn.quiz, .menu-btn.recall, .menu-btn.paths {
-    top: auto; bottom: 3%; transform: none; width: 17%;
-  }
-  .menu-btn.quiz   { left: 20%; }
-  .menu-btn.recall { right: 20%; }
-  .menu-btn.paths  { left: 50%; transform: translateX(-50%); }
+  .menu-btn.left   { left: 13.5%; top: 30.5%; }  /* Start Reading  (arc top-left)  */
+  .menu-btn.quiz   { left: 30.5%; top: 50%;   }  /* Begin Trial    (arc mid-left)  */
+  .menu-btn.paths  { left: 50%;   top: 55%;   }  /* Follow Paths   (arc low centre)*/
+  .menu-btn.recall { left: 69.5%; top: 50%;   }  /* Words Recall   (arc mid-right) */
+  .menu-btn.right  { left: 86.5%; top: 30.5%; }  /* Enter Chapter  (arc top-right) */
   .menu-btn .menu-btn-inner {
     background-size: contain; background-position: center; background-repeat: no-repeat;
     filter: drop-shadow(0 5px 13px rgba(40, 28, 12, 0.34));
@@ -697,16 +692,25 @@
      master-frame), clear of the slot grid that begins at y 18%. */
   .save-banner-title {
     position: absolute; left: 0; right: 0; width: 100%;
-    top: 11.4%; height: 6.6%;
+    top: 9%; height: 9.5%;
     margin: 0;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; align-items: center; justify-content: center; gap: 0.46em;
     text-align: center;
     pointer-events: none;
     font-family: var(--font-display);
-    font-size: 28px; letter-spacing: 0.20em;
+    font-size: clamp(34px, 5.2vw, 58px);
+    font-weight: 600; letter-spacing: 0.14em; line-height: 1;
     text-transform: uppercase;
+    text-shadow: 0 1px 0 rgba(255, 250, 238, 0.6), 0 3px 9px rgba(60, 44, 24, 0.26);
     z-index: 5;
   }
+  /* engraved flourishes flanking the word — turns "content text" into a title */
+  .save-banner-title::before,
+  .save-banner-title::after {
+    content: "❧"; font-size: 0.5em; line-height: 1;
+    color: var(--color-gold-soft); opacity: 0.78; transform: translateY(-0.12em);
+  }
+  .save-banner-title::after { transform: scaleX(-1) translateY(-0.12em); }
   .theme-save .save-banner-title { color: var(--accent-wine); }
   .theme-load .save-banner-title { color: var(--accent-blue); }
   .save-slot-grid {
@@ -1056,9 +1060,8 @@
       <div class="follow-label">Follow</div>
       <ul class="follow-list" aria-label="Story paths"></ul>
       <nav class="follow-ui">
-        <button type="button" class="follow-ui-btn" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
-        <button type="button" class="follow-ui-btn" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
-        <button type="button" class="follow-ui-btn" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+        <button type="button" class="follow-ui-btn" data-follow-restart><span class="nav-glyph">↺</span>Restart</button>
+        <button type="button" class="follow-ui-btn" data-follow-go><span class="nav-glyph">❧</span>Follow</button>
       </nav>
     </div>
   </main>
