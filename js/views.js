@@ -3586,20 +3586,46 @@ const Views = (function () {
       if (!list) return;
       const items = (window.PATHS || []);
       if (!items.length) { list.innerHTML = `<li class="follow-empty">No paths yet.</li>`; return; }
-      list.innerHTML = items.map(p => `
-        <li class="follow-portrait" data-id="${esc(p.id)}"
+      list.innerHTML = items.map((p, i) => `
+        <li class="follow-portrait${i === 0 ? " is-selected" : ""}" data-id="${esc(p.id)}"
             style="background-image:url('assets/portraits/${esc(p.id)}.jpg')">
           <span class="follow-portrait-name">${esc(p.title || p.id)}</span>
         </li>`).join("");
-      items.forEach(p => {
-        const li = list.querySelector(`.follow-portrait[data-id="${cssEsc(p.id)}"]`);
-        if (!li) return;
-        li.addEventListener("click", () => {
-          const sec = p.firstSection || "1";
-          window.__navDir = "forward";
-          window.go(`#reading?chapter=${encodeURIComponent(p.id)}&section=${encodeURIComponent(sec)}&browse=1&ebook=1&from=paths`);
-        });
+
+      // Pick a face, then Restart (from the top) or Follow (resume the saved
+      // sentence). Default to the protagonist you last read, else the first.
+      let sel = 0;
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem("tpl.readPos") || "null"); } catch (_) {}
+      if (saved && saved.chapter) {
+        const k = items.findIndex(p => p.id === saved.chapter);
+        if (k >= 0) sel = k;
+      }
+      function paint() {
+        list.querySelectorAll(".follow-portrait").forEach((el, i) =>
+          el.classList.toggle("is-selected", i === sel));
+      }
+      paint();
+      list.querySelectorAll(".follow-portrait").forEach((el, i) => {
+        el.addEventListener("click", () => { sel = i; paint(); });
       });
+
+      function open(line) {
+        const p = items[sel];
+        const first = p.firstSection || "1";
+        let sec = first, ln = 0;
+        if (line && saved && saved.chapter === p.id) {   // Follow → resume in place
+          sec = saved.section || first;
+          ln = Math.max(0, +saved.line || 0);
+        }
+        window.__navDir = "forward";
+        const lf = ln > 0 ? `&line=${ln}` : "";
+        window.go(`#reading?chapter=${encodeURIComponent(p.id)}&section=${encodeURIComponent(sec)}${lf}&browse=1&ebook=1&from=paths`);
+      }
+      const restartBtn = host.querySelector("[data-follow-restart]");
+      const followBtn  = host.querySelector("[data-follow-go]");
+      if (restartBtn) restartBtn.addEventListener("click", () => open(false));
+      if (followBtn)  followBtn.addEventListener("click", () => open(true));
     },
   };
 
