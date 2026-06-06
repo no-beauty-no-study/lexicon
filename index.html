@@ -111,37 +111,42 @@
   .page.wg-art       { background-image: url("assets/bg/ui/word-garden.jpg"); }
   .page.save-art     { background-image: url("assets/bg/ui/saveload.jpg"); }
   .page.load-art     { background-image: url("assets/bg/ui/saveload.jpg"); }
+  .page.follow-art   { background-image: url("assets/bg/ui/follow-station.png"); }
   .page.notes-art    { background-image: url("assets/bg/ui/notes.jpg");
                        background-size: cover; background-position: center; }
   .page.notes-art::before, .page.notes-art::after { display: none; }
 
+  /* FIVE framed-plaque buttons, all the same painted-card style so the
+     cover reads as one set (per "为了一致性五个都换掉"). Two heroes on the
+     upper margins, three plaques across the foot — Begin Trial · Follow
+     Paths · Words Recall. Every card is a self-framed PNG, so they all use
+     `contain` + drop-shadow (no edge-to-edge fill). */
   .menu-btn {
-    position: absolute; top: 47%; width: 17%;
-    aspect-ratio: 601 / 645;
-    transform: translateY(-50%);
+    position: absolute; width: 18%;
+    aspect-ratio: 549 / 596;
     background: transparent; border: 0; padding: 0;
     cursor: pointer; z-index: 8;
   }
   .menu-btn:focus { outline: none; }
-  .menu-btn.left  { left: 12%; }
-  .menu-btn.right { right: 12%; }
-  /* Two painted plaque entries low on the cover — Begin Trial (left of
-     centre) and Words Recall (right of centre), same size as the hero pair,
-     spread a little wider. Transparent margins (floodfilled), no breathe. */
-  .menu-btn.quiz, .menu-btn.recall {
-    top: auto; bottom: 3%; transform: none;
-    width: 17%; aspect-ratio: 549 / 596;
+  /* Upper hero pair, flanking the princess oval. */
+  .menu-btn.left  { top: 39%; left: 13%;  transform: translateY(-50%); }
+  .menu-btn.right { top: 39%; right: 13%; transform: translateY(-50%); }
+  /* Three plaques across the foot — Trial (left), Paths (centre), Recall (right). */
+  .menu-btn.quiz, .menu-btn.recall, .menu-btn.paths {
+    top: auto; bottom: 3%; transform: none; width: 17%;
   }
-  .menu-btn.quiz   { left: 23%; }
-  .menu-btn.recall { right: 23%; }
-  .menu-btn.quiz .menu-btn-inner,
-  .menu-btn.recall .menu-btn-inner {
+  .menu-btn.quiz   { left: 20%; }
+  .menu-btn.recall { right: 20%; }
+  .menu-btn.paths  { left: 50%; transform: translateX(-50%); }
+  .menu-btn .menu-btn-inner {
     background-size: contain; background-position: center; background-repeat: no-repeat;
-    animation: none;
     filter: drop-shadow(0 5px 13px rgba(40, 28, 12, 0.34));
   }
-  .menu-btn.quiz   .menu-btn-inner { background-image: url("assets/bg/ui/C4601148-C0B7-4FBC-8B78-2DD0B958F9D5.png"); }
-  .menu-btn.recall .menu-btn-inner { background-image: url("assets/bg/ui/B4C6D44A-5C31-4417-8288-FBD234721725.png"); }
+  .menu-btn.left  .menu-btn-inner { background-image: url("assets/bg/ui/menu-start.png"); }
+  .menu-btn.right .menu-btn-inner { background-image: url("assets/bg/ui/menu-enter.png"); }
+  .menu-btn.quiz   .menu-btn-inner { background-image: url("assets/bg/ui/menu-trial.png"); }
+  .menu-btn.recall .menu-btn-inner { background-image: url("assets/bg/ui/menu-recall.png"); }
+  .menu-btn.paths  .menu-btn-inner { background-image: url("assets/bg/ui/menu-paths.png"); }
   /* NOTE: this used to be `overflow: hidden` to contain an old diagonal
      gleam-sweep pseudo-element — but that sweep no longer exists, and the
      clip was instead cropping the hover lift and the click-glow drop-shadow
@@ -152,7 +157,7 @@
   .menu-btn { overflow: visible; }
   .menu-btn-inner {
     display: block; width: 100%; height: 100%;
-    background-size: 100% 100%; background-repeat: no-repeat;
+    background-size: contain; background-position: center; background-repeat: no-repeat;
     background-color: transparent; transform-origin: center;
     transition: transform 180ms cubic-bezier(0.2,0.8,0.4,1.2),
                 filter    180ms ease-out;
@@ -173,7 +178,8 @@
     filter: brightness(1.12) drop-shadow(0 12px 22px rgba(40, 28, 12, 0.34));
   }
   .menu-btn.quiz:hover .menu-btn-inner,
-  .menu-btn.recall:hover .menu-btn-inner {
+  .menu-btn.recall:hover .menu-btn-inner,
+  .menu-btn.paths:hover .menu-btn-inner {
     filter: brightness(1.12) drop-shadow(0 12px 22px rgba(40, 28, 12, 0.42));
   }
   /* Layer 2 — press sink: REAL "I'm being pressed" feel.
@@ -239,8 +245,6 @@
     45%  { inset:  0%;  border-color: rgba(255,232,184,0.85); box-shadow: 0 0 22px rgba(255,225,170,0.55); }
     100% { inset: -22%; border-color: rgba(255,232,184,0);    box-shadow: 0 0 0 rgba(220,190,120,0); }
   }
-  .menu-btn.left  .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-start.png"); }
-  .menu-btn.right .menu-btn-inner { background-image: url("assets/bg/ui/menu-button-enter.png"); }
 
   /* =========================================================
      COVER LAYER SYSTEM
@@ -782,6 +786,11 @@
         <span class="menu-btn-inner"></span>
         <span class="menu-btn-badge" aria-hidden="true"></span>
       </button>
+      <!-- Follow Paths → the visual-novel relay station (#paths). -->
+      <button type="button" class="menu-btn paths" data-action="paths">
+        <span class="menu-btn-inner"></span>
+        <span class="menu-btn-badge" aria-hidden="true"></span>
+      </button>
     </div>
   </main>
 </template>
@@ -840,7 +849,18 @@
       <div class="ui-zone zone-toc-btn-09 toc-btn-zone" data-zone="btn 09"></div>
       <div class="ui-zone zone-toc-btn-10 toc-btn-zone" data-zone="btn 10"></div>
       <nav class="ui-bottom-nav">
-        <button type="button" data-go="#paths"><span class="nav-glyph">❦</span>Paths</button>
+        <!-- Paths here is NOT the relay station — it's an Open-Chapter-style
+             selector: tap to reveal a path number, slide to pick, tap to enter
+             that path's reading directly. -->
+        <button type="button" class="paths-open-nav" data-paths-open data-mode="label">
+          <span class="paths-open-label"><span class="nav-glyph">❦</span>Paths</span>
+          <span class="paths-open-sel" aria-hidden="true">
+            <span class="paths-sel-arrow up">▲</span>
+            <span class="paths-sel-num">1</span>
+            <span class="paths-sel-arrow dn">▼</span>
+            <span class="paths-sel-go">open</span>
+          </span>
+        </button>
         <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
       </nav>
     </div>
@@ -1026,15 +1046,21 @@
 </template>
 
 <template id="view-paths">
-  <main class="page paths-art" data-page="paths">
-    <div class="paths-scroll">
-      <h1 class="paths-title">Paths</h1>
-      <ul class="paths-list" aria-label="Story paths"></ul>
+  <!-- The "Follow" relay station: the painted PATHS frame (columns + curtains),
+       with three coordinate-locked frames measured on the 1448×1086 art:
+         · top label slot    → the word "Follow"
+         · centre list slot   → five protagonist portraits in one column
+         · foot UI slot       → Save · Load · Menu -->
+  <main class="page art-bg follow-art" data-page="paths">
+    <div class="follow-frame">
+      <div class="follow-label">Follow</div>
+      <ul class="follow-list" aria-label="Story paths"></ul>
+      <nav class="follow-ui">
+        <button type="button" class="follow-ui-btn" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
+        <button type="button" class="follow-ui-btn" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
+        <button type="button" class="follow-ui-btn" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+      </nav>
     </div>
-    <nav class="ui-bottom-nav is-two">
-      <button type="button" data-go="#chapters?browse=1"><span class="nav-glyph">‹</span>Back</button>
-      <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
-    </nav>
   </main>
 </template>
 
