@@ -124,6 +124,34 @@ File: `assets/bgm/paths/41_social_bar_neon_afterhours.mp3`
 
 Use for bar/nightlife scenes: neon, counter talk, tipsy adult social testing, after-hours atmosphere. Faster, darker, with groove; not banquet, not danger alarm.
 
+## Public Spotlight Character Tracks
+
+Use these when a character is not in a private daily/romance scene, but is being publicly seen, discussed, introduced, admired, evaluated, or put under the room's attention. If the crowd is still talking about this person, keep this person's spotlight BGM for at least 3 lines/paragraphs before switching away.
+
+### 42 - Sealyra - Glass Crown Spotlight
+
+File: `assets/bgm/paths/42_sealyra_spotlight_glass_crown.mp3`
+
+Use for Sealyra public high points: proving herself, entering a room under attention, crowd discussion, competition/showcase moments. Not private monologue and not romance.
+
+### 43 - Shiro - Silver Voltage Spotlight
+
+File: `assets/bgm/paths/43_shiro_spotlight_silver_voltage.mp3`
+
+Use for Shiro public attention: genius superior, knowledge/power display, cold entrance, others discussing him while the room remains focused on him. Not private Shiro heart.
+
+### 44 - Hosea - Sunlit Ovation Spotlight
+
+File: `assets/bgm/paths/44_hosea_spotlight_sunlit_ovation.mp3`
+
+Use for Hosea public attention: speech, society center, crowd admiration, campus prince energy, people looking at/talking about him. Not private Hosea heart.
+
+### 45 - Jael - Velvet Applause Spotlight
+
+File: `assets/bgm/paths/45_jael_spotlight_velvet_applause.mp3`
+
+Use for Jael public attention: VIP entrance, dinner/gala attention, people evaluating his status/charm. Not Jael threat and not private romance.
+
 ## Choice Severity Map
 
 - Small survival / social strategy before choosing: `02_daily_tension_before_reply`

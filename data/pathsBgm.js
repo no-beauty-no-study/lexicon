@@ -293,4 +293,32 @@ window.PATHS_BGM = [
     file: "41_social_bar_neon_afterhours.mp3",
     path: "assets/bgm/paths/41_social_bar_neon_afterhours.mp3",
   },
+  {
+    id: "sealyra_spotlight_glass_crown",
+    title: "Sealyra - Glass Crown Spotlight",
+    use: "Sealyra 公开高光/闪亮登场；众人谈论她、全场目光落在她身上、她证明自己、不是私密独白也不是恋爱心动",
+    file: "42_sealyra_spotlight_glass_crown.mp3",
+    path: "assets/bgm/paths/42_sealyra_spotlight_glass_crown.mp3",
+  },
+  {
+    id: "shiro_spotlight_silver_voltage",
+    title: "Shiro - Silver Voltage Spotlight",
+    use: "Shiro 公开登场/被众人关注；天才上司、冷感压场、知识和权力展示、众人谈论他时也继续用；不是私密心动",
+    file: "43_shiro_spotlight_silver_voltage.mp3",
+    path: "assets/bgm/paths/43_shiro_spotlight_silver_voltage.mp3",
+  },
+  {
+    id: "hosea_spotlight_sunlit_ovation",
+    title: "Hosea - Sunlit Ovation Spotlight",
+    use: "Hosea 公开登场/校园瞩目；演讲、社团中心、众人起哄或看他、阳光校草被全场看见；不是私密心动",
+    file: "44_hosea_spotlight_sunlit_ovation.mp3",
+    path: "assets/bgm/paths/44_hosea_spotlight_sunlit_ovation.mp3",
+  },
+  {
+    id: "jael_spotlight_velvet_applause",
+    title: "Jael - Velvet Applause Spotlight",
+    use: "Jael 公开登场/成人社交瞩目；晚宴里被看见、贵宾出场、众人评估他的身份和魅力；不是危险威胁也不是私密暧昧",
+    file: "45_jael_spotlight_velvet_applause.mp3",
+    path: "assets/bgm/paths/45_jael_spotlight_velvet_applause.mp3",
+  },
 ];
