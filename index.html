@@ -1074,13 +1074,22 @@
 </template>
 
 <template id="view-vn">
-  <!-- 文游 visual-novel reader: tap to advance a beat, tap a word for its
-       card, pick A/B/C at a choice. Speaker labels / markers never spoken. -->
-  <main class="page art-bg vn-art" data-page="vn">
+  <!-- 文游 visual-novel reader — reuses the reading shell (.reading-art zones)
+       so layout matches the study reader; the background is the chapter
+       protagonist's 立绘, set per chapter in Views.vn. -->
+  <main class="page art-bg reading-art vn-art" data-page="vn">
     <div class="master-frame">
-      <div class="vn-titlebar"><span class="vn-chap"></span></div>
-      <div class="vn-scroll"><div class="vn-flow" aria-live="polite"></div></div>
-      <nav class="ui-bottom-nav">
+      <div class="ui-zone zone-reading-title is-text" data-zone="reading title">
+        <div class="reading-titleline">
+          <span class="reading-kicker vn-chap-n">Chapter 01</span>
+          <h1 class="reading-title vn-chap-t">The Glass Elevator</h1>
+        </div>
+        <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
+      </div>
+      <div class="ui-zone zone-reading-body is-text" data-zone="reading body">
+        <article class="reading-body vn-flow" aria-live="polite"></article>
+      </div>
+      <nav class="ui-bottom-nav is-three">
         <button type="button" data-vn-back><span class="nav-glyph">‹</span>Back</button>
         <button type="button" data-vn-restart-nav><span class="nav-glyph">↺</span>Restart</button>
         <button type="button" data-vn-next>Next<span class="nav-glyph-after">›</span></button>

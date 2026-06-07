@@ -3640,8 +3640,10 @@ const Views = (function () {
       const story = (window.PATHS_STORY && window.PATHS_STORY[params.story || "mainline"]) ||
                     (window.PATHS_STORY && window.PATHS_STORY.mainline) || null;
       const flow   = host.querySelector(".vn-flow");
-      const scroll = host.querySelector(".vn-scroll");
-      const chapEl = host.querySelector(".vn-chap");
+      const scroll = flow;                       // the reading-body scrolls itself
+      const chapT  = host.querySelector(".vn-chap-t");
+      const chapN  = host.querySelector(".vn-chap-n");
+      const LEADS  = { sealyra: 1, shiro: 1, hosea: 1, jael: 1, kye: 1 };
       if (!flow) return;
       if (!story || !story.chapters || !story.chapters.length) {
         flow.innerHTML = `<p class="vn-empty">This path is still being written.</p>`;
@@ -3652,7 +3654,7 @@ const Views = (function () {
       function scrollEnd() { if (scroll) requestAnimationFrame(() => { scroll.scrollTop = scroll.scrollHeight; }); }
       const choiceBgm = () => (window.READING_BGM_PLAN && window.READING_BGM_PLAN.choice) || {};
       const cue = (track) => { try { if (track && window.BGM && BGM.cueTrack) BGM.cueTrack(track); } catch (_) {} };
-      function scoreScene() { try { if (window.BGM && BGM.applyForView) BGM.applyForView("vn", { story: story.id, path: params.path, ch: chIdx + 1 }); } catch (_) {} }
+      function scoreScene() { try { const ld = (chapter && chapter.lead) || "sealyra"; if (window.BGM && BGM.applyForView) BGM.applyForView("vn", { story: story.id, path: ld, ch: chIdx + 1 }); } catch (_) {} }
       // Cumulative affection (decorative on the Follow station's portraits).
       function addAffection(aff) {
         if (!aff || !aff.who) return;
@@ -3673,9 +3675,14 @@ const Views = (function () {
         queue = chapter.blocks.slice();
         choiceOpen = false; ended = false;
         flow.innerHTML = "";
-        if (chapEl) chapEl.textContent = "Chapter " + chapter.n + " · " + chapter.title;
-        // chapter-level score for the channel
-        try { if (window.BGM && BGM.applyForView) BGM.applyForView("vn", { story: story.id, path: params.path, ch: chIdx + 1 }); } catch (_) {}
+        if (chapN) chapN.textContent = "Chapter " + String(chapter.n).padStart(2, "0");
+        if (chapT) chapT.textContent = chapter.title;
+        // Background = this chapter's protagonist 立绘 (left-column character).
+        const lead = (chapter.lead && LEADS[chapter.lead]) ? chapter.lead : "sealyra";
+        host.style.backgroundImage = `url("assets/bg/ui/${lead}.png")`;
+        // chapter-level score follows the chapter's protagonist, not the
+        // portrait you tapped to get here.
+        try { if (window.BGM && BGM.applyForView) BGM.applyForView("vn", { story: story.id, path: lead, ch: chIdx + 1 }); } catch (_) {}
         advance();
       }
 

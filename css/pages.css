@@ -2730,22 +2730,16 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .follow-art .follow-empty { color: #8a7a5c; text-align: center; font-style: italic; }
 
 /* ============================================================
-   VN — the 文游 visual-novel reader. Parchment column of beats; tap to
-   advance, tap a word for its card, pick A/B/C at a choice.
+   VN — the 文游 visual-novel reader. Reuses the .reading-art shell (title +
+   body zones, bottom nav); the per-chapter 立绘 is the page background. The
+   body is a column of beats: tap to advance, tap a word for its card, pick
+   A/B/C at a choice.
    ============================================================ */
-.vn-art .master-frame { position: absolute; inset: 0; }
-.vn-art .vn-titlebar {
-  position: absolute; left: 8%; right: 8%; top: 5.5%; height: 6%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display), Georgia, serif; font-weight: 600;
-  font-size: clamp(15px, 2vw, 26px); letter-spacing: 0.08em; color: #4a3f2c;
-  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.55);
-}
-.vn-art .vn-scroll {
-  position: absolute; left: 9%; right: 9%; top: 13%; bottom: 11%;
-  overflow-y: auto; -webkit-overflow-scrolling: touch; pointer-events: auto;
-}
-.vn-art .vn-flow { display: flex; flex-direction: column; gap: 0.85em; padding: 0.5em 0 2em; }
+/* Body zone — reading scopes its coords to [data-page="reading"], so set the
+   VN body explicitly. A bit wider than reading (no marginalia word column),
+   still clear of the 立绘 character in the left ~27%. */
+.vn-art .zone-reading-body { left: 27.33%; top: 22.64%; width: 62%; height: 66.19%; }
+.vn-art .vn-flow { display: flex; flex-direction: column; gap: 0.85em; padding: 0 0 2em; }
 .vn-art .vn-beat {
   font-family: var(--font-body), Georgia, serif;
   font-size: clamp(15px, 1.75vw, 20px); line-height: 1.62; color: #3a3326;
