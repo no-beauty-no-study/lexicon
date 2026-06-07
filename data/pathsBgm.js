@@ -167,4 +167,32 @@ window.PATHS_BGM = [
     file: "23_jael_sweet_daily_after_hours.mp3",
     path: "assets/bgm/paths/23_jael_sweet_daily_after_hours.mp3",
   },
+  {
+    id: "common_despair_irreversible",
+    title: "Common - Irreversible",
+    use: "崩溃绝望；无法挽回的后果、重大错误分支、精神断裂；慢、沉、大提琴和低钢琴",
+    file: "24_common_despair_irreversible.mp3",
+    path: "assets/bgm/paths/24_common_despair_irreversible.mp3",
+  },
+  {
+    id: "common_alarm_despair_countdown",
+    title: "Common - Alarm Despair Countdown",
+    use: "警报式绝望；中低中慢拍、中高高快拍；适合选错后果正在逼近，但还没进入生死存亡级别",
+    file: "25_common_alarm_despair_countdown.mp3",
+    path: "assets/bgm/paths/25_common_alarm_despair_countdown.mp3",
+  },
+  {
+    id: "common_mortal_alarm_survival",
+    title: "Common - Mortal Alarm",
+    use: "大生存选择题；生死存亡、严重失败后果显而易见；采样大提琴/低音提琴/高位提琴警报，不是普通社交紧张",
+    file: "26_common_mortal_alarm_survival.mp3",
+    path: "assets/bgm/paths/26_common_mortal_alarm_survival.mp3",
+  },
+  {
+    id: "common_rivalry_climax_strings_piano",
+    title: "Common - Rivalry Climax",
+    use: "剧情高潮点；多男主雄竞、修罗场、对峙、关系爆点；提琴主导、钢琴推进、低音打击感",
+    file: "27_common_rivalry_climax_strings_piano.mp3",
+    path: "assets/bgm/paths/27_common_rivalry_climax_strings_piano.mp3",
+  },
 ];

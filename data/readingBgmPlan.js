@@ -184,6 +184,14 @@
       "common.wrong":        P("13_choice_loss_sweet_knife.mp3"),
       "common.correct":      P("14_choice_continue_clean_angle.mp3"),
       "common.dark":         P("09_jael_daily_gold_knife.mp3"),
+      "common.despair":      P("24_common_despair_irreversible.mp3"),       // BE landed, irreversible
+      "common.alarm":        P("25_common_alarm_despair_countdown.mp3"),    // consequence closing in
+      "common.mortal":       P("26_common_mortal_alarm_survival.mp3"),      // life-or-death survival choice
+      "common.rivalry":      P("27_common_rivalry_climax_strings_piano.mp3"), // 修罗场 / multi-lead clash
+      // Per-lead HEART-choice tension (pending push to codex: paths/28-30).
+      "shiro.choice":        P("28_shiro_choice_brittle_static.mp3"),
+      "hosea.choice":        P("29_hosea_choice_clean_pressure.mp3"),
+      "jael.choice":         P("30_jael_choice_velvet_contract.mp3"),
       "sealyra.monologue":   P("17_luv_poem_from_hum.mp3"),
       "sealyra.effort":      P("16_shiro_heart2_from_hum.mp3"),
       "sealyra.highlight":   P("20_heart9_opening_burst.mp3"),
