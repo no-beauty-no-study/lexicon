@@ -1,0 +1,16 @@
+# word owl toefl draft summary
+
+toefl_entries_parsed 3587
+big_card_word_universe_input 7035
+draft_cards 13978
+family_words_added_to_draft 6962
+toefl_words_in_draft 3572
+universe_words_in_draft 7000
+with_toefl_source 3572
+with_old_registry 11692
+with_kin_glossary 2543
+with_dotted_cut 9502
+with_family_head 5514
+with_family_member 6155
+with_clean_old_example 2592
+demoted_to_small_card 414
