@@ -5,53 +5,41 @@
    calls BGM.applyForView(name, params) whenever the hash changes. */
 (function () {
   const BGM_DIR = "assets/bgm/";
-
-  const UI_TRACK = "01_ui_cover_select_save_load.mp3";
-  const BY_VIEW = {
-    "splash":      UI_TRACK,
-    "menu":        UI_TRACK,
-    "select":      UI_TRACK,
-    "save":        UI_TRACK,
-    "load":        UI_TRACK,
-    "notes":       "02_note.mp3",
-    "word-garden": "03_words_garden.mp3",
-    "chapters":    "04_story_lobby.mp3",
-    "quiz":        "05_choice_quiz_all_fast_short.mp3",
-  };
-  const READING_BY_CHAPTER = {
-    "universe":          "06_reading_universe_dark.mp3",
-    "earth-history":     "08_reading_earth_sunlit.mp3",
-    "africa":            "10_reading_africa_sunflower.mp3",
-    "antarctica":        "12_reading_antarctica_ice.mp3",
-    "australia-pacific": "14_reading_australia_garden.mp3",
-    "south-america":     "16_reading_southamerica_clocktower.mp3",
-    "asia":              "18_reading_asia_alice_key.mp3",
-    "oceans":            "20_reading_ocean_cafe_swing.mp3",
-    "europe":            "21_reading_europe_empress.mp3",
-    "north-america":     "23_reading_northamerica_skip.mp3",
-  };
-
   const DEFAULT_VOLUME = 0.32;
 
-  // Full track inventory — used by nextTrack() for manual cycling
-  // when the player wants something other than the per-view default.
-  const ALL_TRACKS = [
+  const PLAN = window.READING_BGM_PLAN || {};
+  const UI = PLAN.ui || {};
+  const CHAPTER_PLAN = PLAN.chapters || {};
+
+  const UI_TRACK = UI.default || "01_ui_cover_select_save_load.mp3";
+  const BY_VIEW = {
+    menu: UI_TRACK,
+    select: "30_ui_select_sun_ribbon.mp3",
+    notes: UI.notes || "02_note.mp3",
+    "word-garden": UI.wordGarden || "03_words_garden.mp3",
+    review: "05_choice_quiz_all_fast_short.mp3",
+    paths: UI_TRACK,
+    voices: UI_TRACK,
+  };
+  const QUIZ_BY_STAGE = {
+    silver: "00_choice_quiz_TRUE_SHORT_45s.mp3",
+    golden: "25_review_spark.mp3",
+    seal: "31_quiz_dictation_long_loop.mp3",
+  };
+  const ALL_TRACKS = Array.from(new Set([
     UI_TRACK,
+    "30_ui_select_sun_ribbon.mp3",
     "02_note.mp3",
     "03_words_garden.mp3",
-    "04_story_lobby.mp3",
+    "00_choice_quiz_TRUE_SHORT_45s.mp3",
+    "25_review_spark.mp3",
+    "31_quiz_dictation_long_loop.mp3",
     "05_choice_quiz_all_fast_short.mp3",
-    "06_reading_universe_dark.mp3",
-    "08_reading_earth_sunlit.mp3",
-    "10_reading_africa_sunflower.mp3",
-    "12_reading_antarctica_ice.mp3",
-    "14_reading_australia_garden.mp3",
-    "16_reading_southamerica_clocktower.mp3",
-    "18_reading_asia_alice_key.mp3",
-    "20_reading_ocean_cafe_swing.mp3",
-    "21_reading_europe_empress.mp3",
-    "23_reading_northamerica_skip.mp3",
-  ];
+    ...Object.values(CHAPTER_PLAN).flatMap(plan => [
+      ...((plan && plan.pool) || []),
+      ...((plan && plan.segments) || []).flatMap(seg => (seg && seg.tracks) || []),
+    ]),
+  ]));
 
   let audio        = null;
   let currentTrack = null;
@@ -107,11 +95,43 @@
     })(t0);
   }
 
+  function sectionKey(section) {
+    const m = String(section || "").match(/(\d+)(?:\.(\d+))?/);
+    if (!m) return null;
+    return Number(m[1]) * 1000 + Number(m[2] || 0);
+  }
+
+  function sectionInRange(section, range) {
+    const sec = sectionKey(section);
+    if (sec == null) return false;
+    const parts = String(range || "").split("-").map(sectionKey);
+    if (parts[0] == null) return false;
+    if (parts.length === 1 || parts[1] == null) return sec === parts[0];
+    return sec >= parts[0] && sec <= parts[1];
+  }
+
+  function readingTrack(params) {
+    const ch = (params && params.chapter) || "";
+    const sec = (params && params.section) || "";
+    const plan = CHAPTER_PLAN[ch];
+    if (!plan) return UI_TRACK;
+    const segment = ((plan.segments || []).find(seg => sectionInRange(sec, seg.range)) || null);
+    const tracks = (segment && segment.tracks && segment.tracks.length) ? segment.tracks : (plan.pool || []);
+    return tracks[0] || UI_TRACK;
+  }
+
   function trackForView(name, params) {
     if (name === "reading") {
-      const ch = (params && params.chapter) || "universe";
-      return READING_BY_CHAPTER[ch] || READING_BY_CHAPTER.universe;
+      return readingTrack(params);
     }
+    if (name === "quiz") {
+      const stage = (params && params.stage) || "silver";
+      return QUIZ_BY_STAGE[stage] || QUIZ_BY_STAGE.silver;
+    }
+    if (name === "comprehension" || name === "quizstatus") {
+      return "00_choice_quiz_TRUE_SHORT_45s.mp3";
+    }
+    if (name === "save" || name === "load") return currentTrack || UI_TRACK;
     return BY_VIEW[name] || UI_TRACK;
   }
 
@@ -126,6 +146,13 @@
 
   function applyForView(name, params) {
     const track = manualTrack || trackForView(name, params);
+    // No score loaded yet → make sure nothing is playing and bail.
+    if (!track) {
+      document.body.dataset.bgmTrack = "";
+      if (audio && !audio.paused) fade(0, 200, () => { try { audio.pause(); } catch (_) {} currentTrack = null; });
+      return;
+    }
+    document.body.dataset.bgmTrack = track;
     ensureAudio();
     if (track === currentTrack) {
       if (audio.paused) playNow();
@@ -161,6 +188,7 @@
   }
   function getVolume() { return userVolume; }
   function nextTrack() {
+    if (!ALL_TRACKS.length) return null;   // no score loaded
     ensureAudio();
     const i = ALL_TRACKS.indexOf(currentTrack);
     const next = ALL_TRACKS[(i + 1 + ALL_TRACKS.length) % ALL_TRACKS.length];
