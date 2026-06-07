@@ -58,7 +58,7 @@ Use these when several people are present, the scene is mainly social/class/stat
 
 File: `assets/bgm/paths/31_social_plain_idle.mp3`
 
-Use for plain/idle daily air: solo transition, quiet walking, ordinary breathing room, no obvious conflict yet. Lowest intensity.
+Use for plain/idle daily air: solo transition, quiet walking, ordinary breathing room, no obvious conflict yet. New version removes harp single-note clutter; piano/low strings only.
 
 ### 32 - Social - Workday Roommate
 

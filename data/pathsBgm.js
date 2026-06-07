@@ -219,7 +219,7 @@ window.PATHS_BGM = [
   {
     id: "social_plain_idle",
     title: "Social - Plain Idle",
-    use: "无署名平淡悠闲；独处、轻松过渡、没有明显冲突的日常空气；更像完整小曲，不是功能占位",
+    use: "无署名平淡悠闲；独处、轻松过渡、没有明显冲突的日常空气；新版去掉竖琴单音，钢琴和低弦为主，稳定好循环",
     file: "31_social_plain_idle.mp3",
     path: "assets/bgm/paths/31_social_plain_idle.mp3",
   },
