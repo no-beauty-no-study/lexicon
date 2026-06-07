@@ -823,9 +823,11 @@
 .reading-art:not([data-page="quiz"]) .zone-reading-title {
   transition: opacity 280ms ease-out, color 280ms ease-out;
 }
-.reading-art:not([data-page="quiz"]) .zone-reading-title:not(.is-revealed) {
+.reading-art:not([data-page="quiz"]):not([data-page="vn"]) .zone-reading-title:not(.is-revealed) {
   opacity: 0.18;
 }
+/* The 文游 title is always fully inked (no reveal interaction there). */
+.vn-art .zone-reading-title { opacity: 1; }
 .reading-art:not([data-page="quiz"]) .zone-reading-title.is-revealed {
   opacity: 1;
 }
@@ -2749,7 +2751,20 @@ body[data-current-view="vn"] .global-bgm-control { display: none; }
   opacity: 0; transform: translateY(6px); transition: opacity 420ms ease, transform 420ms ease;
 }
 .vn-art .vn-beat.is-in { opacity: 1; transform: none; }
+/* The speaker's voice-line. Default stays beige; the five leads get a soft,
+   muted tint that still sits inside the classical parchment palette. */
 .vn-art .vn-said { padding-left: 0.9em; border-left: 2px solid rgba(170, 140, 84, 0.5); }
+.vn-art .vn-said[data-who="sealyra"] { border-left-color: rgba(196, 120, 138, 0.72); }  /* 粉 dusty rose */
+.vn-art .vn-said[data-who="shiro"]   { border-left-color: rgba(118, 142, 168, 0.72); }  /* 蓝灰 slate    */
+.vn-art .vn-said[data-who="hosea"]   { border-left-color: rgba(196, 162, 78, 0.85); }   /* 金 warm gold  */
+.vn-art .vn-said[data-who="jael"]    { border-left-color: rgba(146, 130, 184, 0.72); }  /* 蓝紫 periwinkle*/
+.vn-art .vn-said[data-who="kye"]     { border-left-color: rgba(128, 162, 122, 0.72); }  /* 绿 sage       */
+/* the speaker name picks up a faint matching tint so the pairing reads */
+.vn-art .vn-said[data-who="sealyra"] .vn-speaker { color: #a85a6c; }
+.vn-art .vn-said[data-who="shiro"]   .vn-speaker { color: #5f7088; }
+.vn-art .vn-said[data-who="hosea"]   .vn-speaker { color: #9a7a30; }
+.vn-art .vn-said[data-who="jael"]    .vn-speaker { color: #6d5f96; }
+.vn-art .vn-said[data-who="kye"]     .vn-speaker { color: #567a4e; }
 .vn-art .vn-speaker {
   display: block; font-family: var(--font-display), Georgia, serif; font-weight: 700;
   font-size: 0.82em; letter-spacing: 0.12em; text-transform: uppercase;
