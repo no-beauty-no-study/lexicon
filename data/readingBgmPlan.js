@@ -192,6 +192,20 @@
       "shiro.choice":        P("28_shiro_choice_brittle_static.mp3"),
       "hosea.choice":        P("29_hosea_choice_clean_pressure.mp3"),
       "jael.choice":         P("30_jael_choice_velvet_contract.mp3"),
+      // Unsigned SOCIAL scene tracks — use when several people are present /
+      // the scene is social·class·status, even if a lead is in the room but
+      // the camera has not narrowed onto him. (Don't use a lead solo cue then.)
+      "social.idle":         P("31_social_plain_idle.mp3"),
+      "social.workday":      P("32_social_workday_roommate.mp3"),
+      "social.campus":       P("33_social_campus_group_bright.mp3"),
+      "social.progression":  P("34_social_story_progression.mp3"),
+      "social.salon":        P("35_social_formal_strings_salon.mp3"),
+      "social.pressure":     P("36_social_glass_pressure_piano.mp3"),
+      "social.public":       P("37_social_public_bright_strings.mp3"),
+      "social.strategy":     P("38_social_strategy_piano_motion.mp3"),
+      "social.power":        P("39_social_power_cello_slow.mp3"),
+      "social.dinner":       P("40_social_dinner_velvet_waltz.mp3"),
+      "social.bar":          P("41_social_bar_neon_afterhours.mp3"),
       "sealyra.monologue":   P("17_luv_poem_from_hum.mp3"),
       "sealyra.effort":      P("16_shiro_heart2_from_hum.mp3"),
       "sealyra.highlight":   P("20_heart9_opening_burst.mp3"),

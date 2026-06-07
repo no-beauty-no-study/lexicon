@@ -2822,9 +2822,11 @@ body[data-current-view="vn"] .global-bgm-control { display: none; }
 .vn-art .vn-opt.is-picked::after { content: "❧"; margin-left: 0.5em; color: var(--color-gold-soft); }
 
 /* chapter / bad ending card */
-.vn-art .vn-end { text-align: center; margin: 1.2em 0 0.4em; }
-.vn-art .vn-end-mark { font-family: var(--font-display), Georgia, serif; font-size: 1.4em; color: var(--color-gold-soft); letter-spacing: 0.3em; margin: 0 0 0.3em; }
+.vn-art .vn-end { text-align: center; margin: 1.4em 0 0.6em; }
+.vn-art .vn-end-mark { font-family: var(--font-display), Georgia, serif; font-size: 1.5em; color: var(--color-gold-soft); letter-spacing: 0.32em; margin: 0 0 0.5em; }
 .vn-art .vn-end.is-bad .vn-end-mark { color: #8a4444; }
+/* Next-Chapter uses reading's antique-button; size it up for the VN flow. */
+.vn-art .vn-next-ch { height: auto; min-height: 2.4em; padding: 0.5em 1.7em; font-size: clamp(12px, 1.45vw, 16px); }
 .vn-art .vn-end-zh { color: #7a6a4c; font-style: italic; margin: 0 0 0.7em; }
 .vn-art .vn-end-btn {
   font-family: var(--font-display), Georgia, serif; font-size: clamp(14px, 1.6vw, 19px);

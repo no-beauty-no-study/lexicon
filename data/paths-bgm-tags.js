@@ -1,40 +1,42 @@
 /* ============================================================
    文游 scene → BGM tags (hand-authored by reading the story).
 
-   Each entry is [blockIndex, category]: from that block onward the scene
-   plays that category's track (see READING_BGM_PLAN.pathsCat) until the next
-   cue. Choice moments (tension / wrong / correct / male-lead heart) are driven
-   automatically by the choice structure in Views.vn, so they are NOT tagged
-   here — these tags set the *ambient scene* mood only.
+   Each entry is [blockIndex, category]: from that block onward the scene plays
+   that category's track (see READING_BGM_PLAN.pathsCat) until the next cue.
+   Choice moments (tension / wrong / correct / male-lead heart) are cued
+   automatically by Views.vn, so they are NOT tagged here.
 
-   Categories used: main.theme / common.daily / common.tension / common.dark /
-   sealyra.monologue|effort|highlight / shiro|hosea|jael|kye .daily|heart|sad…
+   PRINCIPLE: when several people are present / the scene is social·class·status
+   (even if a lead is in the room but the camera has NOT narrowed onto him),
+   use an unsigned social.* track — NOT his solo cue. Lead cues (shiro/hosea/
+   jael/kye .daily|heart|sad|sweet) are only for scenes that narrow to him
+   (private / 2-person / romantic). Sealyra cues for her inner / highlight beats.
    ============================================================ */
 window.PATHS_BGM_TAGS = {
   mainline: {
-    // 1 · The Glass Elevator — office banter, Shiro's cold glass-elevator entrance
-    "1":  [[0, "main.theme"], [4, "common.daily"], [13, "shiro.daily"], [16, "common.daily"]],
-    // 2 · The Price of a Seat — café, Tenure-Hill social knives (Hosea only spoken of)
-    "2":  [[0, "common.daily"], [6, "common.tension"], [19, "common.daily"]],
-    // 3 · The Weight of a Scar — brother's ward (Kye), Jael's polished sales-threat, the memory
+    // 1 · The Glass Elevator — office banter, Shiro's PUBLIC elevator reveal (watched by all → social)
+    "1":  [[0, "main.theme"], [4, "social.workday"], [13, "social.public"], [16, "social.workday"]],
+    // 2 · The Price of a Seat — café; the Tenure-Hill girls' social knife-work
+    "2":  [[0, "social.workday"], [2, "social.pressure"], [19, "social.workday"]],
+    // 3 · The Weight of a Scar — brother's ward (private), Jael's polite-threat (2-person), the memory
     "3":  [[0, "kye.daily"], [3, "jael.daily"], [12, "sealyra.monologue"], [20, "sealyra.effort"]],
-    // 4 · The Forum — auditorium; Hosea speaks, then Shiro
-    "4":  [[0, "common.daily"], [2, "hosea.daily"], [5, "shiro.daily"], [11, "common.daily"]],
-    // 5 · The Signature — Margolis's review pressure, Shiro's suite, the signature won
-    "5":  [[0, "common.daily"], [1, "common.tension"], [15, "shiro.daily"], [17, "sealyra.effort"], [22, "sealyra.monologue"]],
-    // 6 · The Direction Reverses — exam, getting in, the sister call, the new dorm, Thea's chill
-    "6":  [[0, "common.tension"], [5, "sealyra.highlight"], [7, "common.daily"], [24, "common.tension"], [29, "common.daily"]],
-    // 7 · The One Everyone Watches — orientation; Hosea's gaze finds her; Thea's warning
-    "7":  [[0, "common.daily"], [6, "hosea.daily"], [11, "hosea.heart"], [14, "common.tension"], [16, "common.daily"]],
-    // 8 · The Society Fair — the fair, Hosea at the Naturalist table
-    "8":  [[0, "common.daily"], [5, "hosea.daily"], [13, "common.daily"]],
-    // 9 · The Naturalist Society — meeting; she fixes Rhys; Hosea notices
-    "9":  [[0, "common.daily"], [2, "hosea.daily"], [8, "hosea.heart"], [10, "common.daily"]],
-    // 10 · The Interview — the panel; Shiro the hostile patron; Hosea defends her
-    "10": [[0, "common.tension"], [4, "shiro.daily"], [10, "hosea.heart"], [14, "common.daily"]],
-    // 11 · Field Notes — the wetland, the long intimate survey with Hosea, Wren's spying
-    "11": [[0, "common.daily"], [1, "hosea.daily"], [14, "hosea.heart"], [19, "common.tension"], [22, "common.daily"]],
-    // 12 · The Seminar — the group; she rebuilds Thea's study; Hosea's real question
-    "12": [[0, "common.daily"], [3, "common.tension"], [8, "hosea.heart"], [12, "common.tension"], [18, "common.daily"]],
+    // 4 · The Forum — auditorium stage (public), Shiro's cold authority, Vivienne's car strategy
+    "4":  [[0, "social.public"], [5, "social.power"], [11, "social.strategy"]],
+    // 5 · The Signature — Margolis's judging review, Shiro's corridor, the signature won
+    "5":  [[0, "social.pressure"], [15, "social.workday"], [17, "sealyra.effort"], [22, "sealyra.monologue"]],
+    // 6 · The Direction Reverses — exam pressure, getting in, the sister call, dorm, Thea's chill
+    "6":  [[0, "social.pressure"], [5, "sealyra.highlight"], [7, "social.idle"], [18, "social.workday"], [24, "social.pressure"], [29, "social.workday"]],
+    // 7 · The One Everyone Watches — orientation (campus), Hosea on stage (public), his gaze finds HER (narrows → heart)
+    "7":  [[0, "social.workday"], [4, "social.campus"], [6, "social.public"], [11, "hosea.heart"], [14, "social.pressure"], [16, "social.workday"]],
+    // 8 · The Society Fair — the fair (campus group), Hosea working the table (public)
+    "8":  [[0, "social.campus"], [5, "social.public"], [13, "social.campus"]],
+    // 9 · The Naturalist Society — academic meeting (strategy), Hosea presents (public), he narrows to her
+    "9":  [[0, "social.strategy"], [2, "social.public"], [8, "hosea.heart"], [10, "social.workday"]],
+    // 10 · The Interview — the panel (judged), Shiro's hostile authority (public), Hosea defends (narrows → heart)
+    "10": [[0, "social.pressure"], [4, "social.power"], [10, "hosea.heart"], [14, "social.workday"]],
+    // 11 · Field Notes — the field trip, the PRIVATE 2-person reed-bed survey with Hosea, Wren's spying
+    "11": [[0, "social.progression"], [1, "hosea.daily"], [14, "hosea.heart"], [19, "social.pressure"], [22, "social.workday"]],
+    // 12 · The Seminar — academic group (strategy), Thea's pressure, Hosea's real question (narrows → heart)
+    "12": [[0, "social.strategy"], [3, "social.pressure"], [8, "hosea.heart"], [12, "social.pressure"], [18, "social.workday"]],
   },
 };
