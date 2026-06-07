@@ -3665,7 +3665,7 @@ const Views = (function () {
       }
 
       let chIdx = Math.max(0, Math.min(story.chapters.length - 1, (parseInt(params.ch, 10) || 1) - 1));
-      let chapter, queue = [], choiceOpen = false, ended = false;
+      let chapter, queue = [], choiceOpen = false, ended = false, pendingFirst = null;
 
       function loadChapter(idx) {
         try { TTS && TTS.cancel && TTS.cancel(); } catch (_) {}
@@ -3683,17 +3683,22 @@ const Views = (function () {
         // chapter-level score follows the chapter's protagonist, not the
         // portrait you tapped to get here.
         try { if (window.BGM && BGM.applyForView) BGM.applyForView("vn", { story: story.id, path: lead, ch: chIdx + 1 }); } catch (_) {}
-        advance();
+        // Reveal the first beat SILENTLY — iOS drops speech started outside a
+        // user gesture, so its voice fires on the first tap (see step()).
+        const f = queue[0];
+        pendingFirst = (f && (f.k === "n" || f.k === "s")) ? f.t : null;
+        advance(false);
       }
 
-      function beatEl(b) {
+      function beatEl(b, voice) {
         const div = document.createElement("div");
         div.className = "vn-beat" + (b.k === "s" ? " vn-said" : "");
+        if (b.k === "s") div.dataset.who = String(b.who).trim().toLowerCase().split(/\s+/)[0];
         const who = b.k === "s" ? `<span class="vn-speaker">${esc(b.who)}</span>` : "";
         div.innerHTML = who + `<span class="vn-text">${renderSentenceHTML(b.t)}</span>`;
         flow.appendChild(div);
         requestAnimationFrame(() => div.classList.add("is-in"));
-        say(b.t);
+        if (voice !== false) say(b.t);
         scrollEnd();
       }
 
@@ -3735,13 +3740,19 @@ const Views = (function () {
         fresh.scrollIntoView({ block: "nearest", behavior: "smooth" });
       }
 
-      function advance() {
+      function advance(voice) {
         if (choiceOpen || ended) return;
         if (!queue.length) { chapterEnd(); return; }
         const b = queue.shift();
         if (b.k === "c")  { choiceOpen = true; renderChoice(b); return; }
-        if (b.k === "_be") { if (b.end === "END") badEnd(); else { scoreScene(); advance(); } return; }
-        beatEl(b);
+        if (b.k === "_be") { if (b.end === "END") badEnd(); else { scoreScene(); advance(voice); } return; }
+        beatEl(b, voice);
+      }
+      // One step of progress, always from inside a user gesture: first tap
+      // voices the silently-revealed opening beat, later taps advance.
+      function step() {
+        if (pendingFirst) { const t = pendingFirst; pendingFirst = null; say(t); return; }
+        advance(true);
       }
 
       function renderChoice(c) {
@@ -3797,10 +3808,10 @@ const Views = (function () {
         flow.appendChild(card); scrollEnd();
       }
 
-      // tap anywhere (not a word / button) → advance
+      // tap anywhere (not a word / button) → advance (voices first beat too)
       host.addEventListener("click", (e) => {
         if (e.target.closest(".clickable-word") || e.target.closest("button")) return;
-        advance();
+        step();
       });
       // tap a word → small card in the right column (like reading); tapping
       // that card opens the full drawer. Never advances the scene.
@@ -3843,11 +3854,11 @@ const Views = (function () {
         e.stopPropagation();
         if (autoTimer) { stopAuto(); return; }
         autoBtn.classList.add("is-active");
-        autoTimer = setInterval(() => { if (choiceOpen || ended) { stopAuto(); return; } advance(); }, 3200);
+        autoTimer = setInterval(() => { if (choiceOpen || ended) { stopAuto(); return; } step(); }, 3200);
       });
 
       const nextBtn = host.querySelector("[data-vn-next]");
-      if (nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); advance(); });
+      if (nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); step(); });
       const restartNav = host.querySelector("[data-vn-restart-nav]");
       if (restartNav) restartNav.addEventListener("click", (e) => { e.stopPropagation(); loadChapter(chIdx); });
       const backBtn = host.querySelector("[data-vn-back]");
