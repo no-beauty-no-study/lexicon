@@ -2721,6 +2721,85 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
 .follow-art .follow-ui-btn .nav-glyph { opacity: 0.7; }
 .follow-art .follow-empty { color: #8a7a5c; text-align: center; font-style: italic; }
 
+/* ============================================================
+   VN — the 文游 visual-novel reader. Parchment column of beats; tap to
+   advance, tap a word for its card, pick A/B/C at a choice.
+   ============================================================ */
+.vn-art .master-frame { position: absolute; inset: 0; }
+.vn-art .vn-titlebar {
+  position: absolute; left: 8%; right: 8%; top: 5.5%; height: 6%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display), Georgia, serif; font-weight: 600;
+  font-size: clamp(15px, 2vw, 26px); letter-spacing: 0.08em; color: #4a3f2c;
+  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.55);
+}
+.vn-art .vn-scroll {
+  position: absolute; left: 9%; right: 9%; top: 13%; bottom: 11%;
+  overflow-y: auto; -webkit-overflow-scrolling: touch; pointer-events: auto;
+}
+.vn-art .vn-flow { display: flex; flex-direction: column; gap: 0.85em; padding: 0.5em 0 2em; }
+.vn-art .vn-beat {
+  font-family: var(--font-body), Georgia, serif;
+  font-size: clamp(15px, 1.75vw, 20px); line-height: 1.62; color: #3a3326;
+  opacity: 0; transform: translateY(6px); transition: opacity 420ms ease, transform 420ms ease;
+}
+.vn-art .vn-beat.is-in { opacity: 1; transform: none; }
+.vn-art .vn-said { padding-left: 0.9em; border-left: 2px solid rgba(170, 140, 84, 0.5); }
+.vn-art .vn-speaker {
+  display: block; font-family: var(--font-display), Georgia, serif; font-weight: 700;
+  font-size: 0.82em; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #8a6a3a; margin-bottom: 0.12em;
+}
+.vn-art .clickable-word { cursor: pointer; border-bottom: 1px dotted rgba(140, 110, 60, 0.5); }
+.vn-art .clickable-word:hover { color: #6a4a1f; background: rgba(196, 158, 84, 0.16); }
+
+/* affection feedback tag */
+.vn-art .vn-aff {
+  align-self: flex-start; font-family: var(--font-display), Georgia, serif;
+  font-size: 0.82em; letter-spacing: 0.06em; padding: 0.16em 0.7em; border-radius: 999px;
+}
+.vn-art .vn-aff.is-up   { background: rgba(120, 160, 96, 0.2);  color: #4d6b35; border: 1px solid rgba(120,160,96,0.5); }
+.vn-art .vn-aff.is-down { background: rgba(170, 96, 96, 0.18); color: #8a4444; border: 1px solid rgba(170,96,96,0.5); }
+
+/* choice card */
+.vn-art .vn-choice-card {
+  margin: 0.6em 0; padding: 0.9em 1em; border-radius: 10px;
+  background: rgba(250, 244, 228, 0.72); border: 1.5px solid rgba(170, 140, 84, 0.5);
+  box-shadow: 0 4px 14px rgba(80, 66, 40, 0.18);
+  opacity: 0; transform: translateY(8px); transition: opacity 360ms ease, transform 360ms ease;
+}
+.vn-art .vn-choice-card.is-in { opacity: 1; transform: none; }
+.vn-art .vn-q {
+  margin: 0 0 0.7em; font-family: var(--font-body), Georgia, serif; font-style: italic;
+  font-size: clamp(15px, 1.7vw, 20px); line-height: 1.5; color: #4a3f2c;
+}
+.vn-art .vn-opts { display: flex; flex-direction: column; gap: 0.5em; }
+.vn-art .vn-opt {
+  text-align: left; padding: 0.6em 0.85em; border-radius: 8px; cursor: pointer;
+  background: rgba(255, 252, 244, 0.9); border: 1.5px solid rgba(170, 140, 84, 0.45);
+  font-family: var(--font-body), Georgia, serif; font-size: clamp(14px, 1.6vw, 19px);
+  line-height: 1.45; color: #3a3326; transition: background 150ms ease, transform 120ms ease, border-color 150ms ease;
+}
+.vn-art .vn-opt b { color: #8a6a3a; margin-right: 0.2em; }
+.vn-art .vn-opt:hover:not(:disabled) { background: rgba(196, 158, 84, 0.18); transform: translateX(3px); border-color: rgba(170,140,84,0.85); }
+.vn-art .vn-opt:disabled { opacity: 0.5; cursor: default; }
+.vn-art .vn-opt.is-picked { opacity: 1; background: rgba(150, 122, 70, 0.22); border-color: rgba(150,122,70,0.95); }
+
+/* chapter / bad ending card */
+.vn-art .vn-end { text-align: center; margin: 1.2em 0 0.4em; }
+.vn-art .vn-end-mark { font-family: var(--font-display), Georgia, serif; font-size: 1.4em; color: var(--color-gold-soft); letter-spacing: 0.3em; margin: 0 0 0.3em; }
+.vn-art .vn-end.is-bad .vn-end-mark { color: #8a4444; }
+.vn-art .vn-end-zh { color: #7a6a4c; font-style: italic; margin: 0 0 0.7em; }
+.vn-art .vn-end-btn {
+  font-family: var(--font-display), Georgia, serif; font-size: clamp(14px, 1.6vw, 19px);
+  letter-spacing: 0.06em; color: #4a3f2c; cursor: pointer;
+  padding: 0.45em 1.3em; border-radius: 8px;
+  background: rgba(255, 252, 244, 0.92); border: 1.5px solid rgba(170, 140, 84, 0.6);
+  transition: background 150ms ease, transform 120ms ease;
+}
+.vn-art .vn-end-btn:hover { background: rgba(196, 158, 84, 0.2); transform: translateY(-1px); }
+.vn-art .vn-empty { color: #8a7a5c; text-align: center; font-style: italic; margin-top: 2em; }
+
 /* Index "Paths" nav button — Open-Chapter-style morph in the bottom nav. */
 .ui-bottom-nav .paths-open-nav { touch-action: none; }
 .paths-open-nav .paths-open-sel { display: none; }

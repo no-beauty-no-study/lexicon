@@ -112,6 +112,7 @@
   .page.save-art     { background-image: url("assets/bg/ui/saveload.jpg"); }
   .page.load-art     { background-image: url("assets/bg/ui/saveload.jpg"); }
   .page.follow-art   { background-image: url("assets/bg/ui/follow-station.png"); }
+  .page.vn-art       { background-image: url("assets/bg/ui/page-blank.jpg"); }
   .page.notes-art    { background-image: url("assets/bg/ui/notes.jpg");
                        background-size: cover; background-position: center; }
   .page.notes-art::before, .page.notes-art::after { display: none; }
@@ -1067,6 +1068,22 @@
         <button type="button" class="follow-ui-btn" data-go="#save"><span class="nav-glyph">❦</span>Save</button>
         <button type="button" class="follow-ui-btn" data-go="#load"><span class="nav-glyph">❧</span>Load</button>
         <button type="button" class="follow-ui-btn" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
+      </nav>
+    </div>
+  </main>
+</template>
+
+<template id="view-vn">
+  <!-- 文游 visual-novel reader: tap to advance a beat, tap a word for its
+       card, pick A/B/C at a choice. Speaker labels / markers never spoken. -->
+  <main class="page art-bg vn-art" data-page="vn">
+    <div class="master-frame">
+      <div class="vn-titlebar"><span class="vn-chap"></span></div>
+      <div class="vn-scroll"><div class="vn-flow" aria-live="polite"></div></div>
+      <nav class="ui-bottom-nav">
+        <button type="button" data-vn-back><span class="nav-glyph">‹</span>Back</button>
+        <button type="button" data-vn-restart-nav><span class="nav-glyph">↺</span>Restart</button>
+        <button type="button" data-vn-next>Next<span class="nav-glyph-after">›</span></button>
       </nav>
     </div>
   </main>
