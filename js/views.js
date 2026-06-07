@@ -3657,6 +3657,16 @@ const Views = (function () {
       const cue = (track) => { try { if (track && window.BGM && BGM.cueTrack) BGM.cueTrack(track); } catch (_) {} };
       const isLead = (who) => /^(shiro|hosea|jael|kye)$/.test(String(who || "").toLowerCase());
       let sceneCat = null;   // current hand-tagged scene category
+      let beatN = 0, sceneBeatAt = 0, pendingScene = null;   // min-dwell bookkeeping
+      // Switch the ambient scene track, but only once the current one has had
+      // its minimum 3 beats — otherwise a track flashes for one line and cuts,
+      // which is jarring. Choice/answer cues bypass this (they cue() directly).
+      function applyScene(c) { sceneCat = c; sceneBeatAt = beatN; cue(catTrack(c)); }
+      function tryScene(c) {
+        if (!c || c === sceneCat) return;
+        if (sceneCat === null || beatN - sceneBeatAt >= 3) applyScene(c);
+        else pendingScene = c;          // defer until the dwell is met
+      }
       // A lead-mood track for the current chapter (daily / heart / sad / sweet).
       function leadTrack(kind) {
         const s = scene();
@@ -3725,8 +3735,8 @@ const Views = (function () {
           const tags = (window.PATHS_BGM_TAGS && window.PATHS_BGM_TAGS[story.id] && window.PATHS_BGM_TAGS[story.id][String(chapter.n)]) || [];
           chapter.blocks.forEach(b => { delete b._bgm; });
           tags.forEach(t => { if (chapter.blocks[t[0]]) chapter.blocks[t[0]]._bgm = t[1]; });
-          sceneCat = (tags[0] && tags[0][1]) || ((chapter.lead || "common") + ".daily");
-        } catch (_) { sceneCat = null; }
+        } catch (_) {}
+        sceneCat = null; beatN = 0; sceneBeatAt = 0; pendingScene = null;
         queue = chapter.blocks.slice();
         choiceOpen = false; ended = false;
         flow.innerHTML = "";
@@ -3746,7 +3756,9 @@ const Views = (function () {
       }
 
       function beatEl(b, voice) {
-        if (b._bgm) { sceneCat = b._bgm; cue(catTrack(sceneCat)); }   // scene-mood shift
+        beatN++;
+        if (pendingScene && beatN - sceneBeatAt >= 3) { applyScene(pendingScene); pendingScene = null; }
+        if (b._bgm) tryScene(b._bgm);                                  // scene-mood shift (min 3 beats)
         const div = document.createElement("div");
         div.className = "vn-beat" + (b.k === "s" ? " vn-said" : "");
         if (b.k === "s") div.dataset.who = String(b.who).trim().toLowerCase().split(/\s+/)[0];
