@@ -301,18 +301,18 @@ window.PATHS_BGM = [
     path: "assets/bgm/paths/42_sealyra_spotlight_glass_crown.mp3",
   },
   {
-    id: "shiro_spotlight_silver_voltage",
-    title: "Shiro - Silver Voltage Spotlight",
-    use: "Shiro 公开登场/被众人关注；天才上司、冷感压场、知识和权力展示、众人谈论他时也继续用；不是私密心动",
-    file: "43_shiro_spotlight_silver_voltage.mp3",
-    path: "assets/bgm/paths/43_shiro_spotlight_silver_voltage.mp3",
-  },
-  {
     id: "hosea_spotlight_sunlit_ovation",
     title: "Hosea - Sunlit Ovation Spotlight",
-    use: "Hosea 公开登场/校园瞩目；演讲、社团中心、众人起哄或看他、阳光校草被全场看见；不是私密心动",
-    file: "44_hosea_spotlight_sunlit_ovation.mp3",
-    path: "assets/bgm/paths/44_hosea_spotlight_sunlit_ovation.mp3",
+    use: "Hosea 公开男神登场/校园万众瞩目；平时很多人喜欢他、女生起哄、全场视线追着他、演讲/社团中心人物；更吵、更公开，不是私密心动",
+    file: "43_hosea_spotlight_sunlit_ovation.mp3",
+    path: "assets/bgm/paths/43_hosea_spotlight_sunlit_ovation.mp3",
+  },
+  {
+    id: "shiro_spotlight_silver_voltage",
+    title: "Shiro - Silver Voltage Spotlight",
+    use: "Shiro 公开登场/被众人关注；天才上司、冷感压场、知识和权力展示、众人谈论他时也继续用；更梦幻，不是私密心动",
+    file: "44_shiro_spotlight_silver_voltage.mp3",
+    path: "assets/bgm/paths/44_shiro_spotlight_silver_voltage.mp3",
   },
   {
     id: "jael_spotlight_velvet_applause",

@@ -134,17 +134,17 @@ File: `assets/bgm/paths/42_sealyra_spotlight_glass_crown.mp3`
 
 Use for Sealyra public high points: proving herself, entering a room under attention, crowd discussion, competition/showcase moments. Not private monologue and not romance.
 
-### 43 - Shiro - Silver Voltage Spotlight
+### 43 - Hosea - Sunlit Ovation Spotlight
 
-File: `assets/bgm/paths/43_shiro_spotlight_silver_voltage.mp3`
+File: `assets/bgm/paths/43_hosea_spotlight_sunlit_ovation.mp3`
 
-Use for Shiro public attention: genius superior, knowledge/power display, cold entrance, others discussing him while the room remains focused on him. Not private Shiro heart.
+Use for Hosea public attention: campus idol entrance, speeches, society center, girls admiring him, crowd attention following him. This is the louder, most public heartthrob/男神 cue, not private Hosea heart.
 
-### 44 - Hosea - Sunlit Ovation Spotlight
+### 44 - Shiro - Silver Voltage Spotlight
 
-File: `assets/bgm/paths/44_hosea_spotlight_sunlit_ovation.mp3`
+File: `assets/bgm/paths/44_shiro_spotlight_silver_voltage.mp3`
 
-Use for Hosea public attention: speech, society center, crowd admiration, campus prince energy, people looking at/talking about him. Not private Hosea heart.
+Use for Shiro public attention: genius superior, knowledge/power display, dreamy cold entrance, others discussing him while the room remains focused on him. Not private Shiro heart.
 
 ### 45 - Jael - Velvet Applause Spotlight
 
