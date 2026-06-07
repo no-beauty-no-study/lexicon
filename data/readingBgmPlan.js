@@ -24,13 +24,13 @@
 const READING_BGM_PLAN = {
   byView: {
     splash:        "01_ui_cover_select_save_load.mp3",
-    menu:          "01_ui_cover_select_save_load.mp3",
-    select:        "01_ui_cover_select_save_load.mp3",
+    menu:          "29_ui_manu_sunlit_alice_kept.mp3",
+    select:        "30_ui_select_sun_ribbon.mp3",
     chapters:      "04_story_lobby.mp3",
     notes:         "02_note.mp3",
     "word-garden": "03_words_garden.mp3",
     voices:        "01_ui_cover_select_save_load.mp3",
-    paths:         "04_story_lobby.mp3",
+    paths:         "paths/00_glass_bloom_main_theme_long.mp3",   // Follow station → Glass Bloom theme
   },
 
   // Pop-ups that ride on the current track — bgm.js leaves the song alone.
@@ -43,18 +43,22 @@ const READING_BGM_PLAN = {
     "antarctica":        ["12_reading_antarctica_ice.mp3",       "13_reading_antarctica_dark_rose.mp3"],
     "australia-pacific": ["14_reading_australia_garden.mp3",     "15_reading_pacific_schoolyard.mp3"],
     "south-america":     ["16_reading_southamerica_clocktower.mp3", "17_reading_southamerica_showa_cafe.mp3"],
-    "asia":              ["18_reading_asia_alice_key.mp3",       "19_reading_asia_classroom.mp3"],
+    "asia":              ["18_reading_asia_alice_key.mp3",       "19_reading_asia_classroom.mp3", "26_reading_japan_showa.mp3"],
     "oceans":            ["20_reading_ocean_cafe_swing.mp3"],
-    "europe":            ["21_reading_europe_empress.mp3",       "22_reading_europe_french.mp3"],
+    "europe":            ["21_reading_europe_empress.mp3",       "22_reading_europe_french.mp3",  "28_reading_deep_castle_gate.mp3"],
     "north-america":     ["23_reading_northamerica_skip.mp3",    "24_reading_northamerica_carousel.mp3"],
-    // The Paths visual-novel channel (sealyra/shiro/hosea/jael/kye).
-    "_paths":            "04_story_lobby.mp3",
+    // The Paths visual-novel channel (sealyra/shiro/hosea/jael/kye) — the
+    // Glass Bloom main theme until per-scene scoring (PATHS_BGM) is wired.
+    "_paths":            "paths/00_glass_bloom_main_theme_long.mp3",
   },
 
+  // Extra reading interlude on disk, not yet placed: 27_reading_sunflower_gate_interlude.mp3
+
   quizByStage: {
-    "default": "05_choice_quiz_all_fast_short.mp3",
-    "short":   "00_choice_quiz_TRUE_SHORT_45s.mp3",
-    "review":  "05_choice_quiz_all_fast_short.mp3",
+    "default":   "05_choice_quiz_all_fast_short.mp3",
+    "short":     "00_choice_quiz_TRUE_SHORT_45s.mp3",
+    "dictation": "31_quiz_dictation_long_loop.mp3",
+    "review":    "25_review_spark.mp3",
   },
 
   ui: "01_ui_cover_select_save_load.mp3",
