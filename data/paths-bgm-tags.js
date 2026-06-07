@@ -15,7 +15,7 @@
 window.PATHS_BGM_TAGS = {
   mainline: {
     // 1 · The Glass Elevator — office banter, Shiro's PUBLIC elevator reveal (watched by all → social)
-    "1":  [[0, "main.theme"], [4, "social.workday"], [13, "social.public"], [16, "social.workday"]],
+    "1":  [[0, "social.workday"], [13, "social.public"], [16, "social.workday"]],
     // 2 · The Price of a Seat — café; the Tenure-Hill girls' social knife-work
     "2":  [[0, "social.workday"], [2, "social.pressure"], [19, "social.workday"]],
     // 3 · The Weight of a Scar — brother's ward (private), Jael's polite-threat (2-person), the memory
