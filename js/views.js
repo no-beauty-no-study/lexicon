@@ -3653,8 +3653,10 @@ const Views = (function () {
       const say = (t, cb) => { try { if (t && typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t).trim(), cb ? { onEnd: cb } : undefined); } catch (_) {} };
       function scrollEnd() { if (scroll) requestAnimationFrame(() => { scroll.scrollTop = scroll.scrollHeight; }); }
       const scene = () => (window.READING_BGM_PLAN && window.READING_BGM_PLAN.pathsScene) || {};
+      const catTrack = (c) => ((window.READING_BGM_PLAN && window.READING_BGM_PLAN.pathsCat) || {})[c] || null;
       const cue = (track) => { try { if (track && window.BGM && BGM.cueTrack) BGM.cueTrack(track); } catch (_) {} };
       const isLead = (who) => /^(shiro|hosea|jael|kye)$/.test(String(who || "").toLowerCase());
+      let sceneCat = null;   // current hand-tagged scene category
       // A lead-mood track for the current chapter (daily / heart / sad / sweet).
       function leadTrack(kind) {
         const s = scene();
@@ -3667,7 +3669,7 @@ const Views = (function () {
       // otherwise back to the chapter's daily mood.
       function scoreScene() {
         if (lastBranchAff && isLead(lastBranchAff.who) && lastBranchAff.delta > 0) cue(leadTrack("heart"));
-        else cue(leadTrack("daily"));
+        else cue(catTrack(sceneCat) || leadTrack("daily"));
         lastBranchAff = null;
       }
       // Cumulative affection (decorative on the Follow station's portraits).
@@ -3687,6 +3689,13 @@ const Views = (function () {
         chIdx = Math.max(0, Math.min(story.chapters.length - 1, idx));
         chapter = story.chapters[chIdx];
         try { if (params.path) localStorage.setItem("tpl.vnCh." + params.path, String(chIdx + 1)); } catch (_) {}
+        // Apply the hand-authored scene tags onto this chapter's blocks.
+        try {
+          const tags = (window.PATHS_BGM_TAGS && window.PATHS_BGM_TAGS[story.id] && window.PATHS_BGM_TAGS[story.id][String(chapter.n)]) || [];
+          chapter.blocks.forEach(b => { delete b._bgm; });
+          tags.forEach(t => { if (chapter.blocks[t[0]]) chapter.blocks[t[0]]._bgm = t[1]; });
+          sceneCat = (tags[0] && tags[0][1]) || ((chapter.lead || "common") + ".daily");
+        } catch (_) { sceneCat = null; }
         queue = chapter.blocks.slice();
         choiceOpen = false; ended = false;
         flow.innerHTML = "";
@@ -3706,6 +3715,7 @@ const Views = (function () {
       }
 
       function beatEl(b, voice) {
+        if (b._bgm) { sceneCat = b._bgm; cue(catTrack(sceneCat)); }   // scene-mood shift
         const div = document.createElement("div");
         div.className = "vn-beat" + (b.k === "s" ? " vn-said" : "");
         if (b.k === "s") div.dataset.who = String(b.who).trim().toLowerCase().split(/\s+/)[0];

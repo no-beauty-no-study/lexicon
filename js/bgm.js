@@ -7,7 +7,7 @@
    hash change. */
 (function () {
   const BGM_DIR = "assets/bgm/";
-  const BGM_VER = "20260607d";                 // cache-bust revised tracks
+  const BGM_VER = "20260607e";                 // cache-bust revised tracks
   const srcOf = (t) => BGM_DIR + t + "?v=" + BGM_VER;
   const DEFAULT_VOLUME = 0.32;
   function plan() { return (typeof window !== "undefined" && window.READING_BGM_PLAN) || null; }
@@ -103,11 +103,20 @@
     const p = plan();
     if (!p) return null;
     if (name === "vn") {
-      // 文游 scene track = the chapter protagonist's DAILY loop (scene-state
-      // changes — tension / heart / wrong / correct — are cued by Views.vn).
-      const sc = p.pathsScene;
+      // 文游 scene track. Prefer the hand-authored opening scene tag for this
+      // chapter; else the chapter protagonist's DAILY loop. Later scene shifts
+      // (tension / heart / wrong / correct) are cued by Views.vn.
+      const sc = p.pathsScene, cat = p.pathsCat || {};
+      const story = (params && params.story) || "mainline";
+      const ch = String((params && params.ch) || "");
+      let track = null;
+      try {
+        const tags = (typeof window !== "undefined") && window.PATHS_BGM_TAGS;
+        const list = tags && tags[story] && tags[story][ch];
+        if (list && list[0]) track = cat[list[0][1]];
+      } catch (_) {}
       const who = (params && params.path) || "sealyra";
-      let track = sc && sc.lead && sc.lead[who] && sc.lead[who].daily;
+      if (!track) track = sc && sc.lead && sc.lead[who] && sc.lead[who].daily;
       if (!track) track = (sc && sc.common) || (p.byView && p.byView.paths);
       return track ? { track, array: null } : null;
     }
