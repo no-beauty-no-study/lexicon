@@ -157,12 +157,23 @@
       "dictation": "31_quiz_dictation_long_loop.mp3",     // dictation / seal
       "review":    "25_review_spark.mp3",                 // Review page (slower)
     },
-    // 文游 choice stingers — a choice appearing vs picking right (Continue) vs
-    // wrong (END) each get their own cue.
-    choice: {
-      prompt:  P("02_daily_tension_before_reply.mp3"),
-      correct: P("14_choice_continue_clean_angle.mp3"),
-      wrong:   P("13_choice_loss_sweet_knife.mp3"),
+    // 文游 BGM by SCENE STATE (not by page). The reader is a director:
+    //   common daily → tension(at a choice) → wrong / correct → male-lead
+    //   daily / heart / sad / sweet → Sealyra specials. vnread drives these
+    //   from the choice/branch structure; see Views.vn.
+    pathsScene: {
+      main:    P("00_glass_bloom_main_theme_long.mp3"),     // chapter entrance / destiny
+      common:  P("01_daily_happy_sunlit_messages.mp3"),     // common non-romantic daily
+      tension: P("02_daily_tension_before_reply.mp3"),      // a choice is open
+      wrong:   P("13_choice_loss_sweet_knife.mp3"),         // wrong result / no affection
+      correct: P("14_choice_continue_clean_angle.mp3"),     // correct result / forward
+      lead: {
+        shiro: { daily: P("03_shiro_daily_silver_glass.mp3"),   heart: P("04_shiro_heart_choose_me_once.mp3"), sad: P("05_shiro_sad_three_safe_houses.mp3"),  sweet: P("15_shiro_love_daily_soft_static.mp3") },
+        hosea: { daily: P("06_hosea_daily_white_fox.mp3"),      heart: P("07_hosea_heart_hunter_hit.mp3"),     sad: P("08_hosea_sad_rues_shadow.mp3"),        sweet: P("22_hosea_sweet_daily_after_school.mp3") },
+        jael:  { daily: P("21_jael_daily_velvet_courtesy.mp3"), heart: P("10_jael_heart_aubade_fever.mp3"),    sad: P("11_jael_sad_shedding_skin.mp3"),       sweet: P("23_jael_sweet_daily_after_hours.mp3"), danger: P("09_jael_daily_gold_knife.mp3") },
+        kye:   { daily: P("12_kye_ward_deer_at_dawn.mp3"),      heart: P("18_kye_deer_at_dawn_bloom.mp3"),     sad: P("12_kye_ward_deer_at_dawn.mp3"),        sweet: P("18_kye_deer_at_dawn_bloom.mp3") },
+      },
+      sealyra: { mono: P("17_luv_poem_from_hum.mp3"), perform: P("19_luv_poem_performance_loop.mp3"), shine: P("20_heart9_opening_burst.mp3"), effort: P("16_shiro_heart2_from_hum.mp3") },
     },
     ui: "29_ui_manu_sunlit_alice_kept.mp3",
   };

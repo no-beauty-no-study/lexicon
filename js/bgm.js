@@ -7,7 +7,7 @@
    hash change. */
 (function () {
   const BGM_DIR = "assets/bgm/";
-  const BGM_VER = "20260607c";                 // cache-bust revised tracks
+  const BGM_VER = "20260607d";                 // cache-bust revised tracks
   const srcOf = (t) => BGM_DIR + t + "?v=" + BGM_VER;
   const DEFAULT_VOLUME = 0.32;
   function plan() { return (typeof window !== "undefined" && window.READING_BGM_PLAN) || null; }
@@ -103,15 +103,13 @@
     const p = plan();
     if (!p) return null;
     if (name === "vn") {
-      // 文游 reader: ONE looping scene track per chapter, chosen by the
-      // chapter's protagonist (varied across chapters of the same lead). It
-      // loops until the choice stingers or the next chapter take over — the
-      // mood holds while the reader lingers ("不点下一句 bgm 循环").
+      // 文游 scene track = the chapter protagonist's DAILY loop (scene-state
+      // changes — tension / heart / wrong / correct — are cued by Views.vn).
+      const sc = p.pathsScene;
       const who = (params && params.path) || "sealyra";
-      const arr = (p.pathsByChar && p.pathsByChar[who]) || [p.byView && p.byView.paths].filter(Boolean);
-      if (!arr || !arr.length) return null;
-      const idx = (Math.max(0, (parseInt(params && params.ch, 10) || 1) - 1)) % arr.length;
-      return { track: arr[idx], array: null };
+      let track = sc && sc.lead && sc.lead[who] && sc.lead[who].daily;
+      if (!track) track = (sc && sc.common) || (p.byView && p.byView.paths);
+      return track ? { track, array: null } : null;
     }
     if (name === "reading") {
       const ch = (params && params.chapter) || "";

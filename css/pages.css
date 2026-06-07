@@ -2781,29 +2781,45 @@ body[data-current-view="vn"] .global-bgm-control { display: none; }
 .vn-art .vn-aff.is-up   { background: rgba(120, 160, 96, 0.2);  color: #4d6b35; border: 1px solid rgba(120,160,96,0.5); }
 .vn-art .vn-aff.is-down { background: rgba(170, 96, 96, 0.18); color: #8a4444; border: 1px solid rgba(170,96,96,0.5); }
 
-/* choice card */
+/* Choice — an aged illuminated panel, not a modern card: hairline gold
+   rules top & bottom, a ❦ ornament, and a ruled list of options with
+   illuminated letters. No rounded buttons, no drop shadow. */
 .vn-art .vn-choice-card {
-  margin: 0.6em 0; padding: 0.9em 1em; border-radius: 10px;
-  background: rgba(250, 244, 228, 0.72); border: 1.5px solid rgba(170, 140, 84, 0.5);
-  box-shadow: 0 4px 14px rgba(80, 66, 40, 0.18);
+  position: relative; margin: 1.1em 0 0.8em; padding: 1.1em 1.1em 0.6em;
+  background: rgba(244, 236, 214, 0.4);
+  border: 0; border-top: 1px solid rgba(150, 122, 70, 0.5); border-bottom: 1px solid rgba(150, 122, 70, 0.5);
   opacity: 0; transform: translateY(8px); transition: opacity 360ms ease, transform 360ms ease;
 }
 .vn-art .vn-choice-card.is-in { opacity: 1; transform: none; }
+.vn-art .vn-choice-card::before {
+  content: "❦"; position: absolute; top: -0.72em; left: 50%; transform: translateX(-50%);
+  color: var(--color-gold-soft); font-size: 0.92em; line-height: 1;
+  background: #efe6cf; padding: 0 0.5em;
+}
 .vn-art .vn-q {
-  margin: 0 0 0.7em; font-family: var(--font-body), Georgia, serif; font-style: italic;
+  margin: 0 0 0.7em; text-align: center;
+  font-family: var(--font-display), Georgia, serif; font-style: italic;
   font-size: clamp(15px, 1.7vw, 20px); line-height: 1.5; color: #4a3f2c;
 }
-.vn-art .vn-opts { display: flex; flex-direction: column; gap: 0.5em; }
+.vn-art .vn-opts { display: flex; flex-direction: column; }
 .vn-art .vn-opt {
-  text-align: left; padding: 0.6em 0.85em; border-radius: 8px; cursor: pointer;
-  background: rgba(255, 252, 244, 0.9); border: 1.5px solid rgba(170, 140, 84, 0.45);
-  font-family: var(--font-body), Georgia, serif; font-size: clamp(14px, 1.6vw, 19px);
-  line-height: 1.45; color: #3a3326; transition: background 150ms ease, transform 120ms ease, border-color 150ms ease;
+  position: relative; text-align: left; padding: 0.62em 0.3em 0.62em 2.1em;
+  background: transparent; border: 0; border-top: 1px solid rgba(150, 122, 70, 0.22);
+  cursor: pointer; font-family: var(--font-body), Georgia, serif;
+  font-size: clamp(14px, 1.6vw, 19px); line-height: 1.45; color: #3a3326;
+  transition: color 150ms ease, background 150ms ease;
 }
-.vn-art .vn-opt b { color: #8a6a3a; margin-right: 0.2em; }
-.vn-art .vn-opt:hover:not(:disabled) { background: rgba(196, 158, 84, 0.18); transform: translateX(3px); border-color: rgba(170,140,84,0.85); }
-.vn-art .vn-opt:disabled { opacity: 0.5; cursor: default; }
-.vn-art .vn-opt.is-picked { opacity: 1; background: rgba(150, 122, 70, 0.22); border-color: rgba(150,122,70,0.95); }
+.vn-art .vn-opt:first-child { border-top: 0; }
+.vn-art .vn-opt b {
+  position: absolute; left: 0.5em; top: 0.6em;
+  font-family: var(--font-display), Georgia, serif; font-weight: 700;
+  color: #9a7a3a; font-size: 1.02em;
+}
+.vn-art .vn-opt:hover:not(:disabled)   { background: rgba(196, 158, 84, 0.14); color: #5a3f1f; }
+.vn-art .vn-opt:hover:not(:disabled) b { color: #7a4a1f; }
+.vn-art .vn-opt:disabled { opacity: 0.4; cursor: default; }
+.vn-art .vn-opt.is-picked { opacity: 1; color: #4a3a1f; }
+.vn-art .vn-opt.is-picked::after { content: "❧"; margin-left: 0.5em; color: var(--color-gold-soft); }
 
 /* chapter / bad ending card */
 .vn-art .vn-end { text-align: center; margin: 1.2em 0 0.4em; }

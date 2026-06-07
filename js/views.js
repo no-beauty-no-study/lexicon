@@ -3652,9 +3652,24 @@ const Views = (function () {
 
       const say = (t, cb) => { try { if (t && typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t).trim(), cb ? { onEnd: cb } : undefined); } catch (_) {} };
       function scrollEnd() { if (scroll) requestAnimationFrame(() => { scroll.scrollTop = scroll.scrollHeight; }); }
-      const choiceBgm = () => (window.READING_BGM_PLAN && window.READING_BGM_PLAN.choice) || {};
+      const scene = () => (window.READING_BGM_PLAN && window.READING_BGM_PLAN.pathsScene) || {};
       const cue = (track) => { try { if (track && window.BGM && BGM.cueTrack) BGM.cueTrack(track); } catch (_) {} };
-      function scoreScene() { try { const ld = (chapter && chapter.lead) || "sealyra"; if (window.BGM && BGM.applyForView) BGM.applyForView("vn", { story: story.id, path: ld, ch: chIdx + 1 }); } catch (_) {} }
+      const isLead = (who) => /^(shiro|hosea|jael|kye)$/.test(String(who || "").toLowerCase());
+      // A lead-mood track for the current chapter (daily / heart / sad / sweet).
+      function leadTrack(kind) {
+        const s = scene();
+        const L = s.lead && s.lead[(chapter && chapter.lead)];
+        return (L && L[kind]) || s.common;
+      }
+      let lastBranchAff = null;   // affection on the branch just resolved
+      // After a choice resolves and the story continues, settle the score:
+      // a male-lead affection gain → that boy's HEART track (romance scene);
+      // otherwise back to the chapter's daily mood.
+      function scoreScene() {
+        if (lastBranchAff && isLead(lastBranchAff.who) && lastBranchAff.delta > 0) cue(leadTrack("heart"));
+        else cue(leadTrack("daily"));
+        lastBranchAff = null;
+      }
       // Cumulative affection (decorative on the Follow station's portraits).
       function addAffection(aff) {
         if (!aff || !aff.who) return;
@@ -3766,7 +3781,7 @@ const Views = (function () {
         flow.appendChild(card);
         requestAnimationFrame(() => card.classList.add("is-in"));
         try { TTS && TTS.cancel && TTS.cancel(); } catch (_) {}
-        cue(choiceBgm().prompt);   // tension while the choice is open
+        cue(scene().tension);      // tension while the choice is open
         say(c.q);
         scrollEnd();
         card.querySelectorAll(".vn-opt").forEach(btn => {
@@ -3778,7 +3793,8 @@ const Views = (function () {
             card.querySelectorAll(".vn-opt").forEach(o => { o.disabled = true; o.classList.toggle("is-picked", o === btn); });
             choiceOpen = false;
             // right (Continue) vs wrong (END) get distinct stingers
-            cue(br.end === "END" ? choiceBgm().wrong : choiceBgm().correct);
+            cue(br.end === "END" ? scene().wrong : scene().correct);
+            lastBranchAff = br.aff || null;
             if (br.aff) { addAffection(br.aff); affEl(br.aff); }
             // splice branch beats + an end-sentinel ahead of the remaining chapter
             queue = br.blocks.concat([{ k: "_be", end: br.end }], queue);
