@@ -1435,8 +1435,9 @@
    Story reading = 5 cells (Save·Load·Quiz·Next·Menu); browse mode is
    rebuilt to 3 cells in JS. Quiz keeps 5. */
 .page[data-page="reading"],
-.page[data-page="quiz"] {
-  --nav-count:  5;
+.page[data-page="quiz"],
+.page[data-page="vn"] {
+  --nav-count:  5;          /* vn's .is-three overrides this to 3 */
   --nav-left:   31.35%;
   --nav-top:    92.00%;
   --nav-width:  46.10%;
@@ -2134,7 +2135,8 @@
    glowing dot, no plastic capsule. The global BGM chip is hidden on
    reading so there's only one volume control.
    ============================================================ */
-body[data-current-view="reading"] .global-bgm-control { display: none; }
+body[data-current-view="reading"] .global-bgm-control,
+body[data-current-view="vn"] .global-bgm-control { display: none; }
 
 .reading-art .zone-reading-controls {
   pointer-events: none;

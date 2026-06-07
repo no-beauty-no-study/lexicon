@@ -7,6 +7,8 @@
    hash change. */
 (function () {
   const BGM_DIR = "assets/bgm/";
+  const BGM_VER = "20260607a";                 // cache-bust revised tracks
+  const srcOf = (t) => BGM_DIR + t + "?v=" + BGM_VER;
   const DEFAULT_VOLUME = 0.32;
   function plan() { return (typeof window !== "undefined" && window.READING_BGM_PLAN) || null; }
 
@@ -41,7 +43,7 @@
       if (activeArray[next] === currentTrack && activeArray.length > 1) next = (next + 1) % activeArray.length;
       activeIdx = next;
       currentTrack = activeArray[next];
-      audio.src = BGM_DIR + currentTrack;
+      audio.src = srcOf(currentTrack);
       try { audio.currentTime = 0; } catch (_) {}
       playNow();
     });
@@ -151,7 +153,7 @@
     if (res.track === currentTrack) { if (audio.paused) playNow(); return; }
     const set = () => {
       currentTrack = res.track;
-      audio.src = BGM_DIR + res.track;
+      audio.src = srcOf(res.track);
       try { audio.currentTime = 0; } catch (_) {}
       playNow();
     };
@@ -207,7 +209,7 @@
     const i = list.indexOf(currentTrack);
     const next = list[(i + 1 + list.length) % list.length];
     manualTrack = next; activeArray = null; audio.loop = true;
-    fade(0, 180, () => { currentTrack = next; audio.src = BGM_DIR + next; try { audio.currentTime = 0; } catch (_) {} playNow(); });
+    fade(0, 180, () => { currentTrack = next; audio.src = srcOf(next); try { audio.currentTime = 0; } catch (_) {} playNow(); });
     return next;
   }
   function autoMode() { manualTrack = null; }
