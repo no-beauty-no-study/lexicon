@@ -1089,6 +1089,17 @@
       <div class="ui-zone zone-reading-body is-text" data-zone="reading body">
         <article class="reading-body vn-flow" aria-live="polite"></article>
       </div>
+      <!-- Right word-column, exactly like reading: tapping a word shows its
+           small card here; tapping the card opens the full drawer. -->
+      <div class="ui-zone zone-marginalia" data-zone="marginalia">
+        <aside class="marginalia-card">
+          <div class="marginalia-card-body">
+            <div class="word-card-stack">
+              <div class="word-card-empty">Tap a word</div>
+            </div>
+          </div>
+        </aside>
+      </div>
       <nav class="ui-bottom-nav is-three">
         <button type="button" data-vn-back><span class="nav-glyph">‹</span>Back</button>
         <button type="button" data-vn-restart-nav><span class="nav-glyph">↺</span>Restart</button>

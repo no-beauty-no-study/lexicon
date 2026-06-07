@@ -3704,6 +3704,37 @@ const Views = (function () {
         flow.appendChild(tag); scrollEnd();
       }
 
+      // Right word-column small card — same shape as the reading view's.
+      function vnSmallCardHTML(sc, id) {
+        const phraseRows = (sc.phrases || []).slice(0, 2).map(p => `
+          <div class="word-card-phrase"><span class="wcp-en">${esc(p.phrase || p.en || "")}</span>${(p.phrase_zh || p.zh) ? `<span class="wcp-zh">${esc(p.phrase_zh || p.zh)}</span>` : ""}</div>`).join("");
+        const ex = (sc.examples || [])[0];
+        const exEn = ex && (ex.example || ex.en) || "", exZh = ex && (ex.example_zh || ex.zh) || "";
+        const exampleRow = exEn ? `<div class="word-card-example"><span class="wce-en">${esc(exEn)}</span>${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}</div>` : "";
+        return `<div class="word-card is-current is-entering${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
+            <div class="word-card-headword">${esc(sc.word || id)}</div>
+            <div class="word-card-meaning">${esc(sc.zh || "")}</div>${phraseRows}${exampleRow}</div>`;
+      }
+      function vnRenderCard(sc) {
+        const stack = host.querySelector(".word-card-stack");
+        if (!stack || !sc) return;
+        const id = sc.word;
+        const empty = stack.querySelector(".word-card-empty"); if (empty) empty.remove();
+        stack.querySelectorAll(".word-card.is-current").forEach(x => x.classList.remove("is-current"));
+        const existing = stack.querySelector(`.word-card[data-id="${cssEsc(id)}"]`);
+        if (existing) { existing.classList.add("is-current"); existing.scrollIntoView({ block: "nearest", behavior: "smooth" }); return; }
+        stack.insertAdjacentHTML("beforeend", vnSmallCardHTML(sc, id));
+        const fresh = stack.lastElementChild;
+        setTimeout(() => fresh.classList.remove("is-entering"), 620);
+        fresh.addEventListener("click", (e) => {
+          e.stopPropagation();
+          stack.querySelectorAll(".word-card.is-current").forEach(x => x.classList.remove("is-current"));
+          fresh.classList.add("is-current");
+          if (sc.clickableForBigCard && typeof WordCard !== "undefined") WordCard.openBigCard(sc.word, { from: "paths" });
+        });
+        fresh.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      }
+
       function advance() {
         if (choiceOpen || ended) return;
         if (!queue.length) { chapterEnd(); return; }
@@ -3771,12 +3802,26 @@ const Views = (function () {
         if (e.target.closest(".clickable-word") || e.target.closest("button")) return;
         advance();
       });
-      // tap a word → its card (don't advance)
+      // tap a word → small card in the right column (like reading); tapping
+      // that card opens the full drawer. Never advances the scene.
       flow.addEventListener("click", (e) => {
         const w = e.target.closest(".clickable-word");
         if (!w) return;
         e.stopPropagation();
-        try { if (typeof WordCard !== "undefined") WordCard.openBigCard(w.dataset.word, { from: "paths" }); } catch (_) {}
+        host.querySelectorAll(".clickable-word.is-selected").forEach(x => x.classList.remove("is-selected"));
+        w.classList.add("is-selected");
+        const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(w.dataset.word) : null;
+        if (sc) {
+          vnRenderCard(sc);
+          try {
+            const parts = [sc.word]
+              .concat((sc.phrases || []).slice(0, 2).map(p => p.phrase || p.en))
+              .concat((sc.examples || []).slice(0, 1).map(x => x.example || x.en));
+            say(parts.filter(Boolean).join(". "));
+          } catch (_) {}
+        } else {
+          say(w.textContent);
+        }
       });
       // delegated restart / next-chapter (cards are added dynamically)
       flow.addEventListener("click", (e) => {

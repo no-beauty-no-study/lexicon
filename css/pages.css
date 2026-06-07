@@ -2735,10 +2735,11 @@ body[data-current-view="reading"] .global-bgm-control { display: none; }
    body is a column of beats: tap to advance, tap a word for its card, pick
    A/B/C at a choice.
    ============================================================ */
-/* Body zone — reading scopes its coords to [data-page="reading"], so set the
-   VN body explicitly. A bit wider than reading (no marginalia word column),
-   still clear of the 立绘 character in the left ~27%. */
-.vn-art .zone-reading-body { left: 27.33%; top: 22.64%; width: 62%; height: 66.19%; }
+/* Body + marginalia zones — reading scopes its coords to [data-page="reading"],
+   so set them explicitly for VN at the SAME coordinates: 立绘 character in the
+   left ~27%, text in the middle, the word-column on the right. */
+.vn-art .zone-reading-body { left: 27.33%; top: 22.64%; width: 52.84%; height: 66.19%; }
+.vn-art .zone-marginalia   { left: 80.89%; top: 22.64%; width: 16.49%; height: 66.19%; }
 .vn-art .vn-flow { display: flex; flex-direction: column; gap: 0.85em; padding: 0 0 2em; }
 .vn-art .vn-beat {
   font-family: var(--font-body), Georgia, serif;
