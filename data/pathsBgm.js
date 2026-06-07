@@ -195,4 +195,25 @@ window.PATHS_BGM = [
     file: "27_common_rivalry_climax_strings_piano.mp3",
     path: "assets/bgm/paths/27_common_rivalry_climax_strings_piano.mp3",
   },
+  {
+    id: "shiro_choice_brittle_static",
+    title: "Shiro - Choice Static",
+    use: "Shiro 男主选择题；选项阶段、要不要靠近他、暴烈感情还没爆开前的刺痛和判断压力；选对后再切 Shiro 心动",
+    file: "28_shiro_choice_brittle_static.mp3",
+    path: "assets/bgm/paths/28_shiro_choice_brittle_static.mp3",
+  },
+  {
+    id: "hosea_choice_clean_pressure",
+    title: "Hosea - Clean Pressure",
+    use: "Hosea 男主选择题；校园恋爱里的判断压力、干净阳光但心跳加快；选对后再切 Hosea 心动",
+    file: "29_hosea_choice_clean_pressure.mp3",
+    path: "assets/bgm/paths/29_hosea_choice_clean_pressure.mp3",
+  },
+  {
+    id: "jael_choice_velvet_contract",
+    title: "Jael - Velvet Contract",
+    use: "Jael 男主选择题；成人恋爱、礼貌危险、利益和暧昧同时压过来；选对后再切 Jael 心动",
+    file: "30_jael_choice_velvet_contract.mp3",
+    path: "assets/bgm/paths/30_jael_choice_velvet_contract.mp3",
+  },
 ];
