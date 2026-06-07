@@ -2775,16 +2775,29 @@ const Views = (function () {
           line,
           ebook: pos && pos.ebook ? 1 : 0,
           from: (pos && pos.from) || "",
-          position: `${sec} · line ${line + 1}`,
+          vn: pos && pos.vn ? 1 : 0,
+          ch: (pos && pos.ch) || 1,
+          path: (pos && pos.path) || "",
+          position: (pos && pos.vn && pos.position) ? pos.position : `${sec} · line ${line + 1}`,
           time: nowStr(),
         });
         window.toast && window.toast("Saved to Slot " + pad(i + 1));
+        if (pos && pos.vn) {   // 文游 save-before-choice → straight back to the story
+          window.__navDir = "back";
+          window.go(`#vn?story=mainline&path=${encodeURIComponent(pos.path || pos.chapter)}&ch=${pos.ch || 1}&line=${(typeof pos.line === "number") ? pos.line : 0}&from=${encodeURIComponent(pos.from || "paths")}`);
+          return;
+        }
         renderSlots(host, "save");
       } else {
         const slot = Storage.getSlots()[i];
         if (!slot) { window.toast && window.toast("Empty Slot"); return; }
-        const sec = slot.section || "1.1";
         const line = (typeof slot.line === "number") ? slot.line : 0;
+        window.__navDir = "forward";
+        if (slot.vn) {   // 文游 save → resume the exact sentence in #vn
+          window.go(`#vn?story=mainline&path=${encodeURIComponent(slot.path || slot.chapter)}&ch=${slot.ch || 1}&line=${line}&from=${encodeURIComponent(slot.from || "paths")}`);
+          return;
+        }
+        const sec = slot.section || "1.1";
         let href = `#reading?chapter=${encodeURIComponent(slot.chapter)}&section=${encodeURIComponent(sec)}&line=${line}`;
         if (slot.ebook) href += `&browse=1&ebook=1&from=${encodeURIComponent(slot.from || "paths")}`;
         window.go(href);
@@ -3709,6 +3722,7 @@ const Views = (function () {
 
       let chIdx = Math.max(0, Math.min(story.chapters.length - 1, (parseInt(params.ch, 10) || 1) - 1));
       let chapter, queue = [], choiceOpen = false, ended = false, pendingFirst = null, pendingRestart = false;
+      let restoreLine = Math.max(0, parseInt(params.line, 10) || 0);   // Load → resume beat (consumed once)
       // short descending failure sting for a bad end
       function failSfx() {
         try {
@@ -3753,6 +3767,24 @@ const Views = (function () {
         const f = queue[0];
         pendingFirst = (f && (f.k === "n" || f.k === "s")) ? f.t : null;
         advance(false);
+        // Restore a saved beat (Load): reveal forward to it, stopping at any
+        // choice. Consumed once — Restart / Next start fresh.
+        if (restoreLine > 0) {
+          const target = restoreLine; restoreLine = 0; pendingFirst = null;
+          let guard = 0;
+          while (beatN < target && queue.length && !choiceOpen && !ended && guard++ < 2000) advance(false);
+        }
+        persistVnPos();
+      }
+      function persistVnPos() {
+        try {
+          localStorage.setItem("tpl.readPos", JSON.stringify({
+            vn: 1, chapter: params.path || "sealyra", path: params.path || "sealyra",
+            ch: chIdx + 1, section: String(chIdx + 1), line: beatN,
+            ebook: 1, from: params.from || "paths",
+            position: "Ch " + (chIdx + 1) + " · §" + beatN, time: Date.now(),
+          }));
+        } catch (_) {}
       }
 
       function beatEl(b, voice) {
@@ -3768,6 +3800,7 @@ const Views = (function () {
         requestAnimationFrame(() => div.classList.add("is-in"));
         if (voice !== false) say(b.t);
         scrollEnd();
+        persistVnPos();           // keep Save's exact-sentence position current
       }
 
       function affEl(aff) {
@@ -3933,6 +3966,13 @@ const Views = (function () {
         autoTimer = setInterval(() => { if (choiceOpen || ended) { stopAuto(); return; } step(); }, 3200);
       });
 
+      // Save / Load the exact current sentence (save-before-choice, load-back).
+      const saveBtn = host.querySelector("[data-vn-save]");
+      if (saveBtn) saveBtn.addEventListener("click", (e) => { e.stopPropagation(); persistVnPos(); window.__navDir = "up"; window.go("#save"); });
+      const loadBtn = host.querySelector("[data-vn-load]");
+      if (loadBtn) loadBtn.addEventListener("click", (e) => { e.stopPropagation(); window.__navDir = "up"; window.go("#load"); });
+      const backBtn = host.querySelector("[data-vn-back]");
+      if (backBtn) backBtn.addEventListener("click", (e) => { e.stopPropagation(); window.__navDir = "back"; window.go("#paths"); });
       // The nav "Next" button is kept only for the INDEX entry; the Menu /
       // Follow-station entry is pure tap-to-advance (per the user).
       const nextBtn = host.querySelector("[data-vn-next]");
@@ -3941,12 +3981,8 @@ const Views = (function () {
       } else if (nextBtn) {
         nextBtn.remove();
         const nav = host.querySelector(".ui-bottom-nav");
-        if (nav) { nav.classList.remove("is-three"); nav.classList.add("is-two"); }
+        if (nav) { nav.classList.remove("is-four"); nav.classList.add("is-three"); }
       }
-      const restartNav = host.querySelector("[data-vn-restart-nav]");
-      if (restartNav) restartNav.addEventListener("click", (e) => { e.stopPropagation(); loadChapter(chIdx); });
-      const backBtn = host.querySelector("[data-vn-back]");
-      if (backBtn) backBtn.addEventListener("click", (e) => { e.stopPropagation(); window.__navDir = "back"; window.go("#paths"); });
 
       loadChapter(chIdx);
     },
