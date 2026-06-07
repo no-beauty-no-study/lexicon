@@ -631,7 +631,7 @@ const Views = (function () {
         function pGo() {
           const p = pitems[psel];
           window.__navDir = "forward";
-          window.go(`#vn?story=mainline&path=${encodeURIComponent(p.id)}&ch=1`);
+          window.go(`#vn?story=mainline&path=${encodeURIComponent(p.id)}&ch=1&from=index`);
         }
         let pmode = "label", pdY = 0, pdX = 0, pmoved = 0, pdrag = null, pacc = 0;
         pathsBtn.addEventListener("pointerdown", (e) => {
@@ -3621,7 +3621,7 @@ const Views = (function () {
           try { ch = Math.max(1, +localStorage.getItem("tpl.vnCh." + p.id) || 1); } catch (_) {}
         }
         window.__navDir = "forward";
-        window.go(`#vn?story=mainline&path=${encodeURIComponent(p.id)}&ch=${ch}`);
+        window.go(`#vn?story=mainline&path=${encodeURIComponent(p.id)}&ch=${ch}&from=paths`);
       }
       const restartBtn = host.querySelector("[data-follow-restart]");
       const followBtn  = host.querySelector("[data-follow-go]");
@@ -3698,7 +3698,22 @@ const Views = (function () {
       }
 
       let chIdx = Math.max(0, Math.min(story.chapters.length - 1, (parseInt(params.ch, 10) || 1) - 1));
-      let chapter, queue = [], choiceOpen = false, ended = false, pendingFirst = null;
+      let chapter, queue = [], choiceOpen = false, ended = false, pendingFirst = null, pendingRestart = false;
+      // short descending failure sting for a bad end
+      function failSfx() {
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+          const ctx = new AC(), now = ctx.currentTime;
+          [[330, 0], [247, 0.14], [165, 0.30]].forEach(([f, t]) => {
+            const o = ctx.createOscillator(), g = ctx.createGain(), t0 = now + t;
+            o.type = "triangle"; o.frequency.value = f;
+            g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.22, t0 + 0.02);
+            g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.5);
+            o.connect(g).connect(ctx.destination); o.start(t0); o.stop(t0 + 0.55);
+          });
+          setTimeout(() => { try { ctx.close(); } catch (_) {} }, 1200);
+        } catch (_) {}
+      }
 
       function loadChapter(idx) {
         try { TTS && TTS.cancel && TTS.cancel(); } catch (_) {}
@@ -3792,6 +3807,7 @@ const Views = (function () {
       // One step of progress, always from inside a user gesture: first tap
       // voices the silently-revealed opening beat, later taps advance.
       function step() {
+        if (pendingRestart) { pendingRestart = false; loadChapter(chIdx); return; }
         if (pendingFirst) { const t = pendingFirst; pendingFirst = null; say(t); return; }
         advance(true);
       }
@@ -3829,13 +3845,14 @@ const Views = (function () {
         });
       }
 
+      // Wrong choice → just the END mark + a failure sting; the next tap
+      // anywhere restarts the chapter (no button, no "path doesn't work" text).
       function badEnd() {
-        ended = true;
+        ended = true; pendingRestart = true;
+        failSfx();
         const card = document.createElement("div");
         card.className = "vn-end is-bad";
-        card.innerHTML = `<p class="vn-end-mark">✦ END ✦</p>
-          <p class="vn-end-zh">这条路走不通了。</p>
-          <button type="button" class="vn-end-btn" data-vn-restart>Restart Chapter</button>`;
+        card.innerHTML = `<p class="vn-end-mark">✦ END ✦</p>`;
         flow.appendChild(card); scrollEnd();
       }
 
@@ -3846,11 +3863,16 @@ const Views = (function () {
         card.className = "vn-end";
         card.innerHTML = `<p class="vn-end-mark">✦</p>` +
           (last ? `<p class="vn-end-zh">完。</p>`
-                : `<button type="button" class="vn-end-btn" data-vn-nextch>Next Chapter ›</button>`);
+                : `<button type="button" class="antique-button vn-next-ch" data-vn-nextch>
+                     <span class="antique-button-corner tl"></span><span class="antique-button-corner tr"></span>
+                     <span class="antique-button-corner bl"></span><span class="antique-button-corner br"></span>
+                     <span class="antique-button-label">Next Chapter ›</span>
+                   </button>`);
         flow.appendChild(card); scrollEnd();
       }
 
-      // tap anywhere (not a word / button) → advance (voices first beat too)
+      // tap anywhere (not a word / button) → advance, voice the first beat, or
+      // (after a bad end) restart the chapter.
       host.addEventListener("click", (e) => {
         if (e.target.closest(".clickable-word") || e.target.closest("button")) return;
         step();
@@ -3899,8 +3921,16 @@ const Views = (function () {
         autoTimer = setInterval(() => { if (choiceOpen || ended) { stopAuto(); return; } step(); }, 3200);
       });
 
+      // The nav "Next" button is kept only for the INDEX entry; the Menu /
+      // Follow-station entry is pure tap-to-advance (per the user).
       const nextBtn = host.querySelector("[data-vn-next]");
-      if (nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); step(); });
+      if (params.from === "index") {
+        if (nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); step(); });
+      } else if (nextBtn) {
+        nextBtn.remove();
+        const nav = host.querySelector(".ui-bottom-nav");
+        if (nav) { nav.classList.remove("is-three"); nav.classList.add("is-two"); }
+      }
       const restartNav = host.querySelector("[data-vn-restart-nav]");
       if (restartNav) restartNav.addEventListener("click", (e) => { e.stopPropagation(); loadChapter(chIdx); });
       const backBtn = host.querySelector("[data-vn-back]");
