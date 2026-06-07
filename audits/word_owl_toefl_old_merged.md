@@ -1779,7 +1779,7 @@ cut:
 ana/lyt/ic/al
 分开/松开；分析/形容词/形容词
 
-adj. 分析的；善于分析的 analytic
+adj. 分析的；善于分析的 related to analytic
 phrase: analytical method - 分析方法
 
 anatomical [ˌænəˈtɑːmɪkl]
@@ -3740,7 +3740,7 @@ phrase: flood barrier - 防洪屏障
 barter [ˈbɑːrtər]
 cut:
 bar/ter
-酒吧/人；物；比较级
+酒吧/人；物
 
 n. /v. 实物交易 trade, deal
 example: Early barter exchange often depended on kin-based networks because trust was created through family obligations.
@@ -3968,7 +3968,7 @@ behaviorism [bɪˈheɪvjərɪzəm]
 cut:
 
 
-n. 行为主义 theory of behaviour
+n. 行为主义 behaviour-based theory
 phrase: classical behaviorism - 经典行为主义
 
 behaviour
@@ -4230,7 +4230,7 @@ biological
 cut:
 
 
-adj. 生物的；生物学的 biology
+adj. 生物的；生物学的 field of study
 phrase: biological system - 生物系统
 
 biologically
@@ -5543,7 +5543,7 @@ capitalist
 cut:
 
 
-n. 资本主义者；资本主义的 capitalism
+n. 资本主义者；资本主义的 doctrine, theory
 phrase: capitalist market economy - 资本主义市场经济
 
 captain
@@ -5551,7 +5551,7 @@ cut:
 cap/tain
 拿取；头/拿住；保持
 
-n./v. 船长；队长；率领 lead
+n./v. 船长；队长；率领 leader, ship commander, lead
 example: A ship captain must make quick decisions when storms threaten the crew.
 example_zh: 当风暴威胁船员时，船长必须迅速决策。
 phrase: a ship captain - 船长
@@ -6121,7 +6121,7 @@ cervical
 cut:
 
 
-adj. 颈部的；子宫颈的 neck-related
+adj. 颈部的；子宫颈的 neck-related, neck-related
 example: Cervical screening can detect disease before symptoms become serious.
 example_zh: 宫颈筛查可以在症状严重前发现疾病。
 phrase: cervical spine - 颈椎
@@ -6529,14 +6529,14 @@ chivalric
 cut:
 
 
-adj. 骑士的；骑士精神的 chivalry
+adj. 骑士的；骑士精神的 related to chivalry
 phrase: chivalric code - 骑士准则
 
 chivalry
 cut:
 
 
-n. 骑士精神；骑士制度 knightly code
+n. 骑士精神；骑士制度 knightly code, knightly code
 example: Medieval chivalry mixed military power with ideals of honour and service.
 example_zh: 中世纪骑士精神把军事权力与荣誉、服务理想混合在一起。
 phrase: medieval chivalry - 中世纪骑士精神
@@ -6852,7 +6852,7 @@ civilization
 cut:
 
 
-n. 文明；文明社会 civilisation
+n. 文明；文明社会 society
 phrase: ancient civilization collapse - 古代文明崩溃
 
 claim [kleɪm]
@@ -7075,7 +7075,7 @@ climatic
 cut:
 
 
-adj. 气候的 climate
+adj. 气候的 related to climate
 phrase: climatic condition - 气候条件
 
 climatologist
@@ -7322,8 +7322,8 @@ phrase: legal codification - 法律编纂
 
 codify [ˈkɑːdɪfaɪ]
 cut:
-coden/ify
-来自code（n. 法规）/名词；形容词
+code/ify
+法规；编码/使成为
 
 v. 编成法典，编辑成书 editor
 phrase: codify legal principles - 编纂法律原则
@@ -7332,7 +7332,7 @@ coefficient
 cut:
 
 
-n. 系数 factor
+n. 系数 numerical factor, factor
 example: In a simple equation, a constant stays fixed while a coefficient shows how strongly one variable changes another.
 example_zh: 在简单方程中，常数保持固定，而系数显示一个变量多强地改变另一个变量。
 phrase: correlation coefficient - 相关系数
@@ -7529,7 +7529,7 @@ collection
 cut:
 
 
-n. 集合；收藏；收集 gathering, set
+n. 集合；收藏；收集 gathering, set, gathering, set
 phrase: data collection - 数据收集
 
 collective [kəˈlektɪv]
@@ -7593,7 +7593,7 @@ colonial [kəˈloʊniəl]
 cut:
 
 
-adj. 殖民（地）的 colony-related
+adj. 殖民（地）的 colonisation
 phrase: colonial administration records - 殖民行政记录
 
 colonisation
@@ -7719,7 +7719,7 @@ combustion
 cut:
 
 
-n. 燃烧 burning
+n. 燃烧 burning, burning process
 example: Fuel combustion releases greenhouse gases, which trap heat and intensify long-term climate change.
 example_zh: 燃料燃烧释放温室气体，后者困住热量并加剧长期气候变化。
 phrase: fuel combustion - 燃料燃烧
@@ -7828,9 +7828,9 @@ phrase: commerce and industry - 商业与工业
 commercial [kəˈmɜːrʃl]
 cut:
 commerce/ial
-来自commerce（商业）/…的
+商业；贸易/形容词
 
-adj. 商业的，商务的，贸易的 business-related
+adj. 商业的，商务的，贸易的 business-related, business-related
 phrase: commercial success - 商业成功
 
 commercially
@@ -7956,7 +7956,7 @@ communist
 cut:
 
 
-n./adj. 共产主义的；共产主义者 communism-related
+n./adj. 共产主义的；共产主义者 communism supporter, communism-related
 phrase: communist party - 共产党
 
 community [kəˈmjuːnəti]
@@ -7978,7 +7978,7 @@ cut:
 com/mut/e
 共同/改变/e
 
-v. 坐公交车上下班 travel to work
+v. 坐公交车上下班 travel to work, travel to work
 example: When traffic congestion worsens, workers may commute for longer each day and lose time that could be used for family or rest.
 example_zh: 当交通拥堵恶化时，劳动者每天可能通勤更久，并失去本可用于家庭或休息的时间。
 phrase: commute daily - 每日通勤
@@ -8242,7 +8242,7 @@ compliance
 cut:
 
 
-n. 合规；遵守 obedience
+n. 合规；遵守 obedience, obedience, conformity
 phrase: regulatory compliance - 监管合规
 
 component [kəmˈpoʊnənt]
@@ -8254,7 +8254,7 @@ com/pon/ent
 example: An automated system can detect a faulty component before the whole machine fails.
 example_zh: 自动化系统可以在整台机器故障前检测到有问题的零件。
 
-2. adj. 构成的 forming
+2. adj. 构成的 forming, forming part
 example: Trust is a key component of any system that asks people to cooperate.
 example_zh: 信任是任何要求人们合作的系统的关键组成部分。
 
@@ -8317,7 +8317,7 @@ composure
 cut:
 
 
-n. 镇定 calmness
+n. 镇定 calmness, calmness
 phrase: keep composure - 保持镇定
 
 compound [ˈkɑːmpaʊnd]
@@ -8365,7 +8365,7 @@ comprehension
 cut:
 
 
-n. 理解；理解力 understanding
+n. 理解；理解力 understanding, understanding
 phrase: reading comprehension - 阅读理解
 
 compress [kəmˈpres]
@@ -8440,7 +8440,7 @@ compulsory
 cut:
 
 
-adj. 强制的；义务的 required
+adj. 强制的；义务的 required, required, mandatory
 example: Compulsory education should guarantee quality, not merely require children to attend school.
 example_zh: 义务教育应保证质量，而不只是要求儿童上学。
 phrase: compulsory education - 义务教育
@@ -8659,7 +8659,7 @@ cut:
 con/ces/sion
 共同；加强/走；让步/动作；状态；名词
 
-n. 让步；特许权 grant
+n. 让步；特许权 grant, compromise, grant
 phrase: political concession - 政治让步
 
 conclusion
@@ -8950,7 +8950,7 @@ cut:
 co/nfor/mity
 共同；一起/人；物/名词；形容词
 
-n. 遵从；一致 agreement
+n. 遵从；一致 agreement, agreement, compliance
 phrase: social conformity - 社会从众
 
 confront [kənˈfrʌnt]
@@ -8973,7 +8973,7 @@ confrontation
 cut:
 
 
-n. 对抗 opposition
+n. 对抗 opposition, opposition, conflict
 phrase: political confrontation - 政治对抗
 
 confucianism
@@ -9102,7 +9102,7 @@ connect
 cut:
 
 
-v. 连接；联系 link
+v. 连接；联系 link, link, join
 example: Reliable transport can connect rural communities with schools, hospitals, markets, and jobs.
 example_zh: 可靠交通可以把农村社区与学校、医院、市场和工作机会连接起来。
 phrase: connect communities - 连接社区
@@ -9132,7 +9132,7 @@ conquer
 cut:
 
 
-v. 征服；克服 overcome
+v. 征服；克服 overcome, overcome, defeat
 example: Empires often conquer territory before trying to control memory.
 example_zh: 帝国常先征服领土，再试图控制记忆。
 phrase: conquer territory - 征服领土
@@ -9326,7 +9326,7 @@ example_zh: 官员在选择最昂贵方案前应考虑替代方案。
 phrase: consider alternatives - 考虑替代方案
 phrase: consider a question - 思考问题
 
-2. v. 认为；看作 view
+2. v. 认为；看作 regard, view
 example: Many historians consider the treaty a turning point in regional politics.
 example_zh: 许多历史学家认为该条约是区域政治的转折点。
 phrase: consider to be - 认为是
@@ -9361,7 +9361,7 @@ considerate [kənˈsɪdərət]
 cut:
 
 
-1. adj. 考虑周到的 thoughtful
+1. adj. 考虑周到的 thoughtful, thoughtful
 phrase: considerate behaviour - 体贴行为
 
 2. adj. 体贴的 thoughtful
@@ -9402,7 +9402,7 @@ consolation
 cut:
 
 
-n. 安慰；慰藉 comfort
+n. 安慰；慰藉 comfort, comfort
 phrase: small consolation - 小小安慰
 
 consolatory
@@ -9447,7 +9447,7 @@ constellation
 cut:
 
 
-n. 星座；群体 star group
+n. 星座；群体 star group, star group
 example: A constellation is a pattern humans name in the sky, whereas a nebula is a cloud of gas and dust.
 example_zh: 星座是人类在天空中命名的图案，而星云是气体和尘埃云。
 phrase: star constellation - 星座
@@ -9477,7 +9477,7 @@ cut:
 con/stitut/ion
 共同；加强/建立，放/动作；状态；名词
 
-n. 宪法，章程 charter
+n. 宪法，章程 charter, basic law, charter
 phrase: founding constitution - 创始宪章
 
 constitutional
@@ -9597,7 +9597,7 @@ consumption [kənˈsʌmpʃn]
 cut:
 
 
-1. n. 消耗（量），消费（量） use
+1. n. 消耗（量），消费（量） use, use, spending
 phrase: energy consumption - 能源消耗
 
 2. n. 食用 eating
@@ -9670,7 +9670,7 @@ contamination [kənˌtæmɪˈneɪʃn]
 cut:
 
 
-n. 污染 ，玷污 pollution
+n. 污染 ，玷污 pollution, pollution
 phrase: water contamination - 水污染
 
 contemplate
@@ -9777,7 +9777,7 @@ continue
 cut:
 
 
-v. 继续 persist
+v. 继续 persist, go on, persist
 example: A movement may continue despite pressure when its cause remains unresolved.
 example_zh: 当运动的诉求仍未解决时，它可能顶着压力继续。
 phrase: continue support - 继续支持
@@ -9929,7 +9929,7 @@ contribution
 cut:
 
 
-n. 贡献；捐款；促成因素 donation, factor
+n. 贡献；捐款；促成因素 donation, helping factor, donation, factor
 phrase: economic contribution - 经济贡献
 
 control
@@ -10038,7 +10038,7 @@ convergence
 cut:
 
 
-n. 汇聚；趋同 coming together
+n. 汇聚；趋同 coming together, coming together
 phrase: technological convergence - 技术融合
 
 conversation [ˌkɑːnvərˈseɪʃn]
@@ -10053,7 +10053,7 @@ conversational [ˌkɑːnvərˈseɪʃənl]
 cut:
 
 
-adj. 对话的，会话的 conversation
+adj. 对话的，会话的 related to conversation
 phrase: conversational style - 对话风格
 
 converse [kənˈvɜːrs]
@@ -10214,10 +10214,16 @@ cut:
 copy
 
 1. n. 副本；一本 duplicate
+example: The archive kept a printed copy after scanning the original letter.
+example_zh: 档案馆扫描原信后保留了一份印刷副本。
 phrase: printed copy - 印刷副本
+phrase: exact copy - 精确复制品
 
 2. v. 复制；模仿 duplicate, imitate
+example: Students may copy a file for practice, but they must cite any borrowed text.
+example_zh: 学生可以复制文件练习，但必须引用任何借用文本。
 phrase: copy a file - 复制文件
+phrase: copy a pattern - 复制模式
 
 cord
 cut:
@@ -10452,7 +10458,7 @@ council [ˈkaʊnsl]
 cut:
 
 
-n. 理事会，委员会 committee
+n. 理事会，委员会 committee, governing body, committee
 phrase: tribal council - 部落委员会
 
 count [kaʊnt]
@@ -10761,7 +10767,7 @@ crime
 cut:
 crime
 
-n. 犯罪；罪行 offence
+n. 犯罪；罪行 offence, offence
 phrase: reduce crime - 减少犯罪
 
 criminal
@@ -10833,7 +10839,7 @@ crowd
 cut:
 crowd
 
-n./v. 人群；挤满 fill
+n./v. 人群；挤满 group, fill, fill
 example: Crowd behaviour can change when fear spreads faster than information.
 example_zh: 当恐惧比信息传播更快时，群体行为会改变。
 phrase: large crowd - 大量人群
@@ -10858,14 +10864,14 @@ crucially
 cut:
 
 
-adv. 关键地 crucial
+adv. 关键地 in a crucial way
 phrase: crucially important - 至关重要
 
 crucible
 cut:
 
 
-n. 坩埚；严酷考验 severe test
+n. 坩埚；严酷考验 severe test, melting vessel, severe test
 example: A crisis can become a crucible of change when old rules no longer work.
 example_zh: 当旧规则不再有效时，危机可以成为变革熔炉。
 phrase: metallurgical crucible - 冶金坩埚
@@ -10943,7 +10949,7 @@ cut:
 cultiv/able
 耕种；培养/能够；形容词
 
-adj. 可耕种的 farmable
+adj. 可耕种的 farmable, farmable
 phrase: cultivable land - 可耕地
 
 cultivate [ˈkʌltɪveɪt]
@@ -10973,7 +10979,7 @@ cultivation
 cut:
 
 
-n. 栽培；耕作；培养 farming, training
+n. 栽培；耕作；培养 farming, training, farming, training
 phrase: crop cultivation - 作物栽培
 
 cultivator
@@ -11069,7 +11075,7 @@ curation
 cut:
 
 
-n. 策展；整理；精选 selection
+n. 策展；整理；精选 selection, organizing, selection
 phrase: content curation - 内容策展
 
 curb
@@ -11192,7 +11198,7 @@ cyclone
 cut:
 
 
-n. 气旋 rotating weather system
+n. 气旋 rotating storm, rotating weather system
 phrase: tropical cyclone - 热带气旋
 
 danger
@@ -11401,7 +11407,7 @@ decree
 cut:
 
 
-n. 法令；政令 official order
+n. 法令；政令 official order, official order
 example: A government decree may announce reform, but parliament must ratify the agreement before it gains legal force.
 example_zh: 政府法令可以宣布改革，但议会必须批准协议，它才获得法律效力。
 phrase: government decree - 政府法令
@@ -11485,7 +11491,7 @@ defence
 cut:
 
 
-n. 防御；辩护 protection
+n. 防御；辩护 protection, argument, protection
 example: A strong legal defence matters when public opinion turns hostile.
 example_zh: 当舆论变得敌对时，有力法律辩护很重要。
 phrase: national defence - 国防
@@ -11507,7 +11513,7 @@ defendant
 cut:
 
 
-n. 被告 accused person
+n. 被告 accused person, accused person
 phrase: criminal defendant - 刑事被告
 
 defense [dɪˈfens]
@@ -11533,7 +11539,7 @@ defiance
 cut:
 
 
-n. 反抗；蔑视 resistance
+n. 反抗；蔑视 resistance, resistance
 phrase: defiance of authoritarian rule - 对威权统治的反抗
 
 defiant
@@ -11576,7 +11582,7 @@ cut:
 de/fin/e
 向下；离开/范围/e
 
-1. v. 定义 explain significance
+1. v. 定义 explain meaning, explain significance
 example: A society should define success beyond income, status, material possessions, and titles.
 example_zh: 社会应在收入、地位、物质财产和头衔之外定义成功。
 
@@ -11666,14 +11672,14 @@ degradation
 cut:
 
 
-n. 退化；损害 decline
+n. 退化；损害 decline, damage, decline
 phrase: environmental degradation - 环境退化
 
 degrade
 cut:
 
 
-v. 降低；损害；退化 degradation
+v. 降低；损害；退化 worsen, damage
 example: Industrial pollution can degrade soil quality and weaken local food production systems.
 example_zh: 工业污染会降低土壤质量，并削弱本地食品生产系统。
 phrase: degrade soil quality - 降低土壤质量
@@ -11898,7 +11904,7 @@ cut:
 de/note
 向下；离开/意义
 
-v. 表示 ，意味着 mean
+v. 表示 ，意味着 mean, mean, indicate
 example: A high price does not always denote better quality or greater safety.
 example_zh: 高价格并不总是表示更好质量或更高安全性。
 phrase: denote a concept - 表示概念
@@ -12020,14 +12026,14 @@ depletion
 cut:
 
 
-n. 耗尽；枯竭 exhaustion
+n. 耗尽；枯竭 exhaustion, reduction, exhaustion
 phrase: resource depletion - 资源枯竭
 
 deploy
 cut:
 
 
-v. 部署；展开 arrange
+v. 部署；展开 arrange, position, arrange
 example: Institutions often deploy technology before they understand its social effects.
 example_zh: 机构常在理解技术的社会影响之前就部署技术。
 phrase: deploy technology - 部署技术
@@ -12324,9 +12330,9 @@ phrase: smoke detector - 烟雾探测器
 deteriorate [dɪˈtɪriəreɪt]
 cut:
 deterior/ate
-拉丁文：糟糕的/动词；使成为
+变坏/动词
 
-1. v. 变坏 worsen
+1. v. 变坏 worsen, worsen
 phrase: deteriorate rapidly - 迅速恶化
 
 2. v. 变质 erode
@@ -12359,9 +12365,9 @@ phrase: be determined by - 由……决定
 deterrence
 cut:
 de/ter/rence
-向下；离开/人；物；比较级/性质；状态；名词
+向下；离开/人；物/性质；状态；名词
 
-n. 威慑；制止 prevention
+n. 威慑；制止 prevention by threat, prevention
 phrase: nuclear deterrence - 核威慑
 
 detonate
@@ -12449,7 +12455,7 @@ deviate
 cut:
 
 
-v. 偏离；背离 depart
+v. 偏离；背离 depart, diverge, depart
 example: Officials should not deviate from standards when inspecting food safety in markets.
 example_zh: 官员在市场中检查食品安全时不应偏离标准。
 phrase: deviate from standards - 偏离标准
@@ -12486,7 +12492,7 @@ cut:
 de/vour
 向下；离开/＝vor吞吃
 
-1. v. 贪婪地吃 eat greedily
+1. v. 贪婪地吃 eat greedily, eat greedily
 example: Mega-events can devour resources that might otherwise improve hospitals, schools, or housing.
 example_zh: 大型赛事可能大量消耗本可用于改善医院、学校或住房的资源。
 
@@ -12529,7 +12535,7 @@ dialectical
 cut:
 
 
-adj. 辩证的 argument-based, dialectic
+adj. 辩证的 argument-based
 phrase: dialectical thinking - 辩证思维
 
 dialogue
@@ -12592,7 +12598,7 @@ difference [ˈdɪfrəns]
 cut:
 
 
-n. 差别，差异，分歧 disagreement
+n. 差别，差异，分歧 distinction, disagreement, disagreement
 phrase: make a difference - 区分
 
 different
@@ -12896,7 +12902,7 @@ disclosure
 cut:
 
 
-n. 披露 revelation
+n. 披露 revelation, revelation
 phrase: financial disclosure - 财务披露
 
 discourse
@@ -12955,7 +12961,7 @@ discriminate
 cut:
 
 
-v. 区分；歧视 distinguish
+v. 区分；歧视 distinguish, distinguish, treat unfairly
 example: Employers should not discriminate against older workers when hiring for skilled positions.
 example_zh: 雇主在招聘技术岗位时，不应歧视老年劳动者。
 phrase: discriminate against women - 歧视女性
@@ -13024,7 +13030,7 @@ disentangle
 cut:
 
 
-v. 解开；理清；分清 untangle
+v. 解开；理清；分清 untangle, untangle
 phrase: disentangle cause and effect - 分清原因和结果
 
 disfigure
@@ -13083,7 +13089,7 @@ cut:
 dis/miss
 分开；否定/送出
 
-v. 驳回；解雇；不予理会 reject
+v. 驳回；解雇；不予理会 reject, reject, remove
 example: Officials should not dismiss concerns about pollution near schools, homes, and hospitals.
 example_zh: 官员不应不理会学校、住宅和医院附近污染问题引发的担忧。
 phrase: dismiss concerns - 不理会担忧
@@ -13120,7 +13126,7 @@ dispatch
 cut:
 
 
-n./v. 派遣；发送；急件 send
+n./v. 派遣；发送；急件 send, send, urgent message
 example: Emergency dispatch must be fast, accurate, and coordinated.
 example_zh: 紧急派遣必须快速、准确且协调。
 phrase: dispatch troops - 派遣部队
@@ -13284,7 +13290,7 @@ cut:
 dis/tance
 分开；否定/状态；名词
 
-n./v. 距离；疏远 separation
+n./v. 距离；疏远 separation, separation
 phrase: social distance - 社会距离
 
 distant [ˈdɪstənt]
@@ -13371,7 +13377,7 @@ distraction
 cut:
 
 
-n. 分心；干扰 disturbance
+n. 分心；干扰 disturbance, disturbance
 phrase: digital distraction - 数字干扰
 
 distribute [dɪˈstrɪbjuːt]
@@ -13685,7 +13691,7 @@ phrase: dramatic change - 剧烈变化
 2. adj. 戏剧性的 theatrical
 phrase: dramatic effect - 戏剧性效果
 
-3. adj. 生动的 vivid
+3. adj. 生动的 vivid, vivid, striking
 phrase: dramatically increase - 显著增加
 
 dramatically
@@ -13700,14 +13706,14 @@ dramatist
 cut:
 
 
-n. 剧作家 playwright
+n. 剧作家 playwright, playwright
 phrase: famous dramatist - 著名剧作家
 
 drastically
 cut:
 
 
-adv. 剧烈地 drastic
+adv. 剧烈地 in a drastic way
 phrase: drastically reduce emissions - 大幅减少排放
 
 draw [drɔː]
@@ -13759,7 +13765,7 @@ drift
 cut:
 drift
 
-n./v. 漂移；漂流；偏移 shift
+n./v. 漂移；漂流；偏移 shift, float, shift
 example: Policy drift can change outcomes without any dramatic announcement.
 example_zh: 政策漂移可以在没有戏剧性公告的情况下改变结果。
 phrase: continental drift - 大陆漂移
@@ -13787,7 +13793,7 @@ droop
 cut:
 droop
 
-v. 下垂；萎靡 sag
+v. 下垂；萎靡 sag, sag
 example: Plants may droop when heat and water stress become too strong.
 example_zh: 当高温和缺水压力过强时，植物可能下垂。
 phrase: leaves droop - 叶子下垂
@@ -14030,10 +14036,10 @@ cut:
 eco/nom/ic
 经济/某一领域的知识/形容词
 
-1. adj. 经济（上）的 economy
+1. adj. 经济（上）的 money-related
 phrase: economic conditions - 经济情况
 
-2. adj. 经济学的 economy
+2. adj. 经济学的 money-related
 phrase: economic growth - 经济增长
 
 economically
@@ -14051,7 +14057,7 @@ economist
 cut:
 
 
-n. 经济学家 economy
+n. 经济学家 specialist, scholar
 phrase: labour economist - 劳动经济学家
 
 economy [ɪˈkɑːnəmi]
@@ -14427,7 +14433,7 @@ cut:
 e/limin/ate
 e/门槛/动词；使成为
 
-1. v. 消除 remove
+1. v. 消除 remove, remove
 example: Schools should eliminate hidden barriers so rural students can access reliable online learning resources.
 example_zh: 学校应消除隐性障碍，让农村学生能够获得可靠的线上学习资源。
 
@@ -14467,10 +14473,10 @@ elusive [iˈluːsɪv]
 cut:
 
 
-1. adj. 难懂的 hard to understand
+1. adj. 难懂的 hard to understand, hard to catch, hard to understand
 phrase: elusive goal - 难以实现的目标
 
-2. adj. 难捕捉的 hard to catch
+2. adj. 难捕捉的 hard to catch, hard to catch, hard to understand
 phrase: elusive evidence - 难以获得的证据
 
 emancipation
@@ -14690,7 +14696,7 @@ cut:
 en/able
 使/能够
 
-v. 赋权；使能够 empower
+v. 赋权；使能够 allow, empower, empower
 example: Digital platforms can enable access to education for remote communities and poor families.
 example_zh: 数字平台可以让偏远社区和贫困家庭获得教育机会。
 phrase: enable communities - 赋能社区
@@ -14702,14 +14708,14 @@ encampment
 cut:
 
 
-n. 营地；扎营处 camp
+n. 营地；扎营处 camp, camp
 phrase: refugee encampment - 难民营地
 
 encircle
 cut:
 
 
-v. 包围；环绕 surround
+v. 包围；环绕 surround, surround
 example: Walls can encircle a city while also defining who belongs inside.
 example_zh: 城墙可以包围城市，同时定义谁属于内部。
 phrase: encircle a city - 包围城市
@@ -14721,7 +14727,7 @@ enclosure
 cut:
 
 
-n. 笼子；围栏 cage
+n. 笼子；围栏 cage, enclosed area, cage
 phrase: animal enclosure - 动物围栏
 
 encompass [ɪnˈkʌmpəs]
@@ -14806,7 +14812,7 @@ cut:
 en/du/rance
 进入；使/二；怀疑/状态；名词
 
-n. 耐力；持久力 stamina
+n. 耐力；持久力 stamina, stamina
 phrase: physical endurance - 身体耐力
 
 endure [ɪnˈdʊr]
@@ -14968,7 +14974,7 @@ ensure
 cut:
 
 
-v. 确保；保证 guarantee
+v. 确保；保证 guarantee, guarantee
 phrase: ensure safety - 确保安全
 
 enterprise [ˈentərpraɪz]
@@ -15050,7 +15056,7 @@ entirety
 cut:
 
 
-n. 全部；整体 whole
+n. 全部；整体 whole, whole
 example: Evidence should be read in its entirety before a judgement is made.
 example_zh: 在作出判断之前，应完整阅读证据。
 phrase: entirety of system - 整个系统
@@ -15101,7 +15107,7 @@ phrase: environmental stress - 环境压力
 enzyme [ˈenzaɪm]
 cut:
 en/zyme
-来自希腊语，en（在…里）/发酵
+在内/发酵
 
 n. 酶 biological catalyst
 example: A digestive enzyme helps break food down, while metabolism determines how the body converts nutrients into usable energy.
@@ -15259,7 +15265,7 @@ cut:
 equ/ator
 相等/人；物
 
-n. 赤道 earth's central latitude line
+n. 赤道 imaginary line around Earth
 phrase: near the equator - 靠近赤道
 
 equatorial
@@ -15318,7 +15324,7 @@ eradicate
 cut:
 
 
-v. 根除；消灭 eliminate
+v. 根除；消灭 wipe out, eliminate
 example: No country can eradicate poverty without education, healthcare, stable jobs, and housing.
 example_zh: 没有教育、医疗、稳定工作和住房，任何国家都无法根除贫困。
 phrase: eradicate poverty - 根除贫困
@@ -15575,7 +15581,7 @@ euphoric
 cut:
 
 
-adj. 欣快的；极度兴奋的 elated
+adj. 欣快的；极度兴奋的 elated, elated
 example: A euphoric market can ignore risk until confidence suddenly breaks.
 example_zh: 狂热市场可能忽视风险，直到信心突然破裂。
 phrase: euphoric mood - 欣快情绪
@@ -15634,7 +15640,7 @@ eventual
 cut:
 
 
-adj. 最终的 final
+adj. 最终的 final, later, final
 phrase: eventual result - 最终结果
 
 eventually
@@ -15723,7 +15729,7 @@ examination
 cut:
 
 
-n. 考试；检查 inspection
+n. 考试；检查 test, inspection, inspection
 phrase: medical examination - 医学检查
 
 examine
@@ -15769,7 +15775,7 @@ excavation [ˌekskəˈveɪʃn]
 cut:
 
 
-n. 挖掘 digging
+n. 挖掘 digging, digging
 phrase: archaeological excavation - 考古发掘
 
 exception [ɪkˈsepʃn]
@@ -15788,7 +15794,7 @@ ex/cep/tion/al
 1. adj. 异常的 abnormality
 phrase: a man of exceptional talent - 具有特殊才能的人
 
-2. adj. 杰出的 outstanding
+2. adj. 杰出的 outstanding, outstanding
 phrase: exceptional case - 例外情况
 
 excess [ɪkˈses]
@@ -15822,7 +15828,7 @@ cut:
 ex/clude
 出/关闭
 
-v. 把…排除在外 leave out
+v. 把…排除在外 exclusion, leave out
 example: High fees may exclude poor families from quality healthcare and education services.
 example_zh: 高费用可能把贫困家庭排除在优质医疗和教育服务之外。
 phrase: exclude poor families - 排除贫困家庭
@@ -15865,7 +15871,7 @@ cut:
 1. n. 总经理，董事，行政负责人 responsible, in charge
 phrase: Chief Executive Officer - 首席执行官
 
-2. adj. 执行的，实施的 execute
+2. adj. 执行的，实施的 related to execute
 phrase: local business executives - 本地商务主管
 
 execution
@@ -15963,7 +15969,7 @@ exhibition
 cut:
 
 
-n. 展览；展示 display
+n. 展览；展示 display, display
 phrase: art exhibition - 艺术展览
 
 exile
@@ -16329,7 +16335,7 @@ cut:
 ex/pos/e
 出/放/e
 
-1. v. 使暴露 reveal
+1. v. 使暴露 reveal, reveal
 example: Investigative reports can expose corruption behind wasteful public projects and stadium deals.
 example_zh: 调查报道可以揭露浪费性公共项目和体育场交易背后的腐败。
 
@@ -16365,7 +16371,7 @@ expression
 cut:
 
 
-n. 表达；表情；表达式 express
+n. 表达；表情；表达式 act or process of express
 phrase: personal expression - 个人表达
 
 expressionism
@@ -16551,10 +16557,10 @@ extremity [ɪkˈstreməti]
 cut:
 
 
-1. n. 末端 end
+1. n. 末端 end, end, outer limit
 phrase: body extremity - 身体末端
 
-2. n. 极端，极度 extreme
+2. n. 极端，极度 end, outer limit
 phrase: political extremity - 政治极端
 
 extrinsic [eksˈtrɪnsɪk]
@@ -16793,7 +16799,7 @@ falter
 cut:
 
 
-v. 动摇；踌躇；衰退 hesitate, weaken
+v. 动摇；踌躇；衰退 hesitate, weaken, hesitate, weaken
 example: Public trust may falter when officials hide costs or ignore local concerns.
 example_zh: 当官员隐瞒成本或忽视地方担忧时，公众信任可能动摇。
 phrase: falter under pressure - 在压力下动摇
@@ -16822,7 +16828,7 @@ cut:
 fame/ous/ly
 名声/形容词/副词
 
-adv. 著名地；众所周知地 notably
+adv. 著名地；众所周知地 notably, in a famously way
 example: The city is famously expensive, yet artists still move there for opportunity.
 example_zh: 这座城市以昂贵闻名，但艺术家仍为机会搬去那里。
 phrase: famously difficult - 出了名地困难
@@ -16914,7 +16920,7 @@ cut:
 favour/able
 赞成；有利/能够；形容词
 
-adj. 有利的；赞成的 supportive
+adj. 有利的；赞成的 supportive, beneficial, supportive
 phrase: favourable condition - 有利条件
 
 fear
@@ -16992,7 +16998,7 @@ fell
 cut:
 fell
 
-v. 砍倒；击倒 cut down
+v. 砍倒；击倒 cut down, cut down
 example: Islanders felled trees until the soil began to erode into the sea.
 example_zh: 岛民砍倒树木，直到土壤开始被侵蚀进海里。
 phrase: fell trees - 砍倒树木
@@ -17610,14 +17616,14 @@ cut:
 fore/see/able
 预先/看见/能够；形容词
 
-adj. 可预见的 predictable
+adj. 可预见的 predictable, predictable
 phrase: foreseeable legal consequence - 可预见法律后果
 
 forgive
 cut:
 
 
-v. 原谅；宽恕 pardon
+v. 原谅；宽恕 pardon, pardon
 example: People may forgive a mistake more easily when responsibility is clearly accepted.
 example_zh: 当责任被清楚承担时，人们可能更容易原谅错误。
 phrase: forgive a mistake - 原谅错误
@@ -17743,7 +17749,7 @@ fossilization
 cut:
 
 
-n. 化石化；固化 fossil
+n. 化石化；固化 stone, rock
 phrase: language fossilization - 语言石化
 
 foundation
@@ -17851,7 +17857,7 @@ franchise [ˈfræntʃɑɪz]
 cut:
 
 
-1. n. 特权 ，公民权 right
+1. n. 特权 ，公民权 right, business license, right
 example: A franchise agreement can expand a brand quickly, but unclear ownership may create disputes over profit and control.
 example_zh: 特许经营协议可以迅速扩大品牌，但所有权不清可能引发关于利润和控制权的争议。
 
@@ -17863,7 +17869,7 @@ fraud
 cut:
 fraud
 
-n. 欺诈；骗子 deception
+n. 欺诈；骗子 deception, deception
 example: Financial fraud becomes easier when trust is high and oversight is weak.
 example_zh: 当信任高而监管弱时，金融欺诈更容易发生。
 phrase: credit card fraud - 信用卡欺诈
@@ -18252,7 +18258,7 @@ generator
 cut:
 
 
-n. 发电机；活力源 dynamo
+n. 发电机；活力源 machine that produces power
 phrase: electric generator - 发电机
 
 generous [ˈdʒenərəs]
@@ -18273,7 +18279,7 @@ phrase: generous amount - 大量；充足数量
 genetic [dʒəˈnetɪk]
 cut:
 gene/tic
-来自gene（基因）/形容词
+基因/形容词
 
 adj. 基因的，遗传（学）的 gene
 example: The cell nucleus stores genetic information that can influence growth, disease risk, and inherited traits.
@@ -18369,7 +18375,7 @@ geographical
 cut:
 
 
-adj. 地理的 geography
+adj. 地理的 related to geography
 phrase: geographical location - 地理位置
 
 geological
@@ -18476,7 +18482,7 @@ glaciation
 cut:
 
 
-n. 冰川作用；冰期 glacier
+n. 冰川作用；冰期 function, role
 phrase: past glaciation - 过去冰川作用
 
 glacier [ˈɡleɪʃər]
@@ -19011,7 +19017,7 @@ cut:
 h/alt
 连接音/高
 
-n. /v. 停止 stop
+n. /v. 停止 stop, stop
 example: Authorities should halt construction when projects threaten safety or protected habitats nearby.
 example_zh: 当项目威胁附近安全或受保护栖息地时，当局应停止建设。
 phrase: halt construction - 停止建设
@@ -19049,7 +19055,7 @@ hand
 cut:
 hand
 
-n./v. 手；交给；传递 pass
+n./v. 手；交给；传递 body part, pass, pass
 example: Communities hand down traditions through stories, rituals, and shared memory.
 example_zh: 社区通过故事、仪式和共同记忆传承传统。
 phrase: hand down traditions - 传承传统
@@ -19183,7 +19189,7 @@ phrase: harpoon a whale - 用鱼叉捕鲸
 
 haul [hɔːl]
 cut:
-halu
+haul
 
 v. （用力）拖，拖运 pull, drag
 example: A long haul supply chain can hide labour from consumers.
@@ -19448,7 +19454,7 @@ hierarchical
 cut:
 
 
-adj. 等级制的；分层的 hierarchy
+adj. 等级制的；分层的 related to hierarchy
 phrase: hierarchical society - 等级社会
 
 hierarchy [ˈhaɪərɑːrki]
@@ -20202,7 +20208,7 @@ ignite
 cut:
 
 
-v. 点燃；激起；引发 spark
+v. 点燃；激起；引发 set on fire, spark, spark
 example: Rising rents can ignite public anger in overcrowded cities with stagnant wages.
 example_zh: 在工资停滞的拥挤城市中，房租上涨会激起公众愤怒。
 phrase: ignite debate - 引发争论
@@ -20398,7 +20404,7 @@ example: An immigrant may face language barriers even after finding stable work.
 example_zh: 移民即使找到稳定工作，也可能面对语言障碍。
 phrase: immigrant integration - 移民融合
 
-2. adj. 移民的 relating to immigrants
+2. adj. 移民的 migrant-related
 example: Immigrant communities often preserve food, music, and family traditions across generations.
 example_zh: 移民社区常跨代保存食物、音乐和家庭传统。
 phrase: immigrant community - 移民社区
@@ -20407,7 +20413,7 @@ immoral
 cut:
 
 
-adj. 不道德的 unethical
+adj. 不道德的 unethical, unethical
 phrase: immoral behavior - 不道德行为
 
 immortal
@@ -20708,7 +20714,7 @@ cut:
 im/provis/ation/al
 不/预先看见/名词/形容词
 
-adj. 即兴的；临时创作的 improvised
+adj. 即兴的；临时创作的 related to improvised
 example: Improvisational music depends on listening as much as technical skill.
 example_zh: 即兴音乐既依赖聆听，也依赖技术能力。
 phrase: improvisational music - 即兴音乐
@@ -20875,7 +20881,7 @@ incineration
 cut:
 
 
-n. 焚烧 burning
+n. 焚烧 burning to ash, burning
 phrase: waste incineration - 垃圾焚烧
 
 incompatible [ˌɪnkəmˈpætəbl]
@@ -20978,7 +20984,7 @@ incremental
 cut:
 
 
-adj. 逐步的；递增的 gradual
+adj. 逐步的；递增的 gradual, gradual
 phrase: incremental reform - 渐进式改革
 
 incrementally
@@ -21036,7 +21042,7 @@ independence
 cut:
 
 
-n. 自主；自治 autonomy
+n. 自主；自治 autonomy, autonomy
 example: Financial independence changes not only options but also self-respect.
 example_zh: 财务独立改变的不只是选择，也包括自尊。
 phrase: regional independence - 区域自治
@@ -21098,7 +21104,7 @@ indignation
 cut:
 
 
-n. 愤慨；义愤 outrage
+n. 愤慨；义愤 outrage, outrage
 example: Public indignation can force institutions to respond faster than routine complaints.
 example_zh: 公众愤慨能比日常抱怨更快迫使机构回应。
 phrase: public indignation - 公众愤慨
@@ -21250,7 +21256,7 @@ cut:
 in/evit/able
 不/避开/能够；形容词
 
-adj. 不可避免的；必然发生的 unavoidable
+adj. 不可避免的；必然发生的 unavoidable, unavoidable
 phrase: inevitable consequence - 必然后果
 
 inexhaustible
@@ -21403,7 +21409,7 @@ cut:
 in/form
 进入/形成
 
-v. 通知，告诉 notify
+v. 通知，告诉 notify, notify
 example: The notice should inform passengers about the delay before they reach the platform.
 example_zh: 通知应在乘客到达站台前告知他们延误情况。
 phrase: inform public debate - 影响公共辩论
@@ -21471,7 +21477,7 @@ inhabitant
 cut:
 
 
-n. 居民 resident
+n. 居民 resident, resident
 phrase: urban inhabitant - 城市居民
 
 inherent [ɪnˈhɪrənt]
@@ -21479,10 +21485,10 @@ cut:
 in/her/ent
 内在/继承人/形容词；人；物
 
-1. adj. 固有的 built-in
+1. adj. 固有的 built-in, built-in
 phrase: inherent risk - 固有风险
 
-2. adj. 内在的 inner
+2. adj. 内在的 inner, built-in
 phrase: inherent value - 内在价值
 
 3. adj. 先天的 innate
@@ -21506,7 +21512,7 @@ inhibition
 cut:
 
 
-n. 抑制；拘谨 restraint
+n. 抑制；拘谨 restraint, restraint
 phrase: behavioural inhibition - 行为抑制
 
 inhibitory
@@ -21535,7 +21541,7 @@ initiative
 cut:
 
 
-n. 倡议 proposal
+n. 倡议 proposal, first step, proposal
 phrase: policy initiative - 政策倡议
 
 inject [ɪnˈdʒekt]
@@ -21547,7 +21553,7 @@ in/ject
 example: A nurse must inject the vaccine into the correct muscle.
 example_zh: 护士必须把疫苗注射到正确的肌肉中。
 
-2. v. 注入 introduce
+2. v. 注入 put in by force, introduce
 example: The central bank may inject money into markets during a credit crisis.
 example_zh: 信贷危机期间，央行可能向市场注入资金。
 
@@ -21556,7 +21562,7 @@ cut:
 injur/y
 伤害/名词
 
-n. 伤害；损伤 harm
+n. 伤害；损伤 harm, damage, harm
 phrase: serious injury - 严重伤害
 
 innately
@@ -21689,11 +21695,11 @@ cut:
 in/sert
 进入/连接；放入
 
-1. v. 插入 put in
+1. v. 插入 put in, put in
 example: The surgeon inserted a tiny camera through a narrow opening.
 example_zh: 外科医生通过狭窄开口插入一台微型摄像机。
 
-2. v. 放入 put in
+2. v. 放入 put in, put in
 example: The editor inserted a short explanation before the final paragraph.
 example_zh: 编辑在最后一段前加入了一段简短解释。
 
@@ -21763,7 +21769,7 @@ cut:
 in/stant
 在内；当下/站立；放置
 
-adj. 瞬间；即时的 immediate
+adj. 瞬间；即时的 immediate moment, immediate
 example: The instant reply surprised everyone because the office usually takes days to respond.
 example_zh: 即时回复让所有人惊讶，因为这个办公室通常要好几天才回应。
 phrase: instant policy response - 即时政策响应
@@ -21775,7 +21781,7 @@ cut:
 in/stant/ly
 在内；当下/站立；放置/副词
 
-adv. 瞬间；即时的 instant, immediate
+adv. 瞬间；即时的 in a instant way, immediate
 phrase: instant policy response - 即时政策响应
 
 instinct [ˈɪnstɪ kt]
@@ -21796,7 +21802,7 @@ cut:
 in/stinct/ive
 内在/刺激；本能/形容词
 
-adj. 本能的；直觉的 instinct
+adj. 本能的；直觉的 related to instinct
 example: Her instinctive reaction was to protect the child before checking her own injury.
 example_zh: 她的本能反应是先保护孩子，再查看自己的伤势。
 
@@ -21912,7 +21918,7 @@ insulation [ˌɪnsəˈleɪʃn]
 cut:
 
 
-1. n. 绝缘 protective separation
+1. n. 绝缘 insulator, protective layer
 phrase: thermal insulation - 隔热
 
 2. n. 隔离 isolation
@@ -22032,7 +22038,7 @@ example_zh: 住房的激烈竞争会把年轻劳动者挤出市中心。
 example: An intense desire for approval can distort honest judgment.
 example_zh: 对认可的强烈渴望会扭曲诚实判断。
 
-3. adj. 极度的 extreme
+3. adj. 极度的 extreme, strong, extreme
 example: Intense pressure forced the committee to release the report early.
 example_zh: 极大压力迫使委员会提前发布报告。
 
@@ -22053,7 +22059,7 @@ cut:
 in/tens/ify
 加强/拉紧/使成为
 
-v. 加深；加强 strengthen
+v. 加深；加强 strengthen, strengthen
 phrase: intensify inequality - 加剧不平等
 
 intensity
@@ -22077,7 +22083,7 @@ cut:
 in/tent/ion
 向内；朝向/拉紧；趋向/名词
 
-n. 意图；打算 aim
+n. 意图；打算 aim, purpose, aim
 phrase: good intention - 好意
 
 interaction [ˌɪntərˈækʃn]
@@ -22117,7 +22123,7 @@ inter/est
 example: Public interest in astronomy rose after the telescope images were released.
 example_zh: 望远镜图像发布后，公众对天文学的兴趣上升了。
 
-2. n. 利息 money charge
+2. n. 利息 curiosity, money charge, money charge
 example: High interest can make a small loan expensive over time.
 example_zh: 高利息会让小额贷款随着时间推移变得昂贵。
 
@@ -22177,7 +22183,7 @@ phrase: musical interlude - 音乐插曲
 intermittent
 cut:
 inter/mit/tent
-人；物；比较级/送出/拉紧
+人；物/送出/拉紧
 
 adj. 间歇性的 quality, property
 example: Intermittent rain made the match difficult because the field never fully dried.
@@ -22188,9 +22194,9 @@ phrase: intermittent internet access - 间歇性网络接入
 intermittently
 cut:
 inter/mit/tent/ly
-人；物；比较级/送出/拉紧/副词
+人；物/送出/拉紧/副词
 
-adj. 间歇的 intermittent
+adj. 间歇的 in a intermittent way
 phrase: intermittent rainfall - 间歇性降雨
 
 internal [ɪnˈtɜːrnl]
@@ -22251,7 +22257,7 @@ example_zh: 研究者在建议改变教育政策之前，必须仔细解读调�
 example: People often interpret the same evidence differently because they start from different assumptions.
 example_zh: 人们常会因为起点假设不同而对同一证据作出不同解释。
 
-3. v. 表现 perform
+3. v. 表现 perform, explain, perform
 example: In court interpreting, accuracy matters more than eloquence because legal meaning must survive under pressure.
 example_zh: 在法庭口译中，准确性比雄辩更重要，因为法律意义必须在压力下保持不变。
 
@@ -22259,7 +22265,7 @@ interpretation
 cut:
 
 
-n. 解释 explanation
+n. 解释 explanation, explanation
 phrase: legal interpretation - 法律解释
 
 interrogate
@@ -22276,11 +22282,11 @@ cut:
 inter/rupt
 在…之间/断裂
 
-1. v. 打扰 disturb
+1. v. 打扰 break off, disturb, disturb
 example: A loud alarm interrupted the lecture before the speaker reached the conclusion.
 example_zh: 响亮的警报在演讲者讲到结论前打断了讲座。
 
-2. v. 使中断 break off
+2. v. 使中断 break off, disturb, break off
 example: A damaged cable can interrupt communication between two research stations.
 example_zh: 受损电缆会中断两个研究站之间的通信。
 
@@ -22328,7 +22334,7 @@ intervene
 cut:
 
 
-v. 干预；介入 intervention
+v. 干预；介入 step in
 example: Governments may intervene in the market when failure harms the public.
 example_zh: 当市场失灵伤害公众时，政府可能干预市场。
 phrase: intervene early - 尽早干预
@@ -22350,7 +22356,7 @@ intimacy
 cut:
 
 
-n. 亲密；密切 closeness
+n. 亲密；密切 closeness, closeness
 example: Trust creates intimacy more reliably than constant messages or dramatic promises.
 example_zh: 信任比频繁信息或夸张承诺更可靠地建立亲密感。
 phrase: emotional intimacy - 情感亲密
@@ -22418,7 +22424,7 @@ intro/duct/ion
 1. n. 介绍 presentation, bringing in
 phrase: policy introduction - 政策引入
 
-2. n. 传入，引进 bringing in
+2. n. 传入，引进 presentation, bringing in, bringing in
 phrase: brief introduction - 简短介绍
 
 3. n. 导言，导论，绪论 treatise
@@ -22572,7 +22578,7 @@ investor
 cut:
 
 
-n. 投资者 investment
+n. 投资者 person
 phrase: institutional investor - 机构投资者
 
 invisible
@@ -22967,7 +22973,7 @@ labourer
 cut:
 
 
-n./v. 劳动者；劳工 labour
+n./v. 劳动者；劳工 person
 phrase: labourer pattern - labourer 模式
 
 lactic
@@ -23125,7 +23131,7 @@ lateralization
 cut:
 
 
-n. 侧化；偏侧化 lateralisation
+n. 侧化；偏侧化 act or process of lateralisation
 phrase: brain lateralization - 大脑偏侧化
 
 latitude [ˈlætɪtuːd]
@@ -23188,7 +23194,7 @@ example_zh: 宫殿装饰得十分奢华，以给外国访客留下深刻印象�
 lawyer
 cut:
 lawy/er
-名词；形容词/人；物；比较级
+名词；形容词/人；物
 
 n. 律师 legal professional
 phrase: corporate lawyer - 公司律师
@@ -23196,7 +23202,7 @@ phrase: corporate lawyer - 公司律师
 layer [ˈler]
 cut:
 lay/er
-来自lay（层面）/人；物；比较级
+放置；层/人；物
 
 n. 层，层次 level, stratum
 phrase: social layer - 社会层级
@@ -23225,7 +23231,7 @@ example_zh: 最后一场电视辩论后，一名候选人开始领先。
 example: Poor drainage can lead to flooding after heavy rain.
 example_zh: 排水不良会在大雨后导致洪水。
 
-4. n. 带领，引导 guide
+4. n. 带领，引导 guide, be first, guide
 example: The team followed the lead of a local researcher who knew the terrain.
 example_zh: 团队听从一位熟悉地形的当地研究者的带领。
 
@@ -23313,7 +23319,7 @@ legalisation
 cut:
 
 
-n. 合法化 legal
+n. 合法化 act or process of legal
 phrase: drug legalisation - 药物合法化
 
 legalise
@@ -23857,7 +23863,7 @@ cut:
 logi/cal/ly
 学科；研究/形容词/副词
 
-adv. 逻辑上 logic
+adv. 逻辑上 in a logic way
 phrase: argue logically - 合理论证
 
 logistic
@@ -23938,7 +23944,7 @@ example_zh: 导游大声讲话，好让后面的游客听见。
 lower [ˈlooər]
 cut:
 low/er
-低/动词；形容词比较级
+低/动词；更低
 
 1. v. 降低 reduce
 example: Better insulation can lower heating costs in winter.
@@ -24122,7 +24128,7 @@ cut:
 manage/able
 管理；处理/能够；形容词
 
-adj. 可管理的 management
+adj. 可管理的 easy to control
 phrase: manageable level of risk - 可管理的风险水平
 
 management [ˈmænɪdʒmənt]
@@ -24251,7 +24257,7 @@ manufacturer
 cut:
 
 
-n. 制造商 manufacture
+n. 制造商 person or thing that manufactures
 phrase: local manufacturer - 本地制造商
 
 manufacturing
@@ -24313,7 +24319,7 @@ marginalization
 cut:
 
 
-n. 边缘化 marginalisation
+n. 边缘化 act or process of marginalisation
 phrase: social marginalization - 社会边缘化
 
 marginalize
@@ -24331,7 +24337,7 @@ cut:
 mar/ine
 海/形容词
 
-1. adj. （航）海的 maritime
+1. adj. （航）海的 sea-related, maritime
 phrase: marine ecosystem - 海洋生态系统
 
 2. adj. 海生的 sea-related
@@ -24503,7 +24509,7 @@ matter
 cut:
 
 
-n./v. 物质；事情；重要 substance
+n./v. 物质；事情；重要 substance, substance, issue
 example: Material conditions matter because they shape choices before values are declared.
 example_zh: 物质条件很重要，因为它们在价值被宣称前就塑造选择。
 phrase: organic matter - 有机物
@@ -24589,7 +24595,7 @@ meas/ure
 example: Researchers should measure progress with outcomes, not political slogans alone today honestly.
 example_zh: 如今研究者应诚实地通过结果而不是仅靠政治口号来衡量进展。
 
-2. n. 测量 measurement, assess
+2. n. 测量 measurement
 example: We measure outcomes because intention alone is not enough.
 example_zh: 我们衡量结果，因为意图本身并不够。
 
@@ -24640,7 +24646,7 @@ cut:
 mechan/ism
 机器；装置/名词
 
-1. n. 机械装置 mechanical
+1. n. 机械装置 working system
 example: A technical blueprint is useful only when it explains the mechanism by which the device will actually work.
 example_zh: 技术蓝图只有在解释设备实际运行机制时才有用。
 
@@ -24737,7 +24743,7 @@ cut:
 memor/is/ation
 记忆/动词化/名词
 
-n. 记忆；背诵 memorization
+n. 记忆；背诵 act or process of memorization
 example: Memorisation helps with facts, but understanding helps students use them.
 example_zh: 记忆有助于掌握事实，但理解帮助学生运用事实。
 
@@ -24753,7 +24759,7 @@ cut:
 memor/iz/ation
 记忆/动词化/名词
 
-n. 记忆；背诵 memorisation
+n. 记忆；背诵 act or process of memorisation
 example: Memorization becomes easier when new words are grouped by roots.
 example_zh: 新单词按词根分组时，记忆会更容易。
 
@@ -24897,10 +24903,10 @@ phrase: royal messenger - 王室信使
 
 metabolic [ˌmetəˈbɑːlɪk]
 cut:
-metabolism/ic
-来自metabol（ism）（新陈代谢）/形容词
+metabol/ic
+变化；代谢/形容词
 
-adj. 新陈代谢的 metabolism
+adj. 新陈代谢的 related to metabolism
 example: Metabolic changes can explain why the patient feels tired after eating.
 example_zh: 代谢变化可以解释病人饭后为何感到疲倦。
 phrase: metabolic disorder - 代谢紊乱
@@ -24981,7 +24987,7 @@ cut:
 meteor/o/log/ic/al
 高空现象/o/学科/形容词/形容词
 
-1. adj. 气象学的 meteorology
+1. adj. 气象学的 weather-related
 example: Meteorological research improves forecasts for storms and droughts.
 example_zh: 气象学研究会改善对风暴和干旱的预测。
 
@@ -25115,7 +25121,7 @@ cut:
 micro/scop/ic
 微小/看/形容词
 
-1. adj. 用显微镜可见的 microscope
+1. adj. 用显微镜可见的 very small
 phrase: a microscopic plant - 极小的植物
 
 2. adj. 极小的 very small
@@ -25355,7 +25361,11 @@ cut:
 mite
 
 n. 螨虫 tiny arachnid
+example: A dust mite is too small to see clearly without magnification.
+example_zh: 尘螨太小，不放大就看不清。
 phrase: parasitic mite - 寄生螨
+phrase: honeybee mite - 蜜蜂螨虫
+phrase: mite infestation - 螨虫侵害
 
 mobile [ˈmoʊbl]
 cut:
@@ -25636,7 +25646,7 @@ mot/iv/ation
 1. n. 动力 drive, reason
 phrase: motivation for doing - 做…的动机
 
-2. n. 动机 motive
+2. n. 动机 drive, reason
 phrase: one's motivation - 某人的动机
 
 3. n. 刺激 stimulus
@@ -25749,7 +25759,7 @@ cut:
 muni/cip/al
 公共职责/拿取；市民/形容词
 
-1. adj. 市（政）的 civic
+1. adj. 市（政）的 civic, city-related
 example: Municipal services include waste collection, water supply, and local roads.
 example_zh: 市政服务包括垃圾收集、供水和地方道路。
 
@@ -25801,7 +25811,7 @@ cut:
 music/al
 音乐/形容词
 
-1. adj. 音乐的 music
+1. adj. 音乐的 music-related
 example: Musical training can improve attention to rhythm and sound.
 example_zh: 音乐训练可以提高对节奏和声音的注意力。
 
@@ -25959,7 +25969,7 @@ nationally
 cut:
 
 
-adv. 全国性地 national
+adv. 全国性地 quality, property
 phrase: nationally recognised - 全国认可的
 
 native
@@ -25983,7 +25993,7 @@ natural
 cut:
 
 
-adj. 自然的 nature
+adj. 自然的 related to nature
 phrase: natural product - 天然产品
 
 naturalist [ˈnætʃrəlɪst]
@@ -26054,7 +26064,7 @@ navigational
 cut:
 
 
-adj. 导航的 navigation
+adj. 导航的 related to navigation
 phrase: navigational tool - 导航工具
 
 navigator
@@ -26220,7 +26230,7 @@ cut:
 neuro/genesis
 神经/产生；发生
 
-n. 神经发生 neurogenesis
+n. 神经发生 nerve-cell formation
 example: Neurogenesis may continue in parts of the adult brain under certain conditions.
 example_zh: 在某些条件下，成年人大脑某些部位可能仍会发生神经发生。
 
@@ -26350,7 +26360,7 @@ phrase: romantic nocturne - 浪漫夜曲
 nomadic [noʊˈmædɪk]
 cut:
 nomad/ic
-来自nomad（游牧民，流浪者）/形容词
+游牧者；流浪者/形容词
 
 adj. 游牧的 wandering, pastoral
 phrase: nomadic group - 游牧群体
@@ -26547,7 +26557,7 @@ numerical
 cut:
 
 
-adj. 数字的；数值的 numeral, figure
+adj. 数字的；数值的 numeral, figure, figure, figure
 example: Changing one model parameter can alter the numerical result, so sensitivity testing is needed before conclusions are accepted.
 example_zh: 改变一个模型参数会改变数值结果，因此在接受结论前需要敏感性测试。
 phrase: numerical data - 数值数据
@@ -26749,7 +26759,7 @@ cut:
 occasion/al
 时机；场合/形容词
 
-1. adj. 偶然的 accidental
+1. adj. 偶然的 infrequent, accidental
 example: An occasional error is less serious than a repeated pattern of neglect.
 example_zh: 偶然错误不如反复疏忽模式严重。
 
@@ -26761,14 +26771,14 @@ occasionally
 cut:
 
 
-adv. 偶尔 sometimes
+adv. 偶尔 in a occasionally way, sometimes
 phrase: occasionally challenge authority - 偶尔挑战权威
 
 occupational
 cut:
 
 
-adj. 职业的 occupation
+adj. 职业的 related to occupation
 example: Occupational disease is common where workers breathe dust for many years.
 example_zh: 工人多年吸入粉尘的地方，职业病很常见。
 phrase: occupational health - 职业健康
@@ -26803,7 +26813,7 @@ oceanic
 cut:
 
 
-adj. 海洋的 ocean
+adj. 海洋的 related to ocean
 phrase: oceanic circulation - 海洋环流
 
 oceanography
@@ -26845,7 +26855,7 @@ cut:
 1. adj. 官方的 authorized, formal
 phrase: official copy - 正式文本
 
-2. adj. 正式的 formal
+2. adj. 正式的 formal, authorized, formal
 phrase: senior official - 高级官员
 
 olfactory [ɑːlˈfæktəri]
@@ -26875,7 +26885,7 @@ ontology
 cut:
 
 
-n. 本体论；存在论 ontological
+n. 本体论；存在论 study of being
 example: epistemology asks how knowledge is justified, whereas ontology asks what kinds of things exist.
 example_zh: 认识论追问知识如何被证明，而本体论追问存在哪些类型的事物。
 phrase: social ontology - 社会本体论
@@ -26999,7 +27009,7 @@ opposition
 cut:
 
 
-n. 反对 objection
+n. 反对 objection, resistance
 phrase: public opposition - 公众反对
 
 oppression
@@ -27037,7 +27047,7 @@ optimisation
 cut:
 
 
-n. 优化 optimization
+n. 优化 act or process of optimization
 example: Optimisation reduced fuel use without slowing the delivery route.
 example_zh: 优化在不减慢配送路线的情况下降低了燃料使用。
 
@@ -27061,7 +27071,7 @@ optimization
 cut:
 
 
-n. 优化 optimisation
+n. 优化 act or process of optimisation
 phrase: optimization of transport networks - 交通网络优化
 
 optional [ˈɑːpʃənl]
@@ -27126,7 +27136,7 @@ phrase: apple orchard - 苹果园
 order
 cut:
 or/der
-人；物/人；物；比较级
+人；物/人；物
 
 n./v. 秩序；命令 arrangement, command
 phrase: social order - 社会秩序
@@ -27172,7 +27182,7 @@ organiser
 cut:
 
 
-协调者 organise
+协调者 person
 phrase: project organiser - 项目协调者
 
 organism [ˈɔːrɡənɪzəm]
@@ -27183,7 +27193,7 @@ organ/ism
 1. n. 生物 a living being
 phrase: living organism - 生命体
 
-2. n. 有机物 organic
+2. n. 有机物 thing, object
 phrase: single-celled organism - 单细胞生物
 
 orient
@@ -27246,7 +27256,7 @@ ornamental
 cut:
 
 
-adj. 装饰性的 ornamentation
+adj. 装饰性的 quality, property
 phrase: ornamental design - 装饰设计
 
 ornamentation
@@ -27458,17 +27468,17 @@ cut:
 oxy/gen
 酸；尖/产生；元素
 
-1. n. 氧 life-supporting gas
+1. n. 氧 air element
 phrase: dissolved oxygen - 溶解氧
 
-2. n. 氧气 life-supporting gas
+2. n. 氧气 air element
 phrase: oxygen level - 氧气含量
 
 oxygenation
 cut:
 
 
-n./adj./adv. 氧合；充氧 oxygen
+n./adj./adv. 氧合；充氧 act or process of oxygen
 phrase: ocean oxygenation - 海洋氧化
 
 ozone
@@ -27667,7 +27677,7 @@ cut:
 para/site
 旁边/吃
 
-n. 寄生物 parasitic
+n. 寄生物 thing, object
 phrase: intestinal parasite - 肠道寄生虫
 
 parasitic
@@ -27693,7 +27703,7 @@ parental
 cut:
 
 
-adj. 父母的；亲代的 parent
+adj. 父母的；亲代的 related to parent
 phrase: parental evidence - parental 证据
 
 parliament [ˈpɑːrləmənt]
@@ -27714,7 +27724,7 @@ phrase: African grey parrot - 非洲灰鹦鹉
 partial [ˈpɑːrʃl]
 cut:
 part/ial
-来自part（部分）/形容词
+部分/形容词
 
 adj. 不完全的 incomplete
 example: Partial evidence can mislead when it is treated as the whole picture.
@@ -27954,7 +27964,7 @@ patiently
 cut:
 
 
-adv. 耐心地 patient
+adv. 耐心地 in a patient way
 phrase: explain patiently - 耐心解释
 
 patriarchy
@@ -28065,7 +28075,7 @@ pedestrianization
 cut:
 
 
-n. 步行化 pedestrianisation
+n. 步行化 act or process of pedestrianisation
 phrase: pedestrianization of city centers - 城市中心步行化
 
 peer
@@ -28135,7 +28145,7 @@ per/cep/tion
 1. n. 感觉，察觉 notice, perceive
 phrase: visual perception - 视觉感知
 
-2. n. 认识，观念 idea
+2. n. 认识，观念 understanding, idea
 phrase: risk perception - 风险感知
 
 perceptual
@@ -28148,7 +28158,7 @@ phrase: perceptual process - 感知过程
 percussion [pərˈkʌʃn]
 cut:
 percuss/ion
-来自percuss（轻敲）/动作；状态；名词
+敲击/名词
 
 n. 打击乐器 musical instrument
 phrase: Yoruba percussion - 约鲁巴打击乐
@@ -28325,7 +28335,7 @@ persecution
 cut:
 
 
-n. 迫害 persecute
+n. 迫害 oppression, harassment
 phrase: religious persecution - 宗教迫害
 
 persist [pərˈsɪst]
@@ -28369,7 +28379,7 @@ cut:
 per/son
 贯穿；完全/声音
 
-n./v. 人；个人 individual
+n./v. 人；个人 person, individual
 phrase: legal person - 法人
 phrase: person centered care - 以人为本的护理
 phrase: ordinary person - 普通个人
@@ -28410,7 +28420,7 @@ cut:
 per/spect/ive
 贯穿；完全/看/形容词；名词
 
-1. n. 角度 angle
+1. n. 角度 viewpoint
 example: A broader perspective helps policymakers see costs that simple statistics may hide.
 example_zh: 更广视角帮助政策制定者看到简单统计可能隐藏的成本。
 
@@ -28418,7 +28428,7 @@ example_zh: 更广视角帮助政策制定者看到简单统计可能隐藏的�
 example: From the mountain, the perspective opens across the whole valley.
 example_zh: 从山上看，远景展开到整个山谷。
 
-3. n. 观点 viewpoint
+3. n. 观点 viewpoint, opinion, viewpoint
 example: A historical perspective can make present conflicts easier to understand.
 example_zh: 历史观点能让当前冲突更容易理解。
 
@@ -28462,7 +28472,7 @@ petroleum [pəˈtroʊliəm]
 cut:
 
 
-n. 石油 oil
+n. 石油 stone, rock, oil
 phrase: crude petroleum - 原油
 
 pewter
@@ -28516,7 +28526,7 @@ philosopher [fəˈlɑːsəfər]
 cut:
 
 
-1. n. 哲学家 philosophy
+1. n. 哲学家 specialist, scholar
 example: A political philosopher asks what makes power legitimate.
 example_zh: 政治哲学家会追问权力凭什么具有正当性。
 
@@ -28528,7 +28538,7 @@ philosophical
 cut:
 
 
-adj. 哲学的 philosophy
+adj. 哲学的 field of study
 phrase: philosophical tradition - 哲学传统
 
 philosophy [fəˈlɑːsəfi]
@@ -28539,7 +28549,7 @@ philo/soph/y
 1. n. 哲学 field of study
 phrase: metaphysical philosophy - 形而上学哲学
 
-2. n. 人生观 outlook
+2. n. 人生观 person, outlook
 phrase: philosophy of language - 语言哲学
 
 phone
@@ -28638,7 +28648,7 @@ physic/al
 1. adj. 身体的 corporal
 phrase: physical attribute - 物理特性
 
-2. adj. 物理的 body-related, material
+2. adj. 物理的 physicist, bodily
 phrase: physical environment - 物理环境
 
 3. adj. 物质的 substantial
@@ -28709,7 +28719,7 @@ example_zh: 城市应先试行改革，再把它应用到数百万居民身上�
 example: The harbour pilot guided the cargo ship through the narrow channel.
 example_zh: 港口领航员引导货船通过狭窄水道。
 
-3. adj. 试验性的 trial
+3. adj. 试验性的 aircraft operator, trial, trial
 example: A pilot program tested the idea in three schools before national adoption.
 example_zh: 试点项目先在三所学校测试这个想法，然后才全国采用。
 
@@ -28721,7 +28731,7 @@ cut:
 example: The door turned on a metal pivot hidden inside the frame.
 example_zh: 门绕着藏在框架内的金属枢轴转动。
 
-2. n. 中心点 central point
+2. n. 中心点 turning point, central point
 example: The railway station became the pivot of the new town.
 example_zh: 火车站成了新城镇的中心点。
 
@@ -28733,7 +28743,7 @@ place
 cut:
 
 
-n./v. 地方；放置 place, area
+n./v. 地方；放置 place, area, area
 phrase: public place - 公共场所
 phrase: place data in order - 按顺序放数据
 phrase: specific place - 具体地点
@@ -28820,7 +28830,7 @@ phrase: industrial plant - 工业工厂
 plantation [plænˈteɪʃn]
 cut:
 plant/ation
-来自plant（植物，种植）/表状态、结果
+种植；植物/名词
 
 n. 种植园 large farm estate
 phrase: cotton plantation - 棉花种植园
@@ -29011,7 +29021,7 @@ example_zh: 探险者在接近南极时测量自己的位置。
 example: A magnet has a north pole and a south pole.
 example_zh: 磁铁有一个北极和一个南极。
 
-3. n. 杆 rod
+3. n. 杆 earth end, rod, rod
 example: Workers used a long pole to lift the cable over the road.
 example_zh: 工人用长杆把电缆举过道路。
 
@@ -29050,7 +29060,7 @@ cut:
 example: Politics shapes how public money is collected and spent.
 example_zh: 政治决定公共资金如何被征收和使用。
 
-2. n. 政见 political views
+2. n. 政见 political affairs, political views
 example: His politics changed after years of work in poor neighbourhoods.
 example_zh: 在贫困社区工作多年后，他的政见发生了变化。
 
@@ -29070,7 +29080,7 @@ politically
 cut:
 
 
-adv. 政治上 political
+adv. 政治上 politics
 phrase: politically sensitive - 政治敏感的
 
 politician
@@ -29323,7 +29333,7 @@ possession
 cut:
 
 
-n. 拥有；占有物 possess
+n. 拥有；占有物 thing, object
 phrase: possession of cultural property - 文化财产占有
 
 possible
@@ -29699,7 +29709,7 @@ cut:
 pre/para/tion
 预先；在前/旁边；类似/动作；状态；名词
 
-n. 准备；筹备 prepare
+n. 准备；筹备 act or process of prepare
 phrase: exam preparation - 考试准备
 
 prepare [prɪˈper]
@@ -29797,7 +29807,7 @@ cut:
 1. n. 职位 position
 phrase: presidency election - 总统选举
 
-2. n. 任期 term of office
+2. n. 任期 state or quality of being presidency, term of office
 phrase: during the presidency - 在总统任期内
 
 president [ˈprezɪdənt]
@@ -29807,7 +29817,7 @@ cut:
 1. n. 总统 presidential
 phrase: elected president - 当选总统
 
-2. n. （大学）校长 principal
+2. n. （大学）校长 field of study, principal
 phrase: president - （大学）校长
 
 3. n. 总经理 executive
@@ -29842,7 +29852,8 @@ example_zh: 厚重冰层的挤压慢慢压碎了木船。
 
 pressure [ˈpreʃər]
 cut:
-
+press/ure
+压/名词
 
 1. n. 压力 compression
 phrase: inner pressure - 内在压力
@@ -30057,9 +30068,9 @@ phrase: prior - 优先（的）
 priority [praɪˈɔːrəti]
 cut:
 prior/ity
-来自prior（在前的）/名词；形容词
+在前；优先/名词
 
-1. n. 在先 precedence
+1. n. 在先 state or quality of being priority, precedence
 phrase: policy priority setting - 政策优先事项设定
 
 2. n. 优先权 privilege
@@ -30327,7 +30338,7 @@ phrase: a productive writer - 多产的作家
 productivity [ˌprɑːdʌkˈtɪvəti]
 cut:
 product/ivity
-来自product（产物，产品）/性质；状态；名词
+产物；产品/名词
 
 n. 生产力 fertility
 phrase: energy productivity - 能源效率
@@ -30437,8 +30448,8 @@ example_zh: 温暖水体肥料过多时，藻类会迅速繁殖。
 
 proliferation [prəˌlɪfəˈreɪʃn]
 cut:
-proliferate/ion
-来自proliferat(e)（增生）/动作；状态；名词
+prolifer/ation
+增生；繁殖/名词
 
 n. 繁殖，大量增殖 large amount
 example: The proliferation of cheap sensors made environmental monitoring easier.
@@ -30467,10 +30478,10 @@ promptly [ˈprɑːmptli]
 cut:
 
 
-1. adv. 敏捷地，迅速地 quickly
+1. adv. 敏捷地，迅速地 in a promptly way, quickly
 phrase: respond promptly - 迅速回应
 
-2. adv. 立刻地 immediately
+2. adv. 立刻地 in a promptly way, immediately
 phrase: promptly - 立刻地
 
 propaganda
@@ -30620,7 +30631,7 @@ proposition
 cut:
 
 
-n. 命题；提案 proposal, statement
+n. 命题；提案 proposal, statement, statement
 phrase: scientific proposition testing - 科学命题检验
 
 prosecute
@@ -31271,7 +31282,7 @@ cut:
 rain/fall
 雨/欺骗；落下
 
-1. n. 降雨 rain
+1. n. 降雨 amount of rain, rain
 phrase: annual rainfall - 年降水
 
 2. n. 降雨量 amount of rain
@@ -31353,7 +31364,7 @@ rarely [ˈrerli]
 cut:
 
 
-adv. 很少 ，难得，非常地 seldom
+adv. 很少 ，难得，非常地 in a rarely way, seldom
 example: Rarely does a single cause explain a complicated social problem.
 example_zh: 复杂社会问题很少能由单一原因解释。
 
@@ -31383,7 +31394,7 @@ cut:
 ratio/nal
 理性；理由/形容词
 
-1. adj. 理性的 reasonable, logic-based
+1. adj. 理性的 logical, rationalism
 phrase: rational choice - 理性选择
 
 2. adj. 合理的 reasonable
@@ -31436,18 +31447,16 @@ real
 cut:
 
 
-adj. 真实的；现实的 true
+adj. 真实的；现实的 true, actual
 phrase: real economic impact - 真实经济影响
+phrase: real-world policy experiment - 现实世界政策实验
 
 realise
 cut:
 
 
 v. 意识到；实现 notice
-example: She realised the plan was too expensive after checking the final figures.
-example_zh: 她核对最终数字后意识到这个计划过于昂贵。
 phrase: realise the consequences - 意识到后果
-phrase: realise a long-term goal - 实现长期目标
 
 realism
 cut:
@@ -31487,15 +31496,15 @@ example_zh: 根据证据，我们可以推断这个定居点是逐渐被废弃�
 reasonable [ˈriːznəbl]
 cut:
 reason/able
-来自reason（道理）/能够；形容词
+理由；理性/能够；形容词
 
 1. adj. 合理的 ，有道理的 sensible, fair
 phrase: a reasonable excuse - 合理的借口
 
-2. adj. 适度的 moderate
+2. adj. 适度的 moderate, sensible, fair
 phrase: reasonable decision - 理性决定
 
-3. adj. 通情达理的 sensible
+3. adj. 通情达理的 sensible, fair, sensible
 phrase: reasonable doubt - 合理怀疑
 
 reasoning
@@ -31575,7 +31584,7 @@ receive
 cut:
 
 
-v. 收到；接受 get
+v. 收到；接受 get, accept
 example: The clinic will receive new supplies when the road reopens.
 example_zh: 道路重新开放后，诊所将收到新物资。
 phrase: receive support - 获得支持
@@ -31629,7 +31638,7 @@ cut:
 example: Wetlands can recharge groundwater and reduce flood risk.
 example_zh: 湿地可以补给地下水并降低洪水风险。
 
-2. v. 再装弹药 reload
+2. v. 再装弹药 reload, charge again
 example: Soldiers had to recharge their weapons before the next attack.
 example_zh: 士兵必须在下一次进攻前重新装填武器。
 
@@ -31655,7 +31664,7 @@ reciprocal
 cut:
 
 
-相互的；互惠的；报答的 reciprocity
+相互的；互惠的；报答的 related to reciprocity
 
 recitation
 cut:
@@ -31729,7 +31738,7 @@ phrase: social recognition - 社会认同
 2. n. 认出，辨认 identification, acknowledgement
 phrase: word recognition - 单词识别
 
-3. n. 赞扬 praise
+3. n. 赞扬 identification, acknowledgement, praise
 phrase: international recognition - 国际承认
 
 recombine
@@ -31911,7 +31920,7 @@ reference [ˈrefrəns]
 cut:
 
 
-1. n. 提到 mention
+1. n. 提到 source, mention, mention
 phrase: reference point - 参照点
 
 2. n. 参考 source, mention
@@ -31925,7 +31934,7 @@ cut:
 re/fine
 一再/纯的
 
-1. v. 精炼，精制 purify, improve
+1. v. 精炼，精制 improve, purify
 example: Resource extraction removes materials from the earth, while refining turns crude inputs into usable industrial products.
 example_zh: 资源开采把材料从地下取出，而精炼把粗原料转化为可用工业产品。
 
@@ -32013,20 +32022,20 @@ refrigerator
 cut:
 
 
-冰箱；冷藏库 refrigerate
+冰箱；冷藏库 person or thing that refrigerates
 
 refusal
 cut:
 
 
-n. 拒绝 refuse
+n. 拒绝 rejection
 phrase: refusal of treatment - 拒绝治疗
 
 refuse
 cut:
 
 
-v. 拒绝；拒收 refusal
+v. 拒绝；拒收 reject, reject
 example: Patients may refuse treatment if doctors fail to explain risks clearly enough.
 example_zh: 如果医生未能足够清楚地解释风险，患者可能拒绝治疗。
 phrase: refuse treatment - 拒绝治疗
@@ -32186,7 +32195,7 @@ phrase: positive reinforcement - 正强化
 reinvent
 cut:
 re/in/vent
-再次；回/不；进入/来
+再次；回/进入；向内；否定/来
 
 v. 重新发明；彻底改造 modification
 example: A community can reinvent tradition without abandoning memory.
@@ -32220,7 +32229,7 @@ relationship
 cut:
 
 
-（人、团体、国家等相互间的）关系 relation
+（人、团体、国家等相互间的）关系 relation, person
 
 relative [ˈrelətɪv]
 cut:
@@ -32229,7 +32238,7 @@ cut:
 1. adj. 相对的 comparative, family member
 phrase: relative advantage - 相对优势
 
-2. adj. 有关的 related
+2. adj. 有关的 comparative, family member
 phrase: close relative - 近亲
 
 3. n. 亲属 comparative, family member
@@ -32402,7 +32411,7 @@ phrase: rely on professional advice - 信赖专业建议
 remainder [rɪˈmeɪndər]
 cut:
 remain/der
-保留/人；物；比较级
+保留/人；物
 
 n. 剩余物，残余 remains
 example: The remainder of the budget was used to repair the library roof.
@@ -32599,7 +32608,7 @@ phrase: fail repeatedly - 反复失败
 repetition [ˌrepəˈtɪʃn]
 cut:
 repeat/ition
-来自repe(a)t（重复）/动作；过程；名词
+重复/名词
 
 n. 重复 repeated action
 phrase: harmful repetition - 有害重复
@@ -32651,7 +32660,7 @@ representative [ˌreprɪˈzentətɪv]
 cut:
 
 
-1. n. 代表，代理人 agent
+1. n. 代表，代理人 person, agent
 phrase: representative of… - 的代表
 
 2. adj. 典型的 ，有代表性的 typical
@@ -32720,7 +32729,7 @@ republican
 cut:
 
 
-adj. 共和主义的；共和主义者 republicanism
+adj. 共和主义的；共和主义者 doctrine, theory
 phrase: republican political tradition - 共和主义政治传统
 
 reputation [ˌrepjuˈteɪʃn]
@@ -32767,7 +32776,7 @@ researcher
 cut:
 
 
-n. 研究者 research
+n. 研究者 person
 phrase: independent researcher - 独立研究者
 
 resemble [rɪˈzembl]
@@ -32799,7 +32808,7 @@ cut:
 re/sent/ment
 再次；回/感觉/心智；名词
 
-n. 怨恨；愤懑 resent, bitterness
+n. 怨恨；愤懑 result or process of resent, bitterness
 phrase: public resentment - 公众怨恨
 
 reservation [ˌrezərˈveɪʃn]
@@ -32810,7 +32819,7 @@ re/serva/tion
 1. n. 保留，保留意见 booking, doubt
 phrase: make reservation - 预订
 
-2. n. 预订 booking
+2. n. 预订 booking, doubt, booking
 phrase: Native American reservation - 美洲原住民保留地
 
 reserve [rɪˈzɜːrv]
@@ -32818,7 +32827,7 @@ cut:
 re/serve
 反复/保存
 
-1. n. 储备（物） stock
+1. n. 储备（物） thing, object, stock
 example: The city kept a reserve of medicine for emergencies.
 example_zh: 城市为紧急情况保留了一批药品储备。
 
@@ -32881,8 +32890,8 @@ phrase: private residence - 私人住所
 
 resident [ˈrezɪdənt]
 cut:
-reside/ent
-来自resid（e）（居住；定居）/形容词；人；物
+resid/ent
+居住/人；形容词
 
 1. n. 居民 dweller
 phrase: local resident - 本地居民
@@ -32890,7 +32899,7 @@ phrase: local resident - 本地居民
 2. adj. 常驻的 living in a place
 phrase: building resident - 建筑住户
 
-3. adj. 定居的 settled
+3. adj. 定居的 living in a place, settled
 phrase: resident population estimate - 常住人口估计
 
 residential [ˌrezɪˈdenʃl]
@@ -32940,7 +32949,7 @@ re/sist
 example: Citizens may resist unfair rules when legal channels fail.
 example_zh: 当法律渠道失灵时，公民可能抵制不公平规则。
 
-2. v. 耐（热等） withstand
+2. v. 耐（热等） specialist or supporter of resist, withstand
 example: This metal can resist heat better than ordinary steel.
 example_zh: 这种金属比普通钢更耐热。
 
@@ -33177,7 +33186,7 @@ retail [ˈriːteɪl]
 cut:
 
 
-adj. 零售的 selling to consumers
+adj. 零售的 selling directly to consumers
 example: A foreign subsidiary may enter the local retail market by adapting products to consumer habits.
 example_zh: 海外子公司可以通过让产品适应消费者习惯进入本地零售市场。
 phrase: online retail - 在线零售
@@ -33188,7 +33197,7 @@ retailer
 cut:
 
 
-n. 零售商 retail
+n. 零售商 seller to consumers
 phrase: major retailer - 大型零售商
 
 retain [rɪˈteɪn]
@@ -33229,7 +33238,7 @@ cut:
 re/tire
 反/劳累
 
-v. 退休，引退 retirement
+v. 退休，引退 stop working, retirement
 example: Many workers retire later when living costs continue to rise.
 example_zh: 生活成本持续上升时，许多工人会更晚退休。
 phrase: retire from public office - 退出公职
@@ -33239,7 +33248,7 @@ retirement
 cut:
 
 
-n. 退休；退役 retire
+n. 退休；退役 leaving work permanently
 phrase: retirement age - 退休年龄
 
 retreat [rɪˈtriːt]
@@ -33255,7 +33264,7 @@ example_zh: 冰川退缩是长期气候变化的可见标志。
 example: When glaciers retreat, they expose land that has been frozen for centuries.
 example_zh: 冰川消退时，会露出被冰封数百年的土地。
 
-3. n. 隐退处 refuge
+3. n. 隐退处 withdrawal, refuge
 example: The cabin became a quiet retreat for writers and painters.
 example_zh: 这间小屋成了作家和画家的安静隐居处。
 
@@ -33383,7 +33392,7 @@ revitalisation
 cut:
 
 
-n. 复兴；振兴 revitalization, revival
+n. 复兴；振兴 act or process of revitalization, revival
 phrase: urban revitalisation - 城市复兴
 
 revitalization
@@ -33404,14 +33413,14 @@ phrase: cultural revival - 文化复兴
 2. n. 复活 return to life or popularity
 phrase: economic revival - 经济复苏
 
-3. n. 恢复 recovery
+3. n. 恢复 return to life or popularity, recovery
 phrase: religious revival - 宗教复兴
 
 revive
 cut:
 
 
-v. 复兴 revitalization, revival
+v. 复兴 revitalization, related to revival
 example: The festival helped revive a local craft that had nearly disappeared.
 example_zh: 这个节日帮助复兴了一种几乎消失的地方手艺。
 phrase: revive towns - 复兴城镇
@@ -33505,7 +33514,7 @@ rhythmic
 cut:
 
 
-adj. 有节奏的；节律性的 rhythm
+adj. 有节奏的；节律性的 quality, property
 phrase: rhythmic pattern - 节奏模式
 
 rice
@@ -33532,7 +33541,7 @@ phrase: motorcycle rider - 摩托车骑手
 
 ridge [rɪdʒ]
 cut:
-bridgebridge
+ridge
 
 n. 脊，山脊 mountain
 phrase: summit ridge - 峰顶山脊
@@ -33582,7 +33591,7 @@ cut:
 1. n. 典礼，（宗教等的）仪式 religious
 phrase: ritual dress - 仪式服装
 
-2. n. 固定方式 routine
+2. n. 固定方式 ceremonial act, routine
 phrase: public ritual - 公共仪式
 
 3. adj. 仪式的 ceremonial
@@ -33676,7 +33685,7 @@ phrase: Earth's rotation - 地球自转
 roughly [ˈrʌfli]
 cut:
 rough/ly
-来自rough（粗糙的）/副词
+粗糙；大致/副词
 
 1. adv. 大致地 approximately
 example: The journey took roughly three hours by bus.
@@ -33994,7 +34003,7 @@ example_zh: 火灾规模使疏散成为必要。
 example: The map uses a scale of one centimetre to ten kilometres.
 example_zh: 这张地图使用一厘米代表十公里的比例尺。
 
-4. n. 刻度 mark
+4. n. 刻度 size range, fish plate, mark
 example: The scale on the instrument was too small to read in poor light.
 example_zh: 仪器上的刻度在弱光下太小，看不清。
 
@@ -34017,10 +34026,10 @@ scarcely [ˈskersli]
 cut:
 
 
-1. adv. 几乎不 ，简直没有，勉强 hardly
+1. adv. 几乎不 ，简直没有，勉强 in a scarcely way, hardly
 phrase: scarcely sufficient - 勉强足够
 
-2. adv. 刚刚 just
+2. adv. 刚刚 in a scarcely way, just
 phrase: scarcely - 刚刚
 
 scarcity
@@ -34042,8 +34051,8 @@ phrase: islands are scattered - 岛屿散布
 
 scavenger [ˈskævɪndʒər]
 cut:
-scavengev/er
-来自scaveng(e)（v. 打扫；以腐肉为食）/人；物；比较级
+scaveng/er
+清除；觅食/人；物
 
 1. n. 清道夫 ashman
 phrase: animal scavenger - 食腐动物
@@ -34055,7 +34064,7 @@ sceptical
 cut:
 
 
-adj. 怀疑的 skeptical
+adj. 怀疑的 skeptical, doubtful
 example: Scientists remain sceptical until results can be repeated by other teams.
 example_zh: 在其他团队能重复结果之前，科学家会保持怀疑。
 phrase: sceptical reader - 怀疑的读者
@@ -34064,7 +34073,7 @@ scepticism
 cut:
 
 
-n. 怀疑主义；怀疑态度 skepticism
+n. 怀疑主义；怀疑态度 doctrine, theory, skepticism
 example: While rationalism trusts reason as a source of knowledge, scientific scepticism demands evidence before accepting a claim.
 example_zh: 理性主义相信理性是知识来源，而科学怀疑主义要求在接受主张前看到证据。
 phrase: scientific scepticism - 科学怀疑主义
@@ -34138,7 +34147,8 @@ phrase: formal schooling - 正规教育
 
 scientific [ˌsaɪənˈtɪfɪk]
 cut:
-
+sci/ent/ific
+知道；知识/形容词；人/形成；形容词
 
 adj. 科学上的 field of study
 example: Scientific evidence is strongest when others can test it.
@@ -34157,7 +34167,8 @@ phrase: scientifically valid evidence - 科学有效的证据
 
 scientist
 cut:
-
+sci/ent/ist
+知道；知识/形容词；人/专家；人
 
 n. 科学家 specialist, scholar
 example: A climate scientist studies patterns that may be invisible in daily weather.
@@ -34205,7 +34216,7 @@ scratche
 cut:
 
 
-v./n. 刮擦；抓痕 scratch
+v./n. 刮擦；抓痕
 
 screen [skriːn]
 cut:
@@ -34332,7 +34343,7 @@ seasonally
 cut:
 
 
-adv. 季节性地 seasonal
+adv. 季节性地 quality, property
 phrase: seasonally influence policy - seasonally 地影响政策
 
 seawater
@@ -34785,7 +34796,7 @@ session [ˈseʃn]
 cut:
 
 
-1. n. 会议 meeting
+1. n. 会议 meeting period, meeting
 example: The morning session focused on water policy.
 example_zh: 上午会议集中讨论水政策。
 
@@ -34801,11 +34812,11 @@ cut:
 example: New arrivals settled near the river where soil was fertile.
 example_zh: 新来者在土壤肥沃的河边安顿下来。
 
-2. v. 停息 subside
+2. v. 停息 make stable, resolve, subside
 example: Dust settled on the machines after the factory closed.
 example_zh: 工厂关闭后，灰尘落在机器上。
 
-3. v. 定居 resident, settled
+3. v. 定居 resident, make stable, resolve
 example: Many families settled in the valley after the road was built.
 example_zh: 道路建成后，许多家庭在山谷定居。
 
@@ -34824,7 +34835,7 @@ settler
 cut:
 
 
-n. 定居者 resident, settled
+n. 定居者 resident, person
 phrase: settler colonialism - 定居者殖民主义
 
 several
@@ -35015,7 +35026,7 @@ phrase: short summary - 简短总结
 shortage [ˈʃɔːrtɪdʒ]
 cut:
 short/age
-来自short（缺乏）/状态；集合；名词
+短缺/名词
 
 n. 不足，缺乏 scarcity, deficiency
 phrase: nutrient shortage - 营养缺乏
@@ -35101,7 +35112,7 @@ significance [sɪɡˈnɪfɪkəns]
 cut:
 
 
-1. n. 意义，含义 meaning, importance
+1. n. 意义，含义 importance
 phrase: historical significance - 历史意义
 
 2. n. 重要性 ，重大 important
@@ -35143,7 +35154,7 @@ silently
 cut:
 
 
-adv. 沉默地；无声地 silent
+adv. 沉默地；无声地 in a silent way
 phrase: silently shape public perception - silently 地塑造公众认知
 
 silt [sɪlt]
@@ -35177,7 +35188,7 @@ similarly
 cut:
 
 
-adv. 相似地 similar
+adv. 相似地 in a similar way
 phrase: similarly sized - 规模相似
 
 simply [ˈsɪmpli]
@@ -35188,7 +35199,7 @@ cut:
 example: She explained the rule simply so beginners could follow it.
 example_zh: 她简单解释规则，让初学者能听懂。
 
-2. adv. 简直 merely
+2. adv. 简直 in a simply way, merely
 example: The view from the ridge was simply astonishing.
 example_zh: 山脊上的景色简直令人震惊。
 
@@ -35287,7 +35298,7 @@ skepticism
 cut:
 
 
-n. 怀疑主义 scepticism
+n. 怀疑主义 scepticism, doctrine, theory
 phrase: methodological skepticism - 方法论怀疑主义
 
 skin
@@ -35341,7 +35352,7 @@ slightly [ˈslaɪtli]
 cut:
 
 
-1. adv. 苗条地 slimly
+1. adv. 苗条地 a little, slimly
 phrase: slightly improve - 略微改善
 
 2. adv. 轻微地，些微地 a little
@@ -35457,7 +35468,7 @@ soil
 cut:
 
 
-n. 土壤 soil, earth
+n. 土壤 soil, earth, earth
 phrase: fertile soil - 肥沃土壤
 
 solar [ˈsoʊlər]
@@ -35755,7 +35766,7 @@ speaker
 cut:
 
 
-n. 发言人；说话者 speak
+n. 发言人；说话者 talker, sound device
 phrase: speaker credibility in debate - 辩论中的发言人可信度
 
 special [ˈspeʃl]
@@ -35920,8 +35931,8 @@ phrase: spindle fiber in cell division - 细胞分裂中的纺锤丝
 
 spiral [ˈspaɪrəl]
 cut:
-spire/al
-来自spir(e)（螺旋）/形容词；名词
+spir/al
+螺旋/形容词；名词
 
 1. adj. 螺旋形的 helical
 phrase: spiral galaxy - 漩涡星云
@@ -36097,7 +36108,7 @@ standardisation
 cut:
 
 
-n. 标准化 standardization
+n. 标准化 act or process of standardization
 phrase: data standardisation - 数据标准化
 
 standardization
@@ -36181,13 +36192,13 @@ station [ˈsteɪʃn]
 cut:
 
 
-1. n. 所 office
+1. n. 所 stopping place, office
 phrase: relay station - 中继站
 
 2. n. 站 stopping place
 phrase: space station - 太空站
 
-3. n. 台 platform
+3. n. 台 stopping place, platform
 phrase: railway station - 火车站
 
 stationary [ˈsteɪʃəneri]
@@ -36357,7 +36368,7 @@ stone
 cut:
 
 
-n./v. 石头 rock
+n./v. 石头 stone, rock, rock, rock
 phrase: stone carving - 石雕
 
 stonemason
@@ -36563,10 +36574,12 @@ cut:
 
 
 1. adj. 严格的 rigid
-phrase: strict regulation - 严格监管
+example: Strict safety rules reduced accidents in the mine.
+example_zh: 严格安全规则减少了矿井事故。
 
 2. adj. 精确的 precise
-phrase: strict teacher - 严格老师
+example: A strict measurement leaves little room for guesswork.
+example_zh: 精确测量几乎不给猜测留下空间。
 
 strictly
 cut:
@@ -36613,7 +36626,7 @@ structural
 cut:
 
 
-adj. 结构的；结构性的 structure
+adj. 结构的；结构性的 structure-related
 phrase: structural inequality - 结构性不平等
 
 structuralist
@@ -36786,7 +36799,7 @@ subsequently
 cut:
 
 
-adv. 随后 afterwards
+adv. 随后 in a subsequently way, afterwards
 phrase: subsequently decline - 随后下降
 
 subsidiary
@@ -36826,7 +36839,7 @@ substance [ˈsʌbstəns]
 cut:
 
 
-1. n. 物质 matter
+1. n. 物质 substance, matter, matter, matter
 example: The core substance of an argument matters more than confident delivery.
 example_zh: 论证核心实质比自信表达更重要。
 
@@ -36892,7 +36905,7 @@ cut:
 sub/urb
 靠近/城市
 
-n. 郊区 outer city area
+n. 郊区 suburban area
 example: A growing suburb may adopt dense architecture if planners want to reduce car dependence and protect farmland.
 example_zh: 如果规划者想减少汽车依赖并保护农田，成长中的郊区可能采用密集建筑。
 phrase: outer suburb - 外郊区
@@ -36920,7 +36933,7 @@ cut:
 suc/cess/ful/ly
 在下；接续/走；让步/充满；形容词/副词
 
-adv. 成功的 successful
+adv. 成功的 in a successful way
 phrase: successful clinical trial - 成功临床试验
 
 succession
@@ -36950,7 +36963,7 @@ suddenly
 cut:
 
 
-adv. 突然地 sudden
+adv. 突然地 in a sudden way
 phrase: suddenly collapse - 突然崩塌
 
 suffice
@@ -37167,7 +37180,7 @@ cut:
 1. v. 供给，供应 provide
 phrase: supply sth. to sb. - 为…提供…
 
-2. v. 满足（需要），补足 meet needs
+2. v. 满足（需要），补足 provided amount, meet needs
 phrase: food supply - 食品供应
 
 3. n. 供应，供应量 provided amount
@@ -37303,7 +37316,7 @@ surrogate
 cut:
 
 
-n. 替代者；代孕者 substitute
+n. 替代者；代孕者 person, substitute
 phrase: surrogate mother - 代孕母亲
 
 surroundings
@@ -37340,7 +37353,7 @@ survivor
 cut:
 
 
-n. 残遗物种；残存物 relic species
+n. 残遗物种；残存物 thing, object, relic species
 phrase: relict species - 残遗物种
 
 susceptibility
@@ -37753,13 +37766,13 @@ phrase: teat inside the pouch - 育儿袋里的乳头
 technical [ˈteknɪkl]
 cut:
 techn/ical
-来自techn（技艺）/…的
+技艺；技术/形容词
 
 1. adj. 技术的，工艺的 skill-based, technology-related
 example: Technical training helped workers repair solar panels.
 example_zh: 技术培训帮助工人修理太阳能板。
 
-2. adj. 专业的 specialized
+2. adj. 专业的 skill-based, technology-related, specialized
 example: The technical terms made the contract hard to read.
 example_zh: 专业术语使合同难以阅读。
 
@@ -37913,13 +37926,13 @@ phrase: temporarily reduce - 暂时减少
 
 tend [tend]
 cut:
-本身为词根：伸
+tend
 
 1. v. 趋向 ，往往是 be likely, care for
 example: Small changes tend to accumulate when institutions ignore early warnings.
 example_zh: 当制度忽视早期警告时，小变化往往会累积。
 
-2. v. 照料，看护 care for
+2. v. 照料，看护 be likely, care for, care for
 example: Nurses tended the injured throughout the night.
 example_zh: 护士整夜照料伤者。
 
@@ -37973,7 +37986,7 @@ phrase: contract termination - 合同终止
 terminology [ˌtɜːrməˈnɑːlədʒi]
 cut:
 term/in/ology
-术语/不；进入/…学
+术语/进入；向内；否定/…学
 
 1. n. 术语 specialized vocabulary
 example: Specialized terminology helps students discuss phonetics without confusing sound production with ordinary spelling.
@@ -38025,7 +38038,7 @@ example_zh: 地球上的望远镜必须透过地球大气观测。
 terrify
 cut:
 ter/rify
-人；物；比较级/名词；形容词
+人；物/名词；形容词
 
 v. 使恐惧 fear
 example: Sudden darkness can terrify children who do not understand what happened.
@@ -38133,7 +38146,7 @@ cut:
 theo/logi/cal
 神；理论/学科；研究/形容词
 
-adj. 神学的 theology
+adj. 神学的 field of study
 example: Theological authority can shape law when religion and government overlap.
 example_zh: 当宗教和政府重叠时，神学权威会塑造法律。
 phrase: theological debate - 神学争论
@@ -38176,7 +38189,7 @@ theorist
 cut:
 
 
-n. 理论家 theory
+n. 理论家 theory specialist
 example: A social theorist explains patterns that ordinary description leaves scattered.
 example_zh: 社会理论家解释普通描述留下的零散模式。
 phrase: political theorist - 政治理论家
@@ -38247,7 +38260,7 @@ phrase: thorough review - 彻底审查
 2. adj. 详尽的 elaborate
 phrase: thorough analysis - 彻底分析
 
-3. adj. 一丝不苟的 careful
+3. adj. 一丝不苟的 complete, careful, careful
 phrase: thorough investigation - 彻底调查
 
 thoroughly
@@ -38320,7 +38333,7 @@ tidal
 cut:
 
 
-adj. 潮汐的 tide
+adj. 潮汐的 tide-related
 phrase: tidal energy - 潮汐能
 
 tide [taɪd]
@@ -38707,7 +38720,7 @@ phrase: complete transformation - 彻底转变
 transgender
 cut:
 trans/gen/der
-跨越；转移/产生；出生/人；物；比较级
+跨越；转移/产生；出生/人；物
 
 n./adj. 跨性别的；跨性别者 gender
 phrase: transgender pattern - transgender 模式
@@ -38756,7 +38769,7 @@ translation
 cut:
 
 
-n. 翻译 translate
+n. 翻译 rendering in another language
 phrase: literary translation - 文学翻译
 
 translucent [trænsˈluːsnt]
@@ -38775,7 +38788,7 @@ translucently
 cut:
 
 
-adj. 半透明的 translucent
+adj. 半透明的 in a translucent way
 phrase: translucent material - 半透明材料
 
 transmission
@@ -38840,7 +38853,7 @@ transportation [ˌtrænspɔːrˈteɪʃn]
 cut:
 
 
-n. 运输，运送 transport
+n. 运输，运送 act or process of transport
 phrase: public transportation - 公共交通
 
 travel
@@ -38873,7 +38886,7 @@ treat
 cut:
 
 
-n./v. 处理；对待；治疗 treatment
+n./v. 处理；对待；治疗 handle, cure
 phrase: treat social inequality - 处理社会不平等
 phrase: treat patients ethically - 合乎伦理地治疗病人
 
@@ -39078,7 +39091,7 @@ cut:
 example: The Tropic of Cancer passes through several deserts and coastal regions.
 example_zh: 北回归线穿过若干沙漠和沿海地区。
 
-2. n. 热带 tropical
+2. n. 热带 tropical region
 example: Plants in the tropics often grow throughout the year.
 example_zh: 热带植物通常全年生长。
 
@@ -39087,7 +39100,7 @@ cut:
 trop/ical
 转/…的
 
-adj. 热带的 tropic
+adj. 热带的 tropic-related
 phrase: tropical environment - 热带环境
 
 troposphere
@@ -39204,7 +39217,7 @@ typically
 cut:
 
 
-adv. 典型的 typical
+adv. 典型的 in a typical way
 phrase: typical urban household - 典型城市家庭
 
 ultimate [ˈʌltɪmət]
@@ -39434,9 +39447,9 @@ phrase: undermining democratic trust - 削弱民主信任
 understand
 cut:
 under/stand
-人；物；比较级/站立
+人；物/站立
 
-v. 理解 understanding
+v. 理解 comprehend
 example: Students understand a concept better when they can apply it elsewhere.
 example_zh: 当学生能把概念用于别处时，他们会更好地理解它。
 phrase: understand meaning - 理解意义
@@ -39603,7 +39616,7 @@ universally
 cut:
 
 
-adj. 普遍的 universal
+adj. 普遍的 in a universal way
 phrase: universal law - 普遍法则
 
 universe [ˈjuːnɪvɜːrs]
@@ -39622,7 +39635,7 @@ example_zh: 可观测宇宙大到普通想象难以容纳。
 university
 cut:
 un/iver/sity
-不；相反/人；物；比较级/名词；形容词
+不；相反/人；物/名词；形容词
 
 n. 大学 field of study
 phrase: medieval university - 中世纪大学
@@ -39809,7 +39822,7 @@ urb/an
 1. adj. 城市的 city-related
 phrase: urban planning - 城市规划
 
-2. adj. 市内的 inner-city
+2. adj. 市内的 city-related, inner-city
 phrase: urban population - 城市人口
 
 urbanism
@@ -39876,7 +39889,7 @@ phrase: utility company - 公用事业公司
 utterly [ˈʌtərli]
 cut:
 ut/ter/ly
-使用/人；物；比较级/副词
+使用/人；物/副词
 
 adv. 完全地，绝对地 absolutely, completely
 phrase: utterly different - 完全不同
@@ -40709,7 +40722,7 @@ well
 cut:
 
 
-adv. 健康的 healthy
+adv. 健康的 in a well way, healthy
 phrase: well population - 健康人群
 
 wet
@@ -40810,7 +40823,7 @@ wholly
 cut:
 
 
-adv. 完全地 completely
+adv. 完全地 in a wholly way, completely
 phrase: wholly depend - 完全依赖
 
 widely
@@ -40857,7 +40870,7 @@ wildly
 cut:
 
 
-adv. 极其；失控地 extremely
+adv. 极其；失控地 in a wildly way, extremely
 phrase: wildly inaccurate estimate - 极不准确的估计
 
 willing
@@ -41476,7 +41489,7 @@ example_zh: 安装水表后，普通家庭用水减少。
 example: Average work can pass inspection but rarely wins awards.
 example_zh: 平庸作品能通过检查，但很少获奖。
 
-3. n. 平均水平 even
+3. n. 平均水平 even, water
 example: The team's average improved after several high scores.
 example_zh: 几次高分后，团队平均水平提高了。
 
@@ -41493,11 +41506,11 @@ a/wake
 example: The child stayed awake during the storm.
 example_zh: 暴风雨期间，孩子一直醒着。
 
-2. adj. 警觉的 alert
+2. adj. 警觉的 alert, conscious, alert
 example: Awake citizens notice when rights are quietly reduced.
 example_zh: 警觉的公民会注意到权利被悄悄削减。
 
-3. v. 唤醒，唤起 awaken
+3. v. 唤醒，唤起 alert, conscious, awaken
 example: The speech awoke public interest in the forgotten case.
 example_zh: 这场演讲唤起了公众对这起被遗忘案件的兴趣。
 
@@ -41625,7 +41638,7 @@ example_zh: 雨整夜敲打窗户。
 example: The drum beat helped dancers keep time.
 example_zh: 鼓点帮助舞者保持节奏。
 
-3. adj. 疲惫的 exhausted
+3. adj. 疲惫的 strike, rhythm, exhausted
 example: The hikers felt beat after crossing the desert.
 example_zh: 徒步者穿过沙漠后感到疲惫。
 
@@ -41660,7 +41673,7 @@ belt [belt]
 cut:
 
 
-1. n. 地带 zone
+1. n. 地带 waist strap, zone
 example: The city lies in a belt of fertile farmland.
 example_zh: 这座城市位于一条肥沃农田地带。
 
@@ -41912,7 +41925,7 @@ cut:
 example: The lunar calendar marks festivals by the phases of the moon.
 example_zh: 阴历按照月相标记节日。
 
-2. n. 日程表 schedule
+2. n. 日程表 date system, schedule
 example: The project calendar left no time for a second survey.
 example_zh: 项目日程表没有给第二次调查留时间。
 
@@ -41953,8 +41966,7 @@ example_zh: 每位候选人都解释了自己将如何改善公共交通。
 
 canyon [ˈkænjən]
 cut:
-cap/acity
-拿/性质；状态；名词
+canyon
 
 n. 峡谷 deep valley
 example: A river canyon records the long interaction between water, rock, and time.
@@ -42333,7 +42345,7 @@ example_zh: 这门课为毕业提供三个学分。
 example: Good credit allowed the family to borrow at a lower rate.
 example_zh: 良好信用使这个家庭能以较低利率借款。
 
-4. n. 银行存款 deposit
+4. n. 银行存款 honour, trust, loan, deposit
 example: The account showed a small credit after the refund.
 example_zh: 退款后，账户显示一小笔存款。
 
@@ -42357,7 +42369,7 @@ cut:
 example: The crew repaired the ship after the storm.
 example_zh: 全体船员在风暴后修理船只。
 
-2. n. 全体工作人员 staff
+2. n. 全体工作人员 working team, staff
 example: A film crew arrived before sunrise.
 example_zh: 摄制组在日出前抵达。
 
@@ -42382,7 +42394,7 @@ crow/n
 example: The king's crown was kept in a guarded room.
 example_zh: 国王的王冠保存在有守卫的房间里。
 
-2. n. 顶，冠 top
+2. n. 顶，冠 royal headpiece, top
 example: Snow covered the crown of the mountain.
 example_zh: 雪覆盖了山顶。
 
@@ -42431,7 +42443,7 @@ cut:
 example: Customs on imported cloth made local goods cheaper.
 example_zh: 进口布料的关税使本地商品更便宜。
 
-2. n. 海关 customs
+2. n. 海关 border duty
 example: Customs officers inspected the shipment at the port.
 example_zh: 海关人员在港口检查货物。
 
@@ -42739,15 +42751,15 @@ cut:
 example: A drop of blood was enough for the test.
 example_zh: 一滴血就足够检测。
 
-2. n. 落下 fall
+2. n. 落下 small falling amount, fall
 example: A sharp drop in temperature followed the storm.
 example_zh: 暴风雨后温度急剧下降。
 
-3. n. 微量 small amount
+3. n. 微量 small falling amount, small amount
 example: Even a drop of poison can contaminate the sample.
 example_zh: 即使微量毒物也会污染样本。
 
-4. v. 落下 fall
+4. v. 落下 small falling amount, fall
 example: The bird dropped the shell onto the rock.
 example_zh: 鸟把贝壳落到岩石上。
 
@@ -42779,7 +42791,7 @@ example_zh: 矮小树木能在小花园里生长良好。
 example: The new tower dwarfed every building around it.
 example_zh: 新塔楼使周围所有建筑显得矮小。
 
-4. v. 萎缩 shrink
+4. v. 萎缩 very small person or star, shrink
 example: The plant dwarfed in poor soil.
 example_zh: 这株植物在贫瘠土壤中萎缩。
 
@@ -42791,11 +42803,11 @@ cut:
 example: The solar eclipse darkened the town at noon.
 example_zh: 日食在中午使小镇变暗。
 
-2. v. 使相形见绌 outshine
+2. v. 使相形见绌 shadowing event, outshine
 example: The young athlete's record eclipsed earlier achievements.
 example_zh: 这位年轻运动员的纪录使早期成就相形见绌。
 
-3. v. 使黯然失色 overshadow
+3. v. 使黯然失色 shadowing event, overshadow
 example: The scandal eclipsed the minister's earlier reforms.
 example_zh: 丑闻使部长早前的改革黯然失色。
 
@@ -42807,7 +42819,7 @@ cut:
 example: The village stood at the edge of the forest.
 example_zh: 村庄位于森林边缘。
 
-2. n. 刀口，刃 blade
+2. n. 刀口，刃 blade, border, sharp side
 example: The knife's edge was too dull to cut rope.
 example_zh: 刀刃太钝，无法割绳子。
 
@@ -42961,7 +42973,7 @@ example_zh: 面包的气味让人想起童年，很熟悉。
 example: The guide was familiar with every path through the hills.
 example_zh: 向导通晓穿过群山的每条路。
 
-3. adj. 亲近的 close
+3. adj. 亲近的 known, recognizable, close
 example: His familiar manner made visitors feel welcome.
 example_zh: 他亲近的举止让访客感到受欢迎。
 
@@ -43029,7 +43041,7 @@ cut:
 example: The lawyer opened a file for every witness in the case.
 example_zh: 律师为案件中的每位证人建立了一份档案。
 
-2. n. 行列 line
+2. n. 行列 document record, line
 example: A file of students waited outside the examination room.
 example_zh: 一行学生在考场外等待。
 
@@ -43037,7 +43049,7 @@ example_zh: 一行学生在考场外等待。
 example: The clerk filed the documents by date and subject.
 example_zh: 办事员按日期和主题归档文件。
 
-4. v. 提出 submit
+4. v. 提出 document record, submit
 example: Residents filed a complaint about the factory noise.
 example_zh: 居民就工厂噪音提出投诉。
 
@@ -43480,7 +43492,7 @@ cut:
 example: She picked up a handful of wet sand.
 example_zh: 她抓起一把湿沙。
 
-2. n. 少数 few
+2. n. 少数 small amount held, few
 example: A handful of volunteers kept the clinic open.
 example_zh: 少数志愿者让诊所继续开放。
 
@@ -43736,7 +43748,7 @@ example_zh: 该物种幼体的斑纹比成体更浅。
 example: Juvenile crime fell after youth centres opened.
 example_zh: 青年中心开放后，少年犯罪下降。
 
-4. adj. 未成熟的 immature
+4. adj. 未成熟的 young person or animal, immature
 example: The review called the insult juvenile and unhelpful.
 example_zh: 评论称这种侮辱未成熟且无益。
 
@@ -43760,7 +43772,7 @@ cut:
 example: The dress was decorated with white lace.
 example_zh: 这条裙子饰有白色蕾丝。
 
-2. n. 缎带 ribbon
+2. n. 缎带 decorative fabric, ribbon
 example: A red lace tied the package closed.
 example_zh: 一条红缎带把包裹系紧。
 
@@ -43851,7 +43863,7 @@ example_zh: 这个级别的学生能阅读短科学文本。
 example: The builders needed a level surface for the foundation.
 example_zh: 建筑工人需要水平表面来打地基。
 
-4. v. 夷平，使平坦 flatten
+4. v. 夷平，使平坦 height, stage, flatten
 example: The earthquake levelled several old houses.
 example_zh: 地震夷平了几座老房子。
 
@@ -44032,7 +44044,7 @@ cut:
 example: Male workers were once paid more for the same job.
 example_zh: 男性工人曾因同样工作获得更高工资。
 
-2. n. 男子 man
+2. n. 男子 masculine, animal sex, man
 example: The survey counted every adult male in the village.
 example_zh: 调查统计了村里每位成年男子。
 
@@ -44220,7 +44232,7 @@ example_zh: 疲惫头脑会让简单任务变难。
 example: Music helped calm his mind after the accident.
 example_zh: 事故后，音乐帮助他平静精神。
 
-3. n. 理智，智能 reason
+3. n. 理智，智能 thinking organ, attention, reason
 example: A scientific mind tests ideas against evidence.
 example_zh: 理智能力强的人会用证据检验想法。
 
@@ -44579,7 +44591,7 @@ example_zh: 淡蓝色油漆让房间感觉更凉爽。
 panel [ˈpænl]
 cut:
 pan/el
-来自pan（面板）/小
+面板/小
 
 1. n. 面板，镶板 board
 example: A solar panel was fixed to the school roof.
@@ -45078,7 +45090,7 @@ example_zh: 这门课涵盖广泛环境问题。
 example: A snow-covered range rose beyond the valley.
 example_zh: 一列雪山在山谷之外升起。
 
-3. v. （在某范围内）变动 vary
+3. v. （在某范围内）变动 range, scope, scope, vary
 example: Temperatures range from freezing nights to hot afternoons.
 example_zh: 温度在寒冷夜晚和炎热下午之间变动。
 
@@ -45254,7 +45266,7 @@ example_zh: 报告描述了道路和桥梁的损坏。
 example: There was a report that gold had been found upriver.
 example_zh: 有传说称上游发现了黄金。
 
-3. n. 传阅 circulation
+3. n. 传阅 account, tell officially, circulation
 example: The report circulated among officials before publication.
 example_zh: 这份传阅材料在发表前在官员之间流转。
 
@@ -45531,7 +45543,8 @@ example_zh: 狗沿着气味穿过湿地。
 
 science
 cut:
-
+sci/ence
+知道；知识/名词
 
 n. 科学 field of study
 example: Science advances when evidence is shared and tested openly.
@@ -46528,7 +46541,7 @@ example_zh: 学生们去湿地远足考察。
 example: A loose cable tripped the worker near the door.
 example_zh: 一根松电缆在门边绊倒了工人。
 
-4. v. 失足 stumble
+4. v. 失足 journey, stumble, stumble
 example: He tripped on the broken step and dropped the box.
 example_zh: 他在破台阶上失足，掉了箱子。
 
@@ -46810,7 +46823,7 @@ example_zh: 漏水管道每小时都浪费水。
 example: Waste plastic collected along the riverbank.
 example_zh: 废弃塑料聚集在河岸边。
 
-3. adj. 荒芜的 barren
+3. adj. 荒芜的 use carelessly, useless material, barren
 example: Waste land near the mine slowly returned to grass.
 example_zh: 矿区附近荒芜土地慢慢恢复成草地。
 
@@ -47484,11 +47497,11 @@ af/fin/ity
 example: The two languages show an affinity in grammar and sound.
 example_zh: 这两种语言在语法和声音上显示出密切关系。
 
-2. n. 吸引 attraction
+2. n. 吸引 state or quality of being affinity, attraction
 example: The chemical has an affinity for water.
 example_zh: 这种化学物质对水有吸引力。
 
-3. n. 喜爱 liking
+3. n. 喜爱 state or quality of being affinity, liking
 example: She felt an affinity for music from early childhood.
 example_zh: 她从幼年起就喜爱音乐。
 
@@ -47570,7 +47583,7 @@ example_zh: 新鲜空气从开着的窗户进入。
 example: The upper air was too dry for cloud formation.
 example_zh: 高层大气太干，不利于成云。
 
-3. n. 天空 sky
+3. n. 天空 atmosphere, manner, sky
 example: Smoke rose into the air above the town.
 example_zh: 烟升入城镇上方的天空。
 
@@ -47669,7 +47682,7 @@ cut:
 example: Some children are allergic to peanuts.
 example_zh: 有些孩子对花生过敏。
 
-2. adj. 对…讨厌的 averse
+2. adj. 对…讨厌的 sensitive to allergen, averse
 example: He seemed allergic to long meetings and formal speeches.
 example_zh: 他似乎讨厌长会议和正式演讲。
 
@@ -47677,7 +47690,7 @@ allergy [ˈælərdʒi]
 cut:
 
 
-n. 过敏症 allergic
+n. 过敏症 immune sensitivity
 example: A food allergy can cause a severe reaction within minutes.
 example_zh: 食物过敏可能在几分钟内引发严重反应。
 
@@ -47698,11 +47711,11 @@ along [əˈlɔː]
 cut:
 
 
-1. adv. 向前地 forward
+1. adv. 向前地 beside, forward with, forward
 example: The boat moved along slowly in the fog.
 example_zh: 船在雾中缓慢向前移动。
 
-2. adv. 一起 together
+2. adv. 一起 beside, forward with, together
 example: The teacher brought extra books along for the trip.
 example_zh: 老师一起带来了额外书籍。
 
@@ -47743,7 +47756,7 @@ cut:
 example: The lights flashed alternately red and white.
 example_zh: 灯光红白交替闪烁。
 
-2. adv. 间隔地，每隔一个地 at intervals
+2. adv. 间隔地，每隔一个地 in a alternately way, at intervals
 example: Trees were planted alternately with benches along the path.
 example_zh: 小路旁树木和长椅间隔设置。
 
@@ -48077,7 +48090,7 @@ cut:
 example: Visitors appreciate the old temple's quiet design.
 example_zh: 游客赏识这座古庙安静的设计。
 
-2. v. 感激 be grateful
+2. v. 感激 value, understand, be grateful
 example: The family appreciated the help after the fire.
 example_zh: 火灾后，这家人感激所得到的帮助。
 
@@ -48215,7 +48228,7 @@ cut:
 example: An artesian well supplied water without a pump.
 example_zh: 自流水井不用泵就能供水。
 
-2. adj. 喷水的 flowing
+2. adj. 喷水的 water, flowing
 example: Artesian pressure pushed water above the ground.
 example_zh: 喷水压力把水推到地面以上。
 
@@ -48440,7 +48453,7 @@ cut:
 audi/tion
 听/动作；状态；名词
 
-1. n. 旁听 audit
+1. n. 旁听 audit, listening trial
 phrase: music audition - 音乐试演
 
 2. n. 试演 rehearsal
@@ -48531,7 +48544,7 @@ awe/some
 example: The awesome size of the glacier silenced the visitors.
 example_zh: 冰川令人敬畏的巨大规模让访客沉默。
 
-2. adj. 使人惊惧的 frightening
+2. adj. 使人惊惧的 person, frightening
 example: The storm had an awesome force that broke old trees.
 example_zh: 风暴有令人惊惧的力量，折断了老树。
 
@@ -48647,7 +48660,7 @@ example_zh: 工人把大手帕系在脖子上挡灰尘。
 banner [ˈbænər]
 cut:
 ban/n/er
-禁止/连接音/人；物；比较级
+禁止/连接音/人；物
 
 n. 横幅 large sign flag
 phrase: campaign banner design - 竞选横幅设计
@@ -48689,7 +48702,7 @@ example_zh: 以那个价格买这辆二手自行车很划算。
 example: The bargain gave farmers a fairer price for grain.
 example_zh: 这笔交易给农民更公平的谷物价格。
 
-3. n. 契约，合同 contract
+3. n. 契约，合同 cheap deal, negotiate, contract
 example: The bargain between the two towns fixed water use.
 example_zh: 两个城镇之间的契约确定了用水方式。
 
@@ -49031,7 +49044,7 @@ example_zh: 旧城堡修复后，旅游业迅速增长。
 
 boon [buːn]
 cut:
-moonboon
+boon
 
 n. 恩惠，恩赐 blessing, benefit
 example: The new well was a boon to farmers during the dry season.
@@ -49193,7 +49206,7 @@ example_zh: 预算的大部分用于道路和学校。
 bulletin [ˈbʊlətɪn]
 cut:
 bullet/in
-子弹/不；进入
+子弹/进入；向内；否定
 
 1. n. 简明新闻 short notice
 example: The radio issued a bulletin about the approaching storm.
@@ -49690,11 +49703,11 @@ cut:
 example: The poem praises chaste love and self-control.
 example_zh: 这首诗赞美贞洁爱情和自制。
 
-2. adj. 朴素的 simple
+2. adj. 朴素的 sexually pure, simple, simple
 example: The chapel has a chaste design with plain stone walls.
 example_zh: 这座小教堂设计朴素，墙面是普通石材。
 
-3. adj. 有道德的 moral
+3. adj. 有道德的 sexually pure, simple, moral
 example: The community expected chaste behaviour from young priests.
 example_zh: 社区期待年轻神父有道德的行为。
 
@@ -50009,7 +50022,7 @@ example_zh: 粗砂让水快速通过。
 coincide [ˌkoʊɪnˈsaɪd]
 cut:
 co/in/cide
-共同/不；进入/切
+共同/进入；向内；否定/切
 
 1. v. 一致 agree, accord
 example: Rising rents may coincide with job growth, but workers can still suffer.
@@ -50429,7 +50442,7 @@ phrase: consideration in contract law - 合同法中的对价
 3. n. 需要考虑的事 consider
 phrase: careful consideration - 仔细考虑
 
-4. n. 理由 reason
+4. n. 理由 thought, care, reason
 phrase: critical consideration - 批判性反思
 
 considering [kənˈsɪdərɪ]
@@ -50451,7 +50464,7 @@ example_zh: 鉴于风暴，学校提前关闭。
 consistency [kənˈsɪstənsi]
 cut:
 consist/ency
-来自consist（一致）/名词；形容词
+一致；组成/名词
 
 1. n. 浓度，密度 density
 phrase: logical consistency - 逻辑一致性
@@ -51222,7 +51235,7 @@ phrase: deadly weapon - 致命武器
 dealer [ˈdiːlər]
 cut:
 deal/er
-来自deal（交易）/人；物；比较级
+交易；处理/人
 
 n. 商人，小贩 businessman, peddler
 example: The art dealer checked the painting's history before selling it.
@@ -51250,7 +51263,7 @@ example_zh: 太空碎片会损坏卫星并威胁通信系统。
 
 debut [deɪˈbjuː]
 cut:
-法语词：开始，初次露面
+debut
 
 n. /v. 首次演出 first appearance
 example: The singer made her debut in a small theatre.
@@ -51400,7 +51413,7 @@ dedication [ˌdedɪˈkeɪʃn]
 cut:
 
 
-1. n. 奉献 dedicate
+1. n. 奉献 dedicate, devotion, inscription
 example: Dedication kept the research team working through winter.
 example_zh: 奉献精神让研究团队整个冬天继续工作。
 
@@ -51721,7 +51734,8 @@ example_zh: 新路开通后，旧桥注定要被拆除。
 
 destruction [dɪˈstrʌkʃn]
 cut:
-
+de/struct/ion
+向下；破坏/建立；结构/名词
 
 n. 毁坏，毁灭 destroy
 phrase: environmental destruction - 环境破坏
@@ -51792,7 +51806,7 @@ devotion [dɪˈvoʊʃn]
 cut:
 
 
-1. n. 热爱 love
+1. n. 热爱 love, dedication
 example: Her devotion to music began in childhood.
 example_zh: 她对音乐的热爱始于童年。
 
@@ -51933,7 +51947,7 @@ cut:
 1. adj. 外交的，从事外交的 foreign-relations related
 phrase: diplomatic immunity dispute - 外交豁免争议
 
-2. adj. 策略的 ，有手腕的 tactful
+2. adj. 策略的 ，有手腕的 foreign-relations related, tactful
 phrase: diplomatic solution to conflict - 冲突的外交解决方案
 
 directory [dəˈrektəri]
@@ -52155,7 +52169,7 @@ example_zh: 许多居民觉得这则广告讨厌。
 distinctive [dɪˈstɪ ktɪv]
 cut:
 distinct/ive
-来自distinct（明显的）/形容词
+不同；明显/形容词
 
 1. adj. 出众的 clearly different
 phrase: distinctive feature - 特色
@@ -52314,7 +52328,7 @@ phrase: economic dormancy - 经济停滞
 2. n. 眠状态 condition
 phrase: dormancy - 眠状态
 
-3. n. 隐匿 hidden state
+3. n. 隐匿 inactive state, hidden state
 phrase: dormancy - 隐匿
 
 dormant [ˈdɔːrmənt]
@@ -52375,7 +52389,7 @@ cut:
 example: The downside of the new road is heavier traffic.
 example_zh: 新道路的缺点是交通更繁忙。
 
-2. n. 负面 negative side
+2. n. 负面 disadvantage, negative side
 example: The downside of rapid growth became visible in housing costs.
 example_zh: 快速增长的负面影响在住房成本中显现出来。
 
@@ -52399,7 +52413,7 @@ example_zh: 政府应在仔细咨询专家、居民和受影响社区后起草�
 example: The committee drafted a new rule for public meetings.
 example_zh: 委员会起草了公共会议新规则。
 
-3. adj. 供役使的 work animal
+3. adj. 供役使的 first version, draw up, work animal
 example: Draft horses pulled heavy carts through the mud.
 example_zh: 役用马拉着重车穿过泥地。
 
@@ -52576,7 +52590,7 @@ cut:
 eco/nom/ical
 经济/某一领域的知识/形容词；名词
 
-adj. 节约的 ，经济的 economy
+adj. 节约的 ，经济的 saving money
 phrase: economical use of resources - 节约使用资源
 
 edible [ˈedəbl]
@@ -52652,7 +52666,7 @@ electron [ɪˈlektrɑːn]
 cut:
 
 
-n. 【物理】电子 electronic
+n. 【物理】电子 thing, object
 example: An electron carries a negative electric charge.
 example_zh: 电子带有负电荷。
 phrase: electron microscope - 电子显微镜
@@ -52790,7 +52804,7 @@ em/bryo
 example: The embryo develops rapidly during the early weeks.
 example_zh: 胚胎在最初几周迅速发育。
 
-2. n. 雏形 early form
+2. n. 雏形 early developing organism, early form
 example: The small workshop was the embryo of a later factory.
 example_zh: 这个小作坊是后来工厂的雏形。
 
@@ -53274,7 +53288,7 @@ cut:
 example: Eight is an even number.
 example_zh: 八是偶数。
 
-2. adj. 平均的 average
+2. adj. 平均的 equal, smooth, average
 example: The teacher divided the food into even portions.
 example_zh: 老师把食物分成平均份。
 
@@ -53442,8 +53456,8 @@ example_zh: 展览解释冰川如何塑造山谷。
 
 exhilarating [ɪɡˈzɪləreɪtɪ]
 cut:
-exhilaratevtex/hilar/ate
-来自exhilarate（vt. 使高兴，使愉快），ex/高兴/动词；使成为
+ex/hilar/ate/ing
+使；向外/高兴/动词/形容词
 
 adj. 令人高兴的，使人兴奋的 exciting
 example: The climb was exhausting but exhilarating when the summit appeared.
@@ -53724,7 +53738,7 @@ fashion [ˈfæʃn]
 cut:
 
 
-1. n. 方式 manner
+1. n. 方式 manner, way, manner
 example: Fast fashion creates cheap choices but increases waste, pollution, and labour exploitation.
 example_zh: 快时尚创造廉价选择，但增加浪费、污染和劳动剥削。
 
@@ -53897,7 +53911,7 @@ cut:
 ferm/ent
 ＝ferv热/形容词；人；物
 
-v. 使发酵 fermentation
+v. 使发酵 undergo fermentation
 example: Fruit will ferment if it is left warm for too long.
 example_zh: 水果在温暖环境中放太久会发酵。
 phrase: ferment vegetables - 发酵蔬菜
@@ -53952,7 +53966,7 @@ example_zh: 猛烈大风损坏了沿海房屋。
 figurative [ˈfɪɡərətɪv]
 cut:
 figure/ative
-来自figure（外形，象征）/形容词
+形象；象征/形容词
 
 1. adj. 比喻的，借喻的 metaphorical
 phrase: figurative language - 比喻语言
@@ -53992,7 +54006,7 @@ example_zh: 工人把标牌安装在石墙上。
 example: The committee fixed the meeting date for Monday.
 example_zh: 委员会把会议日期确定为星期一。
 
-3. v. 修理 repair
+3. v. 修理 fasten, repair, repair
 example: The mechanic fixed the pump before sunset.
 example_zh: 机修工在日落前修好了水泵。
 
@@ -54230,7 +54244,7 @@ cut:
 example: This simple machine was a forerunner of the modern engine.
 example_zh: 这台简单机器是现代发动机的先驱。
 
-2. n. 先兆，预兆 sign
+2. n. 先兆，预兆 sign, precursor
 example: Unusual bird movement can be a forerunner of seasonal change.
 example_zh: 异常鸟类活动可能是季节变化的先兆。
 
@@ -54243,7 +54257,7 @@ fore/shorten
 example: The artist foreshortened the arm to create depth.
 example_zh: 艺术家按透视法缩短手臂以产生深度。
 
-2. v. 节略，缩短 shorten
+2. v. 节略，缩短 shorten in perspective, shorten
 example: The summary foreshortened a long and complex debate.
 example_zh: 摘要节略缩短了一场漫长复杂辩论。
 
@@ -54261,11 +54275,11 @@ cut:
 form/at
 形式/朝向；加强
 
-1. n. 设计 design
+1. n. 设计 layout, arrange, design
 example: The magazine's format changed to include more pictures.
 example_zh: 杂志设计改为包含更多图片。
 
-2. n. 安排 arrangement
+2. n. 安排 layout, arrange, arrangement
 example: The workshop format allowed questions after every talk.
 example_zh: 工作坊安排允许每次讲话后提问。
 
@@ -54330,11 +54344,11 @@ cut:
 example: The team moved forward after the road was cleared.
 example_zh: 道路清理后，团队向前前进。
 
-2. adj. 向前的，前部的 along
+2. adj. 向前的，前部的 along, send on, onward
 example: The forward part of the ship hit the rocks first.
 example_zh: 船的前部先撞上岩石。
 
-3. adj. 进步的 progressive
+3. adj. 进步的 send on, onward, progressive
 example: Forward policies improved access to education.
 example_zh: 进步政策改善了教育机会。
 
@@ -54472,11 +54486,11 @@ fum/e
 example: A chemical fume filled the storage room.
 example_zh: 化学臭气充满储藏室。
 
-2. n. 烟 smoke
+2. n. 烟 gas, angry smoke, smoke
 example: Smoke fumes rose from the damaged engine.
 example_zh: 烟雾从受损发动机升起。
 
-3. n. 激怒 anger
+3. n. 激怒 gas, angry smoke, anger
 example: His fume over the delay was obvious.
 example_zh: 他对延误的激怒很明显。
 
@@ -54554,7 +54568,7 @@ cut:
 example: The furry animal hid under the wooden steps.
 example_zh: 这只毛皮覆盖的动物躲在木台阶下。
 
-2. adj. 生苔的 mossy
+2. adj. 生苔的 covered with fur, mossy
 example: The old roof looked furry with moss after years of rain.
 example_zh: 多年雨水后，旧屋顶长满苔藓，看起来毛茸茸的。
 
@@ -54639,7 +54653,7 @@ phrase: natural gem - 天然宝石
 gender [ˈdʒendər]
 cut:
 gen/der
-产生；出生/人；物；比较级
+产生；出生/人；物
 
 n. 性别 sex
 example: Gender equality requires fair pay, shared childcare, equal career opportunities, and respect.
@@ -54652,7 +54666,7 @@ phrase: gendered division of labor - 性别化劳动分工
 generalize [ˈdʒenrəlaɪz]
 cut:
 general/ize
-来自general（概括的）/使成为；动词
+一般；概括/使成为
 
 v. 概括，归纳 sum up, conclude
 example: It is risky to generalize from one village to an entire country.
@@ -54669,8 +54683,8 @@ phrase: cultural genesis - 文化起源
 
 genetics [dʒəˈnetɪks]
 cut:
-genetic/s
-来自genetic（遗传的）/连接音
+genet/ic/s
+基因；遗传/形容词/名词
 
 n. 遗传学 genetic
 example: Genetics helps explain why some diseases run in families.
@@ -54717,7 +54731,7 @@ example_zh: 科幻是一种常想象未来技术的流派。
 gentility [dʒenˈtɪləti]
 cut:
 gentle/ility
-来自gent（le）（温和的，文雅的）/性质；状态；名词
+温和；文雅/名词
 
 n. 有教养，文雅 refined manners
 example: The old house suggested gentility rather than great wealth.
@@ -54730,7 +54744,7 @@ cut:
 geo/logy
 地/学科
 
-n. 地质学 geological
+n. 地质学 field of study
 example: Geology explains how mountains, minerals, and fossils form.
 example_zh: 地质学解释山脉、矿物和化石如何形成。
 
@@ -54782,7 +54796,7 @@ phrase: the cotton gin - 轧棉机
 girder [ˈɡɜːrdər]
 cut:
 gird/er
-围梁；方框支柱/人；物；比较级
+围梁；方框支柱/人；物
 
 n. 大梁 crossbeam
 example: A cracked girder forced engineers to close the bridge.
@@ -55209,7 +55223,7 @@ hardly [ˈhɑːrdli]
 cut:
 
 
-1. adv. 几乎不，简直不 scarcely
+1. adv. 几乎不，简直不 scarcely, in a hardly way
 example: The old bridge could hardly carry a cart.
 example_zh: 旧桥几乎承载不了一辆车。
 
@@ -55437,7 +55451,7 @@ phrase: hind leg - 后腿
 hinder [ˈhɪndər]
 cut:
 hind/er
-后面/人；物；比较级
+后面/人；物
 
 v. 阻碍，妨碍 inhibit, obstruct
 example: High costs can hinder access to healthcare for low-income families in rural areas.
@@ -55670,7 +55684,7 @@ example_zh: 这位画家发展出平面色彩和简单线条的艺术风格。
 idyllic [aɪˈdɪlɪk]
 cut:
 idyll/ic
-来自idyll（田园诗）/形容词
+田园诗；田园景象/形容词
 
 adj. 田园诗的 poetic
 phrase: idyllic rural landscape - 田园诗般乡村景观
@@ -56256,7 +56270,7 @@ initially [ɪˈnɪʃəli]
 cut:
 
 
-1. adv. 开头，最初 initial
+1. adv. 开头，最初 in a initial way
 phrase: initially reject the proposal - 最初拒绝提案
 
 2. adv. 首先 at first
@@ -56394,7 +56408,7 @@ phrase: insulate buildings - 给建筑隔热
 insulin [ˈɪnsəlɪn]
 cut:
 insul/in
-岛/不；进入
+岛/进入；向内；否定
 
 n. 胰岛素 blood-sugar hormone
 example: Insulin helps regulate the amount of sugar in the blood.
@@ -56521,8 +56535,8 @@ example_zh: 事故发生在一个繁忙十字路口。
 
 intoxication [ɪnˌtɑːksɪˈkeɪʃn]
 cut:
-intoxicatevin/toxic/ate
-来自intoxicate（v. 使醉），in（使）/毒/动词；使成为
+in/toxic/ation
+使；进入/毒/名词
 
 n. 醉，醉酒 drunkenness, poisoning
 example: Intoxication can slow reaction time and increase accident risk.
@@ -56934,7 +56948,7 @@ larva [ˈlɑːrvə]
 cut:
 
 
-n. ［pl. larvae］幼虫
+n. ［pl. larvae］幼虫 young insect form
 example: The larva feeds on leaves before becoming an adult insect.
 example_zh: 幼虫在变成成虫前以叶子为食。
 phrase: butterfly larva - 蝴蝶幼虫
@@ -57086,7 +57100,7 @@ cut:
 l/edge
 连接音/边缘
 
-n. （建筑物或岩石的）突出部分 projection
+n. （建筑物或岩石的）突出部分 thing, object, projection
 example: A bird nested on a narrow ledge above the river.
 example_zh: 一只鸟在河上方狭窄岩架上筑巢。
 
@@ -57127,8 +57141,8 @@ example_zh: 大字使标牌从路上也易读。
 
 legislature [ˈledʒɪsleɪtʃər]
 cut:
-legislate/ure
-来自legislat(e)（制定法律）/结果；名词
+legislat/ure
+立法/名词
 
 n. 立法机关 law-making body
 phrase: bicameral legislature design - 两院制立法机关设计
@@ -57218,7 +57232,7 @@ limitation [ˌlɪmɪˈteɪʃn]
 cut:
 
 
-n. 限制，局限性 limit
+n. 限制，局限性 quality, property
 phrase: legal limitation - 法律限制
 
 linen [ˈlɪnɪn]
@@ -57254,7 +57268,7 @@ example_zh: 这位无精打采的病人回答问题很慢，并避免眼神接�
 literally [ˈlɪtərəli]
 cut:
 literal/ly
-来自literal（文字的）/副词
+文字；字面/副词
 
 1. adv. 照原文地 word for word, actually
 phrase: literally mean - 字面意思是
@@ -57337,7 +57351,7 @@ phrase: rural locality - 乡村地区
 locally [ˈləʊkəli]
 cut:
 local/ly
-来自local（地方的，当地的）/副词
+地方；当地/副词
 
 adv. 在本地 in the area
 example: Food grown locally can reach markets with less transport cost.
@@ -57440,7 +57454,7 @@ example_zh: 大雨把干燥山谷变成了茂盛的绿色景观。
 luster [ˈlʌstər]
 cut:
 lus/ter
-玩/人；物；比较级
+玩/人；物
 
 n. 光彩，光泽 gloss
 example: Polishing restored the luster of the old silver bowl.
@@ -57472,7 +57486,7 @@ example_zh: 这首抒情诗描写海边宁静夜晚。
 example: A lyric about exile became popular among workers.
 example_zh: 一首关于流放的抒情诗在工人中流行。
 
-3. n. [常pl.]歌词 lyrics
+3. n. [常pl.]歌词 songlike, poem words
 example: The lyrics were printed inside the album cover.
 example_zh: 歌词印在专辑封套内。
 
@@ -57722,7 +57736,7 @@ example_zh: 机械学解释力如何作用于机器。
 example: Basic mechanics helped engineers design the bridge.
 example_zh: 基础力学帮助工程师设计桥梁。
 
-3. n. 过程 process
+3. n. 过程 process, process
 example: The mechanics of the election were difficult to understand.
 example_zh: 选举过程难以理解。
 
@@ -57802,7 +57816,7 @@ example_zh: 这首旧旋律歌曲很简单，孩子们也能记住。
 melodrama [ˈmelədrɑːmə]
 cut:
 melody/drama
-来自melody（旋律）/戏剧
+旋律/戏剧
 
 1. n. 音乐剧 music
 example: The theatre staged a melodrama with music and dance.
@@ -57951,7 +57965,7 @@ meteorologist [ˌmiːtiəˈrɑːlədʒɪst]
 cut:
 
 
-n. 气象学者 meteorology
+n. 气象学者 field of study
 example: The meteorologist warned farmers that frost could damage young crops.
 example_zh: 气象学家警告农民霜冻可能损害幼苗。
 
@@ -58303,7 +58317,7 @@ mountainous [ˈmaʊntənəs]
 cut:
 
 
-adj. 多山的 mountain
+adj. 多山的 related to mountain
 phrase: mountainous rural region - 多山农村地区
 
 muggy [ˈmʌɡi]
@@ -58464,7 +58478,7 @@ example_zh: 颠簸船行后，他感到恶心厌恶。
 
 nectar [ˈnektər]
 cut:
-原指希腊和罗马神话中如花蜜般的神酒
+nectar
 
 n. 花蜜 bloom
 example: Bees collect nectar from flowers and turn it into honey.
@@ -58696,7 +58710,7 @@ example_zh: 一位著名外科医生加入医院培训年轻医生。
 noticeable [ˈnoʊtɪsəbl]
 cut:
 notice/able
-来自notice（注意）/能够；形容词
+注意/能够；形容词
 
 1. adj. 明显的 conspicuous, outstanding
 phrase: noticeable feature - 显眼特征
@@ -58998,7 +59012,7 @@ opposed [əˈpoʊzd]
 cut:
 
 
-adj. 反对的 opposition, objection
+adj. 反对的 objection
 example: Several doctors were opposed to the plan because it reduced patient care.
 example_zh: 几位医生反对该计划，因为它削弱了病人护理。
 
@@ -59194,7 +59208,7 @@ example_zh: 修理店对游客的简单维修索价过高。
 example: Overcharging the battery can shorten its life.
 example_zh: 使电池过量充电会缩短其寿命。
 
-3. v. 渲染，夸张 exaggerate
+3. v. 渲染，夸张 charge too much, overload, exaggerate
 example: The speaker overcharged the story with dramatic details.
 example_zh: 演讲者用戏剧性细节过度渲染了故事。
 
@@ -59224,18 +59238,18 @@ example_zh: 过期未付的租金让这家人担心。
 example: The library sent a notice about overdue books.
 example_zh: 图书馆发出逾期图书通知。
 
-3. adj. 过度的，过火的 excessive
+3. adj. 过度的，过火的 late, unpaid, excessive
 example: The punishment was overdue and harsher than necessary.
 example_zh: 惩罚过度，且比必要程度更严厉。
 
-4. adj. 迟到的，延误的 late
+4. adj. 迟到的，延误的 late, unpaid, late
 example: The overdue train finally arrived after midnight.
 example_zh: 延误的火车终于在午夜后到达。
 
 overhaul [ˈoʊvərhɔːl]
 cut:
 over/haul
-人；物；比较级/拉，拖
+人；物/拉，拖
 
 n. 仔细检查 examination
 example: The railway system needs an overhaul after years of underinvestment.
@@ -59340,7 +59354,7 @@ phrase: overview of research findings - 研究发现概览
 overwhelm [ˌoʊvərˈwelm]
 cut:
 over/whelm
-人；物；比较级/淹没
+人；物/淹没
 
 1. v. 淹没 submerge
 example: Too much information can overwhelm attention instead of improving judgement.
@@ -59420,8 +59434,7 @@ example_zh: 牙医检查上腭是否有感染迹象。
 
 pamphlet [ˈpæmflət]
 cut:
-pamphiluspampan/phil
-来自拉丁文pamphilus，是一首爱情名诗，pam（＝pan全部）/爱
+pamphlet
 
 n. 小册子 booklet, brochure
 example: The clinic gave each patient a pamphlet about preventing infection.
@@ -59905,7 +59918,7 @@ example_zh: 独特美丽的渔船使港口闻名。
 
 pierce [pɪrs]
 cut:
-rpiece
+pierce
 
 v. 刺穿 puncture, penetrate
 example: The needle must pierce the membrane without damaging the tissue below.
@@ -60006,7 +60019,7 @@ example_zh: 这场比赛使两个村庄竞争。
 pivotal [ˈpɪvətl]
 cut:
 pivot/al
-来自pivot（枢轴；枢纽）/形容词；名词
+枢轴；关键/形容词
 
 1. adj. 关键的 crucial
 phrase: pivotal role in reform - 改革中的关键作用
@@ -60244,7 +60257,7 @@ example_zh: 明信片上是一座挤满渔船的港口。
 poster [ˈpoʊstər]
 cut:
 post/er
-来自post（邮政；张贴）/人；物；比较级
+张贴；岗位/物
 
 1. n. 招贴 public notice picture
 example: A poster on the wall announced the meeting.
@@ -60283,7 +60296,7 @@ example_zh: 钾帮助神经和肌肉正常运作。
 potter [ˈpɑːtər]
 cut:
 pott/er
-＝pot陶罐/人；物；比较级
+＝pot陶罐/人；物
 
 n. 陶工，制陶工人 ceramic
 example: The potter shaped the clay bowl before firing it in a kiln.
@@ -60292,7 +60305,7 @@ example_zh: 陶工先塑造陶碗，再把它放入窑中烧制。
 practically [ˈpræktɪkli]
 cut:
 practical/ly
-来自practical（实际的）/副词
+实际/副词
 
 1. adv. 几乎 nearly
 phrase: practically achievable - 可行达成
@@ -60387,7 +60400,7 @@ phrase: prefer stability - 偏好稳定
 preferable [ˈprefrəbl]
 cut:
 prefer/able
-来自prefer（更喜欢，宁愿）/能够；形容词
+更喜欢/能够；形容词
 
 adj. 更好的，更优越的 more desirable
 example: A simple explanation is preferable when readers are new to the subject.
@@ -60425,8 +60438,8 @@ example_zh: 医院照顾一名七个月出生的早产儿。
 
 preoccupation [priˌɑːkjuˈpeɪʃn]
 cut:
-preoccupy/ation
-来自preoccup(y)（占据）/动作；过程；名词
+pre/occup/ation
+预先/占据/名词
 
 1. n. 主要考虑因素 consider
 example: Water supply became the town's main preoccupation.
@@ -60532,7 +60545,7 @@ example_zh: 这条河夏天相当浅。
 prevailing [prɪˈveɪlɪ]
 cut:
 prevail/ing
-来自prevail（流行）/动作；形容词
+流行；占优/形容词
 
 1. adj. 普遍的 most frequent, universal
 example: The prevailing opinion supported rebuilding the bridge.
@@ -60598,7 +60611,7 @@ example_zh: 河岸决口后，洪水发生并继续。
 prodigious [prəˈdɪdʒəs]
 cut:
 prodigy/ious
-来自prodig(y)（惊人的事物）/形容词
+惊人事物；奇才/形容词
 
 adj. 巨大的 extraordinary in bulk, quantity, or degree
 example: The archive contains a prodigious number of letters from the nineteenth century.
@@ -60734,7 +60747,7 @@ example_zh: 这项运动宣传在学校洗手。
 pronounced [prəˈnaʊnst]
 cut:
 pronounce/d
-来自pronounce（宣称，发音）/连接音
+宣称；发音/形容词
 
 1. adj. 非常明显的 marked, distinct
 phrase: pronounce a word clearly - 清晰发音
@@ -60846,7 +60859,7 @@ phrase: publication - 出版物
 publicize [ˈpʌblɪsaɪz]
 cut:
 public/ize
-来自public（公众）/使成为；动词
+公众/使成为
 
 1. v. 宣传 advertise, promote
 example: The city publicized the new vaccination schedule.
@@ -61144,7 +61157,7 @@ example_zh: 数千人参加集会，要求更安全的工作条件。
 rampant [ˈræmpənt]
 cut:
 ramp/ant
-来自ramp（延）/形容词；人；物
+蔓延；攀爬/形容词
 
 adj. 猖獗的，蔓生的 wild, extravagant
 example: Rampant inflation made basic food unaffordable for many families.
@@ -61197,6 +61210,7 @@ rat/ion
 
 n. 配给量，定量 quota
 phrase: food ration - 食物配给
+phrase: ration water - 限量供水
 
 rattle [ˈrætl]
 cut:
@@ -61361,7 +61375,7 @@ receiver [rɪˈsiːvər]
 cut:
 
 
-n. 接收器 receptive, receiving
+n. 接收器 receptive, person or thing that receiving
 phrase: cell receiver - 细胞受体
 
 receptacle [rɪˈseptəkl]
@@ -61405,7 +61419,7 @@ phrase: poetry recital performance - 诗歌朗诵表演
 reckless [ˈrekləs]
 cut:
 reck/less
-来自reck（顾忌）/无；缺少
+顾忌/无；缺少
 
 adj. 轻率的，鲁莽的 irresponsible, rash
 example: Reckless driving near the school put children at risk.
@@ -61436,8 +61450,8 @@ phrase: recoil from doing sth. - 对做…畏缩不前
 
 recollection [ˌrekəˈlekʃn]
 cut:
-recollectvtre/col/lect/ion
-来自recollect（vt. 回想）；re/一起/收集/动作；状态；名词
+re/collect/ion
+再次；回/收集；回想/名词
 
 1. n. 回忆 memory
 phrase: beyond recollection - 不记得
@@ -61454,8 +61468,8 @@ phrase: a reconstruction period - 复兴时期
 
 recreation [ˌrekriˈeɪʃn]
 cut:
-recreate/ion
-来自recreat（e）（再创造）/动作；状态；名词
+re/create/ion
+再次/创造/名词
 
 n. 娱乐活动，消遣 amusement
 phrase: recreation program - 娱乐项目
@@ -61528,7 +61542,7 @@ example_zh: 学生回答问题前应参考地图。
 refined [rɪˈfaɪnd]
 cut:
 refine/d
-来自refine（精制，精炼）/连接音
+精炼；改进/形容词
 
 adj. 精致的 perfect, exquisite
 example: Refined sugar dissolves quickly in hot tea.
@@ -61591,7 +61605,7 @@ example_zh: 城市将翻新旧剧院，而不是拆除它。
 regardless [rɪˈɡɑːrdləs]
 cut:
 regard/less
-来自regard（关心）/无；缺少
+关心；考虑/无；缺少
 
 adv. 不顾，不管 no matter what
 phrase: regardless of social status - 不论社会地位
@@ -61801,7 +61815,7 @@ example_zh: 自行车租赁帮助游客到达湖边。
 
 repertoire [ˈrepərtwɑːr]
 cut:
-reportv
+repertoire
 
 n. （剧团等）常备剧目，保留剧目 available set of works
 example: The pianist added modern pieces to his classical repertoire.
@@ -62231,7 +62245,7 @@ example_zh: 那年锈病损害了小麦作物。
 example: The chain rusted after years in the rain.
 example_zh: 链条多年淋雨后生锈。
 
-4. v. （使）变迟钝 become dull
+4. v. （使）变迟钝 iron corrosion, become dull
 example: Skills rust when they are not practised.
 example_zh: 技能不练习就会变迟钝。
 
@@ -62334,7 +62348,7 @@ example_zh: 王冠上镶着一颗被小钻石环绕的蓝宝石。
 satiric [səˈtɪrɪk]
 cut:
 satire/ic
-来自satir(e)（讽刺）/形容词
+讽刺/形容词
 
 adj. 讽刺的 sarcastic
 example: The satiric play mocked officials who promised reform but changed nothing.
@@ -62797,7 +62811,7 @@ example_zh: 公众批评使官员羞愧并采取行动。
 sharpen [ˈʃɑːrpən]
 cut:
 sharp/en
-来自sharp（锋利的）/进入；使
+锋利/使成为
 
 1. v. 削尖 make sharp
 example: The carpenter sharpened the blade before work.
@@ -62807,7 +62821,7 @@ example_zh: 木匠工作前削尖刀刃。
 example: Practice sharpens a student's ability to notice patterns.
 example_zh: 练习使学生识别模式的能力更敏锐。
 
-3. v. 陡峭 steepen
+3. v. 陡峭 make sharp, steepen
 example: The path sharpened as it climbed toward the ridge.
 example_zh: 小路向山脊爬升时变得陡峭。
 
@@ -62997,7 +63011,7 @@ example_zh: 公司无视反复投诉后，愤怒开始积聚。
 simplicity [sɪmˈplɪsəti]
 cut:
 simple/icity
-来自simpl(e)（简单的，直率的）/表性质，状态
+简单/名词
 
 1. n. 简单 simple
 example: The simplicity of the tool made it easy to repair.
@@ -63010,7 +63024,7 @@ example_zh: 房间的朴素使旧家具显得突出。
 simplify [ˈsɪmplɪfaɪ]
 cut:
 simple/ify
-来自simpl（e）（简单的）/使…化
+简单/使成为
 
 v. 简化，使简单，使单纯 simple
 example: A clear diagram can simplify a complicated process.
@@ -63051,7 +63065,7 @@ example_zh: 这个村庄坐落在森林和浅湖之间。
 skeletal [ˈskelətl]
 cut:
 skeleton/al
-来自skelet(on)（骨架）/形容词；名词
+骨架/形容词
 
 adj. 骨骼的，骸骨的 bone-related
 phrase: skeletal remains - 骨骼遗骸
@@ -63196,11 +63210,11 @@ sneaker [ˈsniːkər]
 cut:
 
 
-1. n. 鬼鬼祟祟的人 sneak
+1. n. 鬼鬼祟祟的人 person, person
 example: The guard suspected a sneaker near the locked door.
 example_zh: 警卫怀疑锁门附近有鬼鬼祟祟的人。
 
-2. n. 卑鄙者 sneak, mean person
+2. n. 卑鄙者 person, mean person
 example: The story's villain was a sneaker who cheated his friends.
 example_zh: 故事反派是一个欺骗朋友的卑鄙者。
 
@@ -63361,7 +63375,7 @@ example_zh: 新路线稍微长一些，但安全得多。
 soothe [suːð]
 cut:
 sooth/e
-来自sooth（抚慰的）/e
+安抚/连接音
 
 v. 使（痛苦等）缓和或减轻 relieve
 example: Warm tea helped soothe her sore throat.
@@ -63616,7 +63630,7 @@ example_zh: 公司赞助了农村学校学生。
 spontaneity [ˌspɑːntəˈneɪəti]
 cut:
 spontaneous/ity
-来自spontane(ous)（自发的）/名词；形容词
+自发/名词
 
 n. 自发性 voluntary action
 example: The performance lost its spontaneity after too many rehearsals.
@@ -63992,7 +64006,7 @@ stripe [straɪp]
 cut:
 
 
-n. 条纹，斑纹 strip
+n. 条纹，斑纹 long narrow mark
 phrase: stripe pattern recognition - 条纹模式识别
 
 strive [straɪv]
@@ -64272,7 +64286,7 @@ example_zh: 办事员在一天结束时合计费用。
 summarize [ˈsʌməraɪz]
 cut:
 summary/ize
-来自summary（概略）/使…化
+概要/使成为
 
 v. 概括，总结 generalize
 example: A good conclusion should summarize the evidence without repeating every detail.
@@ -64457,7 +64471,7 @@ example_zh: 大门在风中摇荡打开。
 example: Public opinion swung toward reform.
 example_zh: 公众意见转向改革。
 
-3. n. 摇摆 oscillate
+3. n. 摇摆 oscillate, move back and forth
 example: The swing of the rope carried the child across the stream.
 example_zh: 绳子的摇摆把孩子带过溪流。
 
@@ -64480,7 +64494,7 @@ cut:
 example: A sympathetic nurse listened before offering advice.
 example_zh: 有同情心的护士先倾听，再给建议。
 
-2. adj. 【物】和应的 resonant
+2. adj. 【物】和应的 kindly understanding, resonant
 example: The strings produced a sympathetic vibration.
 example_zh: 琴弦产生了和应振动。
 
@@ -64642,7 +64656,7 @@ example_zh: 她加盐前品尝汤。
 example: The water tasted bitter after the pipe rusted.
 example_zh: 管道生锈后，水有苦味。
 
-3. v. 体验，感到 experience
+3. v. 体验，感到 flavour, sample, experience
 example: The trip gave him a taste of life at sea.
 example_zh: 这次旅行让他体验了海上生活。
 
@@ -64700,7 +64714,7 @@ phrase: telegraph network expansion - 电报网络扩张
 
 tempt [tempt]
 cut:
-本身为词根，意为：尝试
+tempt
 
 v. 诱使 entice, allure
 example: Large discounts may tempt customers to buy things they do not need.
@@ -64845,11 +64859,11 @@ example_zh: 小路穿过森林。
 example: The program supports students through graduation.
 example_zh: 该项目从开始到毕业支持学生。
 
-3. prep. 经由，以 via
+3. prep. 经由，以 from side to side, via
 example: Supplies reached the village through the mountain pass.
 example_zh: 补给经由山口到达村庄。
 
-4. prep. 因为，由于 because of
+4. prep. 因为，由于 from side to side, because of
 example: The bridge closed through storm damage.
 example_zh: 桥因为风暴损坏而关闭。
 
@@ -65047,7 +65061,7 @@ example_zh: 蚊子会在人与人之间传播疾病。
 transmitter [trænsˈmɪtər]
 cut:
 trans/mit/ter
-跨越；转移/送出/人；物；比较级
+跨越；转移/送出/人；物
 
 1. n. 发射台 station, platform
 phrase: neural transmitter - 神经介质
@@ -65207,7 +65221,7 @@ example_zh: 这位航运巨头投资了铁路和报纸。
 typical [ˈtɪpɪkl]
 cut:
 type/ical
-来自type（典型）/形容词；名词
+类型；典型/形容词
 
 1. adj. 典型的 representative, usual
 phrase: typical pattern of migration - 典型迁徙模式
@@ -65496,7 +65510,7 @@ example_zh: 医院以最大谨慎处理私人记录。
 utter [ˈʌtər]
 cut:
 ut/ter
-使用/人；物；比较级
+使用/人；物
 
 1. v. 说 speak, express
 example: The witness uttered only a few words.
@@ -66063,7 +66077,7 @@ cut:
 example: The painting's worth increased after the exhibition.
 example_zh: 展览后，这幅画的价值上升。
 
-2. adj. 值…的，价值…的，值得…的 worthy
+2. adj. 值…的，价值…的，值得…的 value, deserving
 example: The old bridge is worth repairing.
 example_zh: 这座旧桥值得修理。
 
@@ -66396,7 +66410,7 @@ introduce
 cut:
 
 
-v. 引入；介绍；推行 introduction
+v. 引入；介绍；推行 bring in, present
 example: Schools should introduce new technology only after teachers receive proper training first.
 example_zh: 学校应只在教师先接受适当培训后才引入新技术。
 phrase: introduce a policy - 推行政策
@@ -66875,7 +66889,7 @@ punish
 cut:
 
 
-v. 惩罚 punishment
+v. 惩罚 penalize
 example: Rules should punish dangerous behaviour without discouraging honest reporting.
 example_zh: 规则应惩罚危险行为，但不应阻碍诚实报告。
 phrase: punish offenders - 惩罚违法者
@@ -67056,7 +67070,7 @@ art
 cut:
 
 
-n. 艺术 art, creative work
+n. 艺术 art, creative work, creative work
 example: Art can preserve emotions that official records ignore.
 example_zh: 艺术能保存官方记录忽略的情感。
 phrase: pop art - 波普艺术
@@ -67158,7 +67172,7 @@ inclusion
 cut:
 
 
-n. 包容；纳入 inclusive
+n. 包容；纳入 including, acceptance
 phrase: social inclusion - 社会包容
 
 preclude
@@ -67830,7 +67844,7 @@ cut:
 emergency
 cut:
 emer/gency
-人；物；比较级/名词；形容词
+人；物/名词；形容词
 
 n. 紧急情况 urgent crisis
 phrase: medical emergency - 医疗急症
@@ -68367,7 +68381,7 @@ idealism
 cut:
 
 
-理想主义 ideal
+理想主义 doctrine, theory
 
 ideate
 cut:
@@ -69335,7 +69349,7 @@ invest
 cut:
 
 
-v. 投资；投入 investment
+v. 投资；投入 put money or effort in
 example: Governments should invest in education before spending heavily on symbolic projects publicly.
 example_zh: 政府在公开大量花钱于象征性项目之前，应先投资教育。
 phrase: invest in education - 投资教育
@@ -69715,7 +69729,7 @@ tactility
 cut:
 
 
-触觉；触感 tactile
+触觉；触感 state or quality of being tactile
 
 tactical
 cut:
@@ -70683,7 +70697,8 @@ phrase: public conscience - 公共良知
 
 conscientious
 cut:
-
+con/sci/ent/ious
+共同；加强/知道/形容词；人/形容词
 
 adj. 认真负责的；有良心的 responsible, in charge
 example: A conscientious nurse checked each label before giving the medicine.
@@ -70742,7 +70757,7 @@ humor
 cut:
 
 
-幽默；诙谐；⼼情；迎合 humorous
+幽默；诙谐；⼼情；迎合 person or thing that humorous
 
 infect
 cut:
@@ -70960,7 +70975,7 @@ cut:
 orderly
 cut:
 or/der/ly
-人；物/人；物；比较级/副词
+人；物/人；物/副词
 
 adv. 有序的 well arranged
 phrase: orderly transition of power - 有序权力交接
@@ -71412,7 +71427,7 @@ theater
 cut:
 
 
-n. 剧场；戏剧 theatre
+n. 剧场；戏剧 theatre, stage venue
 example: The theater reopened after repairs to the roof and lighting.
 example_zh: 屋顶和灯光修好后，剧场重新开放。
 phrase: experimental theater - 实验戏剧
@@ -71480,7 +71495,7 @@ historic
 cut:
 
 
-历史上重要的 history
+历史上重要的 related to history
 
 civilize
 cut:
@@ -71631,7 +71646,7 @@ rehearsal
 cut:
 
 
-排练；排演；预演；演习；复述；重复 rehearse
+排练；排演；预演；演习；复述；重复 related to rehearse
 
 repair
 cut:
@@ -72003,7 +72018,7 @@ opposing
 cut:
 
 
-对抗的；反对的 opposition, confrontation
+对抗的；反对的 confrontation
 
 obey
 cut:
@@ -72182,7 +72197,7 @@ abandoner
 cut:
 
 
-n. 遗弃者；放弃者 abandon
+n. 遗弃者；放弃者 person
 phrase: abandoner of contractual duties - 合同义务放弃者
 
 abate [əˈbeɪt]
@@ -72401,14 +72416,14 @@ absolutism
 cut:
 
 
-n. 绝对主义 absolute
+n. 绝对主义 doctrine, theory
 phrase: moral absolutism - 道德绝对主义
 
 absolutist
 cut:
 
 
-n. 绝对主义者；专制主义者 absolute
+n. 绝对主义者；专制主义者 doctrine, theory
 phrase: absolutist theory of monarchy - 君主制绝对主义理论
 
 absorbent
@@ -72483,14 +72498,14 @@ cut:
 ab/sur/di/ty
 离开；不/在上；超过/二；分开/性质；状态
 
-n. 荒谬 absurd
+n. 荒谬 state or quality of being absurd
 phrase: policy absurdity - 政策荒谬
 
 absurdness
 cut:
 
 
-n. 荒谬性 absurd
+n. 荒谬性 quality, property
 phrase: absurdness of rule - 规则荒谬性
 
 abusedisabuse
@@ -72719,7 +72734,7 @@ phrase: acerbic criticism - 尖刻批评
 acerbity
 cut:
 acer/bity
-人；物；比较级/名词；形容词
+人；物/名词；形容词
 
 n. 尖刻；酸涩 sharpness, bitterness
 phrase: acerbity of tone - 语气尖刻
@@ -72728,7 +72743,7 @@ achievable
 cut:
 
 
-adj. 可实现的 realise, achieve
+adj. 可实现的 realise
 phrase: achievable goal - 可实现目标
 
 achiever
@@ -72832,7 +72847,7 @@ phrase: first addend - 第一个加数
 adder
 cut:
 ad/der
-朝向；加强/人；物；比较级
+朝向；加强/人；物
 
 n. 加法器；蝰蛇 addition
 phrase: binary adder - 二进制加法器
@@ -72866,14 +72881,14 @@ adeptly
 cut:
 
 
-adv. 熟练地 adept
+adv. 熟练地 in a adept way
 phrase: adeptly interpret complex evidence - 熟练解读复杂证据
 
 adeptness
 cut:
 
 
-n. 熟练；擅长 adept
+n. 熟练；擅长 state or quality of being adept
 phrase: adeptness in statistical reasoning - 统计推理的熟练程度
 
 adequacy
@@ -73296,14 +73311,14 @@ agronomic
 cut:
 
 
-adj. 农学的 agronomy
+adj. 农学的 field of study
 phrase: agronomic practice - 农学实践
 
 agronomist
 cut:
 
 
-n. 农艺师；农学家 agronomy
+n. 农艺师；农学家 specialist, scholar
 phrase: agronomist soil assessment - 农艺师土壤评估
 
 aid
@@ -74811,7 +74826,7 @@ apathic
 cut:
 
 
-adj. 冷漠的 apathy
+adj. 冷漠的 related to apathy
 phrase: apathic attitude - 冷漠态度
 
 ape
@@ -75058,7 +75073,7 @@ phrase: soil arability - 土壤可耕性
 arbiter
 cut:
 ar/bi/ter
-形容词/二；两/人；物；比较级
+形容词/二；两/人；物
 
 n. 仲裁者；裁决者 judge, decide
 phrase: an arbiter of taste - 审美裁判者
@@ -75182,7 +75197,7 @@ area
 cut:
 
 
-地区；区 region
+地区；区 area, region, region, region
 phrase: urban area - 城市地区
 
 argot
@@ -75529,7 +75544,7 @@ phrase: assay result - 测定结果
 assayer
 cut:
 as/say/er
-朝向；加强/名词；形容词/人；物；比较级
+朝向；加强/名词；形容词/人；物
 
 n. 化验员 testing worker
 phrase: gold assayer - 黄金化验员
@@ -75602,7 +75617,7 @@ phrase: legal assurance - 法律保障
 aster
 cut:
 as/ter
-朝向；加强/人；物；比较级
+朝向；加强/人；物
 
 n. 星状物；紫菀 thing, object
 phrase: aster flower - 紫菀花
@@ -76333,7 +76348,7 @@ bargainable
 cut:
 
 
-adj. 可议价的 bargain
+adj. 可议价的 open to negotiation
 phrase: bargainable salary - 可议价薪水
 
 bargainer
@@ -76362,7 +76377,7 @@ barrenly
 cut:
 
 
-adv. 荒芜地 waste, barren
+adv. 荒芜地 waste, in a barren way
 phrase: barrenly stretch - 荒芜延伸
 
 barrenness
@@ -76600,7 +76615,7 @@ behaviorist
 cut:
 
 
-n./adj. 行为主义者/行为主义的 behaviorism
+n./adj. 行为主义者/行为主义的 doctrine, theory
 phrase: behaviorist approach - 行为主义方法
 
 belief-based
@@ -76982,7 +76997,7 @@ biographer
 cut:
 
 
-n. 传记作者 biography
+n. 传记作者 person
 phrase: literary biographer - 文学传记作者
 phrase: official biographer - 官方传记作者
 
@@ -76990,7 +77005,7 @@ biographical
 cut:
 
 
-adj. 传记的 biography
+adj. 传记的 related to biography
 phrase: biographical detail - 传记细节
 
 biohazard
@@ -77209,7 +77224,7 @@ bleacher
 cut:
 
 
-n. 漂白剂；漂白工 bleach
+n. 漂白剂；漂白工 person or thing that bleach
 phrase: industrial bleacher residue - 工业漂白剂残留
 
 bleachery
@@ -77768,7 +77783,7 @@ brightness
 cut:
 
 
-亮度；发光度 illumination
+亮度；发光度 brightness, illumination, illumination, illumination
 phrase: star brightness - 恒星亮度
 
 bringback
@@ -77789,14 +77804,14 @@ broadcaster
 cut:
 
 
-n. 广播员；广播机构 broadcast
+n. 广播员；广播机构 institution, organization
 phrase: public broadcaster - 公共广播机构
 
 broadcasting
 cut:
 
 
-广播 broadcast
+广播
 phrase: public broadcasting - 公共电视
 
 broadconclusion
@@ -77822,7 +77837,7 @@ cut:
 broad/ly
 宽阔；广泛/副词
 
-adv. 广泛地 broad, widespread
+adv. 广泛地 in a broad way, widespread
 phrase: broadly support - 广泛支持
 
 broodchamber
@@ -78090,14 +78105,14 @@ bureaucrat
 cut:
 
 
-n. 官僚；官员 bureaucratic
+n. 官僚；官员 government official
 phrase: bureaucrat decision-making process - 官员决策过程
 
 bureaucratism
 cut:
 
 
-n. 官僚主义 bureaucratic
+n. 官僚主义 doctrine, theory
 phrase: bureaucratism in public administration - 公共行政中的官僚主义
 
 bureaucratize
@@ -78380,7 +78395,7 @@ calculable
 cut:
 
 
-adj. 可计算的 calculation
+adj. 可计算的 able to be computed
 phrase: calculable financial risk - 可计算的金融风险
 
 calculator
@@ -78402,14 +78417,14 @@ caliphal
 cut:
 
 
-adj. 哈里发的 caliph
+adj. 哈里发的 related to caliph
 phrase: caliphal administration - 哈里发行政体系
 
 caliphic
 cut:
 
 
-adj. 哈里发的 caliph
+adj. 哈里发的 related to caliph
 phrase: caliphic authority in empire - 帝国中的哈里发权威
 
 caliphship
@@ -78482,7 +78497,7 @@ calmness
 cut:
 
 
-镇定；冷静 composure
+镇定；冷静 state or quality of being calmness, composure
 phrase: emotional calmness - 情绪冷静
 
 calorieintake
@@ -78939,7 +78954,7 @@ carbonic
 cut:
 
 
-adj. 碳酸的 carbon
+adj. 碳酸的 related to carbon
 phrase: carbonic acid - 碳酸
 
 carbonize
@@ -78953,7 +78968,7 @@ carcase
 cut:
 
 
-n./v. 尸体；畜体 carcass
+n./v. 尸体；畜体 dead body
 phrase: carcase inspection in abattoirs - 屠宰场畜体检查
 phrase: carcase weight classification - 畜体重量分级
 
@@ -79404,7 +79419,7 @@ catlike
 cut:
 
 
-n./v. 猫一样的；敏捷的 cat-like, agile
+n./v. 猫一样的；敏捷的 cat-like, agile, agile, agile
 phrase: catlike reflexes in sport - 运动中的猫般反应
 phrase: catlike caution in negotiation - 谈判中的谨慎敏捷
 
@@ -79654,7 +79669,7 @@ ceramist
 cut:
 
 
-n. 陶艺家 ceramic
+n. 陶艺家 specialist or supporter of ceramic
 phrase: studio ceramist - 工作室陶艺家
 phrase: professional ceramist - 专业陶艺家
 
@@ -79793,7 +79808,7 @@ chameleonic
 cut:
 
 
-adj. 变色龙似的；善变的 chameleon
+adj. 变色龙似的；善变的 related to chameleon
 phrase: chameleonic political identity - 善变的政治身份
 
 championer
@@ -80336,7 +80351,7 @@ choleraic
 cut:
 
 
-adj. 霍乱的；似霍乱的 cholera
+adj. 霍乱的；似霍乱的 related to cholera
 phrase: choleraic outbreak response - 霍乱样暴发应对
 
 choleric
@@ -80540,7 +80555,7 @@ phrase: tax circumvention - 避税
 cisgender
 cut:
 cis/gen/der
-切/产生；出生/人；物；比较级
+切/产生；出生/人；物
 
 n. 顺性别的 gender
 phrase: cisgender privilege discussion - 顺性别特权讨论
@@ -80629,7 +80644,7 @@ civility
 cut:
 
 
-n. 礼貌；文明行为 civilisation
+n. 礼貌；文明行为 behaviour, action
 phrase: civility in political discourse - 政治话语中的礼貌
 
 civilized
@@ -81233,7 +81248,7 @@ coaster
 cut:
 
 
-n. 沿海船；滑行者 coastal
+n. 沿海船；滑行者 person
 phrase: coaster trade route - 沿海船贸易路线
 
 coastland
@@ -81285,7 +81300,7 @@ coefficiental
 cut:
 
 
-adj. 系数的 coefficient, factor
+adj. 系数的 related to coefficient, factor
 phrase: coefficiental relation - 系数关系
 
 coenzyme
@@ -81386,7 +81401,7 @@ collectivist
 cut:
 
 
-adj. 集体主义的 collectivism
+adj. 集体主义的 doctrine, theory
 phrase: collectivist society - 集体主义社会
 
 collectivity
@@ -81619,7 +81634,7 @@ commemorative
 cut:
 
 
-adj. 纪念的 commemorate
+adj. 纪念的 related to commemorate
 phrase: commemorative statue - 纪念雕像
 
 commencement
@@ -81763,7 +81778,7 @@ commutable
 cut:
 
 
-adj. 可通勤的；可减刑的 commute
+adj. 可通勤的；可减刑的 able to be reduced or travelled
 phrase: commutable distance to work - 可通勤上班距离
 phrase: commutable criminal sentence - 可减刑刑罚
 
@@ -81771,14 +81786,14 @@ commutation
 cut:
 
 
-n. 通勤；减刑 commute
+n. 通勤；减刑 act or process of commute
 phrase: commutation of a prison sentence - 监禁刑减刑
 
 commuter
 cut:
 
 
-n. 通勤者 commute
+n. 通勤者 person
 phrase: urban commuter - 城市通勤者
 
 commutertown
@@ -81939,7 +81954,7 @@ complexly
 cut:
 
 
-adv. 复杂地 complex
+adv. 复杂地 in a complex way
 phrase: interact complexly - 复杂互动
 
 compliant
@@ -82202,14 +82217,14 @@ condemnable
 cut:
 
 
-adj. 应受谴责的 condemn
+adj. 应受谴责的 deserving blame
 phrase: condemnable abuse of power - 应受谴责的滥权
 
 condemnation
 cut:
 
 
-n. 谴责；定罪 condemn
+n. 谴责；定罪 act or process of condemn
 phrase: international condemnation of violence - 国际社会谴责暴力
 
 condenser
@@ -82379,7 +82394,7 @@ confrontational
 cut:
 
 
-adj. 对抗性的 opposition, confrontation
+adj. 对抗性的 opposition, quality, property
 phrase: confrontational style - 对抗性风格
 
 confusable
@@ -82604,7 +82619,7 @@ consoler
 cut:
 
 
-n. 安慰者 consolation
+n. 安慰者 person
 phrase: consoler role in crisis - 危机中的安慰者角色
 
 conspicuously
@@ -82704,7 +82719,7 @@ constructivist
 cut:
 
 
-adj. 建构主义的 constructivism
+adj. 建构主义的 doctrine, theory
 phrase: constructivist classroom - 建构主义课堂
 
 construe
@@ -83389,7 +83404,7 @@ cosmological
 cut:
 
 
-adj. 宇宙学的 cosmology
+adj. 宇宙学的 field of study
 phrase: cosmological model - 宇宙学模型
 
 cosmopolitan
@@ -84331,7 +84346,7 @@ cyclical
 cut:
 
 
-adj. 周期性的 periodic
+adj. 周期性的 periodic, quality, property
 phrase: cyclical unemployment - 周期性失业
 
 cycliccyclotron
@@ -84352,7 +84367,7 @@ cyclonic
 cut:
 
 
-adj. 气旋的 cyclone, rotating weather system
+adj. 气旋的 related to cyclone, rotating weather system
 phrase: cyclonic storm - 气旋风暴
 
 cyclotron
@@ -84710,7 +84725,7 @@ deceitfulness
 cut:
 
 
-n. 欺骗性 deceit
+n. 欺骗性 quality, property
 phrase: deceitfulness of advertising - 广告的欺骗性
 
 deceiver
@@ -84824,7 +84839,7 @@ phrase: declivity in river terrain - 河流地形中的坡降
 decoder
 cut:
 de/co/der
-向下；离开/共同；一起/人；物；比较级
+向下；离开/共同；一起/人；物
 
 n. 解码器 decoding device
 phrase: speech decoder - 语音解码器
@@ -85085,7 +85100,7 @@ definable
 cut:
 
 
-adj. 可定义的 define, explain significance
+adj. 可定义的 explain significance
 phrase: definable goal - 可定义目标
 
 definitionindefinite
@@ -85682,7 +85697,7 @@ designer
 cut:
 
 
-建筑师；设计者 format, design
+建筑师；设计者 format, building, structure
 phrase: building designer - 建筑设计者
 
 designspecification
@@ -85813,7 +85828,7 @@ detailedly
 cut:
 
 
-adv. 详细地 detailed
+adv. 详细地 in a detailed way
 phrase: explain detailedly - 详细解释
 
 detain
@@ -85938,7 +85953,7 @@ developer
 cut:
 
 
-n. 开发者；发展者 germinate, develop
+n. 开发者；发展者 germinate, person
 phrase: software developer community - 软件开发者社区
 
 deviance
@@ -86009,7 +86024,7 @@ dialectically
 cut:
 
 
-adv. 辩证地 dialectical
+adv. 辩证地 in a dialectical way
 phrase: analyse dialectically - 辩证地分析
 
 dialectidiolect
@@ -86257,14 +86272,14 @@ diplomatically
 cut:
 
 
-adv. 外交地；圆滑地 diplomatic
+adv. 外交地；圆滑地 in a diplomatic way
 phrase: diplomatically resolve tensions - 以外交方式解决紧张局势
 
 diplomatist
 cut:
 
 
-n. 外交家；外交研究者 diplomatic
+n. 外交家；外交研究者 person
 phrase: diplomatist account of treaties - 外交研究者对条约的叙述
 
 dipole
@@ -86587,7 +86602,7 @@ disentangler
 cut:
 
 
-n. 理清者；解缠工具 disentangle
+n. 理清者；解缠工具 tool
 phrase: institutional disentangler of disputes - 理清争端的制度工具
 
 dish
@@ -86873,7 +86888,7 @@ dissector
 cut:
 
 
-n. 解剖者；剖析者 dissect
+n. 解剖者；剖析者 person
 phrase: anatomical dissector - 解剖者
 
 dissemination
@@ -86926,7 +86941,7 @@ dissipative
 cut:
 
 
-adj. 耗散的 dissipate
+adj. 耗散的 related to dissipate
 phrase: dissipative physical system - 耗散物理系统
 
 dissuade
@@ -87290,7 +87305,7 @@ drafter
 cut:
 
 
-n. 起草者 draft
+n. 起草者 person
 phrase: legal drafter - 法律起草者
 
 dragline
@@ -87508,7 +87523,7 @@ droopy
 cut:
 
 
-n./v. 下垂的 droop
+n./v. 下垂的 hanging downward
 phrase: droopy eyelid condition - 眼睑下垂状况
 
 drown
@@ -87970,7 +87985,7 @@ eagerness
 cut:
 
 
-n. 渴望 eager
+n. 渴望 state or quality of being eager
 phrase: eagerness to learn - 学习热情
 
 eagleeye
@@ -87986,16 +88001,6 @@ cut:
 
 n./v. 耳膜 ear membrane
 phrase: eardrum rupture diagnosis - 耳膜破裂诊断
-
-earlier
-cut:
-
-
-adj./adv. 更早的；早些时候
-example: Earlier evidence can change how historians interpret later events.
-example_zh: 早期证据会改变历史学家解释后续事件的方式。
-phrase: earlier evidence - 早期证据
-phrase: an earlier generation - 更早一代
 
 earliest
 cut:
@@ -88493,7 +88498,7 @@ elemental
 cut:
 
 
-adj. 基本的；元素的 element
+adj. 基本的；元素的 basic, fundamental
 phrase: elemental composition analysis - 元素组成分析
 
 elementalism
@@ -88837,7 +88842,7 @@ employable
 cut:
 
 
-adj. 可雇用的；有就业能力的 employment
+adj. 可雇用的；有就业能力的 ability, capacity
 phrase: employable skills training - 就业技能培训
 
 empower
@@ -89157,7 +89162,7 @@ phrase: enfranchise formerly excluded groups - 赋权曾被排除群体
 engender
 cut:
 en/gen/der
-进入；使/产生；出生/人；物；比较级
+进入；使/产生；出生/人；物
 
 v. 产生；引起 raise, cause
 phrase: engender public trust - 产生公众信任
@@ -89210,7 +89215,7 @@ enhancer
 cut:
 
 
-n. 增强剂；增强子 enhance
+n. 增强剂；增强子 person or thing that enhances
 phrase: gene enhancer region - 基因增强子区域
 
 enlarged
@@ -89417,7 +89422,7 @@ environs
 cut:
 
 
-n. 周边地区；环境 environment
+n. 周边地区；环境 area, region
 phrase: urban environs of a capital - 首都周边地区
 phrase: industrial environs and health - 工业周边环境与健康
 
@@ -89718,7 +89723,7 @@ ethicist
 cut:
 
 
-n. 伦理学家 ethics
+n. 伦理学家 specialist, scholar
 phrase: medical ethicist - 医学伦理学家
 phrase: professional ethicist - 职业伦理学家
 
@@ -89800,7 +89805,7 @@ euphorically
 cut:
 
 
-adv. 欣快地 euphoric
+adv. 欣快地 in a euphoric way
 phrase: euphorically celebrate victory - 欣快地庆祝胜利
 
 eureka
@@ -90017,7 +90022,7 @@ exaggerative
 cut:
 
 
-adj. 夸张的 overcharge, exaggerate
+adj. 夸张的 overcharge, related to exaggerate
 phrase: exaggerative media coverage - 夸张的媒体报道
 
 exaggerator
@@ -90039,14 +90044,14 @@ examinable
 cut:
 
 
-adj. 可检查的；可考试的 examination
+adj. 可检查的；可考试的 able to be tested
 phrase: examinable learning objective - 可考查学习目标
 
 examiner
 cut:
 
 
-n. 考官；检查员 examination
+n. 考官；检查员 person or thing that examination
 phrase: IELTS examiner - 雅思考官
 
 excathedra
@@ -90121,7 +90126,7 @@ exchanger
 cut:
 
 
-n. 交换者；交换器 exchange
+n. 交换者；交换器 person
 phrase: heat exchanger - 热交换器
 
 excluded
@@ -90417,13 +90422,13 @@ exportation
 cut:
 
 
-n. 出口 exporting
+n. 出口 sending goods abroad
 phrase: exportation of goods - 商品出口
 
 exporter
 cut:
 ex/por/ter
-向外；离开/拿；前进/人；物；比较级
+向外；离开/拿；前进/人；物
 
 n. 出口商 seller abroad
 phrase: major exporter - 主要出口国
@@ -90520,9 +90525,9 @@ phrase: externalize costs - 外部化成本
 externally
 cut:
 ex/ter/nal/ly
-向外；离开/人；物；比较级/形容词/副词
+向外；离开/人；物/形容词/副词
 
-adv. 外部地 external
+adv. 外部地 in a external way
 phrase: externally funded - 外部资助
 
 extinguishextinct
@@ -90573,28 +90578,28 @@ extremal
 cut:
 
 
-adj. 极值的；极端的 extreme
+adj. 极值的；极端的 related to extreme
 phrase: extremal value problem - 极值问题
 
 extremely
 cut:
 
 
-adv. 极其；非常 wildly
+adv. 极其；非常 wildly, in a extremely way
 phrase: extremely vulnerable population - 极其脆弱的人群
 
 extremism
 cut:
 
 
-n. 极端主义 extreme
+n. 极端主义 doctrine, theory
 phrase: political extremism - 政治极端主义
 
 extremist
 cut:
 
 
-n. 极端主义者；极端的 extreme
+n. 极端主义者；极端的 doctrine, theory
 phrase: extremist recruitment network - 极端主义招募网络
 
 extrinsically
@@ -91157,7 +91162,7 @@ fermentable
 cut:
 
 
-adj. 可发酵的 fermentation
+adj. 可发酵的 able to undergo fermentation
 phrase: fermentable sugar content - 可发酵糖含量
 
 fermentative
@@ -91171,7 +91176,7 @@ fermenter
 cut:
 
 
-n. 发酵罐；发酵者 fermentation
+n. 发酵罐；发酵者 person
 phrase: industrial fermenter design - 工业发酵罐设计
 
 ferry
@@ -91267,7 +91272,7 @@ cut:
 fic/tio/nal
 做/动作；状态；名词/形容词
 
-adj. 虚构的 fiction
+adj. 虚构的 related to fiction
 phrase: fictional character - 虚构角色
 
 fictionality
@@ -92280,7 +92285,7 @@ formulaic
 cut:
 
 
-adj. 公式化的 formula
+adj. 公式化的 related to formula
 phrase: formulaic political slogan - 公式化政治口号
 
 formulation
@@ -92386,7 +92391,7 @@ foundational
 cut:
 
 
-adj. 基础的；奠基性的 foundation
+adj. 基础的；奠基性的 quality, property
 phrase: foundational structure - 基础结构
 
 fractal
@@ -92896,7 +92901,7 @@ phrase: gearshift behavior in driving - 驾驶中的换挡行为
 genderless
 cut:
 gen/der/less
-产生；出生/人；物；比较级/无；缺少
+产生；出生/人；物/无；缺少
 
 adj. 无性别的 gender
 phrase: genderless design in fashion - 时尚中的无性别设计
@@ -93675,7 +93680,7 @@ gravelly
 cut:
 
 
-adv. 多砾石的；沙哑的 gravel
+adv. 多砾石的；沙哑的 stone, rock
 phrase: gravelly riverbed sediment - 多砾石河床沉积物
 
 gravelpit
@@ -93783,13 +93788,6 @@ cut:
 
 n./v. 词族关联项；用于连接阅读词和学习词网 relation
 phrase: grazing paddock rotation - 放牧小区轮换
-
-greater
-cut:
-
-
-n. 更大的；较大的 major
-phrase: greater social mobility - 更大的社会流动性
 
 greatly
 cut:
@@ -94349,14 +94347,14 @@ harassable
 cut:
 
 
-adj. 易受骚扰的 harassment
+adj. 易受骚扰的 easy to disturb repeatedly
 phrase: harassable minority group - 易受骚扰的少数群体
 
 harasser
 cut:
 
 
-n. 骚扰者 harassment
+n. 骚扰者 person
 phrase: identify a workplace harasser - 识别职场骚扰者
 
 hardcore
@@ -94441,7 +94439,7 @@ harpooner
 cut:
 
 
-n. 鱼叉手；捕鲸者 harpoon
+n. 鱼叉手；捕鲸者 person
 phrase: harpooner role in whaling - 捕鲸中的鱼叉手角色
 
 harpoonist
@@ -94763,14 +94761,14 @@ hemispheric
 cut:
 
 
-adj. 半球的 hemisphere
+adj. 半球的 related to hemisphere
 phrase: hemispheric climate - 半球气候
 
 hemispherical
 cut:
 
 
-adj. 半球形的 hemisphere
+adj. 半球形的 related to hemisphere
 phrase: hemispherical structure - 半球形结构
 
 hemoglobin
@@ -94811,7 +94809,7 @@ heretically
 cut:
 
 
-adv. 异端地 heretical
+adv. 异端地 in a heretical way
 phrase: heretically challenge orthodoxy - 异端式挑战正统
 
 hermit
@@ -94906,7 +94904,7 @@ hierarch
 cut:
 
 
-n./v. 等级制度领导者；主教 hierarchy
+n./v. 等级制度领导者；主教 person
 phrase: hierarch in church governance - 教会治理中的高级神职
 phrase: hierarch of an organization - 组织中的等级领导
 
@@ -94914,14 +94912,14 @@ hierarchic
 cut:
 
 
-adj. 等级制的 hierarchy
+adj. 等级制的 related to hierarchy
 phrase: hierarchic decision process - 等级式决策过程
 
 hierarchically
 cut:
 
 
-adv. 按等级地 hierarchy
+adv. 按等级地 in a hierarchy way
 phrase: hierarchically organized data - 按层级组织的数据
 
 hierarchize
@@ -95388,14 +95386,14 @@ horizontally
 cut:
 
 
-adv. 水平地 horizontal
+adv. 水平地 water
 phrase: horizontally organized movement - 水平组织的运动
 
 hormonal
 cut:
 
 
-adj. 激素的 hormone
+adj. 激素的 related to hormone
 phrase: hormonal change - 激素变化
 
 hormone-related
@@ -95623,7 +95621,7 @@ humpbackwhale
 cut:
 
 
-n./v. 座头鲸 humpback whale
+n./v. 座头鲸 large baleen whale
 phrase: humpback whale migration route - 座头鲸迁徙路线
 
 hunchback
@@ -95690,7 +95688,7 @@ hydrogenic
 cut:
 
 
-adj. 氢的；类氢的 hydrogen
+adj. 氢的；类氢的 related to hydrogen
 phrase: hydrogenic atom - 类氢原子
 
 hydrology
@@ -95735,7 +95733,7 @@ phrase: hypertext structure - 超文本结构
 hypertrophy
 cut:
 hyper/trophy
-人；物；比较级/名词；形容词
+人；物/名词；形容词
 
 n./v. 肥大；过度发展 germinate, develop
 phrase: cardiac hypertrophy risk - 心肌肥大风险
@@ -95826,7 +95824,7 @@ idealisation
 cut:
 
 
-n. 理想化 ideal
+n. 理想化 act or process of ideal
 phrase: idealisation of the past - 对过去的理想化
 
 idealise
@@ -95859,7 +95857,7 @@ cut:
 ideo/logi/cal
 思想/学科；研究/形容词
 
-adj. 意识形态的 ideology
+adj. 意识形态的 related to ideology
 phrase: ideological conflict - 意识形态冲突
 
 idiolect
@@ -95982,7 +95980,7 @@ ignitable
 cut:
 
 
-adj. 可点燃的 ignite
+adj. 可点燃的 able to catch fire
 phrase: ignitable hazardous waste - 可点燃危险废物
 
 ignobility
@@ -96103,7 +96101,7 @@ phrase: thermal imager - 热成像仪
 imaginable
 cut:
 i/mag/in/a/ble
-连接音/大；磁/不；进入/离开；加强/能够；形容词
+连接音/大；磁/进入；向内；否定/离开；加强/能够；形容词
 
 adj. 可想象的 conceivable
 phrase: imaginable outcome - 可想象结果
@@ -96197,7 +96195,7 @@ immersive
 cut:
 
 
-adj. 沉浸式的 immerse
+adj. 沉浸式的 related to immerse
 phrase: immersive learning - 沉浸式学习
 
 immigrants
@@ -96314,7 +96312,7 @@ impactor
 cut:
 
 
-n. 撞击体；影响因素 impact
+n. 撞击体；影响因素 person or thing that impact
 phrase: asteroid impactor trajectory - 小行星撞击体轨迹
 
 impartiality
@@ -96327,9 +96325,9 @@ phrase: judicial impartiality - 司法公正
 impartially
 cut:
 im/par/tial/ly
-不；进入/相等；准备/形容词；名词/副词
+进入；向内；否定/相等；准备/形容词；名词/副词
 
-adv. 公正地 impartial
+adv. 公正地 in a impartial way
 phrase: judge impartially - 公正判断
 
 impatient
@@ -96350,7 +96348,7 @@ impeder
 cut:
 
 
-n. 阻碍者；阻碍因素 impede
+n. 阻碍者；阻碍因素 person
 phrase: bureaucratic impeder of change - 阻碍变革的官僚因素
 
 impediment
@@ -96363,7 +96361,7 @@ phrase: major impediment - 主要障碍
 impel
 cut:
 im/pel
-不；进入/推
+进入；向内；否定/推
 
 v. 推动；驱使 drive forward
 phrase: impel reform - 推动改革
@@ -96372,7 +96370,7 @@ phrase: impel people to act - 驱使人们行动
 impelrepel
 cut:
 im/pel/re/pel
-不；进入/推/再次；回/推
+进入；向内；否定/推/再次；回/推
 
 词族关联项；用于连接阅读词和学习词网 relation
 phrase: impelrepel - 词族关联项
@@ -96380,7 +96378,7 @@ phrase: impelrepel - 词族关联项
 impend
 cut:
 im/pend
-不；进入/悬挂
+进入；向内；否定/悬挂
 
 v. 逼近 be about to happen
 example: An impending shortage of doctors may worsen rural healthcare access for older residents.
@@ -96450,7 +96448,7 @@ impersonator
 cut:
 
 
-n. 冒充者；模仿者 impersonate
+n. 冒充者；模仿者 person
 phrase: online impersonator - 线上冒充者
 
 impetrate
@@ -96568,9 +96566,9 @@ phrase: impractical plan - 不可行计划
 impress
 cut:
 im/press
-不；进入/压
+进入；向内；否定/压
 
-v. 给人深刻印象；使铭记 impression
+v. 给人深刻印象；使铭记 person
 example: Clear evidence can impress a complex argument on readers more effectively than rhetoric.
 example_zh: 清晰的证据比修辞更能把复杂论点深深留在读者心中。
 phrase: impress an audience - 给观众留下深刻印象
@@ -96932,7 +96930,7 @@ phrase: incongruent goals - 不一致目标
 inconsistency
 cut:
 in/con/sis/tency
-不；进入/共同；加强/状态；过程；名词/名词；形容词
+进入；向内；否定/共同；加强/状态；过程；名词/名词；形容词
 
 n. 不一致；矛盾 shield
 phrase: logical inconsistency - 逻辑不一致
@@ -96940,7 +96938,7 @@ phrase: logical inconsistency - 逻辑不一致
 inconsistent
 cut:
 in/con/sis/tent
-不；进入/共同；加强/状态；过程；名词/拉紧
+进入；向内；否定/共同；加强/状态；过程；名词/拉紧
 
 adj. 不一致的 not consistent
 phrase: inconsistent evidence - 不一致证据
@@ -96948,7 +96946,7 @@ phrase: inconsistent evidence - 不一致证据
 inconsistently
 cut:
 in/con/sis/tent/ly
-不；进入/共同；加强/状态；过程；名词/拉紧/副词
+进入；向内；否定/共同；加强/状态；过程；名词/拉紧/副词
 
 adv. 副词形式 adverb
 phrase: apply inconsistently - 不一致地执行
@@ -96992,7 +96990,7 @@ increasing
 cut:
 
 
-adj./v-ing 增加的；正在增加 increase
+adj./v-ing 增加的；正在增加
 phrase: increasing demand - 不断增加的需求
 phrase: increasing climate risk - 不断上升的气候风险
 
@@ -97044,7 +97042,7 @@ phrase: incubus metaphor for debt - 债务的梦魇隐喻
 incur
 cut:
 in/cur
-不；进入/跑；流动
+进入；向内；否定/跑；流动
 
 v. 招致；承担 bring upon oneself
 phrase: incur public criticism - 招致公众批评
@@ -97074,7 +97072,7 @@ phrase: indelicate public remark - 不得体的公开言论
 indent
 cut:
 in/dent
-不；进入/牙齿
+进入；向内；否定/牙齿
 
 adj. 缩进；压痕 set in, mark with dent
 phrase: indent paragraph structure - 缩进段落结构
@@ -97149,7 +97147,7 @@ individualist
 cut:
 
 
-adj. 个人主义的 individualism
+adj. 个人主义的 doctrine, theory
 phrase: individualist culture - 个人主义文化
 
 individuality
@@ -97199,7 +97197,7 @@ phrase: induces - plural/3rd 单复数/第三人称形式
 induct
 cut:
 in/duct
-不；进入/引导
+进入；向内；否定/引导
 
 v. 使正式就任；感应 formal, official
 phrase: induct new members - 接纳新成员入会
@@ -97302,7 +97300,7 @@ phrase: social inequity - 社会不公
 inertial
 cut:
 iner/tial
-人；物；比较级/形容词；名词
+人；物/形容词；名词
 
 adj. 惯性的 inertia
 phrase: inertial frame - 惯性系
@@ -97317,7 +97315,7 @@ phrase: inertialframe in physics - 物理中的惯性系
 inertially
 cut:
 iner/tial/ly
-人；物；比较级/形容词；名词/副词
+人；物/形容词；名词/副词
 
 adv. 惯性地 inertia
 phrase: inertially guided navigation - 惯性制导导航
@@ -97385,7 +97383,7 @@ infamous
 cut:
 
 
-臭名昭著的 notorious
+臭名昭著的 notorious, related to infamous
 phrase: infamous case - 臭名昭著案例
 
 infanthood
@@ -97456,7 +97454,7 @@ phrase: inferiorly treated - 被较差对待
 infernal
 cut:
 in/fer/nal
-不；进入/带来；承载/形容词
+进入；向内；否定/带来；承载/形容词
 
 adj. 地狱的；糟糕的 hellish, awful
 phrase: infernal imagery in literature - 文学中的地狱意象
@@ -97495,7 +97493,7 @@ infirmity
 cut:
 
 
-n. 虚弱；缺陷 infirm
+n. 虚弱；缺陷 state or quality of being infirm
 phrase: infirmity of old age - 老年虚弱
 
 inflection
@@ -97562,7 +97560,7 @@ informational
 cut:
 
 
-adj. 信息的 information
+adj. 信息的 giving information
 phrase: informational barrier - 信息壁垒
 
 informidable
@@ -97683,7 +97681,7 @@ phrase: urban inhabitants - 城市居民
 inhere
 cut:
 in/here
-不；进入/粘附；在此
+进入；向内；否定/粘附；在此
 
 v. 存在于 existence
 phrase: rights inhere - 权利内在存在
@@ -97699,7 +97697,7 @@ inherently
 cut:
 
 
-adv. 固有地 inherent
+adv. 固有地 in a inherent way
 phrase: inherently risky - 本质上有风险
 
 inheritable
@@ -97742,14 +97740,14 @@ initiation
 cut:
 
 
-n. 发起；开始 initial
+n. 发起；开始 act or process of initial
 phrase: project initiation - 项目启动
 
 injectable
 cut:
 
 
-adj./n. 可注射的；注射剂 inject
+adj./n. 可注射的；注射剂
 phrase: injectable vaccine - 注射型疫苗
 
 injection
@@ -97763,7 +97761,7 @@ injector
 cut:
 
 
-n. 注射器；喷射器 inject
+n. 注射器；喷射器 person or thing that inject
 phrase: fuel injector - 燃油喷射器
 
 injurant
@@ -97819,7 +97817,7 @@ phrase: move inland - 向内陆移动
 inline
 cut:
 in/line
-不；进入/线；行
+进入；向内；否定/线；行
 
 adj. 内联的；排成一线 line
 phrase: inline citation - 文内引用
@@ -97836,7 +97834,7 @@ innerness
 cut:
 
 
-n. 内在性 inner, inherent
+n. 内在性 quality, property, inherent
 phrase: innerness of feeling - 感受内在性
 
 innovationnovation
@@ -97856,7 +97854,7 @@ phrase: technological innovator - 技术创新者
 input
 cut:
 in/put
-不；进入/思考；放置
+进入；向内；否定/思考；放置
 
 n./v. 贡献 contribution
 example: Expert input is essential before schools redesign exams or ability-based classes.
@@ -97869,7 +97867,7 @@ phrase: user input - 用户输入
 inquest
 cut:
 in/quest
-不；进入/询问
+进入；向内；否定/询问
 
 n. 调查；验尸 investigation
 phrase: public inquest into the disaster - 对灾难的公开调查
@@ -97938,7 +97936,7 @@ insightfulness
 cut:
 
 
-n. 洞察力 insight
+n. 洞察力 state or quality of being insight
 phrase: insightfulness of research - 研究洞察力
 
 insignificant
@@ -97974,14 +97972,14 @@ insisted
 cut:
 
 
-adj. 坚持要求 insist
+adj. 坚持要求 strongly demanded
 phrase: insist upon legal accountability - 坚持法律问责
 
 insisting
 cut:
 
 
-n./adj. 坚持要求 insist
+n./adj. 坚持要求 strongly demanding
 phrase: insist upon legal accountability - 坚持法律问责
 
 insolation
@@ -98109,7 +98107,7 @@ phrase: insulter accountability online - 网络侮辱者问责
 insurgent
 cut:
 in/sur/gent
-不；进入/在上；超过/人；物；形容词
+进入；向内；否定/在上；超过/人；物；形容词
 
 adj. 叛乱者；起义的 person
 phrase: insurgent group - 叛乱组织
@@ -98183,7 +98181,7 @@ phrase: explain intelligibly - 清楚解释
 intend
 cut:
 in/tend
-不；进入/伸展；趋向
+进入；向内；否定/伸展；趋向
 
 v. 打算 intention
 phrase: intend to reform - 打算改革
@@ -98194,7 +98192,7 @@ phrase: be intended for - 旨在用于
 intentional
 cut:
 in/ten/tio/nal
-不；进入/拿住；保持/动作；状态；名词/形容词
+进入；向内；否定/拿住；保持/动作；状态；名词/形容词
 
 adj. 故意的；慎重的 careful
 phrase: intentional choice - 故意选择
@@ -98202,7 +98200,7 @@ phrase: intentional choice - 故意选择
 inter
 cut:
 in/ter
-不；进入/人；物；比较级
+进入；向内；否定/人；物
 
 v. 埋葬 bury
 phrase: inter remains respectfully - 恭敬安葬遗骸
@@ -98326,7 +98324,7 @@ phrase: emotional interiority - 情绪内在性
 interject
 cut:
 in/ter/ject
-不；进入/人；物；比较级/投掷
+进入；向内；否定/人；物/投掷
 
 v. 插话；插入 insert, put in
 phrase: interject a cautionary note - 插入警示性意见
@@ -98335,7 +98333,7 @@ phrase: interject during debate - 在辩论中插话
 intermarry
 cut:
 inter/marry
-人；物；比较级/名词；形容词
+人；物/名词；形容词
 
 n./v. 通婚 marry between groups
 phrase: intermarry with locals - 与当地人通婚
@@ -98356,7 +98354,7 @@ phrase: intermediate step - 中间步骤
 interment
 cut:
 in/ter/ment
-不；进入/人；物；比较级/心智；名词
+进入；向内；否定/人；物/心智；名词
 
 n. 埋葬；拘禁 burial
 phrase: wartime interment camp - 战时拘禁营
@@ -98386,9 +98384,9 @@ phrase: internalize rules - 内化规则
 internally
 cut:
 in/ter/nal/ly
-不；进入/人；物；比较级/形容词/副词
+进入；向内；否定/人；物/形容词/副词
 
-adv. 内部地 internal
+adv. 内部地 in a internal way
 phrase: internally consistent - 内部一致
 
 internationalise
@@ -98417,21 +98415,21 @@ interpretable
 cut:
 
 
-可解释的 interpretation, explanation
+可解释的 explanation
 phrase: interpretable meaning - 可解释意义
 
 interpreter
 cut:
 
 
-n. 口译员；解释者 interpretation, explanation
+n. 口译员；解释者 person, explanation
 phrase: court interpreter service - 法庭口译服务
 
 interpretive
 cut:
 
 
-adj. 解释性的 interpretation, explanation
+adj. 解释性的 quality, property, explanation
 phrase: interpretive bias in research - 研究中的解释偏差
 
 interrelate
@@ -98461,7 +98459,7 @@ phrase: intersect a line - 交叉一条线
 intersert
 cut:
 in/ter/sert
-不；进入/人；物；比较级/连接；加入
+进入；向内；否定/人；物/连接；加入
 
 n./v. 插入其间 insert, put in
 phrase: intersert material - 插入材料
@@ -98500,7 +98498,7 @@ phrase: intertribal conflict resolution - 部落间冲突解决
 intervention
 cut:
 in/ter/ven/tion
-不；进入/人；物；比较级/来/动作；状态；名词
+进入；向内；否定/人；物/来/动作；状态；名词
 
 n. 干预；介入 interference, involvement
 phrase: early intervention - 早期干预
@@ -98562,7 +98560,7 @@ phrase: intramural sports program - 校内体育项目
 intricacy
 cut:
 in/tri/cacy
-不；进入/三/名词；形容词
+进入；向内；否定/三/名词；形容词
 
 n. 复杂性 complex
 phrase: legal intricacy - 法律复杂性
@@ -98697,7 +98695,7 @@ phrase: inventions - plural/3rd 单复数/第三人称形式
 inventive
 cut:
 in/ven/tive
-不；进入/来/形容词
+进入；向内；否定/来/形容词
 
 adj. 有创造力的 creation
 phrase: inventive solution - 创新方案
@@ -98719,7 +98717,7 @@ phrase: inventorial record - 库存记录
 invert
 cut:
 in/vert
-不；进入/转
+进入；向内；否定/转
 
 v. 颠倒；倒置 turn upside down
 phrase: invert the order - 颠倒顺序
@@ -99806,13 +99804,6 @@ cut:
 n. 巨大；宽广 huge
 phrase: largeness of fiscal deficits - 财政赤字的巨大规模
 
-larger
-cut:
-
-
-n. 更大的 bigger
-phrase: larger sample size requirement - 更大样本量要求
-
 largesailingship
 cut:
 
@@ -99911,13 +99902,6 @@ cut:
 n. 潜在性 potential, possible
 phrase: latentness of risk - 风险潜在性
 
-later
-cut:
-
-
-n. 后来；更晚的 afterward
-phrase: later stage of development - 发展后期
-
 lateralized
 cut:
 
@@ -99929,15 +99913,8 @@ laterally
 cut:
 
 
-adv. 横向地 lateral
+adv. 横向地 in a lateral way
 phrase: move laterally - 横向移动
-
-latest
-cut:
-
-
-n./v. 最新的 most recent
-phrase: latest demographic data - 最新人口数据
 
 latitude-related
 cut:
@@ -100145,7 +100122,7 @@ legality
 cut:
 
 
-n. 合法性 legal
+n. 合法性 quality, property
 phrase: legality of emergency powers - 紧急权力的合法性
 
 legalize
@@ -100196,7 +100173,7 @@ legislate
 cut:
 
 
-v. 立法 legislative
+v. 立法 make laws
 phrase: legislate against discrimination - 立法反歧视
 phrase: legislate new rules - 制定新规则
 
@@ -100204,7 +100181,7 @@ legislator
 cut:
 
 
-n. 立法者 legislative
+n. 立法者 person
 phrase: legislator voting behavior - 立法者投票行为
 
 legitimately
@@ -100525,7 +100502,7 @@ lichenous
 cut:
 
 
-adj. 地衣状的 lichen
+adj. 地衣状的 related to lichen
 phrase: lichenous growth on stone - 石头上的地衣状生长
 
 life-outcome
@@ -100699,7 +100676,7 @@ limiting
 cut:
 
 
-限制性的 reduce, limit
+限制性的 reduce, quality, property
 phrase: limiting policy - 限制性政策
 
 lineal
@@ -101010,7 +100987,7 @@ logarithmic
 cut:
 
 
-adj. 对数的 logarithm
+adj. 对数的 related to logarithm
 phrase: logarithmic scale - 对数尺度
 
 logician
@@ -101074,13 +101051,6 @@ cut:
 
 n./v. 长链的 long-chain
 phrase: longchain polymer - 长链聚合物
-
-longer
-cut:
-
-
-n. 更久的；更长的 long
-phrase: longer historical perspective - 更长历史视角
 
 longhaul
 cut:
@@ -101248,7 +101218,7 @@ phrase: lung disease prevention - 肺部疾病预防
 lusterless
 cut:
 lus/ter/less
-玩/人；物；比较级/无；缺少
+玩/人；物/无；缺少
 
 adj. 无光泽的 brightness, illumination
 phrase: lusterless surface - 无光泽表面
@@ -101873,7 +101843,7 @@ marketable
 cut:
 
 
-adj. 有市场的 market
+adj. 有市场的 easy to sell
 phrase: marketable skill - 有市场技能
 
 marketeconomy
@@ -101960,7 +101930,7 @@ martially
 cut:
 
 
-adv. 军事上地 martial
+adv. 军事上地 in a martial way
 phrase: martially organised - 军事化组织
 
 mash
@@ -102166,7 +102136,7 @@ mayoral
 cut:
 
 
-adj. 市长的 mayor
+adj. 市长的 related to mayor
 phrase: mayoral election campaign - 市长选举活动
 
 mayoralty
@@ -102706,7 +102676,7 @@ methodism
 cut:
 
 
-n. 方法主义；循道宗 method
+n. 方法主义；循道宗 doctrine, theory
 phrase: methodism in religious history - 宗教史中的循道宗
 
 methodize
@@ -103349,14 +103319,14 @@ modernism
 cut:
 
 
-n. 现代主义 modern
+n. 现代主义 doctrine, theory
 phrase: modernism in urban design - 城市设计中的现代主义
 
 modernist
 cut:
 
 
-n. 现代主义者；现代主义的 modern
+n. 现代主义者；现代主义的 doctrine, theory
 phrase: modernist architectural style - 现代主义建筑风格
 
 modernity
@@ -103370,7 +103340,7 @@ modernization
 cut:
 
 
-n. 现代化 modern
+n. 现代化 act or process of modern
 phrase: economic modernization - 经济现代化
 
 modernize
@@ -103419,7 +103389,7 @@ molecularity
 cut:
 
 
-n. 分子数；分子性 molecular
+n. 分子数；分子性 quality, property
 phrase: molecularity of a reaction - 反应分子数
 
 molecule-related
@@ -103472,14 +103442,14 @@ monarchic
 cut:
 
 
-adj. 君主的；君主制的 monarchy
+adj. 君主的；君主制的 related to monarchy
 phrase: monarchic authority structure - 君主制权威结构
 
 monarchical
 cut:
 
 
-adj. 君主制的 monarchy
+adj. 君主制的 related to monarchy
 phrase: monarchical political tradition - 君主制政治传统
 
 monarchism
@@ -103847,7 +103817,7 @@ motivity
 cut:
 
 
-n. 运动力；动机性 motif, motive
+n. 运动力；动机性 motif, quality, property
 phrase: motivity in behavioral theory - 行为理论中的动机性
 
 mound
@@ -104075,7 +104045,7 @@ muralist
 cut:
 
 
-n. 壁画家 mural
+n. 壁画家 specialist or supporter of mural
 phrase: muralist public art project - 壁画家公共艺术项目
 
 musicschool
@@ -104237,7 +104207,7 @@ narcissist
 cut:
 
 
-n. 自恋者 narcissism
+n. 自恋者 person
 phrase: grandiose narcissist - 自大型自恋者
 
 narcissistic
@@ -104509,7 +104479,7 @@ negotiator
 cut:
 
 
-n. 谈判者 negotiate
+n. 谈判者 person
 phrase: skilled negotiator - 熟练谈判者
 
 neighborhood
@@ -104737,7 +104707,7 @@ nitrogenous
 cut:
 
 
-adj. 含氮的 nitrogen
+adj. 含氮的 related to nitrogen
 phrase: nitrogenous compound - 含氮化合物
 
 nitrous
@@ -104809,7 +104779,7 @@ nominally
 cut:
 
 
-adv. 名义上 nominal
+adv. 名义上 in a nominal way
 phrase: nominally independent - 名义上独立的
 
 non-human
@@ -105351,7 +105321,7 @@ oblige
 cut:
 
 
-v. 迫使；使有义务；帮忙 obligation
+v. 迫使；使有义务；帮忙 force, help
 example: New safety laws may oblige employers to protect workers from dangerous machines.
 example_zh: 新的安全法律可能迫使用人单位保护工人免受危险机器伤害。
 phrase: oblige employers to comply - 迫使用人单位遵守
@@ -105363,7 +105333,7 @@ obligor
 cut:
 
 
-n. 债务人；义务人 obligation
+n. 债务人；义务人 person
 phrase: obligor in debt contract - 债务合同中的债务人
 
 obscurantism
@@ -105585,7 +105555,7 @@ officially
 cut:
 
 
-adv. 正式地 formal, official
+adv. 正式地 formal, in a official way
 phrase: officially recognised - 正式承认
 
 officiate
@@ -105726,7 +105696,7 @@ ontologist
 cut:
 
 
-n. 本体论者；本体工程师 ontological
+n. 本体论者；本体工程师 person
 phrase: ontologist in knowledge engineering - 知识工程中的本体工程师
 
 opacity
@@ -105832,9 +105802,9 @@ phrase: orbicular muscle anatomy - 环形肌肉解剖
 orbiter
 cut:
 or/bi/ter
-人；物/二；两/人；物；比较级
+人；物/二；两/人；物
 
-n. 轨道飞行器 orbital, orbit-related
+n. 轨道飞行器 person or thing that orbital, orbit-related
 phrase: lunar orbiter mission - 月球轨道器任务
 
 orchardgrass
@@ -106015,7 +105985,7 @@ oscillator
 cut:
 
 
-n. 振荡器 oscillate, swing
+n. 振荡器 person or thing that oscillates, swing
 phrase: electronic oscillator - 电子振荡器
 
 oscillatory
@@ -106262,7 +106232,7 @@ phrase: overburn ceramic - 过烧陶瓷
 overcast
 cut:
 over/cast
-人；物；比较级/投；广播
+人；物/投；广播
 
 n./v. 阴天的；覆盖的 coverage
 phrase: overcast sky - 阴天
@@ -106400,7 +106370,7 @@ phrase: overlord in feudal hierarchy - 封建等级中的领主
 overpass
 cut:
 over/pass
-人；物；比较级/忍受；通过
+人；物/忍受；通过
 
 n. 天桥；立交桥 raised crossing
 phrase: pedestrian overpass - 人行天桥
@@ -106842,7 +106812,7 @@ paradigmal
 cut:
 
 
-adj. 范式的 paradigm
+adj. 范式的 related to paradigm
 phrase: paradigmal shift in science - 科学中的范式转变
 
 paradigmata
@@ -106937,7 +106907,7 @@ parasitism
 cut:
 
 
-n. 寄生现象 parasitic
+n. 寄生现象 observable event
 phrase: social parasitism in insects - 昆虫中的社会寄生
 
 parasitology
@@ -107097,7 +107067,7 @@ pasteurization
 cut:
 
 
-n. 巴氏杀菌 pasteurisation
+n. 巴氏杀菌 act or process of pasteurisation
 phrase: milk pasteurization process - 牛奶巴氏杀菌过程
 
 pasteurize
@@ -107353,7 +107323,7 @@ phrase: peergroup comparison in education - 教育中的同伴群体比较
 peerless
 cut:
 peer/less
-人；物；比较级/无；缺少
+人；物/无；缺少
 
 adj. 无双的；卓越的 without equal
 phrase: peerless achievement in science - 科学上的卓越成就
@@ -107561,14 +107531,14 @@ perplexity
 cut:
 
 
-n. 困惑 perplex
+n. 困惑 state or quality of being perplex
 phrase: voter perplexity - 选民困惑
 
 persecutor
 cut:
 
 
-n. 迫害者 persecute, persecution
+n. 迫害者 person, persecution
 phrase: political persecutor - 政治迫害者
 
 perseverance
@@ -107751,7 +107721,7 @@ pharaohism
 cut:
 
 
-n. 法老主义；法老崇拜 pharaoh
+n. 法老主义；法老崇拜 doctrine, theory
 phrase: pharaohism in national identity - 民族身份中的法老主义
 
 pharaohship
@@ -107992,7 +107962,7 @@ pigmentation
 cut:
 
 
-n. 色素沉着 pigment
+n. 色素沉着 act or process of pigment
 phrase: skin pigmentation - 皮肤色素
 
 pile
@@ -108231,14 +108201,14 @@ platformer
 cut:
 
 
-n. 平台游戏 station, platform
+n. 平台游戏 station, person or thing that platform
 phrase: mobile platformer design - 移动平台游戏设计
 
 platformization
 cut:
 
 
-n. 平台化 station, platform
+n. 平台化 station, act or process of platform
 phrase: platformization of labor - 劳动的平台化
 
 platypi
@@ -108308,7 +108278,7 @@ phrase: policy playbook for cities - 城市政策操作手册
 player
 cut:
 play/er
-名词；形容词/人；物；比较级
+名词；形容词/人；物
 
 n. 玩家；播放器 participant, playback device
 phrase: media player - 媒体播放器
@@ -108848,7 +108818,7 @@ phrase: porously bordered - 边界可渗透的
 porter
 cut:
 por/ter
-拿；前进/人；物；比较级
+拿；前进/人；物
 
 n. 搬运工；门房 carrier, attendant
 phrase: railway porter - 铁路搬运工
@@ -109007,7 +108977,7 @@ potentially
 cut:
 
 
-adv. 潜在地 potential, possible
+adv. 潜在地 in a potential way, possible
 phrase: potentially harmful - 潜在有害
 
 pouchful
@@ -109094,7 +109064,7 @@ praiser
 cut:
 
 
-n. 赞扬者 recognition, praise
+n. 赞扬者 recognition, person
 phrase: public praiser of reform - 改革的公开赞扬者
 
 praiseworthily
@@ -109202,7 +109172,7 @@ precipitable
 cut:
 
 
-adj. 可沉淀的；可降水的 precipitation
+adj. 可沉淀的；可降水的 water
 phrase: precipitable water vapor - 可降水水汽
 
 precipitant
@@ -109391,7 +109361,7 @@ phrase: premonsoon agricultural planning - 季风前农业规划
 preorder
 cut:
 preor/der
-人；物/人；物；比较级
+人；物/人；物
 
 n./v. 预订；预购 reservation, booking
 phrase: preorder a publication - 预订出版物
@@ -109408,7 +109378,7 @@ phrase: prepossess jurors through framing - 通过框架预先影响陪审员
 presenter
 cut:
 pre/sen/ter
-预先；在前/年老；感觉/人；物；比较级
+预先；在前/年老；感觉/人；物
 
 n. 参展者 person
 phrase: museum presenter - 博物馆参展者
@@ -109539,9 +109509,9 @@ phrase: preventative health measure - 预防性健康措施
 preventer
 cut:
 pre/ven/ter
-预先；在前/来/人；物；比较级
+预先；在前/来/人；物
 
-n. 阻止者；防止装置 prevent
+n. 阻止者；防止装置 person
 phrase: blowout preventer failure - 防喷器故障
 
 prevention
@@ -109622,7 +109592,7 @@ priestly
 cut:
 
 
-adv. 祭司的；神职的 priest
+adv. 祭司的；神职的 in a priest way
 phrase: priestly ritual authority - 祭司礼仪权威
 
 primacy
@@ -110166,7 +110136,7 @@ protector
 cut:
 
 
-n. 监护人；保护者 protect
+n. 监护人；保护者 person
 phrase: legal protector - 法定监护人
 
 protectorate
@@ -110394,7 +110364,7 @@ psychological
 cut:
 
 
-adj. 心理的；精神的 psychology, mind
+adj. 心理的；精神的 related to psychology, mind
 phrase: psychological pressure - 心理压力
 
 publicfunding
@@ -110422,7 +110392,7 @@ publisher
 cut:
 
 
-n. 出版商 publish
+n. 出版商 person or thing that publish
 phrase: academic publisher - 学术出版商
 
 pull
@@ -110465,14 +110435,14 @@ punishable
 cut:
 
 
-adj. 可惩罚的 punishment
+adj. 可惩罚的 able to be penalized
 phrase: punishable offence under statute - 法规下可处罚的罪行
 
 purchasable
 cut:
 
 
-adj. 可购买的 purchase
+adj. 可购买的 able to be bought
 phrase: purchasable public asset - 可购买公共资产
 
 purchaseorder
@@ -110486,7 +110456,7 @@ purchaser
 cut:
 
 
-n. 购买者 purchase
+n. 购买者 person
 phrase: first-time purchaser - 首次购买者
 
 purchasing
@@ -110564,7 +110534,7 @@ pyramidal
 cut:
 
 
-adj. 金字塔形的 pyramid
+adj. 金字塔形的 related to pyramid
 phrase: pyramidal social hierarchy - 金字塔式社会等级
 
 pyramidion
@@ -110803,7 +110773,7 @@ radiative
 cut:
 
 
-adj. 辐射的 radiate
+adj. 辐射的 related to radiate
 phrase: radiative cooling - 辐射冷却
 
 radicalize
@@ -111040,7 +111010,7 @@ ransomer
 cut:
 
 
-n. 赎金支付者；赎救者 ransom
+n. 赎金支付者；赎救者 person
 phrase: ransomer in hostage negotiations - 人质谈判中的赎救者
 
 ransomless
@@ -111127,7 +111097,7 @@ rationally
 cut:
 
 
-adv. 理性地 rational
+adv. 理性地 quality, property
 phrase: decide rationally - 理性决定
 
 ravenous
@@ -111502,7 +111472,7 @@ reconstructive
 cut:
 
 
-adj. 重建性的 rebuild, reconstruct
+adj. 重建性的 rebuild, quality, property
 phrase: reconstructive surgery - 重建手术
 
 reconvey
@@ -111531,7 +111501,7 @@ phrase: record collection - 档案集合
 recorder
 cut:
 re/cor/der
-再次；回/共同；加强/人；物；比较级
+再次；回/共同；加强/人；物
 
 n. 记录员；录音机 written account
 phrase: court recorder transcript - 法庭记录员笔录
@@ -111678,14 +111648,14 @@ redeemable
 cut:
 
 
-adj. 可赎回的；可挽回的 redeem
+adj. 可赎回的；可挽回的 able to be recovered
 phrase: redeemable government bond - 可赎回政府债券
 
 redeemer
 cut:
 
 
-n. 救赎者；赎回者 redeem
+n. 救赎者；赎回者 person
 phrase: redeemer figure in religion - 宗教中的救赎者形象
 
 redeliver
@@ -111700,7 +111670,7 @@ redevelop
 cut:
 
 
-v. 再开发 redevelopment
+v. 再开发 develop again
 phrase: redevelop old districts - 再开发旧区
 
 redirect
@@ -111874,21 +111844,21 @@ cut:
 re/fo/rest
 再次；回/叶；草/休息；剩余
 
-v. 再造林 reforestation
+v. 再造林 plant forest again
 phrase: reforest degraded land - 在退化土地再造林
 
 reformer
 cut:
 
 
-n. 改革者 reform
+n. 改革者 person
 phrase: education reformer coalition - 教育改革者联盟
 
 reformist
 cut:
 
 
-n./adj. 改革派的；改革者 reform
+n./adj. 改革派的；改革者 person
 phrase: reformist reform - 进步改革
 
 refract
@@ -111997,7 +111967,7 @@ cut:
 re/gress
 再次；回/行走
 
-v. 回归；倒退 regression
+v. 回归；倒退 move backward
 phrase: regress toward mean - 向均值回归
 
 regroup
@@ -112142,7 +112112,7 @@ phrase: relaychain in blockchain systems - 区块链系统中的中继链
 relayer
 cut:
 re/lay/er
-再次；回/名词；形容词/人；物；比较级
+再次；回/名词；形容词/人；物
 
 n. 转发器；接力者 person
 phrase: signal relayer network - 信号转发器网络
@@ -112165,7 +112135,7 @@ releasable
 cut:
 
 
-adj. 可发布的 publish, release
+adj. 可发布的 publish
 phrase: releasable data - 可发布数据
 
 relegation
@@ -112179,7 +112149,7 @@ relevancy
 cut:
 
 
-n. 相关性 relevance
+n. 相关性 quality, property
 phrase: legal relevancy - 法律相关性
 
 relict
@@ -112378,7 +112348,7 @@ removable
 cut:
 
 
-adj. 可移除的 remove
+adj. 可移除的 able to be taken away
 phrase: removable part - 可拆卸部件
 
 removesalt
@@ -112471,7 +112441,7 @@ phrase: religious renouncer - 宗教弃绝者
 reorder
 cut:
 reor/der
-人；物/人；物；比较级
+人；物/人；物
 
 n. 重新排序；重组 suite, set
 phrase: reorder institutional priorities - 重组制度优先项
@@ -112642,7 +112612,7 @@ representational
 cut:
 
 
-adj. 具象的；代表性的 represent
+adj. 具象的；代表性的 quality, property
 phrase: representational system - 表征系统
 
 repress
@@ -112795,7 +112765,7 @@ resiliently
 cut:
 
 
-adv. 有韧性地 resilient
+adv. 有韧性地 quality, property
 phrase: recover resiliently - 有韧性地恢复
 
 resistance-related
@@ -112861,7 +112831,7 @@ respire
 cut:
 
 
-v. 呼吸 respiration
+v. 呼吸 breathe
 phrase: cells respire - 细胞呼吸
 
 responsibly
@@ -113012,14 +112982,14 @@ retaliative
 cut:
 
 
-adj. 报复的；反击的 retaliate
+adj. 报复的；反击的 related to retaliate
 phrase: retaliative sanction design - 报复性制裁设计
 
 retaliator
 cut:
 
 
-n. 报复者；反击者 retaliate
+n. 报复者；反击者 person
 phrase: retaliator state in trade disputes - 贸易争端中的报复国
 
 retaliatory
@@ -113143,7 +113113,7 @@ returnable
 cut:
 
 
-adj. 可归还的 replace, return
+adj. 可归还的 replace
 phrase: returnable container - 可归还容器
 
 reusable
@@ -113231,7 +113201,7 @@ rewardable
 cut:
 
 
-adj. 可奖励的 reward
+adj. 可奖励的 deserving reward
 phrase: rewardable public service - 可奖励公共服务
 
 rewild
@@ -113254,14 +113224,14 @@ rhetorical
 cut:
 
 
-adj. 修辞的；反问的 rhetoric
+adj. 修辞的；反问的 related to rhetoric
 phrase: rhetorical device - 修辞手法
 
 rhetorically
 cut:
 
 
-adv. 修辞性地 rhetoric
+adv. 修辞性地 quality, property
 phrase: rhetorically powerful speech - 修辞上有力的演讲
 
 rhetorician
@@ -113275,7 +113245,7 @@ rhythmical
 cut:
 
 
-adj. 有节奏的 rhythm
+adj. 有节奏的 related to rhythm
 phrase: rhythmical pattern in speech - 言语中的节奏模式
 
 rib
@@ -113305,13 +113275,6 @@ cut:
 
 n./v. 水稻田 rice plant
 phrase: ricepaddy terrace system - 梯田水稻系统
-
-richest
-cut:
-
-
-adj. 最富有的 most wealthy
-phrase: the richest country - 最富有的国家
 
 richly
 cut:
@@ -113421,7 +113384,7 @@ rigorist
 cut:
 
 
-n. 严格主义者 rigorous, strict
+n. 严格主义者 doctrine, theory, strict
 phrase: moral rigorist - 道德严格主义者
 
 rigorously
@@ -113694,7 +113657,7 @@ robot
 cut:
 
 
-n./v. 机器人 robotic
+n./v. 机器人 machine, device
 phrase: industrial robot - 工业机器人
 phrase: robot arm - 机器人手臂
 
@@ -113702,7 +113665,7 @@ robotization
 cut:
 
 
-n. 机器人化；自动化 robotic
+n. 机器人化；自动化 machine, device
 phrase: factory robotization - 工厂机器人化
 
 robotize
@@ -113745,7 +113708,7 @@ rock
 cut:
 
 
-n. 岩石；摇滚 stone
+n. 岩石；摇滚 stone, shake
 phrase: rock and roll - 摇滚乐
 phrase: rock formation - 岩层
 phrase: rock music - 摇滚音乐
@@ -114194,7 +114157,7 @@ sailaround
 cut:
 
 
-环航 sail around
+环航
 phrase: sail around the globe - 环球航行
 
 sailboat
@@ -114398,7 +114361,7 @@ satellitic
 cut:
 
 
-adj. 卫星的；附属的 satellite
+adj. 卫星的；附属的 related to satellite
 phrase: satellitic system - 卫星系统
 
 satirical
@@ -114694,7 +114657,7 @@ scraper
 cut:
 
 
-n. 刮刀；刮削器 scrape
+n. 刮刀；刮削器 person or thing that scrapes
 phrase: ice scraper - 刮冰器
 
 screencast
@@ -115405,7 +115368,7 @@ sessional
 cut:
 
 
-adj. 会议的；分期的 session, meeting
+adj. 会议的；分期的 related to session, meeting
 phrase: sessional lecturer - 按学期聘任讲师
 
 settleable
@@ -115556,14 +115519,14 @@ shamanic
 cut:
 
 
-adj. 萨满的 shaman
+adj. 萨满的 related to shaman
 phrase: shamanic healing - 萨满治疗
 
 shamanism
 cut:
 
 
-n. 萨满教；萨满信仰 shaman
+n. 萨满教；萨满信仰 belief or system based on shaman
 phrase: shamanism in Siberian cultures - 西伯利亚文化中的萨满信仰
 
 shamanize
@@ -115724,7 +115687,7 @@ cut:
 shor/ten
 人；物/拿住；保持
 
-v. 缩短 foreshorten
+v. 缩短 foreshorten, make shorter
 phrase: shorten administrative delay - 缩短行政延误
 
 shortfall
@@ -116052,7 +116015,7 @@ slightness
 cut:
 
 
-n. 轻微 slightly
+n. 轻微 state or quality of being slightly
 phrase: slightness of change - 变化轻微性
 
 slotcanyon
@@ -116111,13 +116074,6 @@ cut:
 
 小教堂
 phrase: small church - 小教堂
-
-smallest
-cut:
-
-
-最小的 minimum
-phrase: smallest change - 最小变化
 
 smallmodel
 cut:
@@ -116184,7 +116140,7 @@ smelt
 cut:
 
 
-v. 冶炼 smelting
+v. 冶炼 melt metal from ore
 example: Early societies smelted iron to produce stronger tools and weapons.
 example_zh: 早期社会冶炼铁来生产更坚固的工具和武器。
 phrase: smelt iron - 冶炼铁
@@ -116196,7 +116152,7 @@ smelter
 cut:
 
 
-n. 冶炼厂；冶炼工 smelting
+n. 冶炼厂；冶炼工 person or thing that smelting
 phrase: copper smelter emissions - 铜冶炼厂排放
 
 smooth
@@ -116210,7 +116166,7 @@ smuggler
 cut:
 
 
-n. 走私者 smuggle
+n. 走私者 person
 phrase: smuggler network investigation - 走私者网络调查
 
 snowdrift
@@ -116361,7 +116317,7 @@ solidary
 cut:
 
 
-adj. 团结的 solidarity
+adj. 团结的 united
 phrase: solidary action - 团结行动
 
 solidify
@@ -116375,7 +116331,7 @@ solidity
 cut:
 
 
-n. 坚固；可靠性 substantial, solid
+n. 坚固；可靠性 substantial, quality, property
 phrase: solidity of legal reasoning - 法律推理的可靠性
 
 solitude
@@ -116565,7 +116521,7 @@ sovereigntist
 cut:
 
 
-n. 主权主义者 sovereignty
+n. 主权主义者 doctrine, theory
 phrase: sovereigntist political movement - 主权主义政治运动
 
 space-related
@@ -116686,7 +116642,7 @@ spectacularly
 cut:
 
 
-adv. 壮观地；惊人地 spectacular
+adv. 壮观地；惊人地 person
 phrase: fail spectacularly - 惨烈失败
 
 spectral
@@ -116716,7 +116672,7 @@ speculator
 cut:
 
 
-n. 投机者 speculative
+n. 投机者 person
 phrase: property speculator - 房产投机者
 
 speculum
@@ -116810,7 +116766,7 @@ spherically
 cut:
 
 
-adv. 球状地 spherical
+adv. 球状地 in a spherical way
 phrase: spherically shaped - 球形的
 
 spicebush
@@ -116838,7 +116794,7 @@ spinner
 cut:
 
 
-n. 纺纱者；旋转器 spinning
+n. 纺纱者；旋转器 person
 phrase: spinner device calibration - 旋转装置校准
 
 spinodal
@@ -116908,7 +116864,7 @@ spongy
 cut:
 
 
-n./v. 海绵状的 sponge
+n./v. 海绵状的 soft and porous
 phrase: spongy bone structure - 松质骨结构
 phrase: spongy tissue in plants - 植物中的海绵组织
 
@@ -116939,7 +116895,7 @@ sporadical
 cut:
 
 
-adj. 偶发的；零星的 sporadic
+adj. 偶发的；零星的 related to sporadic
 phrase: sporadical outbreak report - 偶发疫情报告
 
 sporangium
@@ -117426,7 +117382,7 @@ stinger
 cut:
 
 
-n. 刺；刺痛物 sting
+n. 刺；刺痛物 thing, object
 phrase: stinger missile system - 毒刺导弹系统
 
 stingless
@@ -117695,16 +117651,6 @@ cut:
 n./v. 妊娠纹；伸展纹 skin stretch line
 phrase: stretchmark treatment study - 伸展纹治疗研究
 
-stricter
-cut:
-
-
-n./v. 更严格的 rigorous, strict
-phrase: stricter pattern - stricter 模式
-phrase: stricter rule - 更严格的规则
-phrase: stricter standard - 更严格标准
-phrase: stricter enforcement - 更严格执法
-
 stricture
 cut:
 
@@ -117751,7 +117697,7 @@ structurally
 cut:
 
 
-adv. 结构性地 structure
+adv. 结构性地 quality, property
 phrase: structurally unequal - 结构性不平等
 
 studious
@@ -118096,7 +118042,7 @@ suddenness
 cut:
 
 
-n. 突然性 sudden
+n. 突然性 quality, property
 phrase: suddenness of economic collapse - 经济崩溃的突然性
 
 sue
@@ -118243,14 +118189,14 @@ summonable
 cut:
 
 
-adj. 可传唤的 summon
+adj. 可传唤的 able to be called
 phrase: summonable witness in court - 法庭中可传唤证人
 
 summoner
 cut:
 
 
-n. 召唤者；传唤人 summon
+n. 召唤者；传唤人 person
 phrase: summoner in medieval courts - 中世纪法庭中的传唤人
 
 sun-related
@@ -118326,7 +118272,7 @@ superseder
 cut:
 
 
-n. 取代者 supersede
+n. 取代者 person
 phrase: superseder of old technology - 旧技术的取代者
 
 supersession
@@ -118390,7 +118336,7 @@ supportive
 cut:
 
 
-adj. 支持性的 support
+adj. 支持性的 quality, property
 phrase: supportive policy - 支持性政策
 
 suppression
@@ -118732,14 +118678,14 @@ symbolism
 cut:
 
 
-n. 象征主义；象征意义 symbol
+n. 象征主义；象征意义 doctrine, theory
 phrase: religious symbolism in art - 艺术中的宗教象征
 
 symbolist
 cut:
 
 
-n. 象征主义者 symbol
+n. 象征主义者 doctrine, theory
 phrase: symbolist poetry movement - 象征主义诗歌运动
 
 symbology
@@ -118754,14 +118700,14 @@ symmetric
 cut:
 
 
-adj. 对称的 symmetry
+adj. 对称的 related to symmetry
 phrase: symmetric pattern - 对称图案
 
 symmetrical
 cut:
 
 
-adj. 对称的 symmetry
+adj. 对称的 related to symmetry
 phrase: symmetrical facial features - 对称面部特征
 
 synaptic
@@ -118844,14 +118790,14 @@ syndromal
 cut:
 
 
-adj. 综合征的 syndrome
+adj. 综合征的 related to syndrome
 phrase: syndromal classification of symptoms - 症状的综合征分类
 
 syndromic
 cut:
 
 
-adj. 综合征的 syndrome
+adj. 综合征的 related to syndrome
 phrase: syndromic diagnosis - 综合征诊断
 
 synergy
@@ -118895,7 +118841,7 @@ syntactical
 cut:
 
 
-adj. 句法的 syntactic
+adj. 句法的 related to syntactic
 phrase: syntactical structure - 句法结构
 
 syntheticness
@@ -119021,7 +118967,7 @@ tautological
 cut:
 
 
-adj. 同义反复的 tautology
+adj. 同义反复的 related to tautology
 phrase: tautological statement - 重言式陈述
 
 tautomer
@@ -119203,7 +119149,7 @@ telescopic
 cut:
 
 
-adj. 望远镜的；伸缩的 telescope
+adj. 望远镜的；伸缩的 related to telescope
 phrase: telescopic lens - 望远镜镜头
 
 televise
@@ -119517,7 +119463,7 @@ theatrical
 cut:
 
 
-adj. 戏剧的；夸张的 theatre, drama
+adj. 戏剧的；夸张的 related to theatre, drama
 phrase: theatrical gesture - 戏剧化姿态
 
 theatricality
@@ -119531,7 +119477,7 @@ theatrically
 cut:
 
 
-adv. 戏剧性地；夸张地 theatre, drama
+adv. 戏剧性地；夸张地 quality, property, drama
 phrase: act theatrically - 夸张地表现
 
 theatrics
@@ -120107,21 +120053,21 @@ totemic
 cut:
 
 
-adj. 图腾的 totem
+adj. 图腾的 related to totem
 phrase: totemic symbol - 图腾符号
 
 totemism
 cut:
 
 
-n. 图腾崇拜 totem
+n. 图腾崇拜 belief or system based on totem
 phrase: totemism in anthropology - 人类学中的图腾崇拜
 
 totemist
 cut:
 
 
-n. 图腾信仰者；研究者 totem
+n. 图腾信仰者；研究者 person
 phrase: totemist interpretation of ritual - 图腾主义者对仪式的解释
 
 totempole
@@ -120206,7 +120152,7 @@ tracker
 cut:
 
 
-n. 追踪者；追踪器 track
+n. 追踪者；追踪器 person
 phrase: tracker data privacy - 追踪器数据隐私
 
 trackway
@@ -120401,21 +120347,21 @@ translatable
 cut:
 
 
-adj. 可翻译的 translate, translation
+adj. 可翻译的 translation
 phrase: translatable cultural concept - 可翻译的文化概念
 
 translative
 cut:
 
 
-adj. 翻译的；转移格的 translate, translation
+adj. 翻译的；转移格的 related to translate, translation
 phrase: translative equivalence problem - 翻译等值问题
 
 translator
 cut:
 
 
-n. 译者；翻译器 translate, translation
+n. 译者；翻译器 person, translation
 phrase: professional translator training - 专业译者培训
 
 transliterate
@@ -120484,7 +120430,7 @@ transportable
 cut:
 
 
-adj. 可运输的 transport
+adj. 可运输的 able to be moved
 phrase: transportable equipment - 可运输设备
 
 transpose
@@ -120551,14 +120497,14 @@ traversable
 cut:
 
 
-adj. 可穿越的 traverse
+adj. 可穿越的 able to be crossed
 phrase: traversable terrain - 可穿越地形
 
 traversal
 cut:
 
 
-adj. 横穿；遍历 traverse
+adj. 横穿；遍历 related to traverse
 phrase: graph traversal algorithm - 图遍历算法
 
 treacherous
@@ -120818,7 +120764,7 @@ trilobitic
 cut:
 
 
-adj. 三叶虫的 trilobite
+adj. 三叶虫的 related to trilobite
 phrase: trilobitic fossil assemblage - 三叶虫化石组合
 
 triumphal
@@ -121058,7 +121004,7 @@ tuberous
 cut:
 
 
-adj. 块茎状的；结节状的 tuber
+adj. 块茎状的；结节状的 related to tuber
 phrase: tuberous root development - 块根发育
 
 turbinal
@@ -121215,7 +121161,7 @@ unanimity
 cut:
 
 
-n. 一致同意 unanimous
+n. 一致同意 state or quality of being unanimous
 phrase: unanimity among committee members - 委员会成员一致同意
 phrase: unanimity in jury decision - 陪审团决定一致
 
@@ -121441,7 +121387,7 @@ phrase: underground heat source - 地下热源
 underlay
 cut:
 un/der/lay
-不；相反/人；物；比较级/名词；形容词
+不；相反/人；物/名词；形容词
 
 n./v. 铺在下面；基础层 foundation
 phrase: underlay material in construction - 建筑中的底层材料
@@ -121496,7 +121442,7 @@ understandable
 cut:
 
 
-adj. 可理解的 understanding
+adj. 可理解的 easy to comprehend
 phrase: understandable explanation - 可理解解释
 
 understandably
@@ -121626,7 +121572,7 @@ unemployed
 cut:
 
 
-n./adj. 失业的；失业者 unemployment
+n./adj. 失业的；失业者 person
 example: The unemployed need support that protects dignity as well as income.
 example_zh: 失业者需要既保护收入也保护尊严的支持。
 phrase: unemployed youth - 失业青年
@@ -121660,7 +121606,7 @@ unfair
 cut:
 
 
-adj. 不公平的 unfairness
+adj. 不公平的 not just
 phrase: unfair rule - 不公平规则
 
 unfashionable
@@ -122193,7 +122139,7 @@ urbanisation
 cut:
 
 
-n. 城市化 urbanization
+n. 城市化 act or process of urbanization
 phrase: rapid urbanisation - 快速城市化
 
 urbanize
@@ -122640,7 +122586,7 @@ verminous
 cut:
 
 
-adj. 害虫般的；肮脏的 vermin
+adj. 害虫般的；肮脏的 related to vermin
 phrase: verminous living conditions - 害虫滋生的生活条件
 
 vernacularity
@@ -122778,7 +122724,7 @@ viewpoint
 cut:
 
 
-n. 观点；视角 perspective
+n. 观点；视角 perspective, viewpoint, opinion, opinion
 phrase: minority viewpoint - 少数派观点
 
 vigilante
@@ -122826,14 +122772,14 @@ violative
 cut:
 
 
-adj. 违反的；侵犯性的 violate
+adj. 违反的；侵犯性的 quality, property
 phrase: violative surveillance practice - 侵犯性的监控做法
 
 violator
 cut:
 
 
-n. 违反者 violate
+n. 违反者 person
 phrase: traffic violator - 交通违规者
 
 violet-adjacent
@@ -122847,7 +122793,7 @@ violinist
 cut:
 
 
-n. 小提琴家 violin
+n. 小提琴家 specialist or supporter of violin
 phrase: violinist performance technique - 小提琴家演奏技巧
 
 virtuality
@@ -123096,7 +123042,7 @@ vulturous
 cut:
 
 
-adj. 秃鹫般的；贪婪的 vulture
+adj. 秃鹫般的；贪婪的 related to vulture
 phrase: vulturous speculation in markets - 市场中的贪婪投机
 
 wadeable
@@ -123593,7 +123539,7 @@ weakening
 cut:
 
 
-减弱 weaken
+减弱
 phrase: signal weakening - 信号减弱
 
 weakly
@@ -123637,7 +123583,7 @@ weaponization
 cut:
 
 
-n. 武器化 weapon
+n. 武器化 act or process of weapon
 phrase: weaponization of artificial intelligence - 人工智能武器化
 
 weaponize
@@ -123958,14 +123904,14 @@ wieldable
 cut:
 
 
-adj. 可使用的；可掌控的 wield, use
+adj. 可使用的；可掌控的 use
 phrase: wieldable legal authority - 可运用的法律权力
 
 wielder
 cut:
 
 
-n. 使用者；掌权者 wield, use
+n. 使用者；掌权者 person, use
 phrase: wielder of executive power - 行政权力掌握者
 
 wieldy
@@ -124483,7 +124429,7 @@ yieldable
 cut:
 
 
-adj. 可屈服的；可产出的 flexible, yielding
+adj. 可屈服的；可产出的 able to bend or give way
 phrase: yieldable structure - 可屈服结构
 
 yieldcurve
@@ -124535,14 +124481,14 @@ cut:
 zoo/logi/cal
 动物/学科；研究/形容词
 
-adj. 动物学的 zoology
+adj. 动物学的 field of study
 phrase: zoological survey - 动物学调查
 
 zoologist
 cut:
 
 
-n. 动物学家 zoology
+n. 动物学家 specialist, scholar
 phrase: field zoologist - 野外动物学家
 
 zoonosis

@@ -130,6 +130,65 @@ WORD_ALIASES = {
     "unambiguou": "unambiguous",
 }
 
+COMPARATIVE_ALIASES = {
+    "better": "good",
+    "brighter": "bright",
+    "broader": "broad",
+    "cleverer": "clever",
+    "closer": "close",
+    "coldest": "cold",
+    "deeper": "deep",
+    "deepest": "deep",
+    "earlier": "early",
+    "easiest": "easy",
+    "easier": "easy",
+    "farther": "far",
+    "faster": "fast",
+    "fastest": "fast",
+    "firmer": "firm",
+    "flatter": "flat",
+    "greater": "great",
+    "greatest": "great",
+    "harder": "hard",
+    "highest": "high",
+    "higher": "high",
+    "larger": "large",
+    "largest": "large",
+    "later": "late",
+    "latest": "late",
+    "lighter": "light",
+    "longer": "long",
+    "longest": "long",
+    "louder": "loud",
+    "milder": "mild",
+    "narrower": "narrow",
+    "newer": "new",
+    "newest": "new",
+    "older": "old",
+    "oldest": "old",
+    "remotest": "remote",
+    "richest": "rich",
+    "sharper": "sharp",
+    "shorter": "short",
+    "shortest": "short",
+    "slower": "slow",
+    "slowest": "slow",
+    "smaller": "small",
+    "smallest": "small",
+    "smarter": "smart",
+    "sooner": "soon",
+    "stricter": "strict",
+    "stronger": "strong",
+    "strongest": "strong",
+    "subtler": "subtle",
+    "sweeter": "sweet",
+    "taller": "tall",
+    "warmer": "warm",
+    "wealthier": "wealthy",
+    "wetter": "wet",
+    "younger": "young",
+}
+
 SMALL_CARD_ONLY = {
     "beethoven",
     "bengal",
@@ -929,6 +988,85 @@ EXTRA_GLOSSES = {
 }
 
 EXTRA_CUTS = {
+    "science": ["sci/ence", "知道；知识/名词"],
+    "scientist": ["sci/ent/ist", "知道；知识/形容词；人/专家；人"],
+    "scientific": ["sci/ent/ific", "知道；知识/形容词；人/形成；形容词"],
+    "conscientious": ["con/sci/ent/ious", "共同；加强/知道/形容词；人/形容词"],
+    "destruction": ["de/struct/ion", "向下；破坏/建立；结构/名词"],
+    "pressure": ["press/ure", "压/名词"],
+    "codify": ["code/ify", "法规；编码/使成为"],
+    "commercial": ["commerce/ial", "商业；贸易/形容词"],
+    "consistency": ["consist/ency", "一致；组成/名词"],
+    "dealer": ["deal/er", "交易；处理/人"],
+    "deteriorate": ["deterior/ate", "变坏/动词"],
+    "distinctive": ["distinct/ive", "不同；明显/形容词"],
+    "enzyme": ["en/zyme", "在内/发酵"],
+    "figurative": ["figure/ative", "形象；象征/形容词"],
+    "generalize": ["general/ize", "一般；概括/使成为"],
+    "genetic": ["gene/tic", "基因/形容词"],
+    "genetics": ["genet/ic/s", "基因；遗传/形容词/名词"],
+    "gentility": ["gentle/ility", "温和；文雅/名词"],
+    "idyllic": ["idyll/ic", "田园诗；田园景象/形容词"],
+    "layer": ["lay/er", "放置；层/人；物"],
+    "legislature": ["legislat/ure", "立法/名词"],
+    "literally": ["literal/ly", "文字；字面/副词"],
+    "locally": ["local/ly", "地方；当地/副词"],
+    "melodrama": ["melody/drama", "旋律/戏剧"],
+    "metabolic": ["metabol/ic", "变化；代谢/形容词"],
+    "nomadic": ["nomad/ic", "游牧者；流浪者/形容词"],
+    "noticeable": ["notice/able", "注意/能够；形容词"],
+    "panel": ["pan/el", "面板/小"],
+    "partial": ["part/ial", "部分/形容词"],
+    "percussion": ["percuss/ion", "敲击/名词"],
+    "pivotal": ["pivot/al", "枢轴；关键/形容词"],
+    "plantation": ["plant/ation", "种植；植物/名词"],
+    "poster": ["post/er", "张贴；岗位/物"],
+    "practically": ["practical/ly", "实际/副词"],
+    "preferable": ["prefer/able", "更喜欢/能够；形容词"],
+    "preoccupation": ["pre/occup/ation", "预先/占据/名词"],
+    "prevailing": ["prevail/ing", "流行；占优/形容词"],
+    "priority": ["prior/ity", "在前；优先/名词"],
+    "prodigious": ["prodigy/ious", "惊人事物；奇才/形容词"],
+    "productivity": ["product/ivity", "产物；产品/名词"],
+    "proliferation": ["prolifer/ation", "增生；繁殖/名词"],
+    "pronounced": ["pronounce/d", "宣称；发音/形容词"],
+    "publicize": ["public/ize", "公众/使成为"],
+    "rampant": ["ramp/ant", "蔓延；攀爬/形容词"],
+    "reasonable": ["reason/able", "理由；理性/能够；形容词"],
+    "reckless": ["reck/less", "顾忌/无；缺少"],
+    "recreation": ["re/create/ion", "再次/创造/名词"],
+    "refined": ["refine/d", "精炼；改进/形容词"],
+    "regardless": ["regard/less", "关心；考虑/无；缺少"],
+    "repetition": ["repeat/ition", "重复/名词"],
+    "resident": ["resid/ent", "居住/人；形容词"],
+    "roughly": ["rough/ly", "粗糙；大致/副词"],
+    "satiric": ["satire/ic", "讽刺/形容词"],
+    "scavenger": ["scaveng/er", "清除；觅食/人；物"],
+    "sharpen": ["sharp/en", "锋利/使成为"],
+    "shortage": ["short/age", "短缺/名词"],
+    "simplicity": ["simple/icity", "简单/名词"],
+    "simplify": ["simple/ify", "简单/使成为"],
+    "skeletal": ["skeleton/al", "骨架/形容词"],
+    "soothe": ["sooth/e", "安抚/连接音"],
+    "spiral": ["spir/al", "螺旋/形容词；名词"],
+    "spontaneity": ["spontaneous/ity", "自发/名词"],
+    "summarize": ["summary/ize", "概要/使成为"],
+    "technical": ["techn/ical", "技艺；技术/形容词"],
+    "typical": ["type/ical", "类型；典型/形容词"],
+    "boon": ["boon", "恩惠；好处"],
+    "canyon": ["canyon", "峡谷"],
+    "debut": ["debut", "初次出现；首次亮相"],
+    "exhilarating": ["ex/hilar/ate/ing", "使；向外/高兴/动词/形容词"],
+    "haul": ["haul", "拖；拉；运输"],
+    "intoxication": ["in/toxic/ation", "使；进入/毒/名词"],
+    "nectar": ["nectar", "花蜜；甘露"],
+    "pamphlet": ["pamphlet", "小册子"],
+    "pierce": ["pierce", "刺穿；穿透"],
+    "recollection": ["re/collect/ion", "再次；回/收集；回想/名词"],
+    "repertoire": ["repertoire", "全部节目；全部技能"],
+    "ridge": ["ridge", "山脊；隆起"],
+    "tend": ["tend", "趋向；照料"],
+    "tempt": ["tempt", "诱惑；尝试"],
     "agreeable": ["agree/able", "同意；令人愉快/能够；形容词"],
     "breathable": ["breath/able", "呼吸/能够；形容词"],
     "conceivable": ["con/ceiv/able", "共同；完全/拿取；理解/能够；形容词"],
@@ -1101,7 +1239,7 @@ EXTRA_CUTS = {
     "livelihood": ["live/li/hood", "生活/状态/名词"],
     "locate": ["loc/ate", "地方；位置/动词"],
     "locomotive": ["loco/mot/ive", "地方/移动/形容词；名词"],
-    "lower": ["low/er", "低/动词；形容词比较级"],
+    "lower": ["low/er", "低/动词；更低"],
     "machinery": ["machine/ery", "机器/集合名词"],
     "major": ["major", "大的；主要的"],
     "mammoth": ["mammoth", "猛犸象；巨大的"],
@@ -32343,6 +32481,43 @@ def load_family_heads():
             word = clean_space(word).lower()
             if re.fullmatch(r"[a-z][a-z-]*", word):
                 out[word] = head
+    family_head_overrides = {
+        "copy": "copy",
+        "copybook": "copy",
+        "copyedit": "copy",
+        "copying": "copy",
+        "copyist": "copy",
+        "copyright": "copy",
+        "copilot": "copilot",
+        "mite": "mite",
+        "mitemiticide": "mite",
+        "miticide": "mite",
+        "mitigate": "mitigate",
+        "mitigation": "mitigate",
+        "intonate": "intonate",
+        "intonation": "intonate",
+        "tonal": "tonal",
+        "real": "real",
+        "realise": "real",
+        "realism": "real",
+        "realist": "real",
+        "reality": "real",
+        "strict": "strict",
+        "stricter": "strict",
+        "strictly": "strict",
+        "stricture": "strict",
+        "rate": "rate",
+        "ration": "ration",
+        "rational": "ration",
+        "rationale": "ration",
+        "rationalism": "ration",
+        "rationalist": "ration",
+        "rationality": "ration",
+        "rationally": "ration",
+        "irrational": "ration",
+        "irrationality": "ration",
+    }
+    out.update(family_head_overrides)
     return out
 
 
@@ -32361,6 +32536,10 @@ def load_dotted_cuts():
 
 
 def normalize_to_available_word(word, sources):
+    if word in COMPARATIVE_ALIASES:
+        base = COMPARATIVE_ALIASES[word]
+        if base in sources:
+            return base
     if word in sources:
         return word
     candidates = [
@@ -41418,6 +41597,66 @@ def anti_self_gloss(word, zh, pos=""):
     zh = clean_space(zh)
     manual = {
         "fascinating": "attractive, captivating",
+        "allergy": "immune sensitivity",
+        "bargainable": "open to negotiation",
+        "bureaucrat": "government official",
+        "calculable": "able to be computed",
+        "carcase": "dead body",
+        "commutable": "able to be reduced or travelled",
+        "condemnable": "deserving blame",
+        "custom": "border duty",
+        "degrade": "worsen, damage",
+        "dialectical": "argument-based",
+        "droopy": "hanging downward",
+        "economic": "money-related",
+        "economical": "saving money",
+        "elemental": "basic, fundamental",
+        "examinable": "able to be tested",
+        "exportation": "sending goods abroad",
+        "fermentable": "able to undergo fermentation",
+        "harassable": "easy to disturb repeatedly",
+        "humpbackwhale": "large baleen whale",
+        "ignitable": "able to catch fire",
+        "informational": "giving information",
+        "insisted": "strongly demanded",
+        "insisting": "strongly demanding",
+        "intervene": "step in",
+        "introduce": "bring in, present",
+        "invest": "put money or effort in",
+        "larva": "young insect form",
+        "legislate": "make laws",
+        "manageable": "easy to control",
+        "marketable": "easy to sell",
+        "matter": "substance, issue",
+        "neurogenesi": "nerve-cell formation",
+        "oblige": "force, help",
+        "ontology": "study of being",
+        "punish": "penalize",
+        "punishable": "able to be penalized",
+        "purchasable": "able to be bought",
+        "redeemable": "able to be recovered",
+        "redevelop": "develop again",
+        "refuse": "reject",
+        "reforest": "plant forest again",
+        "regress": "move backward",
+        "removable": "able to be taken away",
+        "respire": "breathe",
+        "rewardable": "deserving reward",
+        "rock": "stone, shake",
+        "smelt": "melt metal from ore",
+        "solidary": "united",
+        "spongy": "soft and porous",
+        "stripe": "long narrow mark",
+        "summonable": "able to be called",
+        "theorist": "theory specialist",
+        "transportable": "able to be moved",
+        "traversable": "able to be crossed",
+        "treat": "handle, cure",
+        "understand": "comprehend",
+        "understandable": "easy to comprehend",
+        "unfair": "not just",
+        "worth": "value, deserving",
+        "yieldable": "able to bend or give way",
         "account": "financial record, explanation",
         "bamboo": "woody grass",
         "bulb": "lamp globe, rounded root",
@@ -41702,7 +41941,7 @@ def anti_self_gloss(word, zh, pos=""):
         "woundless": "uninjured",
         "written": "in writing",
         "xenophobic": "hostile to foreigners",
-        "yieldable": "flexible, yielding",
+        "yieldable": "able to bend or give way",
         "accumulation": "buildup, increase",
         "agronomy": "crop science",
         "aquatic": "water-related",
@@ -41853,7 +42092,7 @@ def anti_self_gloss(word, zh, pos=""):
         "deterrence": "prevention by threat",
         "deviate": "depart, diverge",
         "devour": "eat greedily",
-        "dialectical": "argument-based, dialectic",
+        "dialectical": "argument-based",
         "dietary": "food-related",
         "difference": "distinction, disagreement",
         "dilemma": "difficult choice",
@@ -44283,7 +44522,7 @@ def anti_self_gloss(word, zh, pos=""):
         "expansive": "wide, broad",
         "exponentially": "at exponential rate",
         "exportable": "able to be exported",
-        "exportation": "exporting",
+        "exportation": "sending goods abroad",
         "exporter": "seller abroad",
         "expound": "explain in detail",
         "expropriation": "taking property officially",
@@ -45105,6 +45344,39 @@ def anti_self_gloss(word, zh, pos=""):
         "seasonable": "timely, suitable to season",
         "secede": "withdraw formally",
         "sect": "religious group",
+        "behaviorism": "behaviour-based theory",
+        "center": "middle point",
+        "colonial": "colonisation",
+        "compression": "compressed, compressive",
+        "equator": "imaginary line around Earth",
+        "ethnic": "ethnography, ethnocentrism",
+        "evolution": "evolutionary change",
+        "exclude": "exclusion",
+        "extract": "extraction",
+        "immunity": "immune protection",
+        "insulation": "insulator, protective layer",
+        "intense": "strong, extreme",
+        "measure": "measurement",
+        "migration": "movement to another place",
+        "oxygen": "air element",
+        "participate": "participation",
+        "physical": "physicist, bodily",
+        "politics": "political affairs",
+        "practical": "useful, realistic",
+        "precise": "exact, accurate",
+        "rational": "logical, rationalism",
+        "refine": "improve, purify",
+        "retail": "selling directly to consumers",
+        "retailer": "seller to consumers",
+        "generator": "machine that produces power",
+        "prisoner": "captive",
+        "theater": "theatre, stage venue",
+        "whether": "if",
+        "strict": "rigorous",
+        "suburb": "suburban area",
+        "triangle": "three-sided shape",
+        "unique": "one of a kind",
+        "vertical": "upright",
     }
     if word in manual:
         return manual[word]
@@ -45118,6 +45390,146 @@ def replace_self_gloss(word, zh, pos, syn):
     syn = clean_syn(syn)
     if not syn:
         return syn
+    specific = {
+        ("behaviorism", "行为主义者"): "behaviourist",
+        ("cell", "细胞的"): "cellular",
+        ("climate", "气候的"): "climatic",
+        ("compression", "抗压的"): "compressive",
+        ("constitution", "宪法上"): "constitutionally",
+        ("constitution", "宪法的"): "constitutional",
+        ("culture", "人工培养的"): "cultured",
+        ("ethnic", "民族中心主义"): "ethnocentrism",
+        ("ethnic", "民族志"): "ethnography",
+        ("instinct", "本能的"): "instinctive",
+        ("mathematics", "数学的"): "mathematical",
+        ("meticulous", "细致地"): "meticulously",
+        ("monarch", "君主制"): "monarchy",
+        ("municipal", "市"): "civic, city-related",
+        ("mutual", "相互地"): "mutually",
+        ("navigation", "导航的"): "navigational",
+        ("notorious", "臭名昭著"): "infamous",
+        ("objective", "客观的"): "impartial",
+        ("occasional", "偶然的"): "infrequent, accidental",
+        ("orbital", "轨道的"): "orbit-related",
+        ("perceive", "可察觉"): "perceptible",
+        ("periodic", "周期"): "cyclical",
+        ("personal", "亲自"): "in person",
+        ("perspective", "角度"): "viewpoint",
+        ("perspective", "远景"): "prospect",
+        ("poisonous", "有毒"): "toxic",
+        ("potential", "潜能"): "capacity",
+        ("potential", "潜在"): "possible",
+        ("preference", "优先地"): "preferably",
+        ("reliable", "可靠地"): "reliably",
+        ("religion", "宗教的"): "religious",
+        ("repetition", "重复的"): "repeated",
+        ("revival", "复兴"): "revive, restoration",
+        ("substantial", "富裕"): "wealthy",
+        ("substantial", "坚固"): "solid",
+        ("traditional", "口传"): "oral",
+        ("tropic", "热带"): "tropical region",
+        ("tropical", "热带的"): "tropic-related",
+        ("tension", "张力"): "strain",
+        ("diagonal", "倾斜"): "slanting",
+        ("consider", "认为"): "regard, view",
+        ("generator", "发电机"): "machine that produces power",
+        ("immigrant", "移民的"): "migrant-related",
+        ("persecution", "迫害"): "oppression, harassment",
+        ("prisoner", "俘虏"): "captive",
+        ("protection", "防御"): "defence",
+        ("real", "真实的"): "true, actual",
+        ("receive", "收到"): "get, accept",
+        ("refusal", "拒绝"): "rejection",
+        ("retirement", "退休"): "leaving work permanently",
+        ("sceptical", "怀疑的"): "skeptical, doubtful",
+        ("tidal", "潮汐的"): "tide-related",
+        ("translation", "翻译"): "rendering in another language",
+        ("whether", "是否"): "if",
+        ("forerunner", "先兆"): "sign, precursor",
+        ("smother", "窒息"): "suffocate",
+        ("objection", "反对"): "opposition",
+        ("inclusion", "包容"): "including, acceptance",
+        ("theater", "剧场"): "theatre, stage venue",
+        ("canonic", "规范的"): "canonical",
+        ("unethical", "不道德"): "immoral",
+        ("opposition", "反对"): "objection, resistance",
+        ("perception", "认识"): "understanding, idea",
+        ("prohibition", "禁止"): "ban",
+        ("regulation", "控制"): "control",
+        ("relation", "关系"): "relationship",
+        ("revitalization", "复兴"): "revival",
+        ("utilisation", "利用"): "use",
+        ("audition", "旁听"): "audit, listening trial",
+        ("devotion", "热爱"): "love, dedication",
+        ("ferment", "发酵"): "undergo fermentation",
+    }
+    for (target_word, needle), replacement in specific.items():
+        if word == target_word and needle in zh:
+            lowered = syn.lower()
+            if (
+                word.lower() in lowered
+                or "related to" in lowered
+                or "relating to" in lowered
+                or "person or thing that" in lowered
+                or "act or process of" in lowered
+                or "result or process of" in lowered
+                or lowered == re.sub(r"[^a-z]+", "", word.lower())
+            ):
+                return replacement
+    if syn.lower().startswith("person or thing that"):
+        replacement = anti_self_gloss(word.lower(), zh, pos)
+        if replacement and replacement != "person":
+            return replacement
+
+    def basic_stem(value):
+        value = re.sub(r"[^a-z]+", "", value.lower())
+        for suffix in (
+            "ational", "fulness", "ically", "ational", "ization", "isation",
+            "ically", "ingly", "edly", "ation", "ition", "tion", "sion",
+            "ment", "ness", "able", "ible", "ally", "ical", "ous", "ive",
+            "ing", "ed", "ly", "al", "ic", "er", "or", "ist", "ism",
+            "ity", "y", "e", "s",
+        ):
+            if len(value) > len(suffix) + 3 and value.endswith(suffix):
+                return value[: -len(suffix)]
+        return value
+
+    def is_selfish_part(part):
+        normalized = re.sub(r"[^a-z-]+", " ", part.lower()).replace("-", " ").strip()
+        normalized_word = word.lower().replace("-", " ")
+        if normalized == normalized_word:
+            return True
+        compact_part = re.sub(r"[^a-z]+", "", part.lower())
+        compact_word = re.sub(r"[^a-z]+", "", word.lower())
+        if compact_part == compact_word:
+            return True
+        stem_part = basic_stem(compact_part)
+        stem_word = basic_stem(compact_word)
+        return len(stem_word) >= 5 and stem_part == stem_word
+
+    def derivational_gloss(part):
+        part = clean_space(part).lower()
+        lower_word = word.lower()
+        if lower_word.endswith("ly") or pos.startswith("adv"):
+            return f"in a {part} way" if part else ""
+        if lower_word.endswith(("er", "or")):
+            if part.endswith("e"):
+                return f"person or thing that {part}s"
+            return f"person or thing that {part}"
+        if lower_word.endswith("ist"):
+            return f"specialist or supporter of {part}" if part else ""
+        if lower_word.endswith("ism"):
+            return f"belief or system based on {part}" if part else ""
+        if lower_word.endswith(("ness", "ity", "cy")):
+            return f"state or quality of being {part}" if part else ""
+        if lower_word.endswith("ment"):
+            return f"result or process of {part}" if part else ""
+        if lower_word.endswith(("tion", "sion", "ation", "ition")):
+            return f"act or process of {part}" if part else ""
+        if lower_word.endswith(("al", "ic", "ical", "ive", "ous")):
+            return f"related to {part}" if part else ""
+        return ""
+
     normalized_word = word.lower().replace("-", " ")
     normalized_syn = re.sub(r"[^a-z-]+", " ", syn.lower()).replace("-", " ").strip()
     if normalized_syn == normalized_word:
@@ -45125,8 +45537,10 @@ def replace_self_gloss(word, zh, pos, syn):
     parts = [clean_space(part) for part in re.split(r",|;", syn) if clean_space(part)]
     kept = []
     for part in parts:
-        normalized_part = re.sub(r"[^a-z-]+", " ", part.lower()).replace("-", " ").strip()
-        if normalized_part == normalized_word:
+        if is_selfish_part(part):
+            replacement = anti_self_gloss(word.lower(), zh, pos) or derivational_gloss(part)
+            if replacement:
+                kept.append(replacement)
             continue
         kept.append(part)
     if parts and kept != parts:
@@ -45231,8 +45645,8 @@ CUT_PART_GLOSSES = {
     "hyper": "超过；过度",
     "hypo": "在下；不足",
     "il": "不",
-    "im": "不；进入",
-    "in": "不；进入",
+    "im": "进入；向内；否定",
+    "in": "进入；向内；否定",
     "infra": "在下",
     "inter": "在…之间；相互",
     "intra": "在内",
@@ -45319,7 +45733,7 @@ CUT_PART_GLOSSES = {
     "ence": "性质；状态；名词",
     "ency": "性质；状态；名词",
     "ent": "形容词；人；物",
-    "er": "人；物；比较级",
+    "er": "人；物",
     "ery": "集合；场所",
     "esque": "像…的",
     "ful": "充满；形容词",
@@ -45372,8 +45786,8 @@ CUT_PART_GLOSSES = {
     "ral": "形容词",
     "tal": "形容词",
     "lar": "形容词",
-    "ter": "人；物；比较级",
-    "der": "人；物；比较级",
+    "ter": "人；物",
+    "der": "人；物",
     "sis": "状态；过程；名词",
     "tance": "状态；名词",
     "rance": "状态；名词",
@@ -45835,7 +46249,7 @@ def cut_part_gloss(part):
         ("ical", "形容词"),
         ("ic", "形容词"),
         ("al", "形容词；名词"),
-        ("er", "人；物；比较级"),
+        ("er", "人；物"),
         ("or", "人；物"),
         ("ly", "副词"),
         ("y", "名词；形容词"),
@@ -45956,10 +46370,13 @@ def render_card(word, toefl, old, kin, dotted_cuts, family_heads):
 
     numbered = len(meanings) > 1
     for idx, meaning in enumerate(meanings, 1):
-        syn = f" {meaning.get('syn', '')}" if meaning.get("syn") else ""
         prefix = f"{idx}. " if numbered else ""
         pos = clean_space(meaning.get("pos", ""))
-        head = " ".join(part for part in [pos, meaning.get("zh", "") + syn] if part).strip()
+        zh = clean_space(meaning.get("zh", ""))
+        fixed_syn = replace_self_gloss(word, zh, pos, meaning.get("syn", ""))
+        meaning["syn"] = fixed_syn
+        syn = f" {fixed_syn}" if fixed_syn else ""
+        head = " ".join(part for part in [pos, zh + syn] if part).strip()
         out.append(f"{prefix}{head}".strip())
         meaning_example = meaning.get("example")
         meaning_example_zh = meaning.get("example_zh")
