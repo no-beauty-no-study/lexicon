@@ -3664,6 +3664,22 @@ const Views = (function () {
         return (L && L[kind]) || s.common;
       }
       let lastBranchAff = null;   // affection on the branch just resolved
+      // Choice BGM by TYPE: a choice tagged common.mortal/rivalry uses that;
+      // a male-lead heart choice (affection) uses that boy's choice track;
+      // otherwise the plain pre-choice tension.
+      function choiceTension(c) {
+        if (c._bgm === "common.mortal")  return catTrack("common.mortal");
+        if (c._bgm === "common.rivalry") return catTrack("common.rivalry");
+        if (c.kind === "affection") {
+          const who = (c.branches.map(b => b.aff && b.aff.who).find(Boolean) || "").toLowerCase().split(/\s+/)[0];
+          const t = catTrack(who + ".choice");
+          if (t) return t;
+        }
+        return scene().tension;
+      }
+      function choiceWrong(c) {
+        return c._bgm === "common.mortal" ? (catTrack("common.despair") || scene().wrong) : scene().wrong;
+      }
       // After a choice resolves and the story continues, settle the score:
       // a male-lead affection gain → that boy's HEART track (romance scene);
       // otherwise back to the chapter's daily mood.
@@ -3791,7 +3807,7 @@ const Views = (function () {
         flow.appendChild(card);
         requestAnimationFrame(() => card.classList.add("is-in"));
         try { TTS && TTS.cancel && TTS.cancel(); } catch (_) {}
-        cue(scene().tension);      // tension while the choice is open
+        cue(choiceTension(c));     // tension while the choice is open (by type)
         say(c.q);
         scrollEnd();
         card.querySelectorAll(".vn-opt").forEach(btn => {
@@ -3803,7 +3819,7 @@ const Views = (function () {
             card.querySelectorAll(".vn-opt").forEach(o => { o.disabled = true; o.classList.toggle("is-picked", o === btn); });
             choiceOpen = false;
             // right (Continue) vs wrong (END) get distinct stingers
-            cue(br.end === "END" ? scene().wrong : scene().correct);
+            cue(br.end === "END" ? choiceWrong(c) : scene().correct);
             lastBranchAff = br.aff || null;
             if (br.aff) { addAffection(br.aff); affEl(br.aff); }
             // splice branch beats + an end-sentinel ahead of the remaining chapter
