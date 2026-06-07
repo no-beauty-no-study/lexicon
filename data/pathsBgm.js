@@ -226,7 +226,7 @@ window.PATHS_BGM = [
   {
     id: "social_workday_roommate",
     title: "Social - Workday / Roommate",
-    use: "无署名日常环境；舍友、同事、上班、宿舍、办公室运转；生活流动感更强，和悠闲独处拉开",
+    use: "无署名日常环境；舍友、同事、上班、宿舍、办公室运转；新版保留好听前奏感，后半改成稳定钢琴句子，不再机械乱跳",
     file: "32_social_workday_roommate.mp3",
     path: "assets/bgm/paths/32_social_workday_roommate.mp3",
   },

@@ -64,7 +64,7 @@ Use for plain/idle daily air: solo transition, quiet walking, ordinary breathing
 
 File: `assets/bgm/paths/32_social_workday_roommate.mp3`
 
-Use for roommate/coworker/workday environments: dorm, office, daily task motion, people around but not yet a social battlefield.
+Use for roommate/coworker/workday environments: dorm, office, daily task motion, people around but not yet a social battlefield. New version keeps the pleasant opening but stabilizes the later phrases; no scattered mechanical single-note bed.
 
 ### 33 - Social - Campus Group Bright
 
