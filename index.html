@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/layout.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/pages.css">
-<link rel="stylesheet" href="css/debug.css">
+<link rel="stylesheet" href="css/base.css?v=20260607a">
+<link rel="stylesheet" href="css/layout.css?v=20260607a">
+<link rel="stylesheet" href="css/components.css?v=20260607a">
+<link rel="stylesheet" href="css/pages.css?v=20260607a">
+<link rel="stylesheet" href="css/debug.css?v=20260607a">
 <style>
   /* Splash uses the user-supplied PNG original directly so any future
      re-upload of the same UUID-named file flows through with no
@@ -1089,6 +1089,17 @@
       <div class="ui-zone zone-reading-body is-text" data-zone="reading body">
         <article class="reading-body vn-flow" aria-live="polite"></article>
       </div>
+      <!-- Volume + Auto, same control group as reading. -->
+      <div class="ui-zone zone-reading-controls" data-zone="controls">
+        <div class="reading-controls">
+          <span class="rc-note" aria-hidden="true">♪</span>
+          <input class="rc-vol reading-bgm-vol" type="range" min="0" max="100" value="32"
+                 aria-label="Music volume">
+          <button type="button" class="rc-auto" data-vn-auto aria-label="Auto read">
+            <span class="auto-label">Auto</span>
+          </button>
+        </div>
+      </div>
       <!-- Right word-column, exactly like reading: tapping a word shows its
            small card here; tapping the card opens the full drawer. -->
       <div class="ui-zone zone-marginalia" data-zone="marginalia">
@@ -1183,53 +1194,53 @@
 </template>
 
 
-<script src="data/mockChapters.js"></script>
-<script src="data/chapterIllustrations.js"></script>
-<script src="data/readingContent.js"></script>
-<script src="data/readingComprehension.js"></script>
-<script src="data/readingComprehension_ch5.js"></script>
-<script src="data/readingComprehensionZh.js"></script>
-<script src="data/vocabDrill.js"></script>
-<script src="data/readingTranslations.js"></script>
-<script src="data/paths.js"></script>
-<script src="data/paths-content.js"></script>
-<script src="data/pathsBgm.js"></script>
-<script src="data/readingBgmPlan.js"></script>
-<script src="data/mockWords.js"></script>
-<script src="data/wordLibrary.js"></script>
-<script src="data/wordIndex.js"></script>
+<script src="data/mockChapters.js?v=20260607a"></script>
+<script src="data/chapterIllustrations.js?v=20260607a"></script>
+<script src="data/readingContent.js?v=20260607a"></script>
+<script src="data/readingComprehension.js?v=20260607a"></script>
+<script src="data/readingComprehension_ch5.js?v=20260607a"></script>
+<script src="data/readingComprehensionZh.js?v=20260607a"></script>
+<script src="data/vocabDrill.js?v=20260607a"></script>
+<script src="data/readingTranslations.js?v=20260607a"></script>
+<script src="data/paths.js?v=20260607a"></script>
+<script src="data/paths-content.js?v=20260607a"></script>
+<script src="data/pathsBgm.js?v=20260607a"></script>
+<script src="data/readingBgmPlan.js?v=20260607a"></script>
+<script src="data/mockWords.js?v=20260607a"></script>
+<script src="data/wordLibrary.js?v=20260607a"></script>
+<script src="data/wordIndex.js?v=20260607a"></script>
 
 <!-- Vocab system (load order per README): word master → family content
      → family-head map → kin clusters → proper small cards → runtime.
      Builds window.VocabRuntime used by reading clicks, the word drawer,
      and the word garden. -->
-<script src="data/vocab/VOCAB_WORD_CONTENT_REGISTRY_LITE.js"></script>
-<script src="data/vocab/VOCAB_READING_WORDS_LITE.js"></script>
-<script src="data/vocab/VOCAB_FAMILY_SHARED_CLUSTERS_LITE.js"></script>
-<script src="data/vocab/VOCAB_KIN_CLEAN_LITE.js"></script>
-<script src="data/vocab/VOCAB_KIN_HEAD_BRIDGE_LITE.js"></script>
-<script src="data/vocab/VOCAB_GROUP_CLEAN_LITE.js"></script>
-<script src="data/vocab/VOCAB_WORD_ENTRY_POLICY_LITE.js"></script>
-<script src="data/vocab/VOCAB_ENTRY_VISIBILITY_POLICY_LITE.js"></script>
-<script src="data/vocab/VOCAB_HEAD_TO_FAMILY_KIN_NAV_LITE.js"></script>
-<script src="data/vocab/VOCAB_KIN_NAV_EXPANSION_PATCH_V149.js"></script>
-<script src="data/vocab/VOCAB_KIN_CONTROL_VARIABLE_PATCH_V153.js"></script>
-<script src="data/vocab/VOCAB_PREFIX_KIN_STRONG_OVERRIDE_PATCH_V156.js"></script>
-<script src="data/vocab/VOCAB_DOTTED_LITE.js"></script>
-<script src="data/vocab/VOCAB_PROPER_SMALL_CARDS_FINAL.js"></script>
-<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V158.js"></script>
-<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V159.js"></script>
-<script src="data/vocab/VOCAB_RUNTIME_HELPERS.js"></script>
+<script src="data/vocab/VOCAB_WORD_CONTENT_REGISTRY_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_READING_WORDS_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_FAMILY_SHARED_CLUSTERS_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_KIN_CLEAN_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_KIN_HEAD_BRIDGE_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_GROUP_CLEAN_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_WORD_ENTRY_POLICY_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_ENTRY_VISIBILITY_POLICY_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_HEAD_TO_FAMILY_KIN_NAV_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_KIN_NAV_EXPANSION_PATCH_V149.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_KIN_CONTROL_VARIABLE_PATCH_V153.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_PREFIX_KIN_STRONG_OVERRIDE_PATCH_V156.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_DOTTED_LITE.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_PROPER_SMALL_CARDS_FINAL.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V158.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V159.js?v=20260607a"></script>
+<script src="data/vocab/VOCAB_RUNTIME_HELPERS.js?v=20260607a"></script>
 
-<script src="js/storage.js"></script>
-<script src="js/chapterNav.js"></script>
-<script src="js/quiz.js"></script>
-<script src="js/tts.js"></script>
-<script src="js/wordCard.js"></script>
+<script src="js/storage.js?v=20260607a"></script>
+<script src="js/chapterNav.js?v=20260607a"></script>
+<script src="js/quiz.js?v=20260607a"></script>
+<script src="js/tts.js?v=20260607a"></script>
+<script src="js/wordCard.js?v=20260607a"></script>
 
-<script src="js/bgm.js"></script>
-<script src="js/views.js"></script>
-<script src="js/app.js"></script>
+<script src="js/bgm.js?v=20260607a"></script>
+<script src="js/views.js?v=20260607a"></script>
+<script src="js/app.js?v=20260607a"></script>
 
 </body>
 </html>

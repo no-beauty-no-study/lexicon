@@ -3829,6 +3829,23 @@ const Views = (function () {
         else if (e.target.closest("[data-vn-nextch]")) { e.stopPropagation(); loadChapter(chIdx + 1); }
       });
 
+      // Volume slider (same control group as reading).
+      const vol = host.querySelector(".reading-bgm-vol");
+      if (vol && window.BGM) {
+        if (BGM.getVolume) vol.value = Math.round(BGM.getVolume() * 100);
+        vol.addEventListener("input", () => { if (BGM.setVolume) BGM.setVolume((+vol.value) / 100); });
+      }
+      // Auto — auto-advance beats until a choice (then it waits for you).
+      let autoTimer = null;
+      const autoBtn = host.querySelector("[data-vn-auto]");
+      function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } if (autoBtn) autoBtn.classList.remove("is-active"); }
+      if (autoBtn) autoBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (autoTimer) { stopAuto(); return; }
+        autoBtn.classList.add("is-active");
+        autoTimer = setInterval(() => { if (choiceOpen || ended) { stopAuto(); return; } advance(); }, 3200);
+      });
+
       const nextBtn = host.querySelector("[data-vn-next]");
       if (nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); advance(); });
       const restartNav = host.querySelector("[data-vn-restart-nav]");
