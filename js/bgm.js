@@ -100,6 +100,16 @@
   function resolve(name, params) {
     const p = plan();
     if (!p) return null;
+    if (name === "vn") {
+      // 文游 reader: score by protagonist, rotated by chapter index.
+      const who = (params && params.path) || "sealyra";
+      const arr = (p.pathsByChar && p.pathsByChar[who]) || [p.byView && p.byView.paths].filter(Boolean);
+      if (!arr || !arr.length) return null;
+      if (arr.length === 1) return { track: arr[0], array: null };
+      let idx = (Math.max(0, (parseInt(params && params.ch, 10) || 1) - 1)) % arr.length;
+      if (arr[idx] === currentTrack && arr.length > 1) idx = (idx + 1) % arr.length;
+      return { track: arr[idx], array: arr, idx };
+    }
     if (name === "reading") {
       const ch = (params && params.chapter) || "";
       let arr = null;
@@ -112,8 +122,14 @@
       if (arr[idx] === currentTrack && arr.length > 1) idx = (idx + 1) % arr.length;  // no back-to-back repeat
       return { track: arr[idx], array: arr, idx };
     }
-    if (name === "quiz" || name === "quizstatus" || name === "comprehension")
-      return mk((p.quizByStage && p.quizByStage.default) || p.ui);
+    if (name === "quiz" || name === "quizstatus" || name === "comprehension") {
+      const qs = p.quizByStage || {};
+      const st = params && params.stage;
+      const key = st === "golden" ? "golden"
+                : (st === "seal" || st === "dictation") ? "dictation"
+                : "default";
+      return mk(qs[key] || qs.default || p.ui);
+    }
     if (name === "review")
       return mk((p.quizByStage && p.quizByStage.review) || p.ui);
     return mk((p.byView && p.byView[name]) || p.ui);

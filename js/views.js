@@ -631,7 +631,7 @@ const Views = (function () {
         function pGo() {
           const p = pitems[psel];
           window.__navDir = "forward";
-          window.go(`#reading?chapter=${encodeURIComponent(p.id)}&section=${encodeURIComponent(p.firstSection || "1")}&browse=1&ebook=1&from=chapters`);
+          window.go(`#vn?story=mainline&path=${encodeURIComponent(p.id)}&ch=1`);
         }
         let pmode = "label", pdY = 0, pdX = 0, pmoved = 0, pdrag = null, pacc = 0;
         pathsBtn.addEventListener("pointerdown", (e) => {
@@ -3179,7 +3179,7 @@ const Views = (function () {
 
       // ============ STAGE B — Spelling (only after Enter Spelling) ============
       let si = 0;
-      function startSpelling() { si = 0; spell(); }
+      function startSpelling() { si = 0; try { if (window.BGM && BGM.cueStage) BGM.cueStage("dictation"); } catch (_) {} spell(); }
       function spell() {
         if (si >= set.length) { finish(); return; }
         const q = set[si];
@@ -3610,17 +3610,14 @@ const Views = (function () {
         el.addEventListener("click", () => { sel = i; paint(); });
       });
 
-      function open(line) {
+      function open(resume) {
         const p = items[sel];
-        const first = p.firstSection || "1";
-        let sec = first, ln = 0;
-        if (line && saved && saved.chapter === p.id) {   // Follow → resume in place
-          sec = saved.section || first;
-          ln = Math.max(0, +saved.line || 0);
+        let ch = 1;
+        if (resume) {   // Follow → resume the protagonist's last chapter
+          try { ch = Math.max(1, +localStorage.getItem("tpl.vnCh." + p.id) || 1); } catch (_) {}
         }
         window.__navDir = "forward";
-        const lf = ln > 0 ? `&line=${ln}` : "";
-        window.go(`#reading?chapter=${encodeURIComponent(p.id)}&section=${encodeURIComponent(sec)}${lf}&browse=1&ebook=1&from=paths`);
+        window.go(`#vn?story=mainline&path=${encodeURIComponent(p.id)}&ch=${ch}`);
       }
       const restartBtn = host.querySelector("[data-follow-restart]");
       const followBtn  = host.querySelector("[data-follow-go]");
@@ -3629,8 +3626,152 @@ const Views = (function () {
     },
   };
 
+  /* ---------- vn (the 文游 visual-novel reader) ----------
+     Reads a parsed storyline (window.PATHS_STORY) one beat at a time, like a
+     visual novel: tap to advance, tap a word for its card, choices pause the
+     flow until you pick A/B/C. END. restarts the chapter; Continue. flows on.
+     Speaker labels and structural markers are never spoken. */
+  const vnread = {
+    init(host, params) {
+      const story = (window.PATHS_STORY && window.PATHS_STORY[params.story || "mainline"]) ||
+                    (window.PATHS_STORY && window.PATHS_STORY.mainline) || null;
+      const flow   = host.querySelector(".vn-flow");
+      const scroll = host.querySelector(".vn-scroll");
+      const chapEl = host.querySelector(".vn-chap");
+      if (!flow) return;
+      if (!story || !story.chapters || !story.chapters.length) {
+        flow.innerHTML = `<p class="vn-empty">This path is still being written.</p>`;
+        return;
+      }
+
+      const say = (t, cb) => { try { if (t && typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t).trim(), cb ? { onEnd: cb } : undefined); } catch (_) {} };
+      function scrollEnd() { if (scroll) requestAnimationFrame(() => { scroll.scrollTop = scroll.scrollHeight; }); }
+
+      let chIdx = Math.max(0, Math.min(story.chapters.length - 1, (parseInt(params.ch, 10) || 1) - 1));
+      let chapter, queue = [], choiceOpen = false, ended = false;
+
+      function loadChapter(idx) {
+        try { TTS && TTS.cancel && TTS.cancel(); } catch (_) {}
+        chIdx = Math.max(0, Math.min(story.chapters.length - 1, idx));
+        chapter = story.chapters[chIdx];
+        try { if (params.path) localStorage.setItem("tpl.vnCh." + params.path, String(chIdx + 1)); } catch (_) {}
+        queue = chapter.blocks.slice();
+        choiceOpen = false; ended = false;
+        flow.innerHTML = "";
+        if (chapEl) chapEl.textContent = "Chapter " + chapter.n + " · " + chapter.title;
+        // chapter-level score for the channel
+        try { if (window.BGM && BGM.applyForView) BGM.applyForView("vn", { story: story.id, path: params.path, ch: chIdx + 1 }); } catch (_) {}
+        advance();
+      }
+
+      function beatEl(b) {
+        const div = document.createElement("div");
+        div.className = "vn-beat" + (b.k === "s" ? " vn-said" : "");
+        const who = b.k === "s" ? `<span class="vn-speaker">${esc(b.who)}</span>` : "";
+        div.innerHTML = who + `<span class="vn-text">${renderSentenceHTML(b.t)}</span>`;
+        flow.appendChild(div);
+        requestAnimationFrame(() => div.classList.add("is-in"));
+        say(b.t);
+        scrollEnd();
+      }
+
+      function affEl(aff) {
+        const tag = document.createElement("div");
+        tag.className = "vn-aff " + (aff.delta < 0 ? "is-down" : "is-up");
+        tag.textContent = `${aff.who} ${aff.delta > 0 ? "+" : ""}${aff.delta}`;
+        flow.appendChild(tag); scrollEnd();
+      }
+
+      function advance() {
+        if (choiceOpen || ended) return;
+        if (!queue.length) { chapterEnd(); return; }
+        const b = queue.shift();
+        if (b.k === "c")  { choiceOpen = true; renderChoice(b); return; }
+        if (b.k === "_be") { if (b.end === "END") badEnd(); else advance(); return; }
+        beatEl(b);
+      }
+
+      function renderChoice(c) {
+        const card = document.createElement("div");
+        card.className = "vn-choice-card";
+        card.innerHTML =
+          `<p class="vn-q">${renderSentenceHTML(c.q)}</p>` +
+          `<div class="vn-opts">` +
+          c.opts.map(o => `<button type="button" class="vn-opt" data-key="${esc(o.key)}"><b>${esc(o.key)}.</b> ${renderSentenceHTML(o.t)}</button>`).join("") +
+          `</div>`;
+        flow.appendChild(card);
+        requestAnimationFrame(() => card.classList.add("is-in"));
+        try { TTS && TTS.cancel && TTS.cancel(); } catch (_) {}
+        say(c.q);
+        scrollEnd();
+        card.querySelectorAll(".vn-opt").forEach(btn => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (card.dataset.done) return;
+            card.dataset.done = "1";
+            const br = c.branches.find(x => x.key === btn.dataset.key) || c.branches[0];
+            card.querySelectorAll(".vn-opt").forEach(o => { o.disabled = true; o.classList.toggle("is-picked", o === btn); });
+            choiceOpen = false;
+            if (br.aff) affEl(br.aff);
+            // splice branch beats + an end-sentinel ahead of the remaining chapter
+            queue = br.blocks.concat([{ k: "_be", end: br.end }], queue);
+            advance();
+          });
+        });
+      }
+
+      function badEnd() {
+        ended = true;
+        const card = document.createElement("div");
+        card.className = "vn-end is-bad";
+        card.innerHTML = `<p class="vn-end-mark">✦ END ✦</p>
+          <p class="vn-end-zh">这条路走不通了。</p>
+          <button type="button" class="vn-end-btn" data-vn-restart>Restart Chapter</button>`;
+        flow.appendChild(card); scrollEnd();
+      }
+
+      function chapterEnd() {
+        ended = true;
+        const last = chIdx >= story.chapters.length - 1;
+        const card = document.createElement("div");
+        card.className = "vn-end";
+        card.innerHTML = `<p class="vn-end-mark">✦</p>` +
+          (last ? `<p class="vn-end-zh">完。</p>`
+                : `<button type="button" class="vn-end-btn" data-vn-nextch>Next Chapter ›</button>`);
+        flow.appendChild(card); scrollEnd();
+      }
+
+      // tap anywhere (not a word / button) → advance
+      host.addEventListener("click", (e) => {
+        if (e.target.closest(".clickable-word") || e.target.closest("button")) return;
+        advance();
+      });
+      // tap a word → its card (don't advance)
+      flow.addEventListener("click", (e) => {
+        const w = e.target.closest(".clickable-word");
+        if (!w) return;
+        e.stopPropagation();
+        try { if (typeof WordCard !== "undefined") WordCard.openBigCard(w.dataset.word, { from: "paths" }); } catch (_) {}
+      });
+      // delegated restart / next-chapter (cards are added dynamically)
+      flow.addEventListener("click", (e) => {
+        if (e.target.closest("[data-vn-restart]")) { e.stopPropagation(); loadChapter(chIdx); }
+        else if (e.target.closest("[data-vn-nextch]")) { e.stopPropagation(); loadChapter(chIdx + 1); }
+      });
+
+      const nextBtn = host.querySelector("[data-vn-next]");
+      if (nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); advance(); });
+      const restartNav = host.querySelector("[data-vn-restart-nav]");
+      if (restartNav) restartNav.addEventListener("click", (e) => { e.stopPropagation(); loadChapter(chIdx); });
+      const backBtn = host.querySelector("[data-vn-back]");
+      if (backBtn) backBtn.addEventListener("click", (e) => { e.stopPropagation(); window.__navDir = "back"; window.go("#paths"); });
+
+      loadChapter(chIdx);
+    },
+  };
+
   return {
-    splash, menu, select, chapters, paths,
+    splash, menu, select, chapters, paths, vn: vnread,
     reading, quiz, quizstatus, notes, review, comprehension,
     "word-garden": wordGarden,
     save, load, voices,
