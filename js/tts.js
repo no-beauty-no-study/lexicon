@@ -1,0 +1,244 @@
+/* The Princess Lexicon — tts.js
+   User-tested behaviour: my prior speak() reliably hit Ava on the
+   FIRST utterance and then silently fell back to Daniel on the next
+   one. That's the well-known iOS Safari quirk where the engine
+   keeps state across utterances and, once speechSynthesis.speaking
+   goes false, the locale default (en-GB Daniel on this device)
+   takes over no matter what u.voice we set on the next utterance.
+
+   To make Ava stick across every call, we now do ALL of these on
+   each speak() — none alone is sufficient on iOS:
+     1. window.speechSynthesis.cancel() to fully reset state.
+     2. defer the actual .speak() by a tick (setTimeout) so the cancel
+        flushes BEFORE the new utterance is queued.
+     3. re-resolve the voice from the LIVE getVoices() list, because
+        iOS reorders the list across calls and a cached reference can
+        go stale (the voice object still exists, but the engine no
+        longer treats it as "active").
+     4. set u.lang FIRST, then u.voice. set u.voice TWICE (yes, voodoo,
+        but the second assignment makes the engine commit the voice
+        when the first assignment alone gets clobbered).
+     5. comma-substitute sentence punctuation so iOS doesn't switch
+        voice mid-utterance.
+
+   Voice override: localStorage.setItem("tpl.voice", "Ava") forces an
+   exact-name (or substring) match. Useful when the engine picks the
+   wrong default and the user wants to lock in. */
+const TTS = (function () {
+
+  // Tier hoisted to module scope so the override branch can also
+  // tier-sort. iOS exposes multiple voices with identical .name (eg.
+  // "Ava") that differ only by voiceURI suffix:
+  //   com.apple.voice.compact.en-US.Ava     robotic — the "demon" voice
+  //   com.apple.voice.enhanced.en-US.Ava    good
+  //   com.apple.voice.premium.en-US.Ava     best
+  //   com.apple.ttsbundle.siri_*_en-US      neural (iOS 16+)
+  // getVoices() reorders between utterances, so .find(name === "Ava")
+  // returned a different tier each call → first sentence enhanced,
+  // second sentence compact-robot. tier-sort fixes it.
+  function tier(v) {
+    const s = ((v.voiceURI || "") + " " + (v.name || "")).toLowerCase();
+    if (/siri/.test(s))     return 6;
+    if (/neural/.test(s))   return 5;
+    if (/premium/.test(s))  return 4;
+    if (/enhanced/.test(s)) return 3;
+    if (/compact/.test(s))  return 0;
+    return 2;
+  }
+  function bestOf(list) {
+    if (!list.length) return null;
+    return list.slice().sort((a, b) => tier(b) - tier(a))[0];
+  }
+
+  let pickedVoice = null;
+
+  function pickVoice(refresh) {
+    if (pickedVoice && !refresh) return pickedVoice;
+    if (!window.speechSynthesis) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return null;
+
+    const override = (() => {
+      try { return localStorage.getItem("tpl.voice"); } catch (_) { return null; }
+    })();
+    if (override) {
+      // 1) Exact voiceURI match — unique, tier-locked. The voices
+      //    picker writes URI on "Use", so a fresh selection always
+      //    hits this branch and is stable across utterances.
+      let chosen = voices.find(v => v.voiceURI === override);
+      // 2) Exact name match (legacy: user typed "Ava" into the
+      //    localStorage override before the URI was stored, or
+      //    "tpl.voice" was set via console). Tier-sort the matches
+      //    so we always grab enhanced/premium-Ava over compact-Ava
+      //    no matter how getVoices() is ordered this call.
+      if (!chosen) {
+        const exact = voices.filter(v => v.name === override);
+        if (exact.length) chosen = bestOf(exact);
+      }
+      // 3) Substring match — same tier-sort caveat as 2.
+      if (!chosen) {
+        const lc = override.toLowerCase();
+        const fuzzy = voices.filter(v =>
+          v.name && v.name.toLowerCase().includes(lc)
+        );
+        if (fuzzy.length) chosen = bestOf(fuzzy);
+      }
+      if (chosen) { pickedVoice = chosen; logPicked(voices); return pickedVoice; }
+    }
+
+    // No override (or no match). The user's diagnostic toasts proved
+    // the *real* iOS-PWA bug: getVoices() in standalone PWA mode is
+    // stripped — Ava / Samantha / Allison / etc. are NOT exposed
+    // (even though they're installed and used by Spoken Content).
+    // What IS exposed: a male voice (Albert on the user's iPad) plus
+    // a handful of compact-tier voices. Setting u.voice = Albert
+    // produces the "demon old man" voice the user heard on every
+    // utterance after the first.
+    //
+    // The FIRST utterance sounded right because pickVoice returned
+    // null (getVoices was still empty), and iOS substituted the
+    // user's system Spoken-Content default (Ava 高音质). That is
+    // exactly what we want for every utterance — so when no
+    // high-tier female English voice is available from getVoices,
+    // we deliberately RETURN NULL and let iOS pick.
+    const isMale = (v) => /^(albert|aaron|alex|bruce|daniel|fred|junior|ralph|reed|rocko|tom|eddy|otis|martin|thomas|jacques|yannick|whisper)/i.test(v.name || "");
+    const enVoices   = voices.filter(v =>
+      /^en/i.test(v.lang) && !isMale(v)
+    );
+    const nonCompact = enVoices.filter(v => tier(v) > 0);
+    const pool       = nonCompact.length ? nonCompact : enVoices;
+
+    pickedVoice =
+         bestOf(pool.filter(v => /siri/i.test(v.voiceURI || "")))
+      || bestOf(pool.filter(v => /ava/i.test(v.name)))
+      || bestOf(pool.filter(v => /samantha/i.test(v.name)))
+      || bestOf(pool.filter(v => /^(allison|susan|karen|victoria|moira|fiona|tessa|kate|serena|nora|joelle)$/i.test(v.name)))
+      || null;
+
+    // Belt + braces: if for some reason the pool yielded a male
+    // voice (regex miss, locale variant), drop it. Better to set no
+    // voice and let iOS pick the Spoken-Content system default than
+    // to ship Albert into your ear at midnight. Returning null here
+    // does NOT cache null — next call will re-attempt — that's fine
+    // because getVoices() can refill the list after voiceschanged.
+    if (pickedVoice && isMale(pickedVoice)) pickedVoice = null;
+
+    logPicked(voices);
+    return pickedVoice;
+  }
+
+  let lastLoggedUri = null;
+  function logPicked(voices) {
+    if (!pickedVoice) return;
+    // Re-log on every voiceURI CHANGE so a silent downgrade to the
+    // compact Ava is visible in the console.
+    if (pickedVoice.voiceURI === lastLoggedUri) return;
+    lastLoggedUri = pickedVoice.voiceURI;
+    try {
+      console.log("[TTS] picked:", pickedVoice.name, pickedVoice.lang,
+                  "(uri=" + (pickedVoice.voiceURI || "?") + ")",
+                  "| available:",
+                  voices.map(v => `${v.name} [${v.voiceURI}]${v.default ? " *default" : ""}`).join(", "));
+    } catch (_) {}
+  }
+
+  if (window.speechSynthesis && "onvoiceschanged" in window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = () => { pickedVoice = null; pickVoice(); };
+  }
+
+  function buildUtterance(text, v) {
+    const massaged = String(text)
+      .replace(/([.!?])(?=\s|$)/g, ",")
+      .replace(/,+\s*$/, "");
+    const u = new SpeechSynthesisUtterance(massaged);
+    u.lang  = (v && v.lang) || "en-US";
+    u.rate  = 0.96;
+    u.pitch = 1.0;
+    u.volume = 1.0;
+    if (v) {
+      u.voice = v;
+      // Second assignment is intentional — without it, iOS 17+ drops
+      // u.voice silently on every utterance after the first and falls
+      // back to the locale-default voice (Daniel on en-GB iPads).
+      u.voice = v;
+    }
+    return u;
+  }
+
+  // speak(text, opts?)
+  //   opts.onStart  — fires when the utterance actually begins to
+  //                   speak (NOT when it's queued). Reading view
+  //                   uses this to delay paragraph fade-up until
+  //                   the voice begins, so the visual reveal lines
+  //                   up with the audio.
+  function speak(text, opts) {
+    if (!text) return;
+    if (!window.speechSynthesis) return;
+
+    // EVERYTHING below must run synchronously inside whatever click /
+    // touch handler called speak(). iOS 17+ silently drops u.voice
+    // on any utterance not initiated within the user-gesture window,
+    // and falls back to the locale default voice (en-GB Daniel on
+    // most iPads — the "mechanical old man" the user is hearing on
+    // every-other paragraph). The previous setTimeout(30) wrapper
+    // pushed speak() into a fresh task, OUTSIDE the gesture, which
+    // is exactly what triggered the regression.
+    const v = pickVoice(true);
+    try { window.speechSynthesis.cancel(); } catch (_) {}
+
+    // PHANTOM WARMUP — even with sync cancel/speak inside a gesture,
+    // iOS Safari sometimes commits the LOCALE-DEFAULT voice for the
+    // 2nd, 3rd, … utterance because the engine "forgets" u.voice
+    // between calls. Sneak a 0-volume, single-space utterance with
+    // the chosen voice in FIRST: iOS commits the voice when it
+    // starts processing this dummy, and the real utterance right
+    // behind it inherits the commitment. Cost is one silent frame.
+    if (v) {
+      const warm = new SpeechSynthesisUtterance(" ");
+      warm.lang = v.lang || "en-US";
+      warm.voice = v;
+      warm.voice = v;            // double-set workaround (see buildUtterance)
+      warm.volume = 0;
+      warm.rate = 1.0;
+      try { window.speechSynthesis.speak(warm); } catch (_) {}
+    }
+
+    const u = buildUtterance(text, v);
+
+    // (The auto-on diagnostic toast for the first N utterances has
+    // been removed now that the no-voice / system-default path is
+    // confirmed working. Manual toggle via localStorage.tpl.voiceDebug
+    // from the #voices page still works if needed for diagnosis.)
+    let dbg = false;
+    try { dbg = localStorage.getItem("tpl.voiceDebug") === "1"; } catch (_) {}
+    const userOnStart = opts && typeof opts.onStart === "function" ? opts.onStart : null;
+    if (dbg || userOnStart) {
+      const tier = ((v && v.voiceURI || "")
+        .match(/(siri|premium|enhanced|compact|neural)/i) || ["std"])[0];
+      const tag  = v ? `${v.name || "?"}·${tier}` : "no voice";
+      u.onstart = () => {
+        if (dbg) try { window.toast && window.toast(tag); } catch (_) {}
+        if (userOnStart) try { userOnStart(); } catch (_) {}
+      };
+    }
+
+    // onEnd fires when THIS utterance finishes speaking. Autoplay
+    // (the reading view's "Auto" button) chains the next sentence
+    // from here so the page reads itself straight through.
+    const userOnEnd = opts && typeof opts.onEnd === "function" ? opts.onEnd : null;
+    if (userOnEnd) {
+      u.onend = () => { try { userOnEnd(); } catch (_) {} };
+    }
+
+    try { window.speechSynthesis.speak(u); } catch (_) {}
+
+  }
+
+  // Stop any in-progress speech (used when leaving a view or toggling
+  // autoplay off).
+  function cancel() {
+    try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (_) {}
+  }
+
+  return { speak, pickVoice, cancel };
+})();

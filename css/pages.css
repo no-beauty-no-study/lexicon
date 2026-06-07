@@ -1,0 +1,2853 @@
+/* ============================================================
+   The Princess Lexicon — pages.css
+   Page-specific overrides only. Keep small; reuse layout / components.
+   ============================================================ */
+
+/* ============================================================
+   PAINTED-UI PAGES
+   When a page uses a painted artwork as its full UI background,
+   add .art-bg to .page. The page-level frame ::before/::after
+   are then hidden, and elements are positioned absolutely as a
+   percentage of the 1448x1086 stage so they line up with the
+   painted slots.
+   ============================================================ */
+.page.art-bg {
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: var(--paper-bg);
+}
+.page.art-bg::before,
+.page.art-bg::after { display: none !important; }
+
+/* Invisible click zone overlaid on a painted button / element.
+   Default fully transparent; a faint warm tint appears on hover. */
+.hit-zone {
+  position: absolute;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: background 180ms ease, border-color 180ms ease;
+  appearance: none;
+  font: inherit;
+  color: transparent;       /* hide accidental text content */
+}
+.hit-zone:hover {
+  background: rgba(167, 141, 91, 0.12);
+  border-color: rgba(167, 141, 91, 0.55);
+}
+.hit-zone:active {
+  background: rgba(167, 141, 91, 0.22);
+}
+
+/* ============================================================
+   CHAPTERS / TOC PAGE — chapters.jpg is the full UI.
+   The 10 chapter zones are positioned by master-frame-relative
+   percentages defined in debug.css (.zone-toc-NN). Each zone
+   renders a .toc-card via chapters.html's inline script. The
+   visual style for the card body + OPEN CHAPTER plaque lives
+   at the bottom of this file under "CHAPTERS (Table of Contents)
+   text + plaque". The shared bottom nav handles BACK / MENU.
+   ============================================================ */
+
+/* ============================================================
+   READING PAGE — chapter illustration is the full UI background.
+   Text and marginalia overlay the painted parchment slots; the
+   painted left princess column doubles as the chapter illustration.
+   ============================================================ */
+.reading-art {
+  background-color: var(--paper-bg);
+}
+
+/* Typography for content INSIDE the title / body zones. Positioning
+   is owned by .ui-zone (see debug.css); these rules only describe
+   how text looks once it's inside its zone. */
+/* "Chapter NN" must be visually identical to the big title — same
+   size, weight, colour, tracking. The two sit on one centred line
+   (.reading-titleline), reading e.g. "CHAPTER 06  SOUTH AMERICA". */
+.reading-art .reading-kicker {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1.12;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #2b3b51;
+  margin: 0 0 6px;
+}
+.reading-art .reading-title {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1.12;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #2b3b51;
+  margin: 0 0 6px;
+}
+/* Reading title divider — same visual grammar as .antique-divider
+   but slightly wider in the middle so it matches the painted UI. */
+.reading-art .antique-divider {
+  width: 58%;
+  margin: 6px auto 10px;
+}
+.reading-art .reading-subtitle {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: #9a7b3f;
+  font-weight: 400;
+  font-style: italic;
+  margin: 4px 0 18px;
+}
+
+/* ============================================================
+   READING INTERNAL LAYOUT — global centring within the whole
+   reading region (reading page only; quiz keeps its own layout).
+   User hand-measured (page-relative %, screenshot 1320×967):
+     left 30.9%  right 94.8%  header 6.7%→20.5%  bottom 87.8%
+     global centre axis x = 62.9%   usable width = 63.9%
+   Zones are positioned relative to .master-frame (left 1.78%,
+   top 2.15%, width 96.33%, height 95.85%), so converting:
+     x_frame = (x_page − 1.78) / 96.33      y_frame = (y_page − 2.15) / 95.85
+   gives:  L=30.23%  R=96.56%  width=66.33%  centre=63.40%
+           header 4.75%→19.14% (h 14.40)    body/marg 19.14%→89.36% (h 70.21)
+   The title group is centred on the WHOLE region (axis 63.40% frame
+   = 62.85% page), NOT just the body column. Body + marginalia both
+   start at the header bottom and run down to 89.36%.
+   ============================================================ */
+/* Title group is shared by BOTH the reading page AND the quiz page
+   (same .reading-art shell) so the two read as one continuous book —
+   identical position, single centred title line, identical tracking.
+   Using .reading-art (not [data-page="reading"]) applies it to quiz
+   too, overriding the generic debug.css zone box on both. */
+/* === Reading/Quiz zone boxes — user's 1448×1086 page-relative
+   measurements converted to MASTER-FRAME-relative (these zones are
+   children of .master-frame): Lf=(Lp-1.78)/0.9633, Tf=(Tp-2.15)/0.9585,
+   Wf=Wp/0.9633, Hf=Hp/0.9585.
+     title box   page 28.04/7.46/57.32/14.27 → 27.26/5.54/59.50/14.89
+     body        page 28.11/23.85/50.90/63.44→ 27.33/22.64/52.84/66.19
+     word column page 79.70/23.85/15.88/63.44→ 80.89/22.64/16.49/66.19
+     controls    page 86.19/7.46/9.39/14.27  → 87.63/5.54/9.75/14.89
+   Title box is shorter so the top-right control group gets its own
+   space; the title typography itself is unchanged. */
+.reading-art .zone-reading-title {
+  left:   27.26%;
+  top:     5.54%;
+  width:  59.50%;
+  height: 14.89%;
+  align-items: center;
+  text-align: center;
+}
+/* Control group box — sits to the RIGHT of the bottom nav, under the
+   word column / FOLD button, at the same vertical band as the nav
+   (matches the marginalia column's x so its centre lines up with FOLD). */
+.reading-art .zone-reading-controls {
+  left:   80.89%;
+  top:    92.00%;
+  width:  16.49%;
+  height:  7.30%;
+}
+/* CHAPTER NN + THE TITLE share ONE centred line. */
+.reading-art .reading-titleline {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+}
+.reading-art .reading-titleline .reading-kicker,
+.reading-art .reading-titleline .reading-title {
+  margin: 0;
+}
+.reading-art .reading-kicker,
+.reading-art .reading-title,
+.reading-art .reading-subtitle {
+  text-align: center;
+}
+.reading-art .zone-reading-title .antique-divider {
+  margin: 8px auto 8px;
+}
+[data-page="reading"] .zone-reading-body {
+  left:   27.33%;
+  top:    22.64%;
+  width:  52.84%;
+  height: 66.19%;
+}
+[data-page="reading"] .zone-marginalia {
+  left:   80.89%;
+  top:    22.64%;
+  width:  16.49%;
+  height: 66.19%;
+}
+.reading-art .reading-body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.82;
+  letter-spacing: 0.032em;
+  color: #3f3a31;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  /* Stay tappable inside reveal.js's container click handler. */
+  -webkit-overflow-scrolling: touch;
+}
+/* Book-style flush justification: paragraphs flow normally and the
+   browser stretches the inter-word spacing on each line so both edges
+   line up (no fixed word-spacing, no manual line breaks). The last
+   line of a paragraph stays left, as in print. */
+.reading-art .reading-body:not(.quiz-body) p {
+  text-align: justify;
+  text-justify: inter-word;
+  word-spacing: normal;
+  hyphens: none;
+}
+.reading-art .reading-body::-webkit-scrollbar { width: 6px; }
+.reading-art .reading-body::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.32); border-radius: 3px;
+}
+.reading-art .reading-body p {
+  margin: 0 0 18px;
+}
+
+/* Clickable words — default: NO background, only a soft dotted
+   underline. Hover: very faint warm tint. Selected (clicked): pale
+   gold ink-stain. Exactly one .is-selected at a time, driven by JS. */
+.reading-art .reading-body .clickable-word {
+  color: #4d4436;
+  background: transparent;
+  border-bottom: 1px dotted rgba(126, 103, 67, 0.42);
+  padding: 0 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.reading-art .reading-body .clickable-word:hover {
+  background: rgba(168, 143, 93, 0.08);
+  border-bottom-color: rgba(167, 141, 91, 0.62);
+  color: #3f3426;
+}
+.reading-art .reading-body .clickable-word.is-selected {
+  background: rgba(201, 174, 103, 0.24);
+  border-bottom-color: rgba(142, 112, 55, 0.72);
+  color: #33291f;
+}
+
+/* ============================================================
+   ANTIQUE DIVIDER — the universal "── ✤ ──" rule.
+   Two thin fading line-segments flank a single small glyph. Used
+   below every chapter title and at the top edge of every small
+   antique card. Lines fade out at both ends so the rule reads as
+   engraved into the parchment, not stamped on top of it.
+   ============================================================ */
+.antique-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin: 6px auto 8px;
+  pointer-events: none;
+}
+.antique-divider::before,
+.antique-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.55) 25%,
+    rgba(126, 105, 74, 0.55) 75%,
+    transparent 100%);
+}
+.antique-divider-glyph {
+  font-family: Georgia, serif;
+  font-size: 12px;
+  line-height: 1;
+  color: rgba(126, 105, 74, 0.85);
+  display: inline-block;
+}
+/* Subtle breathing only on the chapter title divider — adds a tiny
+   bit of life to the otherwise-static title block without
+   distracting the rest of the page (other instances of
+   .antique-divider-glyph stay still). */
+.zone-reading-title .antique-divider-glyph {
+  animation: divider-glyph-pulse 4.4s ease-in-out infinite alternate;
+}
+@keyframes divider-glyph-pulse {
+  0%   { opacity: 0.82; transform: scale(1);     color: rgba(126, 105, 74, 0.85); }
+  100% { opacity: 1;    transform: scale(1.18);  color: rgba(168, 122, 58, 0.98); }
+}
+
+/* ============================================================
+   MARGINALIA CARD — fixed right-side card. Per the user spec:
+   no white/yellow gradient (the user dislikes that look). A
+   transparent panel over the parchment with 4 corner ticks and
+   a top "── ✤ ──" rule; below that the body is left-aligned and
+   the FOLD / SAVE buttons share the bottom.
+     FOLD = bookmark this word into Notes
+     SAVE = bookmark this chapter into Storage.saveChapter
+   ============================================================ */
+.marginalia-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  z-index: 9;
+  /* v4: frameless. The painted rose/lily/ribbon frame-blank that
+     used to wrap the card has been dropped — user prefers the
+     content to breathe with no border, and the missing frame also
+     buys ~25% of horizontal room back for the word card's text.
+     Padding shrunk in proportion since there's no vine to clear. */
+  background-image: none;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+  padding: 4% 4% 4%;
+}
+.marginalia-card::before,
+.marginalia-card::after { content: none; }
+/* The 4-corner-tick spans are no longer needed — the double-line
+   frame + ✤ does the same job at a much smaller visual cost. */
+.marginalia-card > .corner-tick { display: none; }
+/* The old .marginalia-card-rule (separate ✤ row under the card top)
+   is now redundant since the frame ::after provides the same ✤. */
+.marginalia-card-rule { display: none; }
+
+/* Top rule inside the card — same visual grammar as antique-divider. */
+.marginalia-card-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0 0 10px;
+  pointer-events: none;
+}
+.marginalia-card-rule::before,
+.marginalia-card-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.45) 30%,
+    rgba(126, 105, 74, 0.45) 70%,
+    transparent 100%);
+}
+
+/* WORD-CARD STACK — scrollable column of mini-cards. Cards are
+   appended on click and never recycled; the container scrolls
+   when the stack outgrows the marginalia. Each card renders 6
+   rows: word / translation / phrase / phrase-zh / phrase / phrase-zh.
+   Cards are separated by a thin fading rule (matches antique-
+   divider grammar — wider in the middle, fading at the ends). */
+.marginalia-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  text-align: left;
+}
+.marginalia-card-body::-webkit-scrollbar { width: 5px; }
+.marginalia-card-body::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.38); border-radius: 3px;
+}
+.word-card-stack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+/* "Tap a word" placeholder — a soft, hand-on-the-page invitation,
+   NOT a tiny system label. Lifted to the display serif (matches the
+   chapter titles), enlarged from 10.5 → 14px, given gentle tracking
+   and the muted-gold paper tone so it reads as a quiet manuscript
+   cue. Centred + a little vertical breathing room so it sits
+   naturally in the empty card without shouting. */
+.word-card-empty {
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  color: var(--color-subtitle);
+  font-style: italic;
+  opacity: 0.82;
+  text-align: center;
+  padding: 16px 8px 6px;
+}
+/* Card separator — fading rule, thinner at ends, denser in middle. */
+.word-card {
+  position: relative;
+  padding: 11px 6px 13px;
+  cursor: pointer;
+  transform-origin: center center;
+  transition:
+    background 220ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.4, 1.2),
+    box-shadow 220ms ease;
+}
+.word-card + .word-card {
+  border-top: 0;
+}
+.word-card + .word-card::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.42) 22%,
+    rgba(126, 105, 74, 0.42) 78%,
+    transparent 100%);
+}
+.word-card:hover { background: rgba(167, 141, 91, 0.06); }
+.word-card.is-current {
+  background: rgba(201, 174, 103, 0.10);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 174, 103, 0.32),
+    0 0 14px rgba(201, 174, 103, 0.18);
+}
+/* Pressed: brief inward push + gold halo — 'depress into paper' feel. */
+.word-card:active {
+  transform: scale(0.965);
+  background: rgba(201, 174, 103, 0.16);
+}
+
+/* Entry: new word-cards unfurl up + fade in instead of popping. */
+.word-card.is-entering {
+  animation: word-card-unfurl 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes word-card-unfurl {
+  0%   { opacity: 0; transform: translateY(12px) scale(0.94); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Folded state — "dog-eared page" metaphor, NOT a coloured
+   background. User: the pale-blue tint read as a selected/pressed
+   state, not a saved note. Now:
+     - card body stays transparent (parchment shows through)
+     - top + bottom dashed paper-tone border hints at the noted state
+     - a small triangle at the top-right looks like the page corner
+       has been folded down — the actual indicator
+     - ❦ glyph stays, tucked left of the corner fold
+
+   Just-folded animation is a subtle scale + tilt (paper being
+   creased), not a coloured flash. */
+.word-card.just-folded {
+  animation: word-card-fold-flash 540ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes word-card-fold-flash {
+  0%   { transform: scale(1)     rotate( 0deg);   }
+  35%  { transform: scale(1.018) rotate(-0.4deg); filter: brightness(1.04); }
+  70%  { transform: scale(0.992) rotate( 0.6deg); filter: brightness(1.00); }
+  100% { transform: scale(1)     rotate( 0deg);   }
+}
+
+/* Folded state — paper crease, NOT a glowing highlight.
+   User pushback: the warm-amber fold corner was reading as a hover
+   / pressed / selected state. Now reduced to a flat dark crease
+   that looks like the actual paper has been creased once at the
+   corner — no gradient brightness, no drop-shadow glow, no
+   coloured fill on the card body. The sibling separator
+   (.word-card + .word-card::before) — the tapered solid line — is
+   PRESERVED across saved cards by using ::after for the crease
+   instead of ::before. */
+.word-card.is-saved {
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+}
+.word-card.is-saved::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: auto;
+  bottom: auto;
+  width: 16px;
+  height: 16px;
+  /* Top-RIGHT page corner folded down. The clip keeps a right-angle
+     triangle whose right angle sits exactly on the card's top-right
+     corner; its hypotenuse (the 0,0 → 100%,100% diagonal) is the
+     fold line.
+       polygon( top-left , top-right , bottom-right ) */
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  /* 225deg runs from the folded corner (top-right, 0%) inward toward
+     the fold line. So the lifted flap shows a slightly DEEPER
+     parchment (the paper's back side), then a soft crease shadow
+     lands right on the diagonal fold — reads as a creased dog-ear,
+     not a glowing tab. No light stops, no shadow halo. */
+  background: linear-gradient(
+    225deg,
+    rgba(224, 211, 184, 0.95) 0%,
+    rgba(218, 203, 173, 0.95) 44%,
+    rgba(132, 112, 76, 0.45)  52%,
+    rgba(132, 112, 76, 0.0)   60%
+  );
+  filter: none;
+  pointer-events: none;
+  z-index: 2;
+}
+.word-card.is-saved.is-current::after {
+  /* Current saved card: deepen the crease a touch, still no glow. */
+  background: linear-gradient(
+    225deg,
+    rgba(226, 213, 186, 0.97) 0%,
+    rgba(216, 200, 168, 0.97) 44%,
+    rgba(120, 98, 60, 0.58)   52%,
+    rgba(120, 98, 60, 0.0)    60%
+  );
+}
+
+/* Word-tap sparkle puff: warm-gold particles that radiate outward
+   from the tap point and fade. Coordinates set inline; --ang and
+   --dist randomised per particle so the burst never reads twice
+   the same. */
+.word-tap-sparkle {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255,243,200,1)   0%,
+    rgba(255,220,160,0.6) 50%,
+    transparent 80%);
+  box-shadow: 0 0 8px 2px rgba(255,225,170,0.6);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+  will-change: transform, opacity;
+  animation: word-tap-sparkle-fly 720ms ease-out forwards;
+}
+@keyframes word-tap-sparkle-fly {
+  0%   { transform: translate(-50%, -50%) rotate(var(--ang, 0deg)) translateX(0)                 scale(0);   opacity: 0; }
+  20%  { transform: translate(-50%, -50%) rotate(var(--ang, 0deg)) translateX(0)                 scale(1.4); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(var(--ang, 0deg)) translateX(var(--dist, 28px)) scale(0.2); opacity: 0; }
+}
+/* Word-card text rules:
+   - HEADWORD now left-aligned + display font (was centred body
+     font); the rest of the card (translation, phrases, example)
+     is already left-aligned, so the headword shouldn't be the
+     odd one out. ✤ ornament kept on the LEFT side only.
+   - Headword line-height tightened 1.3 → 1.1 so it doesn't feel
+     overspaced compared to the rows below it.
+   - The thin rule between phrases and example sentence is gone
+     per the user's request — phrases and example flow as one
+     left-aligned block. */
+.word-card-headword {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.025em;
+  color: #2f2a22;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 8px;
+  text-align: left;
+}
+.word-card-headword::before {
+  content: "✤";
+  font-size: 0.56em;
+  line-height: 1;
+  color: rgba(126, 105, 74, 0.78);
+  flex: 0 0 auto;
+}
+.word-card-headword::after { content: none; }     /* drop the right flanker */
+.word-card-meaning {
+  margin-top: 4px;
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
+  font-size: 17px;
+  line-height: 1.35;
+  color: #5e5040;
+  text-align: left;
+}
+.word-card-phrase {
+  margin-top: 7px;
+  line-height: 1.35;
+}
+.word-card-phrase .wcp-en {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: #3f3a31;
+  font-style: normal;
+}
+.word-card-phrase .wcp-zh {
+  display: block;
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
+  font-size: 15px;
+  color: #6f6353;
+}
+/* Example sentence row — no dividing border anymore, just a
+   tighter top margin so it visually belongs with the phrases. */
+.word-card-example {
+  margin-top: 7px;
+  line-height: 1.35;
+}
+.word-card-example .wce-en {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-style: normal;
+  color: #3f3a31;
+}
+.word-card-example .wce-zh {
+  display: block;
+  margin-top: 2px;
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
+  font-size: 14px;
+  color: #6f6353;
+}
+/* 原型 (learning head) chip — the prefix/suffix-stripped core word. Tapping
+   it opens the head's big learning card. Warm gilt pill so it reads as an
+   action, not body text. */
+/* HEAD chip — same restrained classical UI as the Auto button / folded
+   locket: thin gold hairline, faint parchment fill, display font. No pill. */
+.word-card-head-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 4px 8px;
+  border: 1px solid rgba(167, 141, 91, 0.45);
+  border-radius: 11px;
+  background: rgba(244, 222, 170, 0.18);
+  cursor: pointer;
+  font-family: var(--font-display), Georgia, serif;
+  color: rgba(124, 95, 50, 0.92);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.word-card-head-chip:hover  { background: rgba(244, 222, 170, 0.34); color: #4a3a25; }
+.word-card-head-chip .wchc-label {
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(124, 95, 50, 0.7);
+}
+.word-card-head-chip .wchc-word { font-size: 15px; letter-spacing: 0.02em; }
+.word-card-head-chip .wchc-arrow { font-size: 13px; opacity: 0.7; }
+.marginalia-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-align: left;
+}
+.marginalia-card-empty {
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  color: var(--color-subtitle);
+  font-style: italic;
+  opacity: 0.82;
+  text-align: center;
+}
+.marginalia-headword {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.18;
+  letter-spacing: 0.04em;
+  color: #3f3a31;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+}
+.marginalia-headword:hover { color: #6b5a37; }
+.marginalia-collocations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+.marginalia-collocations li {
+  position: relative;
+  padding-left: 10px;
+  margin-bottom: 4px;
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  line-height: 1.38;
+  letter-spacing: 0.01em;
+  color: #6c6254;
+  text-align: left;
+}
+.marginalia-collocations li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: #a78d5b;
+  font-weight: 700;
+}
+/* Action row — single FOLD button now (SAVE moved to bottom nav). */
+.marginalia-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(167, 141, 91, 0.30);
+}
+.marginalia-card-actions .marginalia-btn {
+  flex: 1;                  /* FOLD takes the available width, locket sits to its right */
+}
+
+/* Locket — the running count of folded words. The reader sees this
+   tick up on every successful fold (".is-pop" pulse below), which is
+   a small but reliable engagement loop without being intrusive. */
+.marginalia-locket {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid rgba(167, 141, 91, 0.45);
+  border-radius: 11px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(124, 95, 50, 0.92);
+  background: rgba(244, 222, 170, 0.18);
+  user-select: none;
+  flex: 0 0 auto;
+}
+.marginalia-locket-glyph { font-size: 13px; line-height: 1; }
+.marginalia-locket.is-pop {
+  animation: marginalia-locket-pop 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes marginalia-locket-pop {
+  0%   { transform: scale(1);     background: rgba(244, 222, 170, 0.18); box-shadow: 0 0 0 0 rgba(255,210,140,0); }
+  30%  { transform: scale(1.16);  background: rgba(255, 230, 175, 0.55); box-shadow: 0 0 14px 4px rgba(255,210,140,0.55); color: #5d3a14; }
+  100% { transform: scale(1);     background: rgba(244, 222, 170, 0.18); box-shadow: 0 0 0 0 rgba(255,210,140,0); }
+}
+.marginalia-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 2px solid var(--ink-frame);
+  padding: 6px 8px;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--ink-frame);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 160ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.marginalia-btn-glyph {
+  color: rgba(167, 141, 91, 0.78);
+  font-size: 0.78em;
+  line-height: 1;
+}
+/* No modern background-fill on hover. Only the text + glyph
+   warm up; the parchment behind the button stays unchanged. */
+.marginalia-btn:hover:not(:disabled):not(.is-active) {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.55);
+}
+.marginalia-btn:hover:not(:disabled):not(.is-active) .marginalia-btn-glyph {
+  color: rgba(124, 95, 50, 0.95);
+}
+.marginalia-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  color: #8e826b;
+}
+.marginalia-btn.is-active {
+  color: #2a1e08;
+  text-shadow: 0 0 8px rgba(201, 174, 103, 0.75);
+  cursor: default;
+}
+.marginalia-btn.is-active .marginalia-btn-glyph { color: rgba(124, 95, 50, 0.95); }
+
+/* Bottom 5-button nav is .page-bottom-nav in components.css. No
+   reading-specific overrides needed. */
+
+/* Tap-to-begin overlay — keep painted feel. */
+.reading-art .tap-overlay {
+  background: rgba(244, 237, 221, 0.40);
+}
+
+/* Reveal block ink color tuned for the parchment bg. */
+/* Reveal-block transition — paragraphs sit faint, lifted 14px, and
+   slightly blurred until tapped; on tap they ease up to natural
+   position, sharpen, and the ink colour resolves. "Like print
+   developing on paper" per the user's reference brief. */
+.reading-art .reveal-block {
+  color: rgba(63, 58, 49, 0.10);
+  transform: translateY(14px);
+  filter: blur(2.5px);
+  transition:
+    color     760ms ease-out,
+    transform 820ms cubic-bezier(0.22, 0.8, 0.22, 1),
+    filter    760ms ease-out;
+  will-change: transform, filter;
+}
+.reading-art .reveal-block.is-revealed {
+  color: var(--color-body);
+  transform: translateY(0);
+  filter: blur(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-art .reveal-block {
+    transform: none !important;
+    filter: none !important;
+    transition: color 220ms ease !important;
+  }
+}
+
+/* Reading title is also reveal-eligible — initially faint (the user
+   wants 若隐若现) and on first tap fades in to full ink as the TTS
+   speaks 'The Universe. 1.1 · The First Light'. Quiz title stays
+   normal-coloured (user: '选择题页面的标题不需要'). */
+.reading-art [data-page="reading"] .zone-reading-title,
+.reading-art:not([data-page="quiz"]) .zone-reading-title {
+  transition: opacity 280ms ease-out, color 280ms ease-out;
+}
+.reading-art:not([data-page="quiz"]):not([data-page="vn"]) .zone-reading-title:not(.is-revealed) {
+  opacity: 0.18;
+}
+/* The 文游 title is always fully inked (no reveal interaction there). */
+.vn-art .zone-reading-title { opacity: 1; }
+.reading-art:not([data-page="quiz"]) .zone-reading-title.is-revealed {
+  opacity: 1;
+}
+
+/* Quiz body occupies the SAME reading region as the prose page so the
+   two pages of one section share an identical text frame (top + height
+   match reading body; full region width since the quiz has no
+   marginalia column). */
+/* Quiz uses the SAME 3-column reading layout: middle prose column for the
+   question / spelling, right marginalia column for word cards. */
+[data-page="quiz"] .zone-reading-body {
+  left: 27.33%; top: 22.64%; width: 52.84%; height: 66.19%;
+}
+[data-page="quiz"] .zone-marginalia {
+  left: 80.89%; top: 22.64%; width: 16.49%; height: 66.19%;
+}
+.reading-art .quiz-body {
+  font-family: var(--font-body);
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.reading-art .quiz-body::-webkit-scrollbar { width: 0; }
+/* Compressed inter-question + inter-option spacing so all 3 questions
+   × 4 options fit inside the painted body slot without scrolling. */
+/* Type bumped to match reading-body (18px / line 1.4) — the user
+   reported the prior 14px was too small. Margins tightened
+   accordingly so 3 questions × 4 options still fit. */
+.reading-art .quiz-item { margin: 0 0 13px; padding-left: 22px; }
+.reading-art .quiz-no {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-subtitle);
+  margin: 0 0 4px -22px;
+}
+/* Bigger, tighter than the prose — the quiz must read large with little
+   blank space (user: "字太小、空行太大"). */
+.reading-art .quiz-question {
+  font-family: var(--font-body);
+  font-size: 24px;
+  line-height: 1.4;
+  letter-spacing: 0.022em;
+  word-spacing: 0.05em;
+  color: #2F3338;
+  margin: 0 0 7px -22px;
+}
+.reading-art .quiz-question .qz-target {
+  text-decoration: none; color: #8a5a1e; font-weight: 600;
+  border-bottom: 2px solid rgba(184, 160, 111, 0.7);
+}
+.reading-art .quiz-options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* PAPER-GRADING quiz option style. No modern row highlight, no
+   coloured backgrounds, no blue selection. Each option is just
+   "letter + text" inked on paper; feedback is a small marginal
+   mark to the LEFT of the letter (✤ for correct, × for wrong)
+   plus, for correct, a faint gold under-ink-stain under the text. */
+.reading-art .quiz-option {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  width: 100%;                   /* whole row is the tap target (not just the text) */
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 0;                 /* kill the 44px leak that dropped the ✤/bar below the line */
+  margin: 0 0 0.28em;
+  padding: 0.04em 0.4em 0.04em 0.25em;
+  font-family: var(--font-body);
+  font-size: 22px;               /* large + readable */
+  line-height: 1.34;             /* tight — kill the big blank gaps */
+  letter-spacing: 0.022em;
+  word-spacing: 0.05em;
+  color: #33363A;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  text-align: left;
+}
+.reading-art .quiz-option::before {
+  content: "";
+  position: absolute;
+  left: -0.9em;
+  top: 50%;
+  width: 0.42em;
+  height: 0.42em;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: transparent;
+}
+.reading-art .quiz-option:hover { color: #2f281f; }
+.reading-art .quiz-option:hover::before {
+  background: rgba(167, 141, 91, 0.42);
+}
+.reading-art .quiz-option-letter {
+  width: 1.85em;
+  color: #8a7653;
+  letter-spacing: 0.12em;
+  flex: 0 0 auto;
+}
+.reading-art .quiz-option-text {
+  position: relative;
+  display: inline;
+}
+/* English word revealed beside the Chinese once the option is tapped. */
+.reading-art .quiz-option-en {
+  display: none; margin-left: 0.55em;
+  font-family: var(--font-body); font-style: italic;
+  font-size: 0.82em; color: #8a6a2e; letter-spacing: 0.01em;
+}
+.reading-art .quiz-option.is-revealed .quiz-option-en { display: inline; }
+/* Satisfying glow when an option is correct. */
+:is(.reading-art, .review-art) .quiz-option.is-correct { animation: qz-correct-glow 0.75s ease; }
+@keyframes qz-correct-glow {
+  0%   { text-shadow: 0 0 0 rgba(127,149,163,0); }
+  35%  { text-shadow: 0 0 14px rgba(184,160,111,0.85), 0 0 26px rgba(127,149,163,0.5); }
+  100% { text-shadow: 0 0 0 rgba(127,149,163,0); }
+}
+
+/* User-picked but not yet judged — short gold tick at the left. */
+.reading-art .quiz-option.is-selected { color: #3a3024; }
+.reading-art .quiz-option.is-selected::before {
+  content: "";
+  width: 2px;
+  height: 1.4em;
+  border-radius: 0;
+  background: rgba(167, 141, 91, 0.72);
+}
+
+/* Correct answer — gold ✤ mark + faint gold under-ink on the text.
+   Position: line-height: 1 + top 50% + translateY(-50%) centres
+   the glyph on the option's vertical centre regardless of the
+   option's actual line-box height. (Prior version inherited 1.32
+   line-height from the base ::before rule, so the glyph drifted up
+   visually — the bug the user reported as "标识错位".) */
+:is(.reading-art, .review-art) .quiz-option.is-correct { color: #5d4d2f; }
+:is(.reading-art, .review-art) .quiz-option.is-correct::before {
+  content: "✤";
+  left: -1.4em;
+  top: 50%;
+  width: auto;
+  height: auto;
+  line-height: 1;
+  transform: translateY(-50%);
+  background: transparent;
+  color: #a78d5b;
+  font-size: 0.95em;
+  border-radius: 0;
+}
+:is(.reading-art, .review-art) .quiz-option.is-correct .quiz-option-text {
+  background: linear-gradient(180deg, transparent 58%, rgba(201, 174, 103, 0.22) 58%);
+}
+
+/* Wrong answer — red-brown × in the margin + strikethrough line. */
+:is(.reading-art, .review-art) .quiz-option.is-wrong {
+  color: #7a5048;
+  opacity: 0.72;
+}
+:is(.reading-art, .review-art) .quiz-option.is-wrong::before {
+  content: "×";
+  left: -1.2em;
+  top: 50%;
+  width: auto;
+  height: auto;
+  line-height: 1;
+  transform: translateY(-50%);
+  background: transparent;
+  color: rgba(122, 80, 72, 0.72);
+  font-size: 1.05em;
+  border-radius: 0;
+}
+:is(.reading-art, .review-art) .quiz-option.is-wrong .quiz-option-text::after {
+  content: "";
+  position: absolute;
+  left: -0.08em;
+  right: -0.08em;
+  top: 54%;
+  height: 1px;
+  background: rgba(122, 80, 72, 0.58);
+  transform: rotate(-1.5deg);
+}
+/* Locked = can't change the answer, but STILL tappable so each option can be
+   flipped 中文↔英文 for study after the question is solved (the JS solved-branch
+   flips instead of re-answering). */
+.reading-art .quiz-option.is-locked { pointer-events: auto; }
+
+/* ===================== QUIZ 2 · GOLDEN SEAL ======================
+   Parchment "Listen and Spell" page (copies GPT's preview). All warm
+   serif + gold hairlines; no modern chrome. */
+/* Golden Seal centres inside its own framed panel; everything else in the
+   quiz body stays LEFT-aligned like the reading prose (not page-centred). */
+.reading-art .quiz-body { text-align: left; }
+.reading-art .quiz-body .gs-progress,
+.reading-art .quiz-body .gs-panel,
+.reading-art .quiz-body .gs-done { text-align: center; }
+.gs-progress {
+  font-family: var(--font-display), Georgia, serif;
+  color: #746A5D; letter-spacing: 0.14em; font-size: 15px;
+  margin: 2px 0 14px;
+}
+.gs-progress .gs-no { color: #2F3338; font-size: 19px; font-weight: 600; }
+.gs-dots { display: inline-flex; gap: 7px; margin-left: 12px; vertical-align: middle; }
+.gs-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  border: 1px solid rgba(184,160,111,0.7); background: transparent;
+}
+.gs-dot.is-corrected { background: #9A7A3C; border-color: #9A7A3C; }
+.gs-dot.is-sealed    { background: #7F95A3; border-color: #B8A06F; box-shadow: 0 0 0 1px rgba(184,160,111,0.5); }
+
+.gs-panel {
+  position: relative;
+  margin: 0 auto; max-width: 100%;     /* fit the middle reading column */
+  padding: 22px 22px 18px;
+  border: 1px solid rgba(184,160,111,0.55);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 4px rgba(184,160,111,0.14);
+}
+.gs-sentence-en { font-size: 23px; }    /* a touch smaller for the narrower column */
+.gs-label {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: 0.22em; font-size: 12px; text-transform: uppercase;
+  color: #9A7A3C; margin-bottom: 12px;
+}
+.gs-speaker {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 1px solid rgba(184,160,111,0.7); background: rgba(238,229,211,0.5);
+  color: #6E5D48; font-size: 22px; cursor: pointer; margin-bottom: 16px;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.gs-speaker:hover  { background: rgba(238,229,211,0.85); }
+.gs-speaker:active { transform: scale(0.94); }
+.gs-sentence-en {
+  font-family: var(--font-body); font-size: 26px; line-height: 1.45;
+  color: #2F3338; margin: 0 0 8px;
+}
+.gs-blank {            /* one underline only — the underscore glyphs, no border */
+  color: #B8A06F; letter-spacing: 0.04em; padding: 0 4px; margin: 0 2px;
+}
+.gs-listen { cursor: pointer; }
+.gs-listen:hover { color: #B8860B; }
+.gs-replay { font-size: 14px; color: #B8860B; margin-left: 4px; }
+.gs-sentence-en { cursor: pointer; }   /* tap the sentence to hear it again */
+.gs-sentence-zh {
+  font-family: "Noto Serif SC", "Songti SC", serif; font-size: 17px;
+  color: #5D4D42; margin: 0 0 10px;
+}
+.gs-hint {
+  font-family: var(--font-body); font-style: italic; font-size: 15px;
+  color: #7B7063; margin: 0 0 18px;
+}
+/* Per-letter BOXES (one cell per letter). The real <input> sits invisibly on
+   top of the row capturing keystrokes, so typing always fills the boxes
+   left→right from the first one no matter which box you tapped. */
+.gs-spell { position: relative; display: block; margin: 0 auto 14px; max-width: 460px; min-height: 50px; }
+.gs-cells {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  cursor: text;
+}
+.gs-cell {
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 48px; box-sizing: border-box;
+  border: 1.5px solid rgba(184, 160, 111, 0.7);
+  border-radius: 4px;
+  background: rgba(247, 240, 222, 0.55);
+  font-family: var(--font-body); font-size: 28px; color: #2F3338;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+.gs-cell.is-filled { background: rgba(238, 229, 211, 0.92); border-color: rgba(184, 160, 111, 0.95); }
+.gs-cell.is-caret  { border-color: #B8860B; box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.18); }
+.gs-input {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  margin: 0; padding: 0; border: 0; background: transparent;
+  opacity: 0; cursor: text;
+  font-size: 16px;                 /* ≥16 so iOS doesn't zoom on focus */
+  color: transparent; caret-color: transparent;
+}
+.gs-input:focus { outline: none; }
+.gs-spell.is-shake { animation: gs-shake 0.4s ease; }
+@keyframes gs-shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); } 40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); } 80% { transform: translateX(3px); }
+}
+.gs-note {
+  font-family: var(--font-body); font-style: italic; font-size: 13px;
+  color: #8E8474; line-height: 1.5; margin: 0 0 16px;
+}
+.gs-actions { display: flex; gap: 18px; justify-content: center; }
+.gs-btn {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 14px; letter-spacing: 0.12em; color: #6E5D48;
+  border: 1px solid rgba(184,160,111,0.7); border-radius: 4px;
+  background: rgba(238,229,211,0.45); padding: 9px 22px; cursor: pointer;
+  box-shadow: inset 0 0 0 3px rgba(184,160,111,0.12);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.gs-btn:hover  { background: rgba(238,229,211,0.85); color: #3a2f1d; }
+.gs-btn:active { transform: translateY(1px); }
+/* correction panel */
+.gs-correction {
+  margin: 16px auto 0; max-width: 80%; text-align: left;
+  background: rgba(238,229,211,0.72);
+  border: 1px solid rgba(184,160,111,0.45); border-radius: 4px;
+  padding: 12px 16px; color: #3C3832;
+}
+.gs-c-row { display: flex; gap: 12px; align-items: baseline; margin-bottom: 6px; font-size: 18px; }
+.gs-c-key { font-family: var(--font-display), Georgia, serif; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #8E8474; width: 110px; flex: 0 0 auto; }
+.gs-c-you { color: #8A5B56; letter-spacing: 0.04em; }
+.gs-c-correct { letter-spacing: 0.04em; }
+.gs-c-ok  { color: #7F95A3; }
+.gs-c-bad { color: #8A5B56; text-decoration: underline; }
+.gs-c-dot { color: #B8A06F; padding: 0 1px; }
+.gs-c-mean { font-family: "Noto Serif SC","Songti SC",serif; color: #5D4D42; }
+.gs-c-tip { font-style: italic; font-size: 13px; color: #8E8474; margin-top: 6px; }
+.gs-done { text-align: center; padding: 40px 0; }
+.gs-done-mark { font-size: 40px; color: #B8A06F; }
+.gs-done-title { font-family: var(--font-display), Georgia, serif; font-size: 26px;
+  letter-spacing: 0.1em; color: #2F3338; margin-top: 8px; }
+.gs-done-sub { font-family: var(--font-body); color: #746A5D; margin-top: 6px; }
+
+/* ---- Quiz Status (Story Index entry) ---- */
+.qs-panel {
+  margin: 6px auto 0; max-width: 70%; padding: 24px 30px;
+  border: 1px solid rgba(184,160,111,0.55); border-radius: 4px;
+  box-shadow: inset 0 0 0 4px rgba(184,160,111,0.14); text-align: center;
+}
+.qs-panel .gs-label { margin-bottom: 18px; }
+.qs-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 12px 4px; border-bottom: 1px solid rgba(184,160,111,0.28);
+  font-family: var(--font-body); font-size: 19px; color: #2F3338;
+}
+.qs-name { letter-spacing: 0.02em; }
+.qs-state { font-size: 14px; font-family: var(--font-display), Georgia, serif; letter-spacing: 0.06em; }
+.qs-state.qs-unseen { color: #8E8474; }
+.qs-state.qs-in_progress { color: #9A7A3C; }
+.qs-state.qs-completed { color: #7F95A3; }
+.qs-counts { margin: 16px 0 20px; font-family: var(--font-body); font-size: 15px; color: #746A5D; }
+.qs-actions { display: flex; gap: 16px; justify-content: center; }
+
+/* ---- "临门一脚" exit prompt — same flat-paper plaque as the Section
+   Cleared / Chapter Complete toast (translucent paper, thin gold rule,
+   broken corner ticks). ---- */
+.qx-scrim {
+  position: absolute; inset: 0; z-index: 80;
+  display: flex; align-items: center; justify-content: center;
+  /* Soft warm frost — an aged-parchment wash + blur, NOT a black dim. */
+  background: rgba(96, 78, 48, 0.30);
+  backdrop-filter: blur(7px) saturate(1.05); -webkit-backdrop-filter: blur(7px) saturate(1.05);
+  opacity: 0; transition: opacity 220ms ease; pointer-events: none;
+}
+.qx-scrim.is-open { opacity: 1; pointer-events: auto; }
+/* The popup is the painted plaque art (IMG_6856, 875×548). We LOCK that aspect
+   ratio so the frame is never stretched, and centre the content inside it. */
+.qx-card {
+  position: relative;
+  /* FIXED to the image's 875×548 ratio (650/1.5967 ≈ 407) so content can never
+     stretch the frame. The stage scales uniformly, so fixed px is safe. */
+  width: 650px; height: 407px;
+  box-sizing: border-box; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 7% 8.5%; text-align: center;
+  background: url("../assets/bg/ui/IMG_6856.png") no-repeat center center;
+  background-size: 100% 100%;
+  border: 0;
+  color: #463d2c; font-family: var(--font-display);
+  /* tight, soft drop-shadow — a big blur traced the ornate outline as gray. */
+  filter: drop-shadow(0 4px 9px rgba(40, 28, 12, 0.30));
+  transform: scale(0.98); transition: transform 220ms ease;
+}
+.qx-scrim.is-open .qx-card { transform: scale(1); }
+.qx-mark {
+  font-size: 13.5px; letter-spacing: 0.2em; color: #92702f;
+  text-transform: uppercase; font-weight: 500; margin: 0 0 14px;
+}
+.qx-en { font-family: var(--font-display); font-size: 29px; line-height: 1.32; letter-spacing: 0.01em; color: #34526a; margin: 0 0 12px; max-width: 100%; }
+/* small gold diamond divider under the main line */
+.qx-en::after {
+  content: "❖"; display: block; margin: 12px auto 0;
+  font-size: 10px; color: rgba(155, 122, 74, 0.7);
+}
+.qx-zh { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 16.5px; line-height: 1.5; color: #6a5c44; margin: 0 auto 20px; max-width: 30em; }
+.qx-num { color: #9A4A3C; font-weight: 700; font-size: 1.15em; }
+.qx-actions { position: relative; z-index: 1; display: flex; gap: 16px; justify-content: center; }
+.qx-leave:hover { background: rgba(138,91,86,0.12); color: #6e3f3a; }
+/* The guiding "Continue" — a faint denim-blue wash to draw the tap. */
+.qx-continue { background: rgba(116, 134, 151, 0.18); border-color: rgba(116, 134, 151, 0.6); color: #41515e; }
+.qx-continue:hover { background: rgba(116, 134, 151, 0.32); color: #2f3d48; }
+.qx-finish { color: #8A5B56; border-color: rgba(138,91,86,0.5); }
+.qx-finish:hover { background: rgba(138,91,86,0.12); color: #6e3f3a; }
+.gs-btn[disabled] { opacity: 0.4; cursor: default; pointer-events: none; }
+
+/* ===== Silver Trial choice quiz — three measured zones (1448×1086) ===== */
+.quiz-zone { position: absolute; box-sizing: border-box; }
+.quiz-wordzone {            /* 单词区 — top title box */
+  left: 30.0%; top: 14.8%; width: 40.3%; height: 17.0%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+}
+.quiz-wordzone .qz-prog { font-family: var(--font-display), Georgia, serif; font-size: 13px; letter-spacing: 0.12em; color: #8B7A62; margin-bottom: 4px; }
+.quiz-wordzone .qz-word { font-family: var(--font-body); font-size: 38px; color: #2F3338; line-height: 1.05; }
+.quiz-wordzone .qz-dotted { font-family: var(--font-body); font-size: 17px; color: #B8860B; letter-spacing: 0.04em; margin-top: 2px; }
+.quiz-wordzone .qz-pos { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 15px; color: #6E5B4D; margin-top: 1px; }
+.quiz-qzone {              /* 题目区 — main content box */
+  left: 21.7%; top: 40.4%; width: 57.5%; height: 42.7%;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 14px; overflow-y: auto; scrollbar-width: none;
+}
+.quiz-qzone::-webkit-scrollbar { width: 0; }
+.qz-ctx { font-family: var(--font-body); font-size: 19px; line-height: 1.5; color: #3f3a31; text-align: center; margin: 0; }
+.qz-ctx .qz-blank { color: #B8A06F; letter-spacing: 0.06em; }
+.qz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; width: 100%; }
+.qz-opt {
+  display: flex; align-items: center; gap: 0.6em; text-align: left;
+  padding: 12px 14px; cursor: pointer;
+  background: rgba(238, 229, 211, 0.45);
+  border: 1px solid rgba(184, 160, 111, 0.45); border-radius: 6px;
+  font-family: var(--font-body); color: #33363A;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.qz-opt:hover { border-color: #B8A06F; background: rgba(238, 229, 211, 0.7); }
+.qz-opt-letter { font-family: var(--font-display), Georgia, serif; color: #8a7653; letter-spacing: 0.12em; flex: 0 0 auto; }
+.qz-opt-zh { font-size: 19px; }
+.qz-opt.is-correct { border-color: #7F95A3; background: rgba(127, 149, 163, 0.16); color: #3a4a52; }
+.qz-opt.is-wrong { border-color: #8A5B56; background: rgba(138, 91, 86, 0.12); color: #6e3f3a; }
+.qz-opt-note { font-size: 12px; font-style: italic; color: #8A5B56; margin-top: 3px; flex-basis: 100%; }
+.qz-continue { margin-top: 6px; }
+.qz-cardov {                /* right-edge word card on a wrong answer */
+  position: absolute; left: 80.5%; top: 38%; width: 17%; z-index: 30;
+}
+
+
+
+/* ----- Stage scaling for non-iPad viewports -----
+   Applied to EVERY .page child so that during a page-turn the
+   outgoing and incoming pages scale identically. fitStage() in
+   app.js sets --page-scale on the stage; we never write an inline
+   transform on individual pages anymore (it would clobber this and
+   only reach one of the two pages mid-transition). */
+.stage[data-scale] .page {
+  /* Composition matters. scale() is listed FIRST (applied LAST / outermost)
+     so the translate runs in the page's LOCAL, pre-scale units — which means
+     translate(100%) = the page's own 1448px width × the scale = exactly ONE
+     STAGE WIDTH on screen. (The old order, translate() then scale(), measured
+     100% as the raw 1448px regardless of scale, so on any sub-1448px display
+     the page flew >1 screen and left a gap before sliding in — the "飞到屏幕
+     外又弹回来" turn.) --tx / --ty are set inline by app.js render() during
+     page transitions; they default to 0 so this rule is identity in place. */
+  transform: scale(var(--page-scale, 1)) translate(var(--tx, 0), var(--ty, 0));
+  transform-origin: top left;
+}
+
+/* ----- index.html ----- */
+.home-hero .t-hero { margin: 0; }
+.home-hero .t-menu-sub { margin-top: 18px; }
+
+.home-emblem {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: 0.5em;
+  color: var(--color-gold);
+  margin-bottom: 14px;
+}
+
+.home-buttons .btn { min-width: 280px; }
+
+/* ----- select.html ----- */
+.select-header .t-hero { font-size: 38px; }
+.select-header .t-menu-sub { margin-top: 12px; font-size: 16px; }
+
+/* ----- reading.html small bits ----- */
+.reading-side-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(154, 131, 88, 0.30);
+  padding-bottom: 8px;
+}
+
+/* ----- chapters.html ----- */
+.chapters-header .t-hero { font-size: 36px; }
+
+/* ----- notes / word garden ----- */
+.split-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 6px 0 14px;
+  margin-bottom: 10px;
+  border-bottom: var(--hairline);
+}
+.split-header .sh-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-title);
+}
+.split-header .sh-count {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Notes saved-words list container — painted rose/lily/ribbon frame
+   (frame-blank.jpg) sits behind the list. The header label "Saved
+   Words" lands inside the cartouche at the top of the painted frame;
+   the scrollable list sits in the central blank area. */
+/* Specificity note: the inline <style> in index.html sets a card
+   background + border on `.notes-layer .split-left`; we prefix with
+   `.notes-layer` here too so this (0,3,0) wins and the painted
+   rose/lily frame shows cleanly with no double border. */
+.notes-layer .split-left.notes-list-frame {
+  position: relative;
+  border: 0;
+  border-right: 0;
+  padding: 0;
+  background: none;
+  background-image: url("assets/bg/ui/frame-blank.jpg");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.split-left.notes-list-frame .split-header {
+  position: absolute;
+  top: 5.5%;
+  left: 18%;
+  right: 18%;
+  height: 8%;
+  margin: 0;
+  padding: 0;
+  border-bottom: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  z-index: 2;
+}
+.split-left.notes-list-frame .split-header .sh-title {
+  font-size: 15px;
+  letter-spacing: 0.18em;
+}
+.split-left.notes-list-frame .split-header .sh-count {
+  font-size: 11px;
+}
+.split-left.notes-list-frame .word-list {
+  position: absolute;
+  top: 18%;
+  bottom: 9%;
+  left: 13%;
+  right: 13%;
+  overflow-y: auto;
+  margin: 0;
+  padding: 4px 6px 4px 0;
+  list-style: none;
+}
+
+/* Visual frame comes from .ornate-panel; .detail-pane only sets fill rules. */
+.detail-pane {
+  min-height: 100%;
+}
+.detail-pane.ornate-panel {
+  padding: 26px 32px 36px;
+}
+.detail-pane .empty-state { margin: 0; }
+
+/* ============================================================
+   BOTTOM NAV — per-page slot coordinates.
+   ALL values are MASTER-FRAME-RELATIVE — the nav lives inside
+   the .master-frame container, so its absolute % positioning
+   resolves against the master frame, not the full page.
+   Reading nav: directly hand-measured by the user (red dots).
+   Select nav: measured page-relative, then converted to
+   master-relative via (p-1.78)/96.33 horizontally and
+   (p-2.15)/95.85 vertically.
+   ============================================================ */
+/* USER FIX-UP: when we pre-cropped every painted bg at source
+   (~1.5% trimmed off top + bottom), the painted bottom strip
+   shifted UP about 1.5% in displayed page-relative coords. The
+   user-originally-measured nav-top values are kept below for
+   reference; the .pre-crop column is what we actually use. */
+/* Per the user: reading's button bar was sitting too low, and the
+   other pages were each at slightly different tops. Unified: nav
+   sits at --nav-top on EVERY page (per-page left/width still adapt
+   to each painted background).
+   FOLLOW-UP: the unified 91.50% read a hair too HIGH — nudged down
+   to 92.30% (a small, conservative drop, still well ABOVE the old
+   "too low" reading value). Kept identical across pages so the bar
+   stays vertically consistent everywhere. */
+/* Bottom nav button group, confined to the user's measured limit
+   points (page x 31.98%–76.31%, y 90.33%–97.24%) and equally divided
+   within. Converted to master-frame-relative (nav is a frame child):
+     left=(31.98-1.78)/0.9633=31.35%  width=44.41/0.9633=46.10%
+     top =(90.33-2.15)/0.9585=92.00%  height=7.00/0.9585=7.30%
+   Story reading = 5 cells (Save·Load·Quiz·Next·Menu); browse mode is
+   rebuilt to 3 cells in JS. Quiz keeps 5. */
+.page[data-page="reading"],
+.page[data-page="quiz"],
+.page[data-page="vn"] {
+  --nav-count:  5;          /* vn's .is-three overrides this to 3 */
+  --nav-left:   31.35%;
+  --nav-top:    92.00%;
+  --nav-width:  46.10%;
+  --nav-height:  7.30%;
+}
+.page.select-art {
+  --nav-count:  2;
+  --nav-left:   22.60%;
+  --nav-top:    92.30%;
+  --nav-width:  54.92%;
+  --nav-height:  6.70%;
+}
+.page[data-page="chapters"] {
+  --nav-count:  2;
+  --nav-left:   35.00%;
+  --nav-top:    92.30%;
+  --nav-width:  30.00%;
+  --nav-height:  6.70%;
+}
+.page[data-page="word-garden"] {
+  --nav-count:  2;
+  --nav-left:   35.00%;
+  /* Lifted a little higher than the shared 92.30% so the Back / Menu
+     labels sit up off the painted bottom edge (user: "再往上一点点"). */
+  --nav-top:    91.10%;
+  --nav-width:  30.00%;
+  --nav-height:  6.70%;
+}
+/* AUTO (autoplay) button — while reading itself aloud it glows warm
+   gold and its glyph reads as a pause/stop; tapping again stops. */
+.ui-bottom-nav button[data-auto].is-active {
+  color: #7a4a1f;
+  text-shadow: 0 0 8px rgba(201, 162, 92, 0.45);
+}
+.ui-bottom-nav button[data-auto].is-active .nav-glyph {
+  color: rgba(150, 96, 38, 0.95);
+}
+
+/* notes / save / load have NO .master-frame, so their bottom-nav is
+   positioned relative to the full .page (1086px tall) instead of the
+   frame (95.85% tall, offset 2.15% from the top). With the same 92.30%
+   / 6.70% the bar therefore rendered a touch taller and ~18px lower
+   than on reading. Convert reading's frame-relative values to the
+   page-relative equivalents so the bar's pixel height + level match
+   reading exactly:  page% = 2.15% + frac × 95.85%
+     --nav-top    = 2.15% + 0.9230 × 95.85% = 90.62%
+     --nav-height =        0.0670 × 95.85% =  6.42%  */
+.page[data-page="save"],
+.page[data-page="load"] {
+  --nav-count:  2;
+  --nav-left:   30.00%;
+  --nav-top:    90.62%;
+  --nav-width:  40.00%;
+  --nav-height:  6.42%;
+}
+.page[data-page="notes"] {
+  --nav-count:  2;
+  --nav-left:   30.00%;
+  --nav-top:    90.62%;
+  --nav-width:  40.00%;
+  --nav-height:  6.42%;
+}
+
+/* ============================================================
+   CHAPTERS (Table of Contents) — text + plaque inside each slot
+   The user's hand-measured zones cover only the EMPTY right side
+   of each painted chapter card. Inside the slot we stack:
+     (top half)    .toc-card-text     — title + tagline
+     (bottom half) .toc-card-action   — centred OPEN CHAPTER plaque
+   The text block aligns left; the plaque centres.
+   ============================================================ */
+/* TEXT zone — title + italic tagline. No button inside. */
+/* Per user feedback: 'tagline 直接写在填空区的顶端 — 同列同行
+   不要参差不齐'. The hand-measured .zone-toc-NN already covers
+   the BLANK text-writing area UNDER each painted '01 THE UNIVERSE'
+   label (the painted label is above the zone, not inside). Pinning
+   the tagline to the TOP of every zone gives an even baseline
+   across the 5×2 grid — every italic intro sits at the same
+   relative height inside its zone. */
+.toc-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;     /* tagline at the TOP of the zone */
+  padding: 2px 8px 0;
+  pointer-events: none;
+}
+.toc-card-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: stretch;
+}
+.toc-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #324154;
+  line-height: 1.18;
+}
+.toc-card-tagline {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 10px;
+  line-height: 1.32;
+  letter-spacing: 0.01em;
+  color: #6c6254;
+  font-style: italic;
+}
+
+/* BUTTON zone — its position IS the button. The .toc-btn-zone fills
+   its zone exactly (no width:132px override) so all 10 plaques sit
+   between the user's measured red lines. */
+.toc-btn-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.toc-btn-zone .antique-button {
+  pointer-events: auto;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 6px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+/* Open Chapter → tap once and the label MORPHS into a slidable section number
+   (drag / wheel / ▲▼ to choose); tap again to enter that section. No extra
+   chrome beside the button, so nothing crowds the plaque. */
+.toc-open-btn { touch-action: none; }
+.toc-open-btn .toc-btn-sel { display: none; }
+.toc-open-btn[data-mode="select"] .toc-btn-open { display: none; }
+.toc-open-btn[data-mode="select"] .toc-btn-sel {
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  letter-spacing: 0; user-select: none; -webkit-user-select: none;
+}
+.toc-sel-arrow {
+  font-size: 8px; line-height: 1; color: rgba(255, 244, 220, 0.75);
+  display: inline-flex; flex-direction: column; transition: color 120ms ease;
+}
+.toc-sel-arrow:hover { color: #fff; }
+.toc-sel-num {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 14px; font-weight: 700; line-height: 1;
+  letter-spacing: 0.04em; min-width: 2.2em; text-align: center;
+}
+.toc-sel-go {
+  font-size: 7px; letter-spacing: 0.12em; text-transform: uppercase;
+  opacity: 0.7; margin-left: 2px;
+}
+
+/* ============================================================
+   ANTIQUE BUTTON — the OPEN CHAPTER plaque style. Per the user
+   spec: outer thin border, inner thin rule (top + bottom), four
+   broken corner ticks, near-transparent paper fill. Hover warms
+   the gold without recolouring (no modern button look). Reused
+   anywhere a small parchment plaque is needed.
+   ============================================================ */
+.antique-button {
+  position: relative;
+  pointer-events: auto;
+  min-width: 130px;
+  height: 26px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--ink-frame);
+  border-radius: 3px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-frame);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+/* Inner thin top + bottom rules — softer (1 px opacity 0.42). */
+.antique-button::before,
+.antique-button::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  height: 1px;
+  background: var(--ink-frame);
+  opacity: 0.42;
+  pointer-events: none;
+}
+.antique-button::before { top: 3px; }
+.antique-button::after  { bottom: 3px; }
+/* Corner-tick spans no longer needed for the refined look. */
+.antique-button-corner { display: none; }
+.antique-button-label { position: relative; z-index: 1; }
+/* Per user spec: NO modern internal-colour change on hover. The
+   plaque stays the same; only the LABEL warms + glows. */
+.antique-button:hover {
+  background: rgba(247, 241, 226, 0.18);  /* unchanged from rest */
+}
+.antique-button:hover .antique-button-label {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.65);
+}
+.antique-button:active { background: rgba(247, 241, 226, 0.18); }
+.antique-button:focus  { outline: none; }
+
+/* ============================================================
+   WORD GARDEN — full A–Z dictionary view.
+   Layout (inside .master-frame, all coords master-relative):
+     zone-wg-search   top strip   search bar
+     zone-wg-az       below       A–Z letter directory
+     zone-wg-table    main area   two parchment columns of rows
+   The 4 zone coordinates live in debug.css. Visuals here.
+   ============================================================ */
+
+/* Search bar */
+.wg-searchbar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* master-frame children inherit pointer-events:none — re-enable
+     so the search box can actually receive focus + keystrokes. */
+  pointer-events: auto;
+}
+.wg-searchbar input {
+  width: 100%;
+  max-width: 560px;
+  height: 44px;
+  padding: 0 56px 0 22px;
+  border-radius: 22px;
+  border: 1px solid #B9A57A;
+  background: rgba(248, 240, 223, 0.78);
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1;
+  color: #2f261d;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 1px 0 rgba(255, 250, 233, 0.55);
+  outline: none;
+}
+.wg-searchbar input::placeholder {
+  color: rgba(128, 111, 89, 0.75);
+  font-style: italic;
+}
+.wg-searchbar input:focus {
+  border-color: #9d8052;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 233, 0.55),
+    0 0 0 2px rgba(167, 141, 91, 0.18);
+}
+.wg-search-icon {
+  position: absolute;
+  right: calc(50% - 280px + 18px);
+  top: 50%;
+  transform: translateY(-52%);
+  font-size: 18px;
+  line-height: 1;
+  color: #5B4A36;
+  pointer-events: none;
+}
+
+/* A–Z directory — flex row, NEVER wrap. The 58% container width
+   fits 26 letters at this font-size + spacing combo. */
+.wg-az {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  pointer-events: auto;
+}
+.wg-az-letter {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 0;
+  padding: 4px 0 8px;
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: #5A4633;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+.wg-az-letter:hover { color: #2f261d; }
+.wg-az-letter.is-disabled {
+  color: rgba(90, 70, 51, 0.48);
+  cursor: not-allowed;
+}
+.wg-az-letter.is-current::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 1px;
+  background: #B99B62;
+}
+
+/* Two-column word table — same visual grammar as the marginalia
+   card: transparent bg, 4 broken corner ticks, top ✤ rule, row
+   separators that fade at the ends. Each column scrolls. */
+.wg-table {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  align-items: stretch;
+  /* master-frame is pointer-events:none so its children inherit
+     none — without re-enabling here, the rows were ignoring taps
+     entirely. Same fix used on the voices view and the marginalia
+     stack. */
+  pointer-events: auto;
+}
+.wg-table > .wg-col-frame {
+  min-height: 0;          /* let grid item shrink so inner can scroll */
+  display: flex;
+  flex-direction: column;
+}
+/* Column FRAME — wraps the scrollable list and holds the 4 corner
+   ticks so they stay pinned while the list scrolls inside. */
+.wg-col-frame {
+  position: relative;
+  background: rgba(248, 240, 223, 0.18);
+  border: 1px solid var(--ink-frame);
+  border-radius: 4px;
+}
+.wg-col-frame::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--ink-frame);
+  border-radius: 3px;
+  opacity: 0.42;
+  pointer-events: none;
+}
+.wg-col-frame::after {
+  content: "✤";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 6px;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--ink-frame);
+  background: transparent;
+  pointer-events: none;
+}
+.wg-col-frame > .corner-tick { display: none; }
+.wg-col {
+  position: relative;
+  margin: 0;
+  padding: 18px 22px 16px;
+  list-style: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: transparent;
+}
+.wg-col::-webkit-scrollbar { width: 5px; }
+.wg-col::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.38); border-radius: 3px;
+}
+
+/* Row — English left / Chinese right. Thin fading rule below each
+   row (matches antique-divider: thinner at ends, denser middle). */
+.wg-col-head {
+  list-style: none;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #8a7653; padding: 0 4px 6px; margin-bottom: 4px;
+  border-bottom: 1px solid rgba(184,160,111,0.35);
+}
+.wg-empty { list-style: none; color: #9a8f7c; font-style: italic; font-size: 13px; padding: 8px 4px; }
+.wg-col-head-row { display: flex; align-items: center; justify-content: space-between; }
+.wg-sealmore {
+  font-family: var(--font-display), Georgia, serif; font-size: 11px; letter-spacing: 0.08em;
+  color: #41515e; border: 1px solid rgba(116,134,151,0.6); border-radius: 6px;
+  background: rgba(116,134,151,0.16); padding: 3px 10px; cursor: pointer; text-transform: none;
+}
+.wg-sealmore:hover { background: rgba(116,134,151,0.3); color: #2f3d48; }
+.wg-sealmore[disabled] { opacity: 0.4; pointer-events: none; }
+.wg-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 2.6em;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 4px;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+/* dedicated fixed-width count column (always present so every row's number
+   lines up like a table column), right-aligned, no background. */
+.wg-row-need {
+  font-family: var(--font-display), Georgia, serif; font-size: 14px; font-weight: 600;
+  color: #A8443B; text-align: right; line-height: 1; letter-spacing: 0.02em;
+}
+.wg-row:hover { background: rgba(167, 141, 91, 0.06); }
+.wg-row + .wg-row::before {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(166, 148, 112, 0.55) 18%,
+    rgba(166, 148, 112, 0.55) 82%,
+    transparent 100%);
+}
+.wg-row-en {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #2F261D;
+}
+.wg-row-zh {
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC",
+               var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  color: #5E5040;
+  line-height: 1.2;
+}
+
+/* ============================================================
+   NOTES — saved-word note cards
+   Each saved word is ONE horizontal note card painted on
+   assets/bg/ui/note-card.png (its white margin was made
+   transparent so cards sit on the parchment Notes page).
+   Cards stack vertically and scroll. Four content zones,
+   positioned in PER-CARD percentages from the 2095×444 art:
+     1 .note-index   2 .note-quote   3 .note-open   4 .word-preview
+   Palette (classical paper, low-saturation, no pure black /
+   modern blue / highlight yellow):
+     ink-main #3f3628  ink-soft #6d604b  gold-line rgba(159,130,75,.45)
+   ============================================================ */
+.notes-art .notes-scroll {
+  position: absolute;
+  left: 5%; right: 5%;
+  top: 20%; bottom: 11.5%;        /* pushed down off the painted heading */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+  padding-right: 6px;
+}
+.notes-art .notes-scroll::-webkit-scrollbar { width: 6px; }
+.notes-art .notes-scroll::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.32); border-radius: 3px;
+}
+.notes-art .note-cards {
+  list-style: none; margin: 0; padding: 2px 0 50px;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+/* A note keeps its full card proportions, but cards are STACKED: each is
+   pulled up over the previous one, covering its lower half — so folded you
+   see only each card's top ("脑袋"). Tapping a card slides its full self out
+   (the cards below shift down); the others stay stacked. */
+.note-card {
+  position: relative;
+  width: 82%;
+  aspect-ratio: 1990 / 622;
+  background: url("../assets/bg/ui/IMG_6778.png") no-repeat center center;
+  background-size: 100% 100%;
+  margin-bottom: -17.4%;          /* overlap tuned so ~7 heads fill a page */
+  cursor: pointer;
+  filter: drop-shadow(0 4px 10px rgba(120,105,90,0.22))
+          drop-shadow(0 12px 22px rgba(120,105,90,0.12));
+  transition: margin-bottom 380ms cubic-bezier(0.22,0.8,0.22,1),
+              filter 250ms ease;
+}
+.note-card:last-child { margin-bottom: 0; }
+.note-card.is-open {
+  margin-bottom: 3%;
+  z-index: 50 !important;          /* override the JS stack z-index */
+  filter: drop-shadow(0 10px 18px rgba(120,105,90,0.28))
+          drop-shadow(0 22px 40px rgba(120,105,90,0.16));
+}
+/* FOLDED: show the CHAPTER line (left) + the WORD (right) on one row, in their
+   real positions so nothing jumps when the card opens. Hide everything else. */
+.note-card:not(.is-open) .note-quote-text,
+.note-card:not(.is-open) .note-open,
+.note-card:not(.is-open) .note-example,
+.note-card:not(.is-open) .note-index,
+.note-card:not(.is-open) .note-word .word-zh,
+.note-card:not(.is-open) .note-word .word-phrases { display: none; }
+
+/* ---- index number (on the blue pennant, far right) ---- */
+.note-card .note-index {
+  position: absolute;
+  left: 90.5%; top: 53.1%; width: 5.4%; height: 12.7%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(16px, 1.6vw, 30px);
+  font-weight: 600; letter-spacing: 0.04em;
+  color: #2f4a63; line-height: 1;          /* blue ink — white was invisible on the paper strip */
+  text-shadow: 0 1px 1px rgba(255, 250, 240, 0.4);
+  cursor: pointer;
+}
+.note-card .note-index:hover { color: #20374d; }
+
+/* ---- reading EXCERPT (left big; wider; tap to hear) ---- */
+.note-card .note-quote {
+  position: absolute;
+  left: 7.5%; top: 13%; width: 44%; height: 66%;   /* wider — ~52% of content */
+  box-sizing: border-box; overflow: hidden; cursor: pointer;
+}
+/* A STABLE, centred safe-area box (even top/bottom + left/right padding) so the
+   excerpt never hugs an edge or collides with the quote marks / OPEN / chapter
+   line, and every note's reading block reads at the same height. */
+.note-card .note-quote-inner {
+  position: absolute; left: 11%; right: 11%; top: 2.5%; bottom: 10%;
+  display: flex; flex-direction: column; justify-content: flex-start;
+  text-align: center;
+}
+/* Chapter line pinned to the TOP of the box */
+.note-card .note-source {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(11px, 0.9vw, 17px);
+  letter-spacing: 0.08em; color: rgba(74, 61, 43, 0.72);
+  flex: 0 0 auto;
+}
+/* Excerpt centred in the space below the chapter line */
+.note-card .note-quote-text {
+  font-family: "Cormorant Garamond", "EB Garamond", Georgia, serif;
+  font-size: clamp(18px, 1.55vw, 29px);
+  font-weight: 400; line-height: 1.42; letter-spacing: 0.02em;
+  text-align: center; color: #3f3628;
+  width: 100%; max-width: none; margin: auto 0;
+}
+/* When open, the quote/example can run long: let each text zone scroll inside
+   its painted box instead of clipping the words. */
+.note-card.is-open .note-quote-inner { overflow-y: auto; -webkit-overflow-scrolling: touch; justify-content: flex-start; }
+/* target word — low-saturation light gold, classical and restrained */
+.note-card .quote-word {
+  color: #9a7b32;
+  background: rgba(199, 173, 110, 0.14);
+  padding: 0 0.1em; border-radius: 2px;
+}
+/* open quote top-left, close quote bottom-right of the reading box */
+.note-card .note-quote::before {
+  content: "\201C";
+  position: absolute;
+  left: 0; top: 2%;
+  font-family: Georgia, serif;
+  font-size: clamp(36px, 3.8vw, 70px);
+  color: rgba(132, 101, 52, 0.5);
+  line-height: 1;
+}
+.note-card .note-quote::after {
+  content: "\201D";
+  position: absolute;
+  right: 1%; bottom: -2%;
+  font-family: Georgia, serif;
+  font-size: clamp(36px, 3.8vw, 70px);
+  color: rgba(132, 101, 52, 0.5);
+  line-height: 1;
+}
+
+/* ---- OPEN banner (small ribbon, lower-left of the reading box) ---- */
+.note-card .note-open {
+  position: absolute;
+  left: 24.2%; top: 78.0%; width: 9.7%; height: 12.4%;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 0; cursor: pointer;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(12px, 1.1vw, 21px); letter-spacing: 0.22em;
+  color: #5a4932; text-transform: uppercase;
+}
+.note-card .note-open:hover { color: #8a6a30; }
+
+/* ---- right-top: word / 中文 / phrases — block CENTRED in its zone ---- */
+.note-card .note-word {
+  position: absolute;
+  left: 52%; top: 13.3%; width: 38%; height: 46.3%;
+  box-sizing: border-box; padding: 1% 3% 2%;
+  display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch;
+  overflow: hidden; cursor: pointer; text-align: left;
+}
+.note-card.is-open .note-word { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+/* ---- right-bottom: example + 中文 — CENTRED in its zone ---- */
+.note-card .note-example {
+  position: absolute;
+  left: 52%; top: 64.6%; width: 38%; height: 27.7%;
+  box-sizing: border-box; padding: 1% 3%;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow: hidden; cursor: pointer; text-align: left;
+}
+/* open card → full example text, scrollable inside the box (no clamp/clip) */
+.note-card.is-open .note-example { overflow-y: auto; -webkit-overflow-scrolling: touch; justify-content: flex-start; }
+.note-card .word-example {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(15px, 1.25vw, 23px);
+  font-style: italic; line-height: 1.38; letter-spacing: 0.02em;
+  color: #4b402f;
+  display: -webkit-box; -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; overflow: hidden;
+}
+.note-card .word-example-zh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: clamp(13px, 1.0vw, 18px);
+  color: #6d604b; line-height: 1.45; margin-top: 0.35em;
+  display: -webkit-box; -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; overflow: hidden;
+}
+/* open → reveal all lines (the box scrolls) */
+.note-card.is-open .word-example { -webkit-line-clamp: unset; display: block; overflow: visible; }
+.note-card.is-open .word-example-zh { -webkit-line-clamp: unset; display: block; overflow: visible; }
+.note-card .word-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(26px, 2.2vw, 46px);
+  font-weight: 500; letter-spacing: 0.06em;
+  color: #3f3628; line-height: 1.05; margin-bottom: 0.12em;
+}
+.note-card .word-zh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: clamp(15px, 1.2vw, 22px);
+  letter-spacing: 0.06em; color: #5d4b35; line-height: 1.35;
+  margin-bottom: 0.55em;
+}
+/* phrase ENTRIES — one per row, English LEFT and 中文 RIGHT (fills the width,
+   like the word card, so the right side isn't empty). English enlarged. */
+.note-card .word-phrases { display: flex; flex-direction: column; gap: 0.4em; }
+.note-card .word-phrase {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 0.8em;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(17px, 1.5vw, 27px); line-height: 1.28; color: #3f3628;
+}
+.note-card .wp-en { flex: 0 1 auto; }
+.note-card .wp-zh {
+  flex: 0 0 auto; text-align: right;
+  font-family: "Songti SC", "Noto Serif SC", serif; color: #6d604b; font-size: 0.62em;
+}
+/* Blue bookmark tab "Tap to Open" — painted into the card's
+   top-right; the label sits on its lower tail. */
+.note-card .bookmark-open {
+  position: absolute;
+  right: 1.4%; top: 12%;
+  width: 6.6%;
+  text-align: center;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(10px, 0.8vw, 15px);
+  font-style: italic; line-height: 1.2; letter-spacing: 0.04em;
+  color: #e9dcc0;
+  text-shadow: 0 1px 2px rgba(40, 52, 74, 0.55);
+  cursor: pointer;
+}
+
+/* Notes empty state */
+.notes-art .notes-empty {
+  margin: 8% auto 0;
+  text-align: center;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 18px; letter-spacing: 0.08em;
+  color: rgba(74, 61, 43, 0.6);
+}
+
+/* Spotlight a word when arriving from a note's "Open Chapter". */
+.reading-art .reading-body .clickable-word.is-spotlight {
+  animation: word-spotlight 2.2s ease-out;
+}
+@keyframes word-spotlight {
+  0%   { background: rgba(201, 174, 103, 0.22); box-shadow: 0 0 0 rgba(180,140,60,0); }
+  25%  { background: rgba(201, 174, 103, 0.66); box-shadow: 0 0 12px rgba(180,140,60,0.55); }
+  100% { background: rgba(201, 174, 103, 0.22); box-shadow: 0 0 0 rgba(180,140,60,0); }
+}
+
+/* ============================================================
+   READING top-right control group (zone G) — ONE slim classical
+   tool bar: ♪ · thin gold-line volume · AUTO. Cream paper fill,
+   fine gold border, faint inset shadow. No system range chrome, no
+   glowing dot, no plastic capsule. The global BGM chip is hidden on
+   reading so there's only one volume control.
+   ============================================================ */
+body[data-current-view="reading"] .global-bgm-control,
+body[data-current-view="vn"] .global-bgm-control { display: none; }
+
+.reading-art .zone-reading-controls {
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reading-art .reading-controls {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 100%;
+  padding: 4px 8px;
+  background: rgba(245, 238, 223, 0.46);
+  border: 1px solid rgba(150, 124, 82, 0.34);
+  border-radius: 2px;
+  box-shadow: inset 0 0 6px rgba(120, 92, 45, 0.07);
+}
+.reading-art .rc-note {
+  flex: 0 0 auto;
+  font-family: Georgia, serif;
+  font-size: 12px;
+  line-height: 1;
+  color: rgba(108, 90, 67, 0.78);
+}
+.reading-art .rc-vol {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 56px;
+  height: 12px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.reading-art .rc-vol::-webkit-slider-runnable-track {
+  height: 1px;
+  background: rgba(150, 124, 82, 0.62);
+}
+.reading-art .rc-vol::-moz-range-track {
+  height: 1px;
+  background: rgba(150, 124, 82, 0.62);
+}
+.reading-art .rc-vol::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 7px; height: 7px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: #b9985a;
+  border: 0;
+}
+.reading-art .rc-vol::-moz-range-thumb {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #b9985a;
+  border: 0;
+}
+.reading-art .rc-auto {
+  flex: 0 0 auto;
+  padding: 1px 1px 1px 8px;
+  border: 0;
+  border-left: 1px solid rgba(150, 124, 82, 0.45);
+  background: transparent;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #6c5a43;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+.reading-art .rc-auto:hover { color: #4a3a25; }
+.reading-art .rc-auto.is-active { color: #8a5a1e; font-weight: 500; }
+
+/* ============================================================
+   READING sentences — every sentence is a tap-to-read block.
+   Unread sentences sit dim; the CURRENT (being-read) one rises,
+   glows softly at its left edge, and inks its words in one-by-one
+   (GPT-style streaming); already-read sentences stay fully visible.
+   ============================================================ */
+.reading-art .reading-body .sentence-block {
+  margin: 0 0 16px;
+  padding-left: 12px;
+  border-left: 2px solid transparent;
+  border-radius: 2px;
+  opacity: 0.32;
+  filter: blur(2.4px);                /* invisible-ink: blurred until read */
+  cursor: pointer;
+  transition: opacity 0.7s ease, filter 0.7s ease;
+}
+.reading-art .reading-body .sentence-block.is-read { opacity: 1; filter: blur(0); }
+.reading-art .reading-body .sentence-block.is-current {
+  opacity: 1;
+  filter: blur(0);
+  border-left-color: rgba(170, 135, 60, 0.5);
+  background: linear-gradient(90deg,
+    rgba(201, 170, 92, 0.12) 0%,
+    rgba(201, 170, 92, 0.05) 45%,
+    transparent 80%);
+  animation: sentence-rise 1.3s cubic-bezier(0.22, 0.8, 0.22, 1) both;
+}
+@keyframes sentence-rise {
+  from { transform: translateY(8px); }
+  to   { transform: translateY(0); }
+}
+/* word-by-word ink-in — SLOWED ~2× (longer fade + wider stagger) so the
+   words surface one at a time like developing ink. */
+.reading-art .reading-body .sentence-block .w { transition: opacity 0.5s ease; }
+.reading-art .reading-body .sentence-block.is-current .w {
+  animation: word-ink 1.35s ease both;
+  animation-delay: calc(var(--wi, 0) * 0.22s);
+}
+@keyframes word-ink {
+  from { opacity: 0.18; filter: blur(1.5px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-art .reading-body .sentence-block,
+  .reading-art .reading-body .sentence-block .w { animation: none !important; filter: none !important; }
+}
+/* DURING a page turn — drop the blur on both the leaving and entering pages
+   so the slide is a clean compositor transform instead of re-rasterising
+   ~180 blurred spans every frame (the forward-turn jank). The invisible-ink
+   blur fades back in via the .sentence-block 0.7s filter transition once the
+   stage's .is-turning flag is cleared. */
+.stage.is-turning .reading-art .reading-body .sentence-block,
+.stage.is-turning .reading-art .reading-body .sentence-block .w {
+  filter: none !important;
+}
+
+/* Right-side safety margin so the scrollbar / interaction layer never
+   sits on top of the prose (user: "拖动条会挡住字"). */
+.reading-art .reading-body {
+  box-sizing: border-box;
+  padding-right: 18px;
+  /* Lets the LAST sentence scroll fully clear of the bottom edge so its
+     final line is always reachable. */
+  padding-bottom: 64px;
+}
+
+/* Quiz: the question currently being read gets the same soft left mark
+   + warm underglow as the reading page's current sentence, and is
+   scrolled into view, so the player can follow what's being spoken. */
+.reading-art .quiz-item { border-left: 2px solid transparent; }
+.reading-art .quiz-item.is-current {
+  border-left-color: rgba(170, 135, 60, 0.5);
+  background: linear-gradient(90deg,
+    rgba(201, 170, 92, 0.10) 0%,
+    rgba(201, 170, 92, 0.04) 50%,
+    transparent 85%);
+  border-radius: 2px;
+}
+
+/* Small marginalia card → "tap for full card" hint (only when the word
+   has a big card; proper/place words omit it). */
+.marginalia-card .word-card.is-openable { cursor: pointer; }
+.marginalia-card .word-card-more {
+  margin-top: 6px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 11px;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: rgba(124, 95, 50, 0.8);
+}
+
+/* ============================================================
+   REVIEW PAGE — 3F265 background, three hand-measured zones
+   positioned against the full 1448×1086 page (the user measured
+   on the painted image, so these are page-relative, NOT
+   master-frame-relative). Two rounds: recognition then dictation.
+   ============================================================ */
+.review-art .rv-word,
+.review-art .rv-question,
+.review-art .rv-bottom { position: absolute; box-sizing: border-box; }
+.review-art .rv-word     { left: 29.9%; top: 14.8%; width: 40.3%; height: 17.0%; }
+.review-art .rv-question { left: 21.3%; top: 40.4%; width: 57.5%; height: 42.7%; }
+.review-art .rv-bottom   { left: 28.4%; top: 90.6%; width: 43.2%; height:  7.6%; }
+
+/* WORD box */
+.review-art .rv-word {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.rv-wordface {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 100%; height: 100%; gap: 6px;
+  background: transparent; border: 0; cursor: pointer; appearance: none;
+}
+.rv-word-en {
+  font-family: "Cormorant Garamond", var(--font-display), Georgia, serif;
+  font-size: 54px; font-weight: 500; color: #2F3338;
+  letter-spacing: 0.04em; line-height: 1.05;
+}
+.rv-word-meta { font-family: var(--font-display), Georgia, serif; font-style: italic; font-size: 18px; color: #8E7A4E; }
+.rv-word-prog { font-family: var(--font-display), Georgia, serif; font-size: 14px; letter-spacing: 0.18em;
+  color: #B8860B; margin-top: 2px; }
+.rv-word.is-show .rv-done-mark { font-size: 54px; color: #B8860B; }
+
+/* WORD box in dictation mode — one open writing line, no cells */
+.rv-word.is-spell { gap: 8px; }
+.rv-spell { width: 86%; max-width: 360px; }
+.rv-spell.is-shake { animation: gs-shake 0.4s ease; }
+.rv-input {
+  display: block; width: 100%; box-sizing: border-box; height: 58px;
+  padding: 8px 12px; text-align: center;
+  border: 0; border-bottom: 2px solid rgba(184,160,111,0.8); border-radius: 0;
+  background: rgba(247,240,222,0.55);
+  font-family: var(--font-body); font-size: 34px; color: #2F3338; letter-spacing: 0.02em;
+}
+.rv-input:focus { outline: none; border-bottom-color: #B8860B;
+  box-shadow: inset 0 -3px 0 rgba(184,134,11,0.18); }
+.rv-spell-label { font-family: var(--font-display), Georgia, serif;
+  letter-spacing: 0.2em; font-size: 12px; text-transform: uppercase; color: #9A7A3C; cursor: pointer; }
+.rv-replay { color: #B8860B; margin-left: 4px; }
+
+/* QUESTION box */
+.review-art .rv-question {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  text-align: center; overflow-y: auto; padding: 4px 10px;
+}
+.rv-q-hint { font-family: var(--font-body); font-style: italic; font-size: 16px; color: #7B7063; margin: auto 0; }
+.rv-q-zh { font-family: "Noto Serif SC", "Songti SC", serif; font-style: normal; font-size: 15px; color: #8A7C66; }
+.rv-meaning { font-family: "Noto Serif SC", "Songti SC", serif; font-size: 18px; color: #5D4D42; margin: 0 0 8px; }
+.rv-spell-prog { font-family: var(--font-display), Georgia, serif; letter-spacing: 0.16em; color: #B8860B; margin-left: 6px; }
+.rv-q-label { font-family: var(--font-display), Georgia, serif; letter-spacing: 0.14em;
+  text-transform: uppercase; font-size: 13px; color: #9A7A3C; margin: 6px 0 14px; }
+.rv-sentence { font-family: var(--font-body); font-size: 25px; line-height: 1.45;
+  color: #2F3338; margin: 8px 0 6px; cursor: pointer; }
+.rv-target { text-decoration: none; border-bottom: 2px solid #B8860B; color: #6E5A2A; padding: 0 2px; }
+.rv-fill { color: #B8A06F; letter-spacing: 0.04em; padding: 0 4px; }
+.rv-sentence-zh { font-family: "Noto Serif SC", "Songti SC", serif; font-size: 17px; color: #5D4D42; margin: 4px 0 2px; }
+.rv-options { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 460px; }
+.rv-opt {
+  display: flex; align-items: center; gap: 10px; text-align: left;
+  margin: 9px 0; padding: 12px 16px; cursor: pointer;
+  border: 1px solid rgba(184,160,111,0.5); border-radius: 6px;
+  background: rgba(247,240,222,0.5); transition: background 0.15s ease, border-color 0.15s ease;
+}
+.rv-opt:hover { background: rgba(238,229,211,0.85); }
+.rv-opt-l { font-family: var(--font-display), Georgia, serif; color: #9A7A3C; font-size: 18px; min-width: 22px; }
+.rv-opt-t { font-family: var(--font-body); font-size: 20px; color: #2F3338; }
+.rv-opt.is-correct { border-color: #7F95A3; background: rgba(127,149,163,0.20); box-shadow: 0 0 0 2px rgba(127,149,163,0.18);
+  animation: qz-correct-glow 0.75s ease; }
+.rv-opt.is-wrong   { border-color: #B14A3A; background: rgba(200,110,90,0.22); animation: qz-wrong-shake 0.4s ease; }
+@keyframes qz-wrong-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 50%{transform:translateX(4px)} 75%{transform:translateX(-3px)} }
+
+/* correction (dotted spelling) */
+.rv-correction { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 6px 0; }
+.rv-c-key { font-family: var(--font-display), Georgia, serif; letter-spacing: 0.14em;
+  text-transform: uppercase; font-size: 11px; color: #9A7A3C; }
+.rv-c-word { font-family: var(--font-body); font-size: 28px; letter-spacing: 0.02em; }
+.rv-c-ok { color: #7F95A3; } .rv-c-bad { color: #C0392B; } .rv-c-dot { color: #B8A06F; }
+
+/* BOTTOM UI — two buttons styled like the reading bottom bar (Menu · Trial),
+   filling the painted arch zone; no Claude-default pills. */
+.review-art .rv-bottom {
+  display: grid; grid-template-columns: 1fr 1fr; align-items: center; justify-items: center;
+}
+.rv-nav-btn {
+  display: flex; flex-direction: row; align-items: center; justify-content: center;
+  width: 100%; height: 100%; border: 0; background: transparent; cursor: pointer;
+  font-family: var(--font-display); font-size: 14px; line-height: 1;
+  letter-spacing: 0.18em; text-transform: uppercase; font-weight: 400;
+  color: rgba(75, 62, 42, 0.92);
+}
+.rv-nav-btn .nav-glyph { margin-right: 0.55em; color: rgba(126,105,74,0.78); font-size: 0.82em; }
+.rv-nav-btn .nav-glyph-after { margin-left: 0.55em; color: rgba(126,105,74,0.78); font-size: 0.82em; }
+.rv-nav-btn:hover { color: #2f281f; }
+/* The "Fold" collect button on the quiz right-column small card */
+.qz-fold {
+  display: block; margin: 10px auto 0; padding: 5px 16px; cursor: pointer;
+  font-family: var(--font-display), Georgia, serif; font-size: 13px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  border: 1px solid rgba(184,160,111,0.6); border-radius: 14px;
+  background: rgba(247,240,222,0.55); color: #6E5D48;
+}
+.qz-fold:hover { background: rgba(238,229,211,0.9); }
+.qz-fold.is-saved { background: rgba(127,149,163,0.20); border-color: #7F95A3; color: #7F95A3; }
+/* Wrong-answer feedback in Review: correct word + meaning + sentence zh */
+.rv-feedback { margin-top: 12px; text-align: center; animation: qz-correct-glow 0.6s ease; }
+.rv-fb-key { font-family: var(--font-display), Georgia, serif; font-size: 19px; color: #6E5A2A; letter-spacing: 0.02em; }
+.rv-fb-zh { font-family: "Noto Serif SC", "Songti SC", serif; font-size: 16px; color: #5D4D42; margin-top: 4px; }
+
+/* empty / done states */
+.rv-empty, .rv-done { font-family: var(--font-body); color: #5D4D42; text-align: center; margin: auto; }
+.rv-empty { font-size: 18px; line-height: 1.6; font-style: italic; }
+.rv-done-title { font-family: var(--font-display), Georgia, serif; font-size: 30px; color: #2b3b51; margin-bottom: 8px; }
+.rv-done-sub { font-size: 17px; color: #6E5D48; margin-bottom: 18px; }
+.rv-done-btn { font-family: var(--font-display), Georgia, serif; font-size: 16px;
+  letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+  padding: 8px 26px; border: 1px solid rgba(184,160,111,0.6); border-radius: 16px;
+  background: rgba(247,240,222,0.6); color: #6E5D48; }
+.rv-done-btn:hover { background: rgba(238,229,211,0.9); }
+
+/* Double-tap translation line under a reading sentence */
+.reading-art .sentence-block .sentence-zh {
+  display: block; margin-top: 0.35em;
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-size: 0.86em; line-height: 1.6; letter-spacing: 0.02em;
+  color: #6E5A3C;
+  padding: 0.4em 0.7em; border-left: 2px solid rgba(184,160,111,0.6);
+  background: rgba(238,229,211,0.4);
+  border-radius: 0 4px 4px 0;
+}
+.reading-art .sentence-block .sentence-zh.is-missing { font-style: italic; color: #9A8C72; }
+
+/* Comprehension: translation revealed under a CORRECTLY answered question */
+.reading-art .comp-item .comp-zh {
+  display: block; margin: 4px 0 8px;
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-size: 0.9em; line-height: 1.6; color: #6E5A3C;
+  padding: 0.4em 0.7em; border-left: 2px solid rgba(184,160,111,0.6);
+  background: rgba(238,229,211,0.4); border-radius: 0 4px 4px 0;
+}
+.reading-art .comp-item .comp-zh.is-missing { font-style: italic; color: #9A8C72; }
+/* One-line translation under a question/option — identical look to a reading
+   sentence's double-tap translation. */
+.reading-art .comp-item .comp-line-zh {
+  display: block; margin: 0.35em 0 0.1em;
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-size: 0.86em; line-height: 1.6; letter-spacing: 0.02em;
+  color: #6E5A3C;
+  padding: 0.4em 0.7em; border-left: 2px solid rgba(184,160,111,0.6);
+  background: rgba(238,229,211,0.4);
+  border-radius: 0 4px 4px 0;
+}
+.reading-art .comp-item .comp-line-zh.is-missing { font-style: italic; color: #9A8C72; }
+
+/* Inline stage-clear / comprehension-done row (replaces the popup) */
+.reading-art .quiz-done-row, .reading-art .comp-done-row {
+  margin: 18px auto 8px; text-align: center;
+}
+.reading-art .quiz-done-title, .reading-art .comp-done-title {
+  font-family: var(--font-display), Georgia, serif; font-size: 15px;
+  letter-spacing: 0.06em; color: #6E5A2A; margin: 0 0 12px;
+}
+.reading-art .quiz-done-actions, .reading-art .comp-done-actions {
+  display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
+}
+.quiz-done-actions .antique-button, .comp-done-actions .antique-button {
+  min-width: 176px; height: 40px; font-size: 12px; letter-spacing: 0.16em;
+}
+
+/* Review choice options reuse the site's paper-grading quiz-option look */
+.review-art .quiz-options { margin: 8px auto 0; padding: 0; list-style: none; width: min(86%, 460px); max-width: 460px; text-align: left; }
+.review-art .quiz-option {
+  position: relative; display: flex; align-items: flex-start; gap: 0.6em;
+  width: 100%; max-width: none; box-sizing: border-box;
+  min-height: 2.5em;                 /* reserve ~2 lines so flipping zh↔en never jumps the column */
+  margin: 0.5em 0; padding: 0.18em 0.4em;
+  font-family: var(--font-body); font-size: 22px; line-height: 1.34;
+  letter-spacing: 0.022em; color: #33363A; cursor: pointer; background: transparent; border: 0;
+}
+.review-art .quiz-option-text { flex: 1 1 auto; }
+.review-art .quiz-option:hover { color: #2f281f; }
+.review-art .quiz-option-letter { width: 1.85em; color: #8a7653; letter-spacing: 0.12em; flex: 0 0 auto; }
+/* correct/wrong visual is shared with the reading quiz via :is(.reading-art,
+   .review-art) above — same ✤ / × markers, underline, strike and colours. */
+
+/* Dictation: the blank carries the word's 中文 meaning (not underscores) */
+.gs-blank-zh {
+  font-family: "Noto Serif SC", "Songti SC", serif; font-style: normal;
+  color: #8a5a1e; letter-spacing: 0.02em; padding: 0 6px;
+  border-bottom: 2px solid rgba(184,160,111,0.7);
+}
+
+
+/* Quiz option study-flip (Chinese ↔ English) */
+.quiz-option-text { display: inline-block; transition: transform 130ms ease, opacity 130ms ease; }
+.quiz-option.opt-flip .quiz-option-text { opacity: 0; transform: translateX(10px); }
+/* Flipped-to-English word keeps the option's CURRENT colour, so the word reads
+   in exactly the same ink as the 中文 it replaced (no jarring new colour). */
+.quiz-option.opt-en .quiz-option-text { font-style: normal; color: inherit; }
+/* A correct option keeps its gold highlight; a wrong one keeps its struck-out
+   look — both inherit the option's own colour rather than a separate red. */
+.quiz-option.is-correct.opt-en .quiz-option-text {
+  background: rgba(201, 174, 103, 0.38); border-radius: 3px; padding: 0 0.28em; color: inherit;
+}
+.quiz-option.is-wrong.opt-en .quiz-option-text { color: inherit; }
+/* reading-art draws the strike via ::after (recolour it red); review-art has no
+   ::after, so use a plain line-through there. */
+.reading-art .quiz-option.is-wrong.opt-en .quiz-option-text::after { background: rgba(192, 57, 43, 0.85); }
+.review-art  .quiz-option.is-wrong.opt-en .quiz-option-text { text-decoration: line-through; text-decoration-color: rgba(192, 57, 43, 0.85); }
+
+/* ============================================================
+   UNIFIED TOOL BUTTONS — every in-content button uses the reading
+   FOLD look: transparent, thin classical border, ink text, no fills,
+   no green/denim washes. (.qx popup, quiz done-rows, fold, seal-more,
+   review buttons, dictation buttons.)
+   ============================================================ */
+.gs-btn,
+.qz-fold,
+.wg-sealmore,
+.rv-done-btn,
+.review-art .rv-nav-btn,
+.quiz-done-actions .antique-button,
+.comp-done-actions .antique-button {
+  background: transparent !important;
+  border: 1.5px solid rgba(124, 95, 50, 0.62) !important;
+  border-radius: 3px !important;
+  box-shadow: none !important;
+  font-family: var(--font-display), Georgia, serif !important;
+  font-size: 11px !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  font-weight: 500 !important;
+  color: #6b5836 !important;
+  padding: 9px 18px !important;
+  min-width: 150px;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.gs-btn:hover,
+.qz-fold:hover,
+.wg-sealmore:hover:not([disabled]),
+.rv-done-btn:hover,
+.review-art .rv-nav-btn:hover,
+.quiz-done-actions .antique-button:hover,
+.comp-done-actions .antique-button:hover {
+  color: #2a1e08 !important;
+  border-color: rgba(124, 95, 50, 0.95) !important;
+  background: transparent !important;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.5);
+}
+/* drop the old denim "continue" + red "leave" washes */
+.qx-continue, .qx-stay, .qx-leave, .qx-finish, .qx-spell { background: transparent !important; border-color: rgba(124,95,50,0.62) !important; color: #6b5836 !important; }
+.qx-leave, .qx-finish { color: #8A5B56 !important; border-color: rgba(138,91,86,0.5) !important; }
+/* folded/saved state stays subtle (denim, never green) */
+.qz-fold.is-saved { color: #7F95A3 !important; border-color: #7F95A3 !important; background: transparent !important; }
+.wg-sealmore { min-width: 0; }
+
+/* Dictation: blank 中文 slides into the filled English word on a correct answer */
+.gs-sentence-en { transition: opacity 150ms ease, transform 150ms ease; }
+.gs-sentence-en.gs-swap { opacity: 0; transform: translateX(10px); }
+.gs-filled { color: #8a5a1e; font-weight: 600; padding: 0 4px; border-bottom: 2px solid rgba(184,160,111,0.7); }
+
+/* Review post-answer hint */
+.rv-fb-tip { margin-top: 8px; font-family: var(--font-display), Georgia, serif; font-size: 12px;
+  letter-spacing: 0.12em; color: rgba(124,95,50,0.85); }
+
+/* Popup buttons — FLAT fill + a GOLD outer frame and a GOLD inner line (no
+   gradients, per the preview). Both buttons share the same gold double-rule;
+   only the fill + text colour differ (slate-blue primary / paper secondary). */
+.qx-actions { gap: 18px !important; margin-top: 2px; }
+.qx-stay, .qx-continue, .qx-spell,
+.qx-leave, .qx-finish {
+  position: relative; flex: 0 1 auto; min-width: 150px;
+  border: 1.5px solid #C2A258 !important;          /* GOLD outer frame */
+  border-radius: 3px !important;
+  background-image: none !important;
+  box-shadow: 0 2px 5px rgba(35, 28, 16, 0.22) !important;
+  font-family: var(--font-display), Georgia, serif !important;
+  font-size: 13px !important; letter-spacing: 0.16em !important;
+  text-transform: uppercase !important; font-weight: 500 !important;
+  padding: 13px 24px !important;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 120ms ease;
+}
+/* the GOLD inner line (inset rule) */
+.qx-stay::before, .qx-continue::before, .qx-spell::before,
+.qx-leave::before, .qx-finish::before {
+  content: ""; position: absolute; inset: 3px;
+  border: 1px solid rgba(199, 169, 102, 0.78);
+  border-radius: 2px; pointer-events: none;
+}
+/* PRIMARY — flat muted slate-blue, cream text */
+.qx-stay, .qx-continue, .qx-spell {
+  background-color: #5C6E7C !important;
+  color: #EFE6D2 !important;
+  text-shadow: 0 1px 1px rgba(20, 28, 32, 0.4);
+}
+.qx-stay:hover, .qx-continue:hover, .qx-spell:hover {
+  background-color: #51626F !important; border-color: #CDB06A !important; color: #F6EEDC !important;
+}
+.qx-stay:active, .qx-continue:active, .qx-spell:active { transform: translateY(1px); }
+/* SECONDARY — flat paper, dark text */
+.qx-leave, .qx-finish {
+  background-color: #E7DBC4 !important;
+  color: #5A4A33 !important; text-shadow: none;
+}
+.qx-leave:hover, .qx-finish:hover {
+  background-color: #DECFB2 !important; border-color: #CDB06A !important; color: #4a3c29 !important;
+}
+.qx-leave:active, .qx-finish:active { transform: translateY(1px); }
+
+/* Review bottom: borderless, like the reading bottom bar (no fold border) */
+.review-art .rv-nav-btn {
+  border: 0 !important; background: transparent !important; box-shadow: none !important;
+  min-width: 0; padding: 0 14px !important;
+  color: rgba(75,62,42,0.92) !important; font-size: 14px !important; letter-spacing: 0.18em !important;
+}
+.review-art .rv-nav-btn:hover { color: #2f281f !important; text-shadow: none; }
+
+/* Don't let the ✤ / × margin mark be clipped on the left */
+.reading-art .quiz-options { padding-left: 1.8em; }
+.review-art  .quiz-options { padding-left: 1.8em; }
+
+/* ============================================================
+   FOLLOW — the visual-novel relay station. The painted PATHS frame
+   (assets/bg/ui/follow-station.png) carries three slots, measured on
+   the 1448×1086 art and expressed here as % so they scale with the page:
+     · top slot     x563 y286 w324 h78   → Restart · Follow (each half)
+     · list  slot   x301 y416 w854 h527  → five protagonist portraits
+     · footer slot  x368 y984 w710 h92   → Save · Load · Menu
+   ============================================================ */
+.follow-art .follow-frame { position: absolute; inset: 0; pointer-events: none; }
+.follow-art .follow-frame > * { pointer-events: auto; }
+
+/* Top slot — Restart | Follow, two equal halves, centred, NO divider. */
+.follow-art .follow-top {
+  position: absolute;
+  left: 38.881%; top: 26.34%; width: 22.376%; height: 7.182%;
+  display: flex; align-items: center; justify-content: center;
+}
+.follow-art .follow-top-btn {
+  flex: 1 1 0; height: 100%;
+  background: transparent; border: 0; cursor: pointer;
+  font-family: var(--font-display), Georgia, serif; font-weight: 600;
+  font-size: clamp(13px, 1.6vw, 22px); letter-spacing: 0.08em;
+  color: #5a4a30; transition: color 140ms ease, transform 140ms ease;
+  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.55);
+}
+.follow-art .follow-top-btn:hover { color: #1f1a12; transform: translateY(-1px); }
+
+.follow-art .follow-list {
+  position: absolute;
+  left: 20.787%; top: 34.3%; width: 58.978%; height: 51%;
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 1.4%;
+}
+.follow-art .follow-portrait {
+  position: relative; flex: 1 1 0; min-height: 0;
+  border-radius: 7px; overflow: hidden; cursor: pointer;
+  border: 1.5px solid rgba(150, 122, 70, 0.5);
+  box-shadow: 0 3px 10px rgba(70, 56, 32, 0.26);
+  background: #d8cdb4 center 32% / cover no-repeat;
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+/* Shiro and Kye are drawn looking down, so the default upper-third crop
+   misses their eyes — pull the focal slice lower for those two. */
+.follow-art .follow-portrait[data-id="shiro"] { background-position: center 48%; }
+.follow-art .follow-portrait[data-id="kye"]   { background-position: center 45%; }
+.follow-art .follow-portrait:hover {
+  transform: translateX(6px) scale(1.012);
+  box-shadow: 0 6px 18px rgba(70, 56, 32, 0.4);
+  filter: brightness(1.06);
+}
+.follow-art .follow-portrait:active { transform: translateX(3px) scale(0.995); }
+.follow-art .follow-portrait.is-selected {
+  border-color: rgba(196, 158, 84, 0.95);
+  box-shadow: 0 0 0 2px rgba(196, 158, 84, 0.85), 0 6px 18px rgba(70, 56, 32, 0.42);
+  filter: brightness(1.04);
+}
+.follow-art .follow-portrait-name {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 0.35em 0.9em 0.3em;
+  background: linear-gradient(to right, rgba(34, 24, 10, 0.72) 0%, rgba(34, 24, 10, 0.28) 60%, transparent);
+  color: #fbf4e4; font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(13px, 1.5vw, 21px); letter-spacing: 0.1em; text-align: left;
+}
+/* cumulative affection — decorative tally on each protagonist */
+.follow-art .follow-aff {
+  position: absolute; top: 0.4em; right: 0.6em;
+  font-family: var(--font-display), Georgia, serif; font-size: clamp(11px, 1.3vw, 17px);
+  color: #ffe6ec; padding: 0.1em 0.55em; border-radius: 999px;
+  background: rgba(150, 60, 80, 0.55); border: 1px solid rgba(255, 200, 210, 0.5);
+  text-shadow: 0 1px 2px rgba(60, 20, 30, 0.5);
+}
+
+.follow-art .follow-ui {
+  position: absolute;
+  left: 25.414%; top: 90.608%; width: 49.033%; height: 8.471%;
+  display: flex; align-items: center;
+}
+.follow-art .follow-ui-btn {
+  position: relative; flex: 1 1 0; height: 100%;
+  background: transparent; border: 0; cursor: pointer;
+  font-family: var(--font-display), Georgia, serif; font-weight: 500;
+  font-size: clamp(13px, 1.5vw, 20px); letter-spacing: 0.08em;
+  color: #4a3f2c; transition: color 140ms ease, transform 140ms ease;
+  display: flex; align-items: center; justify-content: center; gap: 0.3em;
+}
+/* thin gold vertical rule between cells — same as the other nav bars */
+.follow-art .follow-ui-btn + .follow-ui-btn::before {
+  content: ""; position: absolute; left: 0; top: 22%; bottom: 22%; width: 1px;
+  background: linear-gradient(180deg, transparent 0%,
+    rgba(126, 105, 74, 0.45) 18%, rgba(126, 105, 74, 0.45) 82%, transparent 100%);
+  pointer-events: none;
+}
+.follow-art .follow-ui-btn:hover { color: #1f1a12; transform: translateY(-2px); }
+.follow-art .follow-ui-btn .nav-glyph { opacity: 0.7; }
+.follow-art .follow-empty { color: #8a7a5c; text-align: center; font-style: italic; }
+
+/* ============================================================
+   VN — the 文游 visual-novel reader. Reuses the .reading-art shell (title +
+   body zones, bottom nav); the per-chapter 立绘 is the page background. The
+   body is a column of beats: tap to advance, tap a word for its card, pick
+   A/B/C at a choice.
+   ============================================================ */
+/* Body + marginalia zones — reading scopes its coords to [data-page="reading"],
+   so set them explicitly for VN at the SAME coordinates: 立绘 character in the
+   left ~27%, text in the middle, the word-column on the right. */
+.vn-art .zone-reading-body { left: 27.33%; top: 22.64%; width: 52.84%; height: 66.19%; }
+.vn-art .zone-marginalia   { left: 80.89%; top: 22.64%; width: 16.49%; height: 66.19%; }
+.vn-art .vn-flow { display: flex; flex-direction: column; gap: 0.85em; padding: 0 0 2em; }
+.vn-art .vn-beat {
+  font-family: var(--font-body), Georgia, serif;
+  font-size: clamp(15px, 1.75vw, 20px); line-height: 1.62; color: #3a3326;
+  opacity: 0; transform: translateY(6px); transition: opacity 420ms ease, transform 420ms ease;
+}
+.vn-art .vn-beat.is-in { opacity: 1; transform: none; }
+/* The speaker's voice-line. Default stays beige; the five leads get a soft,
+   muted tint that still sits inside the classical parchment palette. */
+.vn-art .vn-said { padding-left: 0.9em; border-left: 2px solid rgba(170, 140, 84, 0.5); }
+.vn-art .vn-said[data-who="sealyra"] { border-left-color: rgba(196, 120, 138, 0.72); }  /* 粉 dusty rose */
+.vn-art .vn-said[data-who="shiro"]   { border-left-color: rgba(118, 142, 168, 0.72); }  /* 蓝灰 slate    */
+.vn-art .vn-said[data-who="hosea"]   { border-left-color: rgba(196, 162, 78, 0.85); }   /* 金 warm gold  */
+.vn-art .vn-said[data-who="jael"]    { border-left-color: rgba(146, 130, 184, 0.72); }  /* 蓝紫 periwinkle*/
+.vn-art .vn-said[data-who="kye"]     { border-left-color: rgba(128, 162, 122, 0.72); }  /* 绿 sage       */
+/* the speaker name picks up a faint matching tint so the pairing reads */
+.vn-art .vn-said[data-who="sealyra"] .vn-speaker { color: #a85a6c; }
+.vn-art .vn-said[data-who="shiro"]   .vn-speaker { color: #5f7088; }
+.vn-art .vn-said[data-who="hosea"]   .vn-speaker { color: #9a7a30; }
+.vn-art .vn-said[data-who="jael"]    .vn-speaker { color: #6d5f96; }
+.vn-art .vn-said[data-who="kye"]     .vn-speaker { color: #567a4e; }
+.vn-art .vn-speaker {
+  display: block; font-family: var(--font-display), Georgia, serif; font-weight: 700;
+  font-size: 0.82em; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #8a6a3a; margin-bottom: 0.12em;
+}
+.vn-art .clickable-word { cursor: pointer; border-bottom: 1px dotted rgba(140, 110, 60, 0.5); }
+.vn-art .clickable-word:hover { color: #6a4a1f; background: rgba(196, 158, 84, 0.16); }
+
+/* affection feedback tag */
+.vn-art .vn-aff {
+  align-self: flex-start; font-family: var(--font-display), Georgia, serif;
+  font-size: 0.82em; letter-spacing: 0.06em; padding: 0.16em 0.7em; border-radius: 999px;
+}
+.vn-art .vn-aff.is-up   { background: rgba(120, 160, 96, 0.2);  color: #4d6b35; border: 1px solid rgba(120,160,96,0.5); }
+.vn-art .vn-aff.is-down { background: rgba(170, 96, 96, 0.18); color: #8a4444; border: 1px solid rgba(170,96,96,0.5); }
+
+/* Choice — an aged illuminated panel, not a modern card: hairline gold
+   rules top & bottom, a ❦ ornament, and a ruled list of options with
+   illuminated letters. No rounded buttons, no drop shadow. */
+.vn-art .vn-choice-card {
+  position: relative; margin: 1.1em 0 0.8em; padding: 1.1em 1.1em 0.6em;
+  background: rgba(244, 236, 214, 0.4);
+  border: 0; border-top: 1px solid rgba(150, 122, 70, 0.5); border-bottom: 1px solid rgba(150, 122, 70, 0.5);
+  opacity: 0; transform: translateY(8px); transition: opacity 360ms ease, transform 360ms ease;
+}
+.vn-art .vn-choice-card.is-in { opacity: 1; transform: none; }
+.vn-art .vn-choice-card::before {
+  content: "❦"; position: absolute; top: -0.72em; left: 50%; transform: translateX(-50%);
+  color: var(--color-gold-soft); font-size: 0.92em; line-height: 1;
+  background: #efe6cf; padding: 0 0.5em;
+}
+.vn-art .vn-q {
+  margin: 0 0 0.7em; text-align: center;
+  font-family: var(--font-display), Georgia, serif; font-style: italic;
+  font-size: clamp(15px, 1.7vw, 20px); line-height: 1.5; color: #4a3f2c;
+}
+.vn-art .vn-opts { display: flex; flex-direction: column; }
+.vn-art .vn-opt {
+  position: relative; text-align: left; padding: 0.62em 0.3em 0.62em 2.1em;
+  background: transparent; border: 0; border-top: 1px solid rgba(150, 122, 70, 0.22);
+  cursor: pointer; font-family: var(--font-body), Georgia, serif;
+  font-size: clamp(14px, 1.6vw, 19px); line-height: 1.45; color: #3a3326;
+  transition: color 150ms ease, background 150ms ease;
+}
+.vn-art .vn-opt:first-child { border-top: 0; }
+.vn-art .vn-opt b {
+  position: absolute; left: 0.5em; top: 0.6em;
+  font-family: var(--font-display), Georgia, serif; font-weight: 700;
+  color: #9a7a3a; font-size: 1.02em;
+}
+.vn-art .vn-opt:hover:not(:disabled)   { background: rgba(196, 158, 84, 0.14); color: #5a3f1f; }
+.vn-art .vn-opt:hover:not(:disabled) b { color: #7a4a1f; }
+.vn-art .vn-opt:disabled { opacity: 0.4; cursor: default; }
+.vn-art .vn-opt.is-picked { opacity: 1; color: #4a3a1f; }
+.vn-art .vn-opt.is-picked::after { content: "❧"; margin-left: 0.5em; color: var(--color-gold-soft); }
+
+/* chapter / bad ending card */
+.vn-art .vn-end { text-align: center; margin: 1.4em 0 0.6em; }
+.vn-art .vn-end-mark { font-family: var(--font-display), Georgia, serif; font-size: 1.5em; color: var(--color-gold-soft); letter-spacing: 0.32em; margin: 0 0 0.5em; }
+.vn-art .vn-end.is-bad .vn-end-mark { color: #8a4444; }
+/* Next-Chapter uses reading's antique-button; size it up for the VN flow. */
+.vn-art .vn-next-ch { height: auto; min-height: 2.4em; padding: 0.5em 1.7em; font-size: clamp(12px, 1.45vw, 16px); }
+.vn-art .vn-end-zh { color: #7a6a4c; font-style: italic; margin: 0 0 0.7em; }
+.vn-art .vn-end-btn {
+  font-family: var(--font-display), Georgia, serif; font-size: clamp(14px, 1.6vw, 19px);
+  letter-spacing: 0.06em; color: #4a3f2c; cursor: pointer;
+  padding: 0.45em 1.3em; border-radius: 8px;
+  background: rgba(255, 252, 244, 0.92); border: 1.5px solid rgba(170, 140, 84, 0.6);
+  transition: background 150ms ease, transform 120ms ease;
+}
+.vn-art .vn-end-btn:hover { background: rgba(196, 158, 84, 0.2); transform: translateY(-1px); }
+.vn-art .vn-empty { color: #8a7a5c; text-align: center; font-style: italic; margin-top: 2em; }
+
+/* Index "Paths" nav button — Open-Chapter-style morph in the bottom nav. */
+.ui-bottom-nav .paths-open-nav { touch-action: none; }
+.paths-open-nav .paths-open-sel { display: none; }
+.paths-open-nav[data-mode="select"] .paths-open-label { display: none; }
+.paths-open-nav[data-mode="select"] .paths-open-sel {
+  display: inline-flex; align-items: center; gap: 0.45em;
+  user-select: none; -webkit-user-select: none;
+}
+.paths-open-nav .paths-sel-arrow { font-size: 0.74em; line-height: 1; color: rgba(126, 105, 74, 0.85); }
+.paths-open-nav .paths-sel-num {
+  font-weight: 700; font-size: 1.25em; line-height: 1; color: #4a3a1f; letter-spacing: 0.04em;
+}
+.paths-open-nav .paths-sel-go { font-size: 0.78em; opacity: 0.62; margin-left: 0.2em; }

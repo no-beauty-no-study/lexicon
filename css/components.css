@@ -1,0 +1,2265 @@
+/* ============================================================
+   The Princess Lexicon — components.css
+   Reusable UI components: buttons, cards, word drawer, slots,
+   and the site-wide .ornate-panel framing component.
+   ============================================================ */
+
+/* ============================================================
+   ORNATE PANEL
+   Universal classical thin-line frame. Use everywhere a boxed
+   surface needs the "old paper page" look — never write a custom
+   frame in page-level CSS.
+
+   Variants (combine freely):
+     .is-small      tighter padding, smaller corner notch
+     .is-strip      wide horizontal strip (Save/Load/Notes rows)
+     .is-clickable  pointer cursor + lift on hover
+     .is-selected   gold tint, no modern blue selection
+     .is-empty      dashed border + lower opacity
+     .is-save       muted wine accent border
+     .is-load       muted blue  accent border
+
+   Optional child:
+     .ornate-panel-header-line  → manual horizontal flourish line
+                                  flanking the top center symbol
+   Helper text classes:
+     .ornate-panel-title, .ornate-panel-subtitle
+   ============================================================ */
+/* Visual grammar v2 (user spec): the ✤ flourish does NOT float ABOVE
+   the outer border anymore; it sits ON the inner thin line at top
+   centre, with the line tapering to transparent as it approaches
+   the glyph — same grammar as the reading-page .antique-divider
+   (── ✤ ──). The outer 1px ink-brown border stays; the inner thin
+   line is reconstructed from three box-shadow insets on ::before
+   (left/right/bottom only) plus a gradient strip on ::after that
+   acts as the engraved top rule with the glyph embedded in it. */
+.ornate-panel {
+  position: relative;
+  box-sizing: border-box;
+  background: transparent;
+  color: var(--paper-text);
+  border: 1px solid var(--ink-frame);
+  border-radius: 5px;
+  padding: 26px 28px 22px;
+}
+
+/* Inner thin line — left, right, bottom only. The top is intentionally
+   open so ::after can fill it with the antique-divider style strip. */
+.ornate-panel::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  border-radius: 3px;
+  box-shadow:
+    inset 1px 0 0 rgba(126, 105, 74, 0.42),
+    inset -1px 0 0 rgba(126, 105, 74, 0.42),
+    inset 0 -1px 0 rgba(126, 105, 74, 0.42);
+}
+
+/* Top "── ✤ ──" rule. Single pseudo: the line is the background
+   gradient (tapered to transparent in the centre); the ✤ glyph is
+   the content, centred over the gap. Positioned so its vertical
+   midline aligns with the inner-frame top edge at inset:4px. */
+.ornate-panel::after {
+  content: "✤";
+  position: absolute;
+  top: -3px;          /* glyph midline ≈ inner-rect top edge */
+  left: 16px;
+  right: 16px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: rgba(126, 105, 74, 0.85);
+  background-image: linear-gradient(
+    90deg,
+    rgba(126, 105, 74, 0.50) 0%,
+    rgba(126, 105, 74, 0.50) 30%,
+    rgba(126, 105, 74, 0.18) 42%,
+    transparent              48%,
+    transparent              52%,
+    rgba(126, 105, 74, 0.18) 58%,
+    rgba(126, 105, 74, 0.50) 70%,
+    rgba(126, 105, 74, 0.50) 100%
+  );
+  background-size: 100% 1px;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* Deprecated — kept as a no-op so existing markup that still adds
+   <span class="ornate-panel-header-line"> doesn't blow up. The top
+   rule is now provided by the panel itself via ::after. */
+.ornate-panel-header-line { display: none; }
+
+/* ----- Size variants ----- */
+.ornate-panel.is-small {
+  padding: 14px 18px;
+}
+.ornate-panel.is-small::before {
+  inset: 4px;
+}
+.ornate-panel.is-small::after {
+  font-size: 11px;
+  height: 12px;
+  top: -2px;
+  left: 12px;
+  right: 12px;
+}
+
+.ornate-panel.is-strip {
+  padding: 18px 26px;
+  min-height: 86px;
+}
+
+/* ----- State variants ----- */
+.ornate-panel.is-clickable {
+  cursor: pointer;
+  transition: border-color 180ms ease;
+}
+/* Per user spec: NEVER fill / colour the panel on hover or click.
+   The painted bg shows through; only the inner content text warms. */
+.ornate-panel.is-clickable:hover {
+  border-color: rgba(126, 105, 74, 0.92);
+}
+.ornate-panel.is-clickable:hover .ornate-panel-title,
+.ornate-panel.is-clickable:hover .ornate-panel-subtitle {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.55);
+}
+.ornate-panel.is-clickable:active     { background: transparent; }
+.ornate-panel.is-clickable:focus      { outline: none; }
+.ornate-panel.is-clickable:focus-visible { outline: none; }
+
+@keyframes ornate-press-glow {
+  0%   { text-shadow: 0 0 8px rgba(201, 174, 103, 0.92); }
+  100% { text-shadow: none; }
+}
+.ornate-panel.is-pressed .ornate-panel-title {
+  animation: ornate-press-glow 420ms ease-out 1;
+}
+.ornate-panel.is-selected {
+  border-color: rgba(126, 105, 74, 0.95);
+}
+.ornate-panel.is-selected .ornate-panel-title {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.45);
+}
+.ornate-panel.is-empty {
+  opacity: 0.62;
+  border-style: dashed;
+}
+.ornate-panel.is-save {
+  --accent-color: #9b5b55;
+  border-color: rgba(155, 91, 85, 0.42);
+}
+.ornate-panel.is-load {
+  --accent-color: #667b91;
+  border-color: rgba(102, 123, 145, 0.42);
+}
+
+/* Allow a <button> to be an ornate-panel without UA chrome. */
+button.ornate-panel {
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Home page giant CTA. Used on index.html. */
+.home-cta {
+  font-family: var(--font-display);
+  font-size: var(--fs-btn-lg);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-button-ink);
+  min-width: 280px;
+  padding: 28px 38px;
+  text-align: center;
+}
+
+/* ----- Text helpers inside an ornate panel ----- */
+.ornate-panel-title {
+  margin: 0 0 10px 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.10em;
+  color: var(--paper-text);
+}
+.ornate-panel-subtitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0.035em;
+  color: var(--paper-muted);
+}
+
+/* ============================================================
+   READING SIDE-NOTE (.reading-side-note)
+   Small marginal tag on right edge of reading page. Only shows
+   the tapped word + 2 collocations + FULL CARD + SAVE buttons.
+   NO Chinese, NO family/friend/kin, NO example. Hard separation
+   from .word-drawer.
+   ============================================================ */
+.reading-side-note {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 210px;
+  min-height: 170px;
+  padding: 18px 18px 16px;
+  background:
+    linear-gradient(180deg, rgba(252, 247, 232, 0.92), rgba(238, 226, 202, 0.82)),
+    var(--paper-bg);
+  border: 1px solid rgba(143, 128, 95, 0.58);
+  color: var(--paper-text);
+  font-family: var(--font-body);
+  clip-path: polygon(
+    12px 0, calc(100% - 12px) 0, 100% 12px,
+    100% calc(100% - 12px), calc(100% - 12px) 100%,
+    12px 100%, 0 calc(100% - 12px), 0 12px
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.62),
+    inset 0 0 0 5px rgba(185, 170, 138, 0.10),
+    0 3px 10px rgba(63, 52, 35, 0.08);
+}
+.reading-side-note::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(185, 170, 138, 0.55);
+  pointer-events: none;
+  clip-path: polygon(
+    10px 0, calc(100% - 10px) 0, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 10px) 100%,
+    10px 100%, 0 calc(100% - 10px), 0 10px
+  );
+}
+.reading-side-note::after {
+  content: "✤";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 8px;
+  background: var(--paper-bg-soft);
+  color: var(--paper-gold);
+  font-size: 12px;
+}
+.side-note-word {
+  margin: 4px 0 12px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 1.2;
+  letter-spacing: 0.055em;
+  font-weight: 400;
+  color: var(--paper-text);
+}
+.side-note-collocations { margin: 0 0 14px; padding: 0; list-style: none; }
+.side-note-collocations li {
+  position: relative;
+  padding-left: 13px;
+  margin-bottom: 7px;
+  font-size: 12.5px;
+  line-height: 1.38;
+  letter-spacing: 0.025em;
+  color: #6c6254;
+}
+.side-note-collocations li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--paper-gold);
+}
+.side-note-actions { display: flex; gap: 8px; margin-top: 10px; }
+.side-note-button {
+  flex: 1;
+  height: 30px;
+  border: 1px solid rgba(143, 128, 95, 0.55);
+  background: rgba(248, 242, 230, 0.66);
+  color: var(--color-button-ink);
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.side-note-button:hover {
+  background: rgba(244, 233, 205, 0.9);
+  border-color: rgba(167, 141, 91, 0.8);
+}
+.side-note-button[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.reading-side-note.is-empty {
+  border-style: dashed;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px;
+  background:
+    linear-gradient(180deg, rgba(248, 242, 230, 0.5), rgba(231, 219, 196, 0.38)),
+    var(--paper-bg);
+}
+
+/* ============================================================
+   WORD DRAWER v2 — wide right-slide pad sheet
+   Per spec: 470px wide, classical paper, full content with
+   HER FAMILY / HER FRIEND / example / HER KIN sections.
+   ============================================================ */
+.word-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 28, 20, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  z-index: 40;
+}
+.word-drawer-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.word-drawer-title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 38px;
+  line-height: 1.08;
+  letter-spacing: 0.055em;
+  font-weight: 400;
+  color: var(--paper-text);
+}
+.word-drawer-meta {
+  margin-left: 12px;
+  font-size: 18px;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: #6b5c44;
+}
+.word-drawer-meaning {
+  margin: 0 0 26px;
+  font-family: var(--font-cn);
+  font-size: 17px;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  color: #6b5c44;
+}
+.word-section { margin-top: 24px; }
+.word-section-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--color-gold);
+}
+.word-section-title::before {
+  content: "❦";
+  margin-right: 8px;
+  color: var(--paper-gold);
+  font-size: 12px;
+}
+.word-entry-list { margin: 0; padding: 0; list-style: none; }
+.word-entry {
+  position: relative;
+  margin-bottom: 10px;
+  padding-left: 18px;
+  font-size: 15.5px;
+  line-height: 1.48;
+  letter-spacing: 0.025em;
+  color: #403a31;
+}
+.word-entry::before {
+  content: "•";
+  position: absolute;
+  left: 0; top: 0;
+  color: var(--paper-gold);
+}
+.word-entry strong { font-weight: 600; color: #332e27; }
+.word-entry em { font-style: italic; color: #5d5347; }
+.example-box {
+  margin: 22px 0 18px;
+  padding: 16px 18px;
+  border: 1px solid rgba(185, 170, 138, 0.45);
+  background: rgba(246, 238, 218, 0.52);
+}
+.example-en {
+  margin: 0 0 8px;
+  font-size: 15px;
+  line-height: 1.55;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: #514839;
+}
+.example-zh {
+  margin: 0;
+  font-family: var(--font-cn);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--paper-muted);
+}
+.word-drawer-footer {
+  margin-top: 30px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(185, 170, 138, 0.42);
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  text-align: center;
+}
+
+/* ============================================================
+   INVISIBLE-INK REVEAL EFFECT
+   Used in reading body and quiz items. Hidden state is barely
+   visible warm grey; revealed state fades to full ink over ~1.1s.
+   Never neon, never sweep flash.
+   ============================================================ */
+.reveal-block {
+  color: rgba(63, 58, 49, 0.10);
+  opacity: 0.58;
+  filter: blur(0.35px);
+  transition:
+    color 1100ms ease,
+    opacity 1100ms ease,
+    filter 1100ms ease;
+  position: relative;
+}
+.reveal-block.is-revealed {
+  color: var(--paper-text);
+  opacity: 1;
+  filter: blur(0);
+}
+.reveal-block .ink-ripple {
+  position: absolute;
+  inset: -4px -10px;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(167, 141, 91, 0.14) 45%,
+      rgba(167, 141, 91, 0.06) 60%,
+      transparent 100%);
+  opacity: 0;
+  transform: translateX(-30%);
+}
+.reveal-block.is-revealed .ink-ripple {
+  animation: ink-ripple-sweep 1100ms ease 1 forwards;
+}
+@keyframes ink-ripple-sweep {
+  0%   { opacity: 0;   transform: translateX(-30%); }
+  35%  { opacity: 1;   }
+  100% { opacity: 0;   transform: translateX(120%); }
+}
+
+/* Tap-to-begin overlay used on reading + quiz pages. */
+.tap-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(244, 237, 221, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 25;
+  transition: opacity 280ms ease;
+  backdrop-filter: blur(0.4px);
+}
+.tap-overlay.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+.tap-overlay-card {
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-button-ink);
+  padding: 22px 38px;
+  background: var(--paper-bg-soft);
+  border: 1px solid rgba(143, 128, 95, 0.55);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.55),
+    inset 0 0 0 5px rgba(185, 170, 138, 0.10);
+}
+.tap-overlay-card::before {
+  content: "✤ ";
+  color: var(--paper-gold);
+  letter-spacing: 0.5em;
+}
+
+/* ============================================================
+   QUIZ PAGE — same paper / font / spacing as reading page.
+   Classical multi-choice feedback. No green / red blocks.
+   ============================================================ */
+.quiz-body {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+.quiz-eyebrow {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.quiz-item { margin-bottom: 42px; }
+/* Progressive-reveal gating. Initial state = hidden; quiz.js adds
+   .is-shown when a previous question has been answered correctly. */
+.quiz-item:not(.is-shown) {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease-out;
+}
+.quiz-item.is-shown {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 320ms ease-out;
+}
+.quiz-item .quiz-no {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-subtitle);
+  margin-bottom: 6px;
+}
+.quiz-question {
+  margin: 0 0 22px;
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.65;
+  letter-spacing: 0.035em;
+  color: var(--color-body);
+}
+.quiz-options {
+  margin: 0 0 34px 14px;
+  padding: 0;
+  list-style: none;
+}
+.quiz-option {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 12px 14px;          /* bigger tap target — was 6px/10px */
+  min-height: 44px;            /* Apple touch-target minimum */
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: 1.45;
+  letter-spacing: 0.035em;
+  cursor: pointer;
+  color: var(--color-body);
+  border-left: 2px solid transparent;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.quiz-option:hover {
+  background: rgba(168, 143, 93, 0.08);
+  border-left-color: rgba(167, 141, 91, 0.45);
+}
+.quiz-option-letter {
+  width: 28px;
+  color: var(--color-subtitle);
+  letter-spacing: 0.12em;
+  flex-shrink: 0;
+}
+.quiz-option.is-correct {
+  color: #5d4d2f;
+  text-shadow: 0 0 8px rgba(167, 141, 91, 0.22);
+  border-left-color: var(--color-gold-soft);
+  background: rgba(167, 141, 91, 0.10);
+}
+.quiz-option.is-wrong {
+  color: #7a5048;
+  opacity: 0.78;
+  border-left-color: rgba(155, 91, 85, 0.45);
+  /* Shake + brief warm-red blush so the wrong choice IS felt, not
+     just colour-changed. Used to feel like nothing happened on a
+     mis-tap; now it nudges back. */
+  animation: quiz-wrong-shake 520ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+@keyframes quiz-wrong-shake {
+  0%, 100% { transform: translateX(0);   background: transparent; }
+  12%      { transform: translateX(-8px); background: rgba(168, 86, 78, 0.18); }
+  26%      { transform: translateX(7px);  background: rgba(168, 86, 78, 0.14); }
+  42%      { transform: translateX(-5px); background: rgba(168, 86, 78, 0.08); }
+  58%      { transform: translateX(4px);  background: transparent; }
+  74%      { transform: translateX(-2px); }
+}
+/* Locked = can't RE-answer, but stays tappable so you can study any option
+   after the question is solved (handler gates re-answering via data-solved). */
+.quiz-option.is-locked { pointer-events: auto; }
+
+/* Celebratory pop on the option the player just got right: a quick
+   gold lift + halo, plus a burst of little gold sparkles via ::after. */
+@keyframes quiz-correct-pop {
+  0%   { transform: scale(1);    }
+  35%  { transform: scale(1.045);}
+  100% { transform: scale(1);    }
+}
+.quiz-option.is-pop {
+  animation: quiz-correct-pop 460ms cubic-bezier(0.2, 0.8, 0.3, 1.2) 1;
+}
+.quiz-option.is-pop::after {
+  content: "";
+  position: absolute;
+  inset: -6px -10px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 12% 30%, rgba(255,228,150,0.95) 0 2px, transparent 3px),
+    radial-gradient(circle at 32% 70%, rgba(255,228,150,0.90) 0 1.8px, transparent 2.8px),
+    radial-gradient(circle at 58% 22%, rgba(255,228,150,0.92) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 64%, rgba(255,228,150,0.88) 0 1.8px, transparent 2.8px),
+    radial-gradient(circle at 92% 38%, rgba(255,228,150,0.85) 0 1.6px, transparent 2.6px);
+  animation: quiz-sparkle 620ms ease-out 1 forwards;
+}
+.quiz-option { position: relative; }
+@keyframes quiz-sparkle {
+  0%   { opacity: 0; transform: scale(0.85); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+
+/* Vertical divider between the reading text and side note column. */
+.reading-side .reading-side-rule {
+  display: block;
+  height: 1px;
+  background: rgba(167, 141, 91, 0.35);
+  margin: 8px 0 14px;
+}
+
+/* ----- Buttons (plaque-style) ----- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--fs-btn);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--color-button-ink);
+  background: linear-gradient(180deg, #f3e8c8 0%, #e6d6ad 100%);
+  border: 1px solid var(--paper-frame);
+  border-radius: 3px;
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+  box-shadow: 0 1px 0 rgba(255, 245, 220, 0.45) inset,
+              0 1px 2px rgba(80, 60, 30, 0.10);
+}
+.btn:hover {
+  background: linear-gradient(180deg, #efe1bd 0%, #ddc99c 100%);
+  border-color: var(--color-gold-soft);
+  color: #4a3d28;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn.btn-lg {
+  font-size: var(--fs-btn-lg);
+  letter-spacing: 0.14em;
+  padding: 18px 38px;
+}
+.btn.btn-sm {
+  font-size: var(--fs-btn-sm);
+  padding: 7px 16px;
+}
+.btn.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--paper-frame);
+}
+.btn.btn-ghost:hover {
+  background: rgba(168, 143, 93, 0.10);
+}
+.btn[disabled],
+.btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Nav-bar mini text-button — used in footers like the reference image */
+.nav-btn {
+  background: transparent;
+  border: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-btn-sm);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-button-ink);
+  cursor: pointer;
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 180ms ease;
+}
+.nav-btn:hover { color: #3f3a31; }
+.nav-btn .glyph {
+  color: var(--color-gold);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+/* ----- Generic "card" surface (Select page big cards / chapter list) ----- */
+.card {
+  position: relative;
+  background: linear-gradient(180deg, var(--paper-cream) 0%, #ecdfbf 100%);
+  border: var(--frame-border);
+  border-radius: 4px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 0 rgba(255, 245, 220, 0.4) inset,
+              0 6px 14px rgba(80, 60, 30, 0.10);
+  cursor: pointer;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-gold-soft);
+  box-shadow: 0 10px 20px rgba(80, 60, 30, 0.16);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(150, 120, 70, 0.32);
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+/* Select page card */
+.select-card {
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  padding: 50px 24px 40px;
+}
+.select-card .sc-emblem {
+  font-size: 26px;
+  letter-spacing: 0.3em;
+  color: var(--color-gold);
+}
+.select-card .sc-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-title);
+  font-weight: 400;
+}
+.select-card .sc-desc {
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  line-height: 1.55;
+  color: var(--color-muted);
+  max-width: 240px;
+}
+
+/* Chapter card */
+.chapter-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 26px;
+  min-height: 110px;
+}
+.chapter-card .cc-num {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.06em;
+  color: #7c6a4a;
+}
+.chapter-card .cc-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-title);
+  font-weight: 400;
+  margin: 4px 0 6px;
+}
+.chapter-card .cc-desc {
+  font-size: 15px;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+  color: #6e6251;
+}
+.chapter-card .cc-open {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  padding-left: 16px;
+  border-left: 1px solid var(--paper-frame);
+  white-space: nowrap;
+}
+
+/* ----- Reading body ----- */
+.reading-head {
+  text-align: center;
+  padding: 6px 0 30px;
+}
+.reading-head .ornament {
+  display: block;
+  margin: 10px auto 18px;
+  font-size: 16px;
+  letter-spacing: 0.5em;
+  color: var(--color-gold);
+}
+
+.reading-body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.85;
+  letter-spacing: 0.035em;
+  word-spacing: 0.08em;
+  color: var(--color-body);
+  font-weight: 400;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.reading-body p { margin: 0 0 24px 0; }
+
+.clickable-word {
+  color: var(--color-clickable);
+  background: var(--highlight-bg);
+  border-bottom: 1px dotted var(--highlight-border);
+  padding: 0 3px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.clickable-word:hover,
+.clickable-word.is-active,
+.clickable-word.is-selected {
+  background: var(--highlight-bg-hover);
+  border-bottom-color: var(--highlight-border-hover);
+}
+
+/* ----- Side pinned-word panel ----- */
+.side-pinned {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* .pin-empty inner text — frame comes from .ornate-panel.is-small.is-empty. */
+.side-pinned .pin-empty {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-align: center;
+  padding: 28px 12px;
+}
+/* .pin-card layout-only. Visual frame comes from .ornate-panel.is-small. */
+.pin-card {
+  display: flex;
+  flex-direction: column;
+}
+.pin-card .pin-label {
+  font-family: var(--font-display);
+  font-size: var(--fs-side-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-subtitle);
+}
+.pin-card .pin-word {
+  font-family: var(--font-display);
+  font-size: var(--fs-side-word);
+  letter-spacing: 0.04em;
+  color: var(--color-ink);
+  margin: 4px 0 6px;
+}
+.pin-card .pin-meaning {
+  font-family: var(--font-cn);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--color-muted);
+  margin-bottom: 8px;
+}
+.pin-card .pin-collocs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.pin-card .pin-collocs li {
+  list-style: none;
+  font-size: var(--fs-side-label);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: #6c6254;
+}
+.pin-card .pin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+.pin-card .pin-actions .btn { padding: 6px 12px; font-size: 13px; }
+
+/* ----- Word Drawer ----- */
+.drawer-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(40, 30, 18, 0.40);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms ease;
+  z-index: 30;
+}
+.drawer-scrim.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* The drawer IS the painted word-card image (frame-blank.jpg,
+   1024×1536). Width preserves that aspect ratio inside the 1086px
+   tall page: 1086 × 1024/1536 ≈ 724px. Two fixed zones land on top
+   of it, using the user's hand-measured percentages — nothing
+   else is positioned over the artwork. */
+/* Container only — full area, above all reading UI. No transform of its
+   own (the WRAPPER slides), so nothing can mis-start it from the centre. */
+.word-drawer {
+  position: absolute;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;          /* empty area lets taps fall to the scrim */
+  border: 0;
+  background: transparent;
+}
+
+/* The card = a real <img> at TRUE intrinsic ratio. ABSOLUTELY pinned to
+   the right edge and slid in via its OWN transform — no flex, so its
+   width never collapses/jumps while the image loads. */
+.word-card-wrapper {
+  position: absolute;
+  top: 50%;
+  right: 1.5%;
+  height: 96%;
+  aspect-ratio: 976 / 1492;
+  width: auto;
+  transform: translateY(-50%) translateX(116%);   /* off-screen right */
+  opacity: 0;
+  transition: transform 420ms cubic-bezier(0.22, 0.8, 0.3, 1),
+              opacity   300ms ease-out;
+  pointer-events: auto;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.35);
+}
+.word-drawer.is-open .word-card-wrapper {
+  transform: translateY(-50%) translateX(0);
+  opacity: 1;
+}
+.word-card-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* fills the wrapper; ratio matches → undistorted */
+  display: block;
+}
+/* Overlay = positioning context spanning the img 1:1. The four zones
+   below are ABSOLUTELY placed at the user's measured %s (976×1492). */
+.word-card-overlay {
+  position: absolute;
+  inset: 0;
+}
+.word-card-title-zone,
+.word-card-open-zone,
+.word-card-body-zone,
+.word-card-sign-zone {
+  position: absolute;
+  box-sizing: border-box;
+}
+/* 1) Title */
+.word-card-title-zone {
+  left: 23.77%; top: 9.12%; width: 52.05%; height: 9.52%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; overflow: hidden;
+}
+/* 2) Open Chapter */
+.word-card-open-zone {
+  left: 27.05%; top: 20.44%; width: 45.39%; height: 3.55%;
+  display: flex; align-items: center; justify-content: center;
+}
+/* 3) Content (scrolls). Small left inset = safe bleed so text doesn't
+   touch the painted frame. Bottom lifted a touch (was reaching too low). */
+.word-card-body-zone {
+  left: 10.25%; top: 24.13%; width: 79.51%; height: 60.4%;
+  overflow-y: auto; overflow-x: hidden; text-align: left;
+  padding-left: 3.2%;
+}
+/* LINE-BY-LINE playback. Every section is visible; its lines (headword,
+   collocations, examples, dividers) start hidden and ink in ONE AT A TIME
+   as the card reads itself — "一个单词、一个词组" — like the reading page's
+   developing-ink, but the unit is a single word / phrase, not a block. */
+/* Section gating: a 区 only appears once it's the current tap's section. */
+.word-card-body-zone .wc-sec { display: none; }
+.word-card-body-zone .wc-sec.is-shown { display: block; }
+.word-card-body-zone .wc-sep,
+.word-card-body-zone .wc-head,
+.word-card-body-zone .wc-row,
+.word-card-body-zone .wc-ex,
+.word-card-body-zone .wc-route { opacity: 0; }
+.word-card-body-zone .wc-revealed { animation: wc-ink-in 0.85s ease both; }
+/* Family-Kin route header (state → static 的同族 kin). */
+.word-card-body-zone .wc-route {
+  margin: 6px 0 2px; font-size: 13px; color: #8a7350; letter-spacing: 0.02em;
+}
+.word-card-body-zone .wc-route .wc-jump { color: #6a5527; border-bottom: 1px dotted rgba(170,135,60,.6); }
+@keyframes wc-ink-in {
+  from { opacity: 0; transform: translateY(8px); filter: blur(2.2px); }
+  to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
+}
+
+/* "在读" — ONLY the single line being read lights up, in the SAME warm,
+   understated tone as the reading page's current sentence: a thin gold left
+   border + a faint gold wash. No loud pill, no 屎黄. Border is always present
+   (transparent) so toggling it causes no layout shift. */
+.word-card-body-zone .wc-head,
+.word-card-body-zone .wc-row,
+.word-card-body-zone .wc-ex {
+  border-left: 2px solid transparent;
+  border-radius: 2px;
+  padding-left: 9px;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+.word-card-body-zone .is-reading {
+  border-left-color: rgba(170, 135, 60, 0.55);
+  background: linear-gradient(90deg,
+    rgba(201, 170, 92, 0.16) 0%,
+    rgba(201, 170, 92, 0.06) 45%,
+    transparent 80%);
+}
+/* The focus word in the title cartouche, while it's the line being read. */
+.word-card-title-zone .wc-word.is-reading {
+  text-shadow: 0 0 12px rgba(201, 170, 92, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-card-body-zone .wc-sep,
+  .word-card-body-zone .wc-head,
+  .word-card-body-zone .wc-row,
+  .word-card-body-zone .wc-ex { opacity: 1; }
+  .word-card-body-zone .wc-revealed { animation: none !important; }
+}
+.word-card-body-zone::-webkit-scrollbar { width: 5px; }
+.word-card-body-zone::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.40); border-radius: 3px;
+}
+/* 4) Sign — lifted up off the painted bottom ribbon. */
+.word-card-sign-zone {
+  left: 27.15%; top: 85.4%; width: 47.75%; height: 4.6%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ============================================================
+   BIG WORD CARD CONTENT (VocabRuntime.getBigCard)
+   Information hierarchy first: word / phrase / example / family must be
+   instantly distinct. EN and ZH live in two aligned columns split by ｜;
+   headwords sit flush, their collocations indent below with ✦.
+   ============================================================ */
+.word-card-title-zone .wc-head-badge {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: #9a7b33;
+  margin-bottom: 1px;
+  opacity: 0.9;
+}
+.word-card-title-zone .wc-word {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.0;
+  color: #2B211B;
+  white-space: nowrap;
+}
+/* POS sits inline next to the word, small — frees vertical room so the zh
+   meaning below isn't clipped by the short title box. */
+.word-card-title-zone .wc-word .wc-pos-inline {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 17px;
+  color: #6E5B4D;
+  margin-left: 4px;
+}
+.word-card-title-zone .wc-title-zh {
+  margin-top: 3px;
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: 17px;
+  line-height: 1.22;
+  color: #5D4D42;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- collocation row: ✦ EN  —  ZH (two columns, dash before ZH) ---- */
+.word-card-body-zone .wc-row {
+  display: grid;
+  grid-template-columns: 1fr 38%;
+  column-gap: 14px;
+  align-items: baseline;
+  margin: 0 0 3px;
+}
+.word-card-body-zone .wc-phrase .wc-zh::before {
+  content: "- ";
+  color: rgba(150, 124, 82, 0.7);
+}
+/* EVERY ✦ collocation — own / family / group / kin — is identical:
+   same font, weight, size. (Headwords add bold + a touch larger.) */
+.word-card-body-zone .wc-en {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #2F251F;
+}
+.word-card-body-zone .wc-zh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6C5B50;
+}
+/* No ｜ separator — the column gap alone divides EN / ZH. */
+/* collocation rows indent with a SMALL, fine ✦ bullet */
+.word-card-body-zone .wc-phrase .wc-en { padding-left: 15px; }
+.word-card-body-zone .wc-phrase .wc-en::before {
+  content: "✦";
+  margin-left: -15px; margin-right: 0.5em;
+  font-size: 10px;
+  color: #B89B63;
+  vertical-align: 0.12em;
+}
+/* WORD line — inline: word (bold) · pos (italic) · zh (attached). */
+.word-card-body-zone .wc-head {
+  line-height: 1.4;
+  margin: 0 0 2px;
+  color: #2E241D;
+}
+.word-card-body-zone .wc-head .wc-w {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 19px; font-weight: 700; color: #2E241D;
+}
+.word-card-body-zone .wc-head .wc-pos {
+  font-style: italic; font-size: 14px; color: #6E6253;
+}
+.word-card-body-zone .wc-head .wc-hzh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: 15px; color: #66574C;
+}
+/* 族长 marker on the family head inside a cluster list. */
+.word-card-body-zone .wc-head .wc-headtag {
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #9a7b33;
+  background: rgba(231, 201, 119, 0.2);
+  border: 1px solid rgba(201, 162, 75, 0.35);
+  border-radius: 999px;
+  padding: 0 6px;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+/* OWN block (focus word's own phrases + example, no heading) */
+.word-card-body-zone .wc-own { margin: 2px 0 0; }
+.word-card-body-zone .wc-ex { margin-top: 10px; }
+.word-card-body-zone .wc-ex-en {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-size: 20px; line-height: 1.5; color: #473A31;
+}
+.word-card-body-zone .wc-ex-zh {
+  font-family: "Songti SC", "Noto Serif SC", serif;
+  font-size: 14px; line-height: 1.5; color: #756559; margin-top: 3px;
+}
+
+/* ---- centred text divider: thin lines ── LABEL ── thin lines ---- */
+.word-card-body-zone .wc-sep {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 14px;
+}
+.word-card-body-zone .wc-sep-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%, #CDB9A0 22%, #B99D78 50%, #CDB9A0 78%, transparent 100%);
+}
+.word-card-body-zone .wc-sep-label {
+  flex: 0 0 auto;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 15px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: #7B6654;
+}
+
+/* FAMILY / GROUP / KIN entry block — staggered word ▸ phrases.
+   (Sizing inherits the uniform base rules above; only spacing here.) */
+.word-card-body-zone .wc-item { margin: 0 0 10px; }
+.word-card-body-zone .wc-block .wc-head { margin-bottom: 2px; }
+
+/* clickable Family/Group/Kin word → opens its own card */
+.word-card-body-zone .wc-jump {
+  cursor: pointer;
+  border-bottom: 1px dotted rgba(143, 111, 60, 0.5);
+}
+.word-card-body-zone .wc-jump:hover {
+  color: #2f2719;
+  border-bottom-color: rgba(143, 111, 60, 0.85);
+}
+
+/* Fixed action bar: "Signed ___" copy/dictation input + Open Chapter. */
+.word-card-sign-zone .wc-signed-pre {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #8A775E;
+  margin-right: 0.5em;
+}
+.word-card-sign-zone .wc-signed-input {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 18px; font-style: italic;
+  color: #4A4034;
+  text-align: center;
+  flex: 1 1 auto; min-width: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(150, 124, 82, 0.55);
+  padding: 1px 4px;
+  outline: none;
+}
+.word-card-sign-zone .wc-signed-input:focus { border-bottom-color: rgba(126, 93, 42, 0.85); }
+.word-card-sign-zone .wc-signed-input.is-correct {
+  color: #7a4a1f;
+  border-bottom-color: rgba(150, 110, 55, 0.9);
+}
+.word-card-open-zone .wc-open {
+  height: 70%;            /* flatter button, centred in its zone */
+  min-height: 0;
+  min-width: 0;
+  padding: 0 16px;
+  font-size: clamp(9px, 1.3vw, 12px);
+}
+.word-card-open-zone .wc-open::before { top: 2px; }
+.word-card-open-zone .wc-open::after  { bottom: 2px; }
+
+/* Close button — small, no modern fill on hover. */
+.word-drawer-close {
+  position: absolute;
+  top: 3%;
+  right: 4%;
+  background: transparent;
+  border: 0;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  line-height: 1;
+  color: rgba(90, 75, 53, 0.78);
+  cursor: pointer;
+  z-index: 2;
+}
+.word-drawer-close:hover {
+  background: transparent;
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.65);
+}
+.word-drawer-close:focus { outline: none; }
+/* ‹ Back — retrace the maze (previous word card, or back to reading). Sits
+   just left of the × in the top-right. Hidden on the entry card. */
+.word-drawer-back {
+  position: absolute;
+  top: 3%;
+  right: 11%;
+  background: transparent;
+  border: 0;
+  width: 36px;
+  height: 36px;
+  font-size: 28px;
+  line-height: 1;
+  color: rgba(90, 75, 53, 0.78);
+  cursor: pointer;
+  z-index: 2;
+}
+.word-drawer-back:hover {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.65);
+}
+.word-drawer-back:focus { outline: none; }
+.word-drawer-footer {
+  position: absolute;
+  bottom: 2.5%;
+  left: 0; right: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(122, 100, 60, 0.82);
+  pointer-events: none;
+}
+
+/* Backdrop sized to .page (parent of .word-drawer). */
+.word-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(40, 30, 18, 0.42);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+  z-index: 9998;   /* just below the drawer (9999), above all reading UI */
+}
+.word-drawer-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.word-drawer .wd-frame {
+  position: absolute;
+  inset: 18px;
+  border: var(--frame-border-soft);
+  pointer-events: none;
+}
+.word-drawer .wd-close {
+  position: absolute;
+  top: 26px;
+  right: 28px;
+  background: transparent;
+  border: 1px solid var(--paper-frame);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 16px;
+  color: var(--color-button-ink);
+  cursor: pointer;
+  z-index: 2;
+}
+.word-drawer .wd-close:hover { background: rgba(168, 143, 93, 0.15); }
+
+.word-drawer .wd-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 60px 56px 50px;
+}
+
+.word-card-full .wd-titleframe {
+  margin: 0 0 12px;
+  padding: 22px 28px 20px;
+  text-align: center;
+}
+.word-card-full .wd-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-drawer-title);
+  letter-spacing: 0.05em;
+  font-weight: 400;
+  color: var(--color-ink);
+  line-height: 1.1;
+}
+.word-card-full .wd-meaning {
+  font-family: var(--font-cn);
+  font-size: 18px;
+  line-height: 1.5;
+  color: #6b5c44;
+  margin-top: 8px;
+}
+.word-card-full .wd-section-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--color-gold);
+  margin-top: 26px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(154, 131, 88, 0.30);
+  padding-bottom: 6px;
+}
+.word-card-full .wd-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.word-card-full .wd-list li {
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: 0.025em;
+  color: #403a31;
+}
+.word-card-full .wd-list li b {
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+.word-card-full .wd-example {
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #514839;
+}
+.word-card-full .wd-example-zh {
+  font-family: var(--font-cn);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-muted);
+  margin-top: 4px;
+}
+
+/* ----- Word list (Notes + Word Garden) ----- */
+.word-list { list-style: none; margin: 0; padding: 0; overflow-y: auto; }
+.word-list-item {
+  padding: 10px 12px;
+  border-bottom: 1px dotted rgba(120, 95, 55, 0.22);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: background 160ms ease;
+}
+.word-list-item:hover { background: rgba(168, 143, 93, 0.06); }
+.word-list-item .wli-word {
+  font-family: var(--font-display);
+  font-size: var(--fs-list);
+  line-height: 1.45;
+  letter-spacing: 0.035em;
+  color: var(--color-ink);
+}
+.word-list-item .wli-meaning {
+  font-family: var(--font-cn);
+  font-size: 13px;
+  color: #837764;
+  line-height: 1.3;
+}
+.word-list-item.is-active {
+  background: var(--select-bg);
+  border-left: 2px solid var(--color-gold-soft);
+  padding-left: 10px;
+}
+
+/* ----- Search input ----- */
+.search-input {
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  color: var(--color-ink);
+  background: rgba(255, 250, 230, 0.55);
+  border: var(--frame-border-soft);
+  border-radius: 3px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+}
+.search-input::placeholder {
+  color: #a39681;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-gold-soft);
+}
+
+/* ----- Save / Load slots (visual frame from .ornate-panel) ----- */
+.slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 150px;
+}
+.slot .slot-no {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+.slot .slot-chapter {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-title);
+}
+.slot .slot-meta {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+.slot .slot-empty {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #b4a07a;
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* Page-level accent on the SAVE / LOAD header title only.
+   Slot accent comes from .ornate-panel.is-save / .is-load. */
+.theme-save .save-header .t-chapter { color: var(--accent-wine); }
+.theme-load .save-header .t-chapter { color: var(--accent-blue); }
+
+/* ----- Toast (saved confirmation) ----- */
+.toast {
+  position: absolute;
+  bottom: 110px;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  background: rgba(60, 50, 35, 0.92);
+  color: #f6efd9;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 220ms ease;
+  z-index: 50;
+}
+.toast.is-show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ----- Empty states -----
+   Visual frame from .ornate-panel.is-empty when wrapped.
+   Standalone .empty-state still works without ornate-panel for inline
+   use (kept minimal so wrapping in ornate-panel doesn't double-frame). */
+.empty-state {
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-align: center;
+  padding: 60px 20px;
+}
+.empty-state:not(.ornate-panel) {
+  border: 1px dashed rgba(120, 95, 55, 0.30);
+  border-radius: 4px;
+  margin: 40px;
+}
+
+/* ============================================================
+   ANTIQUE LABEL — reusable classical plaque / printed label
+   Use for: home page entry buttons, select arch titles,
+   marginalia tiny actions (Full / Save), wherever a small framed
+   piece of "printed text on antique paper" is needed.
+   NOT for bottom nav (uses .page-bottom-nav) and NOT for large
+   panels (uses .ornate-panel).
+   ============================================================ */
+.antique-label {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 190px;
+  min-height: 58px;
+  padding: 12px 28px;
+  background: rgba(248, 242, 230, 0.28);    /* FLAT — no gradient */
+  border: 1px solid rgba(155, 132, 84, 0.52);
+  color: var(--paper-text);
+  font-family: var(--font-display);
+  font-size: 17px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  clip-path: polygon(
+    12px 0, calc(100% - 12px) 0, 100% 12px,
+    100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%,
+    0 calc(100% - 12px), 0 12px
+  );
+  text-decoration: none;
+  transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+.antique-label::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border: 1px solid rgba(185, 170, 138, 0.42);
+  clip-path: polygon(
+    9px 0, calc(100% - 9px) 0, 100% 9px,
+    100% calc(100% - 9px), calc(100% - 9px) 100%, 9px 100%,
+    0 calc(100% - 9px), 0 9px
+  );
+}
+.antique-label::after {
+  content: "✤";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 10px;
+  background: rgba(248, 242, 230, 0.55);
+  color: #a78d5b;
+  font-size: 11px;
+  line-height: 1;
+  opacity: 0.78;
+}
+.antique-label:hover {
+  background: rgba(248, 242, 230, 0.46);     /* FLAT brighter on hover */
+  border-color: rgba(167, 141, 91, 0.78);
+  color: #5a4b35;
+}
+.antique-label:active { transform: translateY(1px); }
+.antique-label[disabled],
+.antique-label.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Tiny variant — for marginalia Full / Save, inline mini actions. */
+.antique-label.is-tiny {
+  min-width: 0;
+  min-height: 22px;
+  padding: 5px 12px;
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  clip-path: polygon(
+    6px 0, calc(100% - 6px) 0, 100% 6px,
+    100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%,
+    0 calc(100% - 6px), 0 6px
+  );
+}
+.antique-label.is-tiny::before { inset: 3px; }
+.antique-label.is-tiny::after { display: none; }
+
+/* Subtitle line under an antique-label title (Select cards). */
+.antique-label-sub {
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: #6f6250;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ============================================================
+   UI BOTTOM NAV — single source of truth for bottom button rows.
+   The container is positioned via four per-page CSS variables:
+     --nav-left   percentage X of the painted footer slot
+     --nav-top    percentage Y
+     --nav-width  percentage width of the slot
+     --nav-height percentage height of the slot
+     --nav-count  number of buttons (2 / 5)
+   Each page sets these variables once on its .page element after
+   measuring its painted footer. The buttons themselves NEVER carry
+   absolute coordinates; they're grid-divided inside the container.
+
+   Old class name .page-bottom-nav is preserved as an alias so
+   existing markup keeps working until it migrates.
+   ============================================================ */
+.ui-bottom-nav,
+.page-bottom-nav {
+  position: absolute;
+  left:   var(--nav-left,   31.2%);
+  top:    var(--nav-top,    88.15%);
+  width:  var(--nav-width,  49.5%);
+  height: var(--nav-height, 3.2%);
+  display: grid;
+  grid-template-columns: repeat(var(--nav-count, 5), 1fr);
+  align-items: center;
+  justify-items: center;
+  /* The bottom nav sits as a direct child of .master-frame
+     (pointer-events: none), so the inherited value would disable
+     every button. Explicitly re-enable here. */
+  pointer-events: auto;
+  z-index: 50;
+  box-sizing: border-box;
+}
+.ui-bottom-nav.is-two,
+.page-bottom-nav.is-two   { --nav-count: 2; }
+.ui-bottom-nav.is-three,
+.page-bottom-nav.is-three { --nav-count: 3; }
+.ui-bottom-nav.is-four,
+.page-bottom-nav.is-four  { --nav-count: 4; }
+
+/* If the container is the child of a .ui-zone wrapper, we let the
+   parent's coordinates win (the zone has already been measured). */
+.ui-zone > .ui-bottom-nav,
+.ui-zone > .page-bottom-nav {
+  position: relative;
+  left:    0;
+  top:     0;
+  width:   100%;
+  height:  100%;
+}
+
+.ui-bottom-nav button,
+.page-bottom-nav button {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: rgba(75, 62, 42, 0.92);
+  cursor: pointer;
+}
+/* Inline glyph slot. Override per-button via data-glyph or by
+   inserting a .nav-glyph span. The default is a small star ✤
+   sitting just left of the label, in the same line so place-items
+   keeps the (glyph + label) pair centred together. */
+.ui-bottom-nav button .nav-glyph,
+.page-bottom-nav button .nav-glyph {
+  display: inline-block;
+  margin-right: 0.55em;
+  color: rgba(126, 105, 74, 0.78);
+  font-size: 0.82em;
+  line-height: 1;
+  vertical-align: -0.04em;
+}
+.ui-bottom-nav button .nav-glyph-after,
+.page-bottom-nav button .nav-glyph-after {
+  display: inline-block;
+  margin-left: 0.55em;
+  color: rgba(126, 105, 74, 0.78);
+  font-size: 0.82em;
+  line-height: 1;
+}
+/* Vertical separators between cells — thin gold rule, inset top/bottom. */
+.ui-bottom-nav button + button::before,
+.page-bottom-nav button + button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.45) 18%,
+    rgba(126, 105, 74, 0.45) 82%,
+    transparent 100%);
+  pointer-events: none;
+}
+.ui-bottom-nav button,
+.page-bottom-nav button { transition: color 150ms ease, transform 90ms ease, text-shadow 150ms ease; }
+.ui-bottom-nav button:hover,
+.page-bottom-nav button:hover {
+  color: #4a3a1f;
+  text-shadow: 0 0 6px rgba(167, 141, 91, 0.24);
+  transform: translateY(-1px);
+}
+.ui-bottom-nav button:hover .nav-glyph,
+.ui-bottom-nav button:hover .nav-glyph-after,
+.page-bottom-nav button:hover .nav-glyph,
+.page-bottom-nav button:hover .nav-glyph-after { color: rgba(124, 95, 50, 0.95); }
+/* pressed — sink slightly so every nav tap has tactile feedback */
+.ui-bottom-nav button:active,
+.page-bottom-nav button:active { transform: translateY(1px); color: #382c16; text-shadow: none; }
+.ui-bottom-nav button:focus,
+.page-bottom-nav button:focus { outline: none; }
+.ui-bottom-nav button[disabled],
+.ui-bottom-nav button.is-disabled,
+.page-bottom-nav button[disabled],
+.page-bottom-nav button.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* ============================================================
+   CHAPTER COMPLETE TOAST
+   Shown only when all comprehension answers are correct.
+   Auto-hides + auto-navigates after ~1100ms.
+   ============================================================ */
+.chapter-complete-toast {
+  position: absolute;
+  left: 50%; top: 48%;
+  transform: translate(-50%, -50%) scale(0.98);
+  width: 30%;
+  min-height: 13%;
+  box-sizing: border-box;
+  padding: 1.7% 2.1%;
+  z-index: 80;
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(246, 238, 218, 0.48);    /* FLAT translucent paper */
+  border: 1px solid rgba(143, 128, 95, 0.42);
+  color: #3f3a31;
+  text-align: center;
+  font-family: var(--font-display);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 248, 226, 0.24),
+    0 4px 14px rgba(55, 43, 28, 0.10);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+.chapter-complete-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+/* Inner thin rule, parallel to the outer border. */
+.chapter-complete-toast::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border: 1px solid rgba(185, 170, 138, 0.34);
+}
+/* Broken corner ticks — 8 short gold strokes, no gradient fill. */
+.chapter-complete-toast::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(#9b8454, #9b8454) left 10px top 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 10px top 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px top 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px top 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 10px bottom 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) left 10px bottom 10px / 1px 18px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px bottom 10px / 18px 1px no-repeat,
+    linear-gradient(#9b8454, #9b8454) right 10px bottom 10px / 1px 18px no-repeat;
+  opacity: 0.45;
+}
+.chapter-complete-toast .chapter-complete-mark {
+  margin: 0 0 0.65em;
+  color: #a78d5b;
+  font-size: 14px;
+  line-height: 1;
+}
+.chapter-complete-toast .chapter-complete-title {
+  margin: 0 0 0.45em;
+  font-size: 20px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #4d4436;
+}
+.chapter-complete-toast .chapter-complete-subtitle {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.045em;
+  font-style: italic;
+  color: #7b6f5c;
+}
+
+/* Star burst: golden 4-pointed stars fly radially outward from the
+   center of the page when a section / chapter completes. Each
+   particle's angle, distance, size, sparkle phase delay are
+   randomised inline so the burst never repeats visibly. */
+.chapter-star {
+  position: absolute;
+  left: 50%; top: 48%;
+  width:  var(--sz, 12px);
+  height: var(--sz, 12px);
+  background:
+    radial-gradient(circle,
+      rgba(255,250,225,1)   0%,
+      rgba(255,228,170,0.7) 50%,
+      transparent 80%);
+  box-shadow: 0 0 14px 4px rgba(255,225,170,0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 90;
+  will-change: transform, opacity;
+  animation: chapter-star-fly 1300ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@keyframes chapter-star-fly {
+  0%   { transform: translate(-50%, -50%) rotate(var(--ang)) translateX(0)                 scale(0);    opacity: 0; }
+  18%  { transform: translate(-50%, -50%) rotate(var(--ang)) translateX(0)                 scale(1.6);  opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(var(--ang)) translateX(var(--dist))       scale(0.25); opacity: 0; }
+}
+
+/* Pulsing halo ring behind the toast: a thin gold circle that
+   expands outward and fades. Sells the "magic ring" feeling. */
+.chapter-halo {
+  position: absolute;
+  left: 50%; top: 48%;
+  width: 30px; height: 30px;
+  border: 2px solid rgba(255,232,184,0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 22px 4px rgba(255,225,170,0.45);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 70;
+  will-change: transform, opacity;
+  animation: chapter-halo-grow 1300ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@keyframes chapter-halo-grow {
+  0%   { transform: translate(-50%, -50%) scale(0);  opacity: 0; }
+  15%  { opacity: 0.95; }
+  100% { transform: translate(-50%, -50%) scale(28); opacity: 0; }
+}
+
+/* ============================================================
+   ANTIQUE FRAME — translucent inset double-line frame with broken
+   corner ticks. Lets the painted page texture show through, so the
+   frame looks like a faint printed rule rather than a modern card.
+   Used for: right-side marginalia, future small dialog boxes, any
+   "marginal note that should not look like a CSS panel".
+   Combine with .is-small (tighter inner inset + smaller corner
+   ticks) and .is-soft (barely-there fill).
+   ============================================================ */
+.antique-frame {
+  position: relative;
+  box-sizing: border-box;
+  background: rgba(248, 242, 230, 0.22);    /* FLAT translucent paper — no gradient */
+  border: 1px solid rgba(143, 128, 95, 0.46);
+  color: var(--paper-text);
+  font-family: var(--font-display);
+}
+/* Inner thin line — sits 7px inside the outer border, parallel rule. */
+.antique-frame::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  border: 1px solid rgba(143, 128, 95, 0.30);
+}
+/* Hooked corner brackets — 4 SVG L-strokes with round caps and a small
+   filled dot at the inside corner. The dot IS the "勾线圆头". */
+.antique-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'><path d='M3 14 L3 3 L14 3' stroke='%237a653f' stroke-width='1.5' fill='none' stroke-linecap='round'/><circle cx='3' cy='3' r='1.6' fill='%237a653f'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'><path d='M19 14 L19 3 L8 3' stroke='%237a653f' stroke-width='1.5' fill='none' stroke-linecap='round'/><circle cx='19' cy='3' r='1.6' fill='%237a653f'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'><path d='M3 8 L3 19 L14 19' stroke='%237a653f' stroke-width='1.5' fill='none' stroke-linecap='round'/><circle cx='3' cy='19' r='1.6' fill='%237a653f'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'><path d='M19 8 L19 19 L8 19' stroke='%237a653f' stroke-width='1.5' fill='none' stroke-linecap='round'/><circle cx='19' cy='19' r='1.6' fill='%237a653f'/></svg>");
+  background-position: left top, right top, left bottom, right bottom;
+  background-repeat: no-repeat;
+  background-size: 22px 22px;
+}
+.antique-frame.is-soft {
+  background: rgba(248, 242, 230, 0.10);     /* even fainter, still flat */
+  border-color: rgba(143, 128, 95, 0.28);
+}
+.antique-frame.is-small::before { inset: 5px; }
+.antique-frame.is-small::after {
+  background-size: 16px 16px;                 /* same SVG, scaled smaller */
+}
+
+/* ============================================================
+   ANTIQUE MINI BUTTON — used for marginalia Full / Save and any
+   other low-profile inline action. Replaces .antique-label.is-tiny
+   when the surrounding context already provides a frame. Simple
+   single-line border so it doesn't clash with .antique-frame's
+   double-line look.
+   ============================================================ */
+.antique-mini-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  height: 20px;
+  min-width: 0;
+  border: 1px solid rgba(143, 128, 95, 0.36);
+  background: rgba(248, 242, 230, 0.16);
+  color: #5a4b35;
+  font-family: var(--font-display);
+  font-size: 7.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.antique-mini-button:hover {
+  background: rgba(248, 242, 230, 0.30);
+  color: #8a7653;
+  border-color: rgba(167, 141, 91, 0.55);
+}
+.antique-mini-button[disabled],
+.antique-mini-button.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   SELECT-CARD TITLE (lives inside .zone-select-*-title)
+   ============================================================ */
+.select-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #4d4436;
+  line-height: 1.1;
+}
+.select-card-subtitle {
+  margin: 6px 0 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  color: #6f6250;
+  font-style: italic;
+}
+
+/* ============================================================
+   SELECT HOTSPOT — each arch button. Click triggers a brief gold
+   pulse on the hotspot, a soft sine arpeggio (JS), and navigation.
+   The painted artwork's arch frame remains the visual button;
+   we only add a transient "press" glow.
+   ============================================================ */
+/* The painted arch IS the button. We never recolor or fill it on
+   hover/active — instead the chime + a brief animation announce
+   the click. Per user request: no modern internal-color effects. */
+.select-hotspot.ui-zone,
+.select-hotspot {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 4;
+}
+.select-hotspot:hover,
+.select-hotspot:focus,
+.select-hotspot:active { background: transparent; outline: none; }
+.select-hotspot:focus-visible { outline: none; }
+/* Title plates sit ABOVE the hotspot visually but ignore the cursor,
+   so clicks pass through to the hotspot below them. */
+.zone-select-story-title,
+.zone-select-notes-title,
+.zone-select-garden-title {
+  z-index: 5;
+  pointer-events: none;
+}
+.zone-select-story-title *,
+.zone-select-notes-title *,
+.zone-select-garden-title * {
+  pointer-events: none;
+}
+/* When a hotspot is pressed, the painted arch stays untouched.
+   Instead, the title-plate TEXT glows briefly. The select.html
+   inline script adds .is-pressed to the hotspot AND .is-pressed
+   to its sibling title-text node. */
+.select-title-text.is-pressed .select-card-title,
+.select-title-text.is-pressed .select-card-subtitle {
+  animation: select-text-glow 520ms ease-out 1;
+}
+@keyframes select-text-glow {
+  0%   { color: #2a1e08;
+         text-shadow:
+           0 0 6px  rgba(201, 174, 103, 0.92),
+           0 0 14px rgba(201, 174, 103, 0.68),
+           0 0 22px rgba(201, 174, 103, 0.42); }
+  100% { color: inherit;
+         text-shadow: none; }
+}
+
+/* The TITLE PLATE inside each arch — the cream-coloured top half.
+   Text inked here is the "button label" the user sees. */
+.select-title-text {
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.select-title-text .select-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 19px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #4d4436;
+  line-height: 1.1;
+}
+.select-title-text .select-card-subtitle {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: #6f6250;
+  font-style: italic;
+}
+
+/* ============================================================
+   WORD CARD content typography — sized for the 1024×1536 painted
+   card so it reads inside the user-measured title + body zones.
+   ============================================================ */
+
+/* TITLE ZONE: headword / POS / 中文核心义. Centred vertically. */
+.word-card-title-zone .word-card-word-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 4px;
+}
+.word-card-title-zone .word-card-word {
+  font-family: var(--font-display);
+  font-size: 44px;        /* was 34 — user: '字要居中 不要太小了' */
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: #2f261d;
+  line-height: 1.1;
+}
+.word-card-title-zone .word-card-pos {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 18px;        /* was 14 */
+  letter-spacing: 0.06em;
+  color: #8a7653;
+}
+.word-card-title-zone .word-card-meaning {
+  margin: 8px 0 0;
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC",
+               var(--font-body);
+  font-size: 22px;        /* was 16 */
+  line-height: 1.35;
+  color: #5e5040;
+  font-weight: 400;
+  text-align: center;
+}
+
+/* BODY ZONE: 4 sections. No CSS card frames — the painted bg
+   already provides the frame. Section headings use the same
+   antique-divider rule grammar (line + glyph + line) but small. */
+.word-card-body-zone .word-section { margin: 0 0 18px; }
+.word-card-body-zone .word-section-title {
+  position: relative;
+  margin: 14px 0 10px;
+  padding: 4px 14px 6px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #76664b;
+  text-align: center;
+}
+.word-card-body-zone .word-section-title::before,
+.word-card-body-zone .word-section-title::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 18%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.55) 30%,
+    rgba(126, 105, 74, 0.55) 70%,
+    transparent 100%);
+}
+.word-card-body-zone .word-section-title::before { left:  6%; }
+.word-card-body-zone .word-section-title::after  { right: 6%; }
+
+.word-card-body-zone .word-entry-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;             /* a bit more breathing room */
+}
+.word-card-body-zone .word-entry {
+  font-family: var(--font-body);
+  font-size: 17px;       /* was 13.5 — user: '字要大' */
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: #3f3a31;
+  padding: 0 6px;
+  text-align: center;    /* user: '词卡的字要居中' */
+}
+.word-card-body-zone .word-entry strong {
+  font-weight: 600;
+  color: #2f261d;
+  font-style: italic;
+}
+.word-card-body-zone .example-box {
+  margin: 10px 0 18px;
+  padding: 10px 12px;
+  border-left: 2px solid rgba(167, 141, 91, 0.55);
+  background: transparent;
+}
+.word-card-body-zone .example-en {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #3f3527;
+}
+.word-card-body-zone .example-zh {
+  margin: 4px 0 0;
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC",
+               var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #6b5c44;
+}
+.word-card-body-zone .empty-state {
+  text-align: center;
+  font-family: var(--font-body);
+  font-style: italic;
+  color: rgba(122, 100, 60, 0.78);
+  margin-top: 30px;
+}
