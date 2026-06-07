@@ -221,5 +221,13 @@
     switchTo({ track, array: null });
   }
 
-  window.BGM = { applyForView, setVolume, getVolume, nextTrack, autoMode, cueStage };
+  // Play a specific track now (e.g. the 文游 choice-prompt / right / wrong
+  // stingers). Transient: a later applyForView restores the scene track.
+  function cueTrack(track) {
+    if (!track) return;
+    manualTrack = null;
+    switchTo({ track, array: null });
+  }
+
+  window.BGM = { applyForView, setVolume, getVolume, nextTrack, autoMode, cueStage, cueTrack };
 })();

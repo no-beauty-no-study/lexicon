@@ -157,6 +157,13 @@
       "dictation": "31_quiz_dictation_long_loop.mp3",     // dictation / seal
       "review":    "25_review_spark.mp3",                 // Review page (slower)
     },
+    // 文游 choice stingers — a choice appearing vs picking right (Continue) vs
+    // wrong (END) each get their own cue.
+    choice: {
+      prompt:  P("02_daily_tension_before_reply.mp3"),
+      correct: P("14_choice_continue_clean_angle.mp3"),
+      wrong:   P("13_choice_loss_sweet_knife.mp3"),
+    },
     ui: "29_ui_manu_sunlit_alice_kept.mp3",
   };
 })();

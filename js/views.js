@@ -3586,11 +3586,15 @@ const Views = (function () {
       if (!list) return;
       const items = (window.PATHS || []);
       if (!items.length) { list.innerHTML = `<li class="follow-empty">No paths yet.</li>`; return; }
-      list.innerHTML = items.map((p, i) => `
+      const affOf = (id) => { try { return parseInt(localStorage.getItem("tpl.aff." + id), 10) || 0; } catch (_) { return 0; } };
+      list.innerHTML = items.map((p, i) => {
+        const a = affOf(p.id);
+        return `
         <li class="follow-portrait${i === 0 ? " is-selected" : ""}" data-id="${esc(p.id)}"
             style="background-image:url('assets/portraits/${esc(p.id)}.jpg')">
           <span class="follow-portrait-name">${esc(p.title || p.id)}</span>
-        </li>`).join("");
+          ${a ? `<span class="follow-aff">♥ ${a}</span>` : ""}
+        </li>`; }).join("");
 
       // Pick a face, then Restart (from the top) or Follow (resume the saved
       // sentence). Default to the protagonist you last read, else the first.
@@ -3646,6 +3650,17 @@ const Views = (function () {
 
       const say = (t, cb) => { try { if (t && typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t).trim(), cb ? { onEnd: cb } : undefined); } catch (_) {} };
       function scrollEnd() { if (scroll) requestAnimationFrame(() => { scroll.scrollTop = scroll.scrollHeight; }); }
+      const choiceBgm = () => (window.READING_BGM_PLAN && window.READING_BGM_PLAN.choice) || {};
+      const cue = (track) => { try { if (track && window.BGM && BGM.cueTrack) BGM.cueTrack(track); } catch (_) {} };
+      function scoreScene() { try { if (window.BGM && BGM.applyForView) BGM.applyForView("vn", { story: story.id, path: params.path, ch: chIdx + 1 }); } catch (_) {} }
+      // Cumulative affection (decorative on the Follow station's portraits).
+      function addAffection(aff) {
+        if (!aff || !aff.who) return;
+        try {
+          const k = "tpl.aff." + String(aff.who).toLowerCase();
+          localStorage.setItem(k, String((parseInt(localStorage.getItem(k), 10) || 0) + aff.delta));
+        } catch (_) {}
+      }
 
       let chIdx = Math.max(0, Math.min(story.chapters.length - 1, (parseInt(params.ch, 10) || 1) - 1));
       let chapter, queue = [], choiceOpen = false, ended = false;
@@ -3687,7 +3702,7 @@ const Views = (function () {
         if (!queue.length) { chapterEnd(); return; }
         const b = queue.shift();
         if (b.k === "c")  { choiceOpen = true; renderChoice(b); return; }
-        if (b.k === "_be") { if (b.end === "END") badEnd(); else advance(); return; }
+        if (b.k === "_be") { if (b.end === "END") badEnd(); else { scoreScene(); advance(); } return; }
         beatEl(b);
       }
 
@@ -3702,6 +3717,7 @@ const Views = (function () {
         flow.appendChild(card);
         requestAnimationFrame(() => card.classList.add("is-in"));
         try { TTS && TTS.cancel && TTS.cancel(); } catch (_) {}
+        cue(choiceBgm().prompt);   // tension while the choice is open
         say(c.q);
         scrollEnd();
         card.querySelectorAll(".vn-opt").forEach(btn => {
@@ -3712,7 +3728,9 @@ const Views = (function () {
             const br = c.branches.find(x => x.key === btn.dataset.key) || c.branches[0];
             card.querySelectorAll(".vn-opt").forEach(o => { o.disabled = true; o.classList.toggle("is-picked", o === btn); });
             choiceOpen = false;
-            if (br.aff) affEl(br.aff);
+            // right (Continue) vs wrong (END) get distinct stingers
+            cue(br.end === "END" ? choiceBgm().wrong : choiceBgm().correct);
+            if (br.aff) { addAffection(br.aff); affEl(br.aff); }
             // splice branch beats + an end-sentinel ahead of the remaining chapter
             queue = br.blocks.concat([{ k: "_be", end: br.end }], queue);
             advance();
