@@ -3179,7 +3179,7 @@ const Views = (function () {
 
       // ============ STAGE B — Spelling (only after Enter Spelling) ============
       let si = 0;
-      function startSpelling() { si = 0; spell(); }
+      function startSpelling() { si = 0; try { if (window.BGM && BGM.cueStage) BGM.cueStage("dictation"); } catch (_) {} spell(); }
       function spell() {
         if (si >= set.length) { finish(); return; }
         const q = set[si];

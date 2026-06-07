@@ -112,8 +112,14 @@
       if (arr[idx] === currentTrack && arr.length > 1) idx = (idx + 1) % arr.length;  // no back-to-back repeat
       return { track: arr[idx], array: arr, idx };
     }
-    if (name === "quiz" || name === "quizstatus" || name === "comprehension")
-      return mk((p.quizByStage && p.quizByStage.default) || p.ui);
+    if (name === "quiz" || name === "quizstatus" || name === "comprehension") {
+      const qs = p.quizByStage || {};
+      const st = params && params.stage;
+      const key = st === "golden" ? "golden"
+                : (st === "seal" || st === "dictation") ? "dictation"
+                : "default";
+      return mk(qs[key] || qs.default || p.ui);
+    }
     if (name === "review")
       return mk((p.quizByStage && p.quizByStage.review) || p.ui);
     return mk((p.byView && p.byView[name]) || p.ui);
