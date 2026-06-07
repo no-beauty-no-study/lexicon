@@ -1,0 +1,280 @@
+/* ============================================================
+   The Princess Lexicon — debug.css
+   UI Zone calibration layer. Every painted-UI page declares its
+   text / button slots as .ui-zone wrappers. They're invisible by
+   default; toggling body.debug-ui (via ?debug=1 in the URL) draws
+   a dashed gold outline + label so we can verify each zone lines
+   up with the painted slot in the background image BEFORE pouring
+   any text into it.
+
+   Rule: text never gets absolute coordinates of its own. It lives
+   INSIDE a zone; the zone owns the position.
+   ============================================================ */
+:root {
+  --debug-red:   rgba(180,  60,  45, 0.45);
+  --debug-blue:  rgba( 60, 100, 180, 0.45);
+  --debug-gold:  rgba(167, 141,  91, 0.55);
+  --debug-fill:  rgba(167, 141,  91, 0.08);
+}
+
+/* Bare zone — invisible, doesn't intercept clicks. Children
+   re-enable pointer events for their own buttons / links. */
+.ui-zone {
+  position: absolute;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+.ui-zone > * { pointer-events: auto; }
+
+/* Debug overlay — toggled by `body.debug-ui`. */
+body.debug-ui .ui-zone {
+  border: 1px dashed var(--debug-gold);
+  background: var(--debug-fill);
+}
+body.debug-ui .ui-zone::after {
+  content: attr(data-zone);
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  padding: 2px 5px;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: #5a4b35;
+  background: rgba(248, 242, 230, 0.82);
+  border: 1px solid rgba(167, 141, 91, 0.35);
+  font-family: Georgia, "Times New Roman", serif;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Special tints so different zone families are easy to tell apart. */
+body.debug-ui .ui-zone.is-text   { border-color: var(--debug-blue); }
+body.debug-ui .ui-zone.is-button { border-color: var(--debug-red); }
+body.debug-ui .ui-zone.is-hit    {
+  border-color: var(--debug-red);
+  background: rgba(180, 60, 45, 0.06);
+}
+
+/* When debug is on, hide normal content rendered inside the zone
+   so the dashed box is uncluttered. Drop this class on individual
+   elements if you want them to remain visible in debug mode. */
+body.debug-ui .ui-zone > :not(.debug-keep) { opacity: 0.18; }
+
+/* ============================================================
+   MASTER FRAME DEBUG OUTLINE
+   The real positioning rules live in layout.css (.master-frame
+   is now a real container, not an overlay div). This rule just
+   adds a gold outline so you can SEE where the frame is when
+   ?debug=1 is on.
+   ============================================================ */
+body.debug-ui .master-frame {
+  outline: 2px solid rgba(190, 150, 60, 0.62);
+}
+body.debug-ui .master-frame::after {
+  content: "MASTER FRAME (1.78% / 2.15% / 96.33% / 95.85%)";
+  position: absolute;
+  top: -19px; left: 6px;
+  padding: 2px 7px;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.10em;
+  color: #7a653f;
+  background: rgba(246, 232, 198, 0.92);
+  border: 1px solid rgba(170, 140, 90, 0.55);
+  font-family: Georgia, serif;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================================
+   ZONE coordinates — Reading page
+   ALL coordinates are now MASTER-FRAME-RELATIVE because every
+   .ui-zone is a child of .master-frame. Do NOT convert to
+   page-relative.
+   ============================================================ */
+/* User's 4-quadrant grid: a horizontal rule at ~22% splits the page
+   into a title row (top) and a content row (bottom-left body +
+   bottom-right marginalia). Body and marginalia share the SAME top
+   AND bottom edges so the two columns are visually height-aligned. */
+/* Right-column word card was too narrow / fonts too small to read.
+   Widened the marginalia zone by ~27% (1/4 + a hair) — shifted its
+   left edge inward and shrank the body zone the same amount so the
+   small gap between them stays preserved. */
+/* FOLLOW-UP TUNING:
+   (a) Right word-list sat too close to centre with a too-fat safety
+       margin on the right. Pushed the marginalia column ~2% RIGHT
+       (left 77.55 → 79.50, right edge now ≈ 97.35% — uses the right
+       space without touching the painted frame).
+   (b) The reading body reclaims the room the marginalia vacated
+       (width 46.20 → 48.00) so the prose reads denser, and the small
+       gap to the word column is preserved (≈ 0.75%).
+   (c) Body + marginalia + quiz body lifted ~1.65% UP (top 24.05 →
+       22.40, height grown to keep the SAME bottom edge) so the core
+       text sits higher and the page reads less "pushed down".
+   Body & marginalia keep an identical top AND bottom so the two
+   columns stay height-aligned. */
+.zone-reading-title    { left: 30.75%; top:  5.69%; width: 50.04%; height: 16.00%; }
+.zone-reading-body     { left: 30.75%; top: 22.40%; width: 48.00%; height: 55.38%; }
+.zone-marginalia       { left: 79.50%; top: 22.40%; width: 17.85%; height: 55.38%; }
+/* Quiz body uses the full available width (no marginalia column). */
+.zone-quiz-body        { left: 30.75%; top: 22.40%; width: 65.00%; height: 55.38%; }
+
+/* In CSS-var nav mode (.ui-bottom-nav reads --nav-* directly), it has
+   no .ui-zone wrapper, so we outline it ourselves in debug mode. */
+body.debug-ui .ui-bottom-nav {
+  outline: 1px dashed var(--debug-red);
+  background: rgba(180, 60, 45, 0.06);
+}
+body.debug-ui .ui-bottom-nav::after {
+  content: "ui-bottom-nav (--nav-*)";
+  position: absolute;
+  left: 4px; top: -14px;
+  padding: 2px 5px;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  color: #5a4b35;
+  background: rgba(248, 242, 230, 0.92);
+  border: 1px solid rgba(167, 141, 91, 0.45);
+  font-family: Georgia, serif;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Zone-local content layout: title stack centred, body left-flow,
+   marginalia + nav fill their zones. */
+.zone-reading-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.zone-reading-body {
+  overflow: hidden;
+}
+.zone-marginalia > * {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.zone-bottom-nav > .page-bottom-nav,
+.zone-select-bottom-nav > .page-bottom-nav {
+  position: relative;
+  inset: auto;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================================
+   ZONE coordinates — Select page (3 arches + bottom nav)
+   ============================================================ */
+/* IMPORTANT: hotspot zone and title zone are NOT the same thing.
+   Hotspot = the full arch button (cover the whole card).
+   Title zone = only the cream-coloured TITLE PLATE inside the upper
+   half of the arch — the lighter-tinted strip painted into each arch
+   button. NEVER use the area outside / above the arch. */
+/* Hand-measured by the user (red & blue dot midpoints on the
+   painted bg), then converted from page-relative to MASTER-FRAME-
+   RELATIVE via (p-1.78)/96.33 horizontally, (p-2.15)/95.85
+   vertically. Do NOT auto-adjust — these are ground truth. */
+.zone-select-story-title  { left: 21.74%; top: 37.14%; width: 16.06%; height: 12.58%; }
+.zone-select-notes-title  { left: 43.54%; top: 37.34%; width: 16.35%; height: 12.30%; }
+.zone-select-garden-title { left: 65.55%; top: 37.05%; width: 15.42%; height: 12.78%; }
+
+/* Hit zones widened — original tight 19.6% × 58% bounds left dead
+   strips between adjacent pillars where taps registered nowhere.
+   New zones nearly meet (≤1% gap) and stretch top/bottom so the
+   whole carved-arch column is tappable. */
+/* Hotspots are the three big vertical strips of the painted
+   select screen. Was too easy to miss-tap (the original 24% /
+   19% / 24% wide zones left ~10% dead-space gaps and only spanned
+   76% of the page height). Widened to span the FULL height (12–94%)
+   and edge-to-edge with no gaps. The .select-title-text zones
+   above each arch have pointer-events: none, so overlapping
+   them is safe — taps still fall through to the hotspots. */
+.zone-select-story-hit    { left:  4%; top: 12%; width: 31%; height: 82%; }
+.zone-select-notes-hit    { left: 35%; top: 12%; width: 30%; height: 82%; }
+.zone-select-garden-hit   { left: 65%; top: 12%; width: 31%; height: 82%; }
+
+/* ============================================================
+   CHAPTERS (Table of Contents) — TEXT zones only (chapter title +
+   tagline). Heights were shortened from the user's earlier 8-9%
+   to ~5% so each text block sits cleanly ABOVE the button without
+   overlap. The OPEN CHAPTER buttons live in separate zones below.
+   ============================================================ */
+.zone-toc-01 { left: 34.64%; top: 20.52%; width: 15.34%; height: 5.52%; }
+.zone-toc-02 { left: 34.42%; top: 36.57%; width: 15.56%; height: 5.16%; }
+.zone-toc-03 { left: 34.42%; top: 51.94%; width: 15.49%; height: 5.25%; }
+.zone-toc-04 { left: 34.79%; top: 67.41%; width: 15.49%; height: 5.31%; }
+.zone-toc-05 { left: 34.50%; top: 82.97%; width: 15.56%; height: 5.75%; }
+.zone-toc-06 { left: 65.75%; top: 21.59%; width: 15.42%; height: 4.45%; }
+.zone-toc-07 { left: 65.97%; top: 36.57%; width: 15.20%; height: 5.16%; }
+.zone-toc-08 { left: 65.83%; top: 52.23%; width: 14.91%; height: 4.96%; }
+.zone-toc-09 { left: 65.75%; top: 67.41%; width: 15.34%; height: 5.31%; }
+.zone-toc-10 { left: 65.75%; top: 82.87%; width: 14.91%; height: 5.85%; }
+
+/* OPEN CHAPTER BUTTON zones — hand-measured by the user (red
+   vertical + horizontal lines on chapters.jpg). All 10 buttons
+   share the same column width and an identical height; only the
+   top changes per row. Master-frame-relative.
+     Left  col : x 681–852 px  → left 37.42%  width 9.86%
+     Right col : x 1219–1391 px → left 68.45%  width 9.92%
+     Button h  : 32 px        → 2.47% master-rel
+     Row tops  : 26.04 / 41.73 / 57.18 / 72.72 / 88.72 % master-rel
+   ============================================================ */
+.zone-toc-btn-01 { left: 37.42%; top: 26.04%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-02 { left: 37.42%; top: 41.73%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-03 { left: 37.42%; top: 57.18%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-04 { left: 37.42%; top: 72.72%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-05 { left: 37.42%; top: 88.72%; width: 9.86%; height: 2.47%; }
+.zone-toc-btn-06 { left: 68.45%; top: 26.04%; width: 9.92%; height: 2.47%; }
+.zone-toc-btn-07 { left: 68.45%; top: 41.73%; width: 9.92%; height: 2.47%; }
+.zone-toc-btn-08 { left: 68.45%; top: 57.18%; width: 9.92%; height: 2.47%; }
+.zone-toc-btn-09 { left: 68.45%; top: 72.72%; width: 9.92%; height: 2.47%; }
+.zone-toc-btn-10 { left: 68.45%; top: 88.72%; width: 9.92%; height: 2.47%; }
+
+/* ============================================================
+   WORD GARDEN — 4 master-frame-relative zones:
+     wg-search   centred search bar (~44px tall)
+     wg-az       A–Z letter strip below the search
+     wg-table    two parchment columns of word rows
+   The container coords leave ample breathing room on the left
+   (~22% painted illustration) and the right (~22% painted
+   illustration), per the user's spec.
+   ============================================================ */
+.zone-wg-search  { left: 21.00%; top: 24.00%; width: 58.00%; height:  5.00%; }
+.zone-wg-az      { left: 16.00%; top: 30.00%; width: 68.00%; height:  3.50%; }
+.zone-wg-table   { left: 21.00%; top: 34.50%; width: 58.00%; height: 53.50%; }
+
+.zone-select-story-title,
+.zone-select-notes-title,
+.zone-select-garden-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.zone-select-story-hit,
+.zone-select-notes-hit,
+.zone-select-garden-hit {
+  /* Hit zones host a single transparent button child that fills. */
+  pointer-events: none;
+}
+.zone-select-story-hit > button,
+.zone-select-notes-hit > button,
+.zone-select-garden-hit > button {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}

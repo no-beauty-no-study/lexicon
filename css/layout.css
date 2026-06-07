@@ -1,0 +1,337 @@
+/* ============================================================
+   The Princess Lexicon — layout.css
+   Page-level scaffolding. Each page is centered in a 1448x1086
+   "book" stage that scales to viewport.
+   ============================================================ */
+
+/* CONTAIN-style layout — the FULL painted 1448×1086 page stays
+   visible. Previous version cropped at master-frame edges (1.78%
+   / 2.15%) which ate into the user's hand-drawn UI: she'd drawn
+   the painted frame line slightly INSIDE the master container,
+   so cropping AT the master container left no buffer. The stage
+   now uses the original page aspect (1448/1086 = 4:3) — nothing
+   is cropped, parchment letterbox covers any leftover sides. */
+/* CONTAIN-style layout with TOP/BOTTOM-only bleed crop. Per user
+   feedback: cover fill-width cropped INTO the painted frame line
+   (it's only ~1.1% from each edge, but cover mode crops 3-4%).
+   The fix: stage aspect is 1448 / 1068.62 — that's the page width
+   intact, with only the OUTER 0.8% bleed shaved off top+bottom.
+   No side crop. The viewport's leftover horizontal space (when
+   the viewport is wider than 1.355) becomes #e3d6c4 letterbox =
+   the same parchment shade as the painted bleed, so the seam is
+   invisible. */
+.stage {
+  /* Sources are pre-cropped at the JPG file level (~1% L/R,
+     ~1.5% T/B trimmed off the painted bleed), so the stage is
+     just the page aspect 1448 / 1086 and the page fills it
+     exactly. No viewport-side crop, no math gymnastics. Side
+     letterbox stays #e3d6c4 — the same parchment shade as the
+     trimmed bleed, so the seam is invisible. */
+  width:  min(100vw, calc(100dvh * 1448 / 1086));
+  height: min(100dvh, calc(100vw * 1086 / 1448));
+  aspect-ratio: 1448 / 1086;
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #e3d6c4;
+}
+
+.page {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1448px;
+  height: 1086px;
+  transform-origin: top left;
+  transform: scale(1);
+  /* No background — the painted bg is set per-page on .page.art-bg
+     and we DON'T want a 'card' bg color leaking through if the
+     painted image has any partial transparency or anti-aliased
+     edge pixels. No border, no box-shadow either: user wants the
+     painted page to look as if it sits ON the body parchment
+     directly, with zero visible seam at the side letterbox. */
+  background: transparent;
+  overflow: hidden;
+}
+
+/* ============================================================
+   MASTER FRAME — the single legal layout coordinate system.
+   Hand-measured by the user: the 4 blue corner medallions on
+   every painted background are at (1.78%, 2.15%) and
+   (98.11%, 98.00%) of the page, so the frame is:
+       left 1.78%  top 2.15%  width 96.33%  height 95.85%
+
+   Every interactive zone, hotspot and bottom-nav lives INSIDE
+   this element. Zones inside .master-frame use percentages
+   relative to .master-frame, NOT to the full .page.
+   ============================================================ */
+.master-frame {
+  position: absolute;
+  left: 1.78%;
+  top: 2.15%;
+  width: 96.33%;
+  height: 95.85%;
+  /* The frame itself must NOT catch clicks — interactive children
+     (hotspots, nav buttons) explicitly re-enable pointer-events.
+     Otherwise the master-frame would sit on top of every painted
+     button and swallow the tap. */
+  pointer-events: none;
+}
+
+/* The CSS-drawn double frame inside every .page is no longer
+   drawn. The painted bgs themselves carry whatever frame the
+   user wants; an additional thin CSS border was creating a
+   visible 'edge of an image' seam on the side letterbox. */
+.page::before,
+.page::after { content: none; }
+
+/* ----- Page-level shells ----- */
+.page-inner {
+  position: absolute;
+  inset: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ----- Bottom navigation bar (shared) ----- */
+.nav-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 10px 28px;
+  background: rgba(246, 239, 217, 0.55);
+  border: var(--frame-border-soft);
+  border-radius: 4px;
+}
+.nav-bar .nav-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--paper-frame);
+  opacity: 0.55;
+}
+
+/* ----- Home (index) layout ----- */
+.home-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  text-align: center;
+}
+.home-layout .home-hero {
+  margin-top: -40px;
+}
+.home-layout .home-buttons {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 60px;
+}
+
+/* ----- Select layout ----- */
+.select-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.select-layout .select-header {
+  text-align: center;
+  padding-top: 30px;
+}
+.select-layout .select-cards {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  padding: 60px 60px 120px;
+  align-items: center;
+}
+
+/* ----- Reading layout: 3 columns + footer ----- */
+.reading-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 280px;
+  grid-template-rows: 1fr auto;
+  gap: 28px;
+  height: 100%;
+  padding-bottom: 80px;       /* room for nav bar */
+}
+.reading-illus {
+  grid-row: 1;
+  grid-column: 1;
+  border: var(--hairline);
+  background:
+    linear-gradient(180deg, rgba(220, 200, 160, 0.20), rgba(120, 95, 55, 0.10));
+  position: relative;
+}
+.reading-illus .illus-placeholder {
+  position: absolute;
+  inset: 16px;
+  border: 1px dashed rgba(120, 95, 55, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 12px;
+}
+.reading-main {
+  grid-row: 1;
+  grid-column: 2;
+  overflow-y: auto;
+  padding: 10px 30px 30px;
+}
+.reading-side {
+  grid-row: 1;
+  grid-column: 3;
+  border-left: var(--hairline);
+  padding-left: 22px;
+  overflow-y: auto;
+}
+
+/* ----- Chapters layout ----- */
+.chapters-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100px;
+}
+.chapters-layout .chapters-header {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.chapters-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: min-content;
+  gap: 20px 36px;
+  overflow-y: auto;
+  padding: 10px 30px;
+}
+
+/* ----- Notes + Word Garden share a 2-column shape ----- */
+.split-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 30px;
+  height: 100%;
+  padding-bottom: 90px;
+}
+.split-layout .split-left {
+  border-right: var(--hairline);
+  padding-right: 22px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.split-layout .split-right {
+  padding-left: 6px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Word Garden two-column list */
+.wg-list-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+  overflow-y: auto;
+  align-content: start;
+  padding-right: 6px;
+}
+
+/* ----- Save / Load layout ----- */
+.save-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100px;
+}
+.save-layout .save-header {
+  text-align: center;
+  padding-top: 30px;
+}
+.slot-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(150px, 1fr);
+  gap: 24px 32px;
+  padding: 40px 60px;
+  overflow-y: auto;
+}
+
+/* ============================================================
+   PAGE TRANSITION — vertical PUSH with cinematic depth.
+   User: not a "切换" (cut/swap), but "像镜头有节奏的滑进一个新
+   场景" — camera dolly into the next scene. So the pure 100% push
+   gains a small scale on each end: the incoming page enters from
+   translateY(100%) AND scale(0.94), so it feels like it's being
+   pushed up from a distance, and the outgoing page scales to
+   1.04 as it lifts away, like the camera pulling back through it.
+   Same 820ms cubic-bezier for both → lockstep choreography.
+
+   IMPORTANT — leaving-page animations are PAUSED for the duration
+   of the transition. With 19 sway overlays + 65 sparkles + 20
+   dust motes still ticking on the outgoing menu, the GPU was
+   choking when the user navigated to the chapter index; the
+   transition stuttered ("点按钮进 index 很卡"). Pausing on
+   .page-leaving frees the compositor for the incoming page.
+   ============================================================ */
+/* Direction-aware push.
+   ALL THREE state classes carry the same transition definition,
+   so any transform / opacity change between them is animated.
+   Without this, the regression was: .page-entering had no
+   transition, .page-active added transition simultaneously with
+   the new transform value, and Safari iOS was skipping the
+   transform animation because the transition property and the
+   transform property changed in the same style recalc.
+
+   .enter-up / .enter-left + .page-entering choose the initial
+   transform; .page-active resets to translate(0,0); .leave-up /
+   .leave-left + .page-leaving choose the exit translate. */
+.page-entering,
+.page-active,
+.page-leaving {
+  transition:
+    transform 950ms cubic-bezier(0.22, 0.8, 0.22, 1),
+    opacity   620ms ease-out;
+  will-change: transform, opacity;
+}
+.page-entering             { opacity: 0.92; transform: translateY(100%); }
+.page-entering.enter-up    { opacity: 0.92; transform: translateY(100%); }
+.page-entering.enter-left  { opacity: 0.92; transform: translateX(100%); }
+.page-active               { opacity: 1;    transform: translate(0, 0); z-index: 2; }
+.page-leaving              { opacity: 0.6;  transform: translateY(-100%);
+                             pointer-events: none; z-index: 1; }
+.page-leaving.leave-up     { opacity: 0.6;  transform: translateY(-100%); }
+.page-leaving.leave-left   { opacity: 0.6;  transform: translateX(-100%); }
+.page-leaving *,
+.page-leaving::before,
+.page-leaving::after {
+  animation-play-state: paused !important;
+}
+
+/* Respect reduced-motion: skip the slide + scale, plain cross-fade. */
+@media (prefers-reduced-motion: reduce) {
+  .page-entering,
+  .page-active,
+  .page-leaving {
+    transition: opacity 220ms ease !important;
+    transform: none !important;
+  }
+}
