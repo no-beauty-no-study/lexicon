@@ -139,8 +139,24 @@ function parse(text) {
 
 const out = {};
 const report = [];
+// Which protagonist "owns" a chapter → which 立绘 / score it uses. Pick the
+// most-mentioned male lead; fall back to the heroine.
+const LEADS = ["Shiro", "Hosea", "Jael", "Kye"];
+function chapterLead(ch) {
+  const blob = [];
+  const walk = bs => bs.forEach(b => { blob.push(b.k === "s" ? b.who + " " + b.t : (b.t || "")); if (b.k === "c") b.branches.forEach(br => walk(br.blocks)); });
+  walk(ch.blocks);
+  const text = blob.join(" ");
+  let best = null, bestN = 0;
+  for (const L of LEADS) {
+    const n = (text.match(new RegExp("\\b" + L + "\\b", "g")) || []).length;
+    if (n > bestN) { bestN = n; best = L; }
+  }
+  return (best || "Sealyra").toLowerCase();
+}
 for (const s of SOURCES) {
   const chapters = parse(fs.readFileSync(path.join(SRC_DIR, s.file), "utf8"));
+  chapters.forEach(c => { c.lead = chapterLead(c); });
   const cast = new Set();
   const walk = bs => bs.forEach(b => {
     if (b.k === "s") cast.add(b.who);
