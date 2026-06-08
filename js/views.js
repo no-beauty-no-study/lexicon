@@ -841,14 +841,16 @@ const Views = (function () {
             <span class="wce-en">${esc(exEn)}</span>
             ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
           </div>` : "";
-        // HEAD chip — the word's 原型 / learning head, shown when it differs
-        // from the word; tapping it opens the head's big card.
+        // HEAD sub-label — just the bare learning head, small, at the word's
+        // bottom-left. No "原型" text; tapping it opens the head's big card so
+        // the reader can see what it is.
         const hw = (sc.word || id);
-        const headChip = (sc.head && sc.head.word && sc.head.word.toLowerCase() !== String(hw).toLowerCase())
-          ? `<span class="wc-head-chip" data-open-head="${esc(sc.head.word)}">原型 ${esc(sc.head.word)}</span>` : "";
+        const headSub = (sc.head && sc.head.word && sc.head.word.toLowerCase() !== String(hw).toLowerCase())
+          ? `<div class="wc-head-sub" data-open-head="${esc(sc.head.word)}">${esc(sc.head.word)}</div>` : "";
         return `
           <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
-            <div class="word-card-headword">${esc(hw)}${headChip}</div>
+            <div class="word-card-headword">${esc(hw)}</div>
+            ${headSub}
             <div class="word-card-meaning">${esc(sc.zh || "")}</div>
             ${phraseRows}
             ${exampleRow}
@@ -3834,10 +3836,10 @@ const Views = (function () {
         const exEn = ex && (ex.example || ex.en) || "", exZh = ex && (ex.example_zh || ex.zh) || "";
         const exampleRow = exEn ? `<div class="word-card-example"><span class="wce-en">${esc(exEn)}</span>${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}</div>` : "";
         const hw = (sc.word || id);
-        const headChip = (sc.head && sc.head.word && sc.head.word.toLowerCase() !== String(hw).toLowerCase())
-          ? `<span class="wc-head-chip" data-open-head="${esc(sc.head.word)}">原型 ${esc(sc.head.word)}</span>` : "";
+        const headSub = (sc.head && sc.head.word && sc.head.word.toLowerCase() !== String(hw).toLowerCase())
+          ? `<div class="wc-head-sub" data-open-head="${esc(sc.head.word)}">${esc(sc.head.word)}</div>` : "";
         return `<div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
-            <div class="word-card-headword">${esc(hw)}${headChip}</div>
+            <div class="word-card-headword">${esc(hw)}</div>${headSub}
             <div class="word-card-meaning">${esc(sc.zh || "")}</div>${phraseRows}${exampleRow}</div>`;
       }
       function vnRenderCard(sc) {

@@ -569,26 +569,20 @@
   flex: 0 0 auto;
 }
 .word-card-headword::after { content: none; }     /* drop the right flanker */
-/* 原型 head chip — the word's learning-head, shown when it differs from the
-   surface word; tapping it opens that head's big card. */
-.wc-head-chip {
-  flex: 0 0 auto;
-  align-self: center;
-  margin-left: auto;
+/* HEAD sub-label — the bare learning head, small + dim, hanging at the word's
+   bottom-left. No "原型" text; tapping it opens that head's big card. */
+.wc-head-sub {
+  margin-top: 1px;
   font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 1;
-  color: #7a5c2e;
-  background: rgba(196, 164, 104, 0.18);
-  border: 1px solid rgba(150, 120, 70, 0.42);
-  border-radius: 999px;
-  padding: 3px 8px;
-  white-space: nowrap;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: rgba(126, 105, 74, 0.72);
+  text-align: left;
   cursor: pointer;
 }
-.wc-head-chip:hover { background: rgba(196, 164, 104, 0.3); }
+.wc-head-sub:hover { color: #7a5c2e; }
 .word-card-meaning {
   margin-top: 4px;
   font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
