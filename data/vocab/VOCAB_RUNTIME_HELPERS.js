@@ -114,6 +114,7 @@
   // inflected surface also has its own entry: prefer a de-inflected lemma
   // that exists in the registry over the exact surface form.
   function lemmaPrefer(w) {
+    if (regMap.has(w) && bigSet.has(w)) return w;
     for (const c of lemmaCandidates(w)) if (regMap.has(c)) return c;
     if (regMap.has(w)) return w;
     return null;
