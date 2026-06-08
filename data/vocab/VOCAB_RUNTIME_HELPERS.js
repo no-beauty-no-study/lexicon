@@ -122,7 +122,10 @@
   function readingKey(w) {
     if (noReading.has(w)) return null;            // demoted out of the reading layer
     if (readingSet.has(w) || regMap.has(w)) return lemmaPrefer(w) || (readingSet.has(w) ? w : null);
-    for (const c of lemmaCandidates(w)) if (readingSet.has(c)) return lemmaPrefer(c) || c;
+    // An inflected surface (reads / girls / sits) resolves to its base when the
+    // base is a reading word OR carries a registry card — so plurals/3rd-person
+    // /-ing of registry-only words (the V160 commons) still open the base card.
+    for (const c of lemmaCandidates(w)) if (readingSet.has(c) || regMap.has(c)) return lemmaPrefer(c) || c;
     return null;
   }
   // Syllable-dotted spelling (ex·cep·tion·al) for the Golden Seal reveal.

@@ -21,6 +21,42 @@ const Views = (function () {
     const out = t.replace(/^\s*(?:[A-Za-z]{1,6}\.\s*(?:[\/&]\s*)?)+/, "").trim();
     return out || t.trim();
   }
+  // The ENGLISH part of an owl synonym string. The meanings warehouse sometimes
+  // mashes the Chinese gloss in front of the English synonym
+  // ("v. 实物交易 trade" → "trade", "破坏 shrivel" → "shrivel"); the English we
+  // want is whatever trails the last CJK / full-width character. A clean,
+  // all-English syn ("give up", "leave behind") passes through untouched.
+  function englishSyn(s) {
+    s = String(s == null ? "" : s).trim();
+    let last = -1;
+    for (let i = 0; i < s.length; i++)
+      if (/[　-〿㐀-鿿豈-﫿＀-￯]/.test(s[i])) last = i;
+    if (last >= 0) s = s.slice(last + 1);
+    s = s.replace(/^[\s,;:.、，；：。·\/]+/, "").trim();
+    return /[A-Za-z]/.test(s) ? s : "";
+  }
+  // A synonym quiz item drawn from ONE owl meaning: the example sentence is the
+  // question, the meaning's own English synonym is the answer — so the answer
+  // always matches the sentence shown ("从 meaning 里抓 但不要抓错 meaning").
+  // Prefers a meaning whose example actually contains the word (for underlining).
+  function meaningSynQuestion(word) {
+    let owl = null;
+    try { owl = (window.VocabRuntime && VocabRuntime.getOwl) ? VocabRuntime.getOwl(word) : null; } catch (_) {}
+    if (!owl || !owl.meanings || !owl.meanings.length) return null;
+    const esc2 = String(word).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp("\\b" + esc2 + "\\b", "i");
+    let best = null;
+    for (const m of owl.meanings) {
+      if (!m.example || !m.example.trim()) continue;
+      const cands = ((m.syns && m.syns.length ? m.syns : [m.gloss]) || []).map(englishSyn).filter(Boolean);
+      const syn = cands.find(s => !/\s/.test(s)) || cands[0] || "";   // prefer a single word
+      if (!syn) continue;
+      const cand = { example: m.example.trim(), example_zh: (m.example_zh || "").trim(), syn };
+      if (re.test(m.example)) return cand;
+      if (!best) best = cand;
+    }
+    return best;
+  }
   // A "gloss" that is really just an inflection label OR one of codex's
   // placeholder descriptions ("词族关联项", "语义相关表达", "用于连接…") carries no
   // meaning — such cards must never appear as quiz answers or distractors.
@@ -1871,6 +1907,11 @@ const Views = (function () {
           const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
           seen.add(w); seen.add(ans);
           if (firstMap[ans] && firstMap[ans] !== here) continue;   // word only quizzed in its first section
+          // Question = a meaning's example; answer = that SAME meaning's English
+          // synonym (so the answer always fits the sentence). Falls back to the
+          // family/group graph only when the warehouse has no usable meaning.
+          const mq = meaningSynQuestion(ans);
+          if (mq) { cand.push({ word: ans, ex: mq.example, correctSyn: mq.syn }); continue; }
           const bc = VocabRuntime.getBigCard ? VocabRuntime.getBigCard(ans) : null;
           const syns = ((bc && bc.group) || []).filter(g => g.clickable && g.word);
           const ex = (sc.examples || []).find(e => e.example && new RegExp("\\b" + rxq(ans) + "\\b", "i").test(e.example));
@@ -3046,13 +3087,21 @@ const Views = (function () {
           const sc = VR && VR.getSmallCard ? VR.getSmallCard(w) : null;
           if (!sc || sc.proper) continue;
           const ans = String(sc.word || w).toLowerCase(); if (seen.has(ans)) continue;
-          const bc = VR && VR.getBigCard ? VR.getBigCard(ans) : null;
-          if (!bc) continue;   // owl-only — no big card, not in the pool
-          const ex = (sc.examples || []).find(e => e.example && new RegExp("\\b" + rxq(ans) + "\\b", "i").test(e.example));
-          if (!ex) continue;
-          const syns = ((bc.group) || []).filter(g => g.clickable && g.word).map(g => g.word);
+          // Prefer a single owl meaning for BOTH the example and its English
+          // synonym (answer always matches the sentence). Fall back to the
+          // family/group graph + a separate example only if there's no meaning.
+          const mq = meaningSynQuestion(ans);
+          let en, zh, syn;
+          if (mq) { en = mq.example; zh = mq.example_zh; syn = mq.syn; }
+          else {
+            const bc = VR && VR.getBigCard ? VR.getBigCard(ans) : null;
+            const ex = (sc.examples || []).find(e => e.example && new RegExp("\\b" + rxq(ans) + "\\b", "i").test(e.example));
+            if (!ex) continue;
+            const syns = ((bc && bc.group) || []).filter(g => g.clickable && g.word).map(g => g.word);
+            en = ex.example; zh = ex.example_zh || ""; syn = syns[0] || null;
+          }
           seen.add(w); seen.add(ans);
-          out.push({ word: ans, en: ex.example, zh: ex.example_zh || "", pos: sc.pos || "", meaning: stripPos(sc.zh || ""), syn: syns[0] || null });
+          out.push({ word: ans, en: en, zh: zh, pos: sc.pos || "", meaning: stripPos(sc.zh || ""), syn: syn });
           if (out.length >= 8) break;
         }
         return out;
