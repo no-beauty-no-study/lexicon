@@ -2263,3 +2263,23 @@ button.ornate-panel {
   color: rgba(122, 100, 60, 0.78);
   margin-top: 30px;
 }
+
+/* ── word-owl: cut decomposition + per-meaning synonyms in the big card ── */
+.wc-cut-sec { padding-bottom: 0.4em; }
+.wc-cut { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5em;
+  font-family: var(--font-display), Georgia, serif;
+  padding: 0.3em 0.6em; border-left: 2px solid rgba(170,140,84,0.55); }
+.wc-cut-slash { font-size: 1.12em; letter-spacing: 0.05em; color: #7a5a2a; font-weight: 600; }
+.wc-cut-zh { font-size: 0.84em; color: #8a7a5c; }
+.wc-mean { margin: 0.35em 0 0.7em; }
+.wc-mean-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4em; line-height: 1.4; }
+.wc-mean-n { font-weight: 700; color: #9a7a3a; min-width: 1.1em; }
+.wc-mean-pos { font-style: italic; color: #8a6a3a; font-size: 0.85em; }
+.wc-mean-zh { color: #3a3326; }
+.wc-mean-syn { color: #5a7a4a; font-size: 0.85em; }   /* the English gloss = synonyms */
+
+/* ── dictation-miss CUT hint (quiz + review) ── */
+.gs-c-cut, .rv-c-cut { color: #7a5a2a; font-weight: 600; letter-spacing: 0.03em; }
+.gs-c-cut em, .rv-c-cut em { font-style: normal; color: #8a7a5c; font-weight: 400; font-size: 0.9em; }
+.gs-c-cutrow .gs-c-key { color: #9a7a3a; }
+.rv-c-cut { display: inline-block; margin-top: 0.2em; }

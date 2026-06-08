@@ -233,8 +233,22 @@
     return { raw: word, resolvedWord: sc ? sc.resolvedWord : cleanTok(word), card: sc, matchType: sc ? (sc.proper ? 'proper' : 'word') : 'none' };
   }
 
+  /* ---------- word-owl supplement (cut + per-meaning synonyms) ---------- */
+  function getOwl(word) {
+    const W = (typeof window !== 'undefined') && window.WORD_OWL;
+    if (!W) return null;
+    const w = cleanTok(word); if (!w) return null;
+    if (W[w]) return W[w];
+    for (const c of lemmaCandidates(w)) if (W[c]) return W[c];
+    return null;
+  }
+  // The slash decomposition + its Chinese, for the dictation-miss hint and the
+  // word card. Returns null when the word has no real cut.
+  function getCut(word) { const o = getOwl(word); return (o && o.cut && o.cut.slash) ? o.cut : null; }
+
   window.VocabRuntime = {
     getSmallCard, getBigCard, isClickableWord, getFamilyHead, getWordCard,
     resolveReadingWord, dotted: dottedOf, isSmallOnly: (c) => !!(c && c.proper),
+    getOwl, getCut,
   };
 })();
