@@ -294,9 +294,28 @@
   // word card. Returns null when the word has no real cut.
   function getCut(word) { const o = getOwl(word); return (o && o.cut && o.cut.slash) ? o.cut : null; }
 
+  /* ---------- cut PART index (clickable cut → Words Garden root pool) ------- */
+  const CUTIX = (typeof window !== 'undefined' && window.VOCAB_CUT_PART_INDEX_LITE) || { parts: {}, partZh: {}, roots: {} };
+  // Split a word's cut into parts, each tagged with its Chinese gloss and
+  // whether it is a clickable ROOT (a part the index knows several words for).
+  function cutParts(word) {
+    const cut = getCut(word);
+    if (!cut) return null;
+    const segs = String(cut.slash).split('/').map(s => s.trim());
+    const zhs  = String(cut.zh || '').split('/').map(s => s.trim());
+    return segs.map((s, i) => {
+      const key = s.toLowerCase();
+      return { text: s, zh: zhs[i] || '', key,
+        root: !!(CUTIX.roots && CUTIX.roots[key]) && !!(CUTIX.parts && CUTIX.parts[key]) };
+    });
+  }
+  // Every word sharing a cut part (sorted). Used by the Words Garden filter.
+  function cutPartWords(part) { const p = String(part || '').toLowerCase(); return (CUTIX.parts && CUTIX.parts[p]) ? CUTIX.parts[p].slice() : []; }
+  function cutPartZh(part)    { const p = String(part || '').toLowerCase(); return (CUTIX.partZh && CUTIX.partZh[p]) || ''; }
+
   window.VocabRuntime = {
     getSmallCard, getBigCard, isClickableWord, getFamilyHead, getWordCard,
     resolveReadingWord, dotted: dottedOf, isSmallOnly: (c) => !!(c && c.proper),
-    getOwl, getCut,
+    getOwl, getCut, cutParts, cutPartWords, cutPartZh,
   };
 })();

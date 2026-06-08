@@ -2593,8 +2593,12 @@ const Views = (function () {
      (seen but not yet cleanly passed). Driven by the global Quiz word stats
      (reviewNeed = wrong − correct). */
   const wordGarden = {
-    init(host) {
+    init(host, params) {
       let query = "";
+      // Active cut-root filter (arrived via a word card's clickable cut, e.g.
+      // #word-garden?cut=mut). When set, the right column becomes that root's
+      // whole pool of words instead of the lexicon search.
+      let cutPart = (params && params.cut) ? String(params.cut).toLowerCase() : "";
       function glossOf(word) {
         if (window.VocabRuntime) {
           const sc = VocabRuntime.getSmallCard ? VocabRuntime.getSmallCard(word) : null;
@@ -2660,24 +2664,41 @@ const Views = (function () {
       function filtered() {   // union (for the A-Z nav)
         return applyQuery(collectedList().concat(spelledList())).map(w => ({ word: w }));
       }
+      // Pool of every word sharing the active cut root (sorted), minus the ones
+      // already in your own columns (those live on the left).
+      function cutPool() {
+        if (!cutPart || !(window.VocabRuntime && VocabRuntime.cutPartWords)) return [];
+        const have = new Set(collectedList().concat(spelledList()).map(w => w.toLowerCase()));
+        return applyQuery(VocabRuntime.cutPartWords(cutPart).filter(w => !have.has(w.toLowerCase())));
+      }
+      function cutZh() { try { return (window.VocabRuntime && VocabRuntime.cutPartZh) ? VocabRuntime.cutPartZh(cutPart) : ""; } catch (_) { return ""; } }
       function renderTable() {
         const left  = host.querySelector("#wg-col-left");
         const right = host.querySelector("#wg-col-right");
         if (!left || !right) return;
         const collected = collectedList(), spelled = spelledList(), backlog = toSpell().length;
-        // LEFT = Collected (choice quiz) with a "Seal More" dictation button.
+        // LEFT = YOUR words: Collected (choice quiz) + Sealed (dictation), with
+        // the "Seal More" dictation button. These are the words you already own.
         left.innerHTML = `<li class="wg-col-head wg-col-head-row"><span>Collected · ${collected.length}</span>`
           + `<button type="button" class="wg-sealmore"${backlog ? "" : " disabled"}>Seal More${backlog ? " (" + backlog + ")" : ""}</button></li>`
-          + (applyQuery(collected).length ? applyQuery(collected).map(rowHTML).join("") : `<li class="wg-empty">— none yet —</li>`);
-        // RIGHT = Sealed (dictation); while searching, the lower part becomes a
-        // full-lexicon lookup so any word can be found and opened.
-        const lib = libraryMatches();
-        right.innerHTML = colHTML("Sealed", spelled.length, applyQuery(spelled))
-          + (query ? `<li class="wg-col-head wg-lex-head">From the Lexicon · ${lib.length}</li>`
-              + (lib.length ? lib.map(rowHTML).join("") : `<li class="wg-empty">— no match —</li>`) : "");
-        // When searching, jump the right column to the lexicon results so the
-        // sealed list above doesn't hide them.
-        if (query) { const lh = right.querySelector(".wg-lex-head"); if (lh) try { lh.scrollIntoView({ block: "start", behavior: "smooth" }); } catch (_) {} }
+          + (applyQuery(collected).length ? applyQuery(collected).map(rowHTML).join("") : `<li class="wg-empty">— none yet —</li>`)
+          + colHTML("Sealed", spelled.length, applyQuery(spelled));
+        // RIGHT = the wider lexicon. A cut-root filter (from a word card) shows
+        // that root's whole pool; otherwise search the full library.
+        if (cutPart) {
+          const pool = cutPool(), zh = cutZh();
+          right.innerHTML = `<li class="wg-col-head wg-cut-head"><span class="wg-cut-chip">◆ ${esc(cutPart)}${zh ? " · " + esc(zh) : ""}</span>`
+            + `<button type="button" class="wg-cut-clear" title="Clear">✕</button></li>`
+            + (pool.length ? pool.map(rowHTML).join("") : `<li class="wg-empty">— no other words —</li>`);
+          const clr = right.querySelector(".wg-cut-clear");
+          if (clr) clr.addEventListener("click", (e) => { e.stopPropagation(); cutPart = ""; renderAZ(); renderTable(); });
+        } else {
+          const lib = libraryMatches();
+          right.innerHTML = `<li class="wg-col-head">The Lexicon</li>`
+            + (query
+                ? (lib.length ? lib.map(rowHTML).join("") : `<li class="wg-empty">— no match —</li>`)
+                : `<li class="wg-hint">Search above, or tap a word's <b>cut root</b> (com·<b>mut</b>·e) to explore its family.</li>`);
+        }
         const sm = left.querySelector(".wg-sealmore");
         if (sm && backlog) sm.addEventListener("click", (e) => {
           e.stopPropagation(); window.__navDir = "forward";
