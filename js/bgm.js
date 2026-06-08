@@ -7,7 +7,7 @@
    hash change. */
 (function () {
   const BGM_DIR = "assets/bgm/";
-  const BGM_VER = "20260607k";                 // cache-bust revised tracks
+  const BGM_VER = "20260607l";                 // cache-bust revised tracks
   const srcOf = (t) => BGM_DIR + t + "?v=" + BGM_VER;
   const DEFAULT_VOLUME = 0.55;
   function plan() { return (typeof window !== "undefined" && window.READING_BGM_PLAN) || null; }
@@ -113,7 +113,7 @@
       try {
         const tags = (typeof window !== "undefined") && window.PATHS_BGM_TAGS;
         const list = tags && tags[story] && tags[story][ch];
-        if (list && list[0]) track = cat[list[0][1]];
+        if (list && list[0]) { const tg = list[0][1]; track = cat[tg] || (tg && tg.indexOf("/") >= 0 ? tg : null); }
       } catch (_) {}
       const who = (params && params.path) || "sealyra";
       if (!track) track = sc && sc.lead && sc.lead[who] && sc.lead[who].daily;
