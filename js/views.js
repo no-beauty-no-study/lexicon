@@ -3671,7 +3671,11 @@ const Views = (function () {
       const say = (t, cb) => { try { if (t && typeof TTS !== "undefined" && TTS.speak) TTS.speak(String(t).trim(), cb ? { onEnd: cb } : undefined); } catch (_) {} };
       function scrollEnd() { if (scroll) requestAnimationFrame(() => { scroll.scrollTop = scroll.scrollHeight; }); }
       const scene = () => (window.READING_BGM_PLAN && window.READING_BGM_PLAN.pathsScene) || {};
-      const catTrack = (c) => ((window.READING_BGM_PLAN && window.READING_BGM_PLAN.pathsCat) || {})[c] || null;
+      const catTrack = (c) => {
+        if (!c) return null;
+        if (c.indexOf("/") >= 0 || /\.mp3$/.test(c)) return c;   // direct track path from the author's BGM arrangement
+        return ((window.READING_BGM_PLAN && window.READING_BGM_PLAN.pathsCat) || {})[c] || null;
+      };
       const cue = (track) => { try { if (track && window.BGM && BGM.cueTrack) BGM.cueTrack(track); } catch (_) {} };
       const isLead = (who) => /^(shiro|hosea|jael|kye)$/.test(String(who || "").toLowerCase());
       let sceneCat = null;   // current hand-tagged scene category
