@@ -1846,7 +1846,23 @@
   border-bottom: 1px solid rgba(184,160,111,0.35);
 }
 .wg-empty { list-style: none; color: #9a8f7c; font-style: italic; font-size: 13px; padding: 8px 4px; }
+.wg-hint { list-style: none; color: #9a8f7c; font-style: italic; font-size: 12.5px; line-height: 1.5; padding: 10px 4px; }
+.wg-hint b { color: #7a5a2a; font-style: normal; }
 .wg-col-head-row { display: flex; align-items: center; justify-content: space-between; }
+/* Cut-root filter header on the right column (arrived from a word card). */
+.wg-cut-head { display: flex; align-items: center; justify-content: space-between; }
+.wg-cut-chip {
+  font-family: var(--font-display), Georgia, serif; text-transform: none;
+  letter-spacing: 0.02em; font-size: 14px; color: #6a4d12;
+  background: rgba(196,164,104,0.22); border: 1px solid rgba(150,120,70,0.5);
+  border-radius: 999px; padding: 2px 11px;
+}
+.wg-cut-clear {
+  font-size: 14px; line-height: 1; color: #8a7653; cursor: pointer;
+  border: 1px solid rgba(184,160,111,0.5); border-radius: 50%;
+  width: 22px; height: 22px; background: rgba(184,160,111,0.12);
+}
+.wg-cut-clear:hover { background: rgba(184,160,111,0.3); color: #5a4a2a; }
 .wg-sealmore {
   font-family: var(--font-display), Georgia, serif; font-size: 11px; letter-spacing: 0.08em;
   color: #41515e; border: 1px solid rgba(116,134,151,0.6); border-radius: 6px;

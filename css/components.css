@@ -2271,6 +2271,20 @@ button.ornate-panel {
   padding: 0.3em 0.6em; border-left: 2px solid rgba(170,140,84,0.55); }
 .wc-cut-slash { font-size: 1.12em; letter-spacing: 0.05em; color: #7a5a2a; font-weight: 600; }
 .wc-cut-zh { font-size: 0.84em; color: #8a7a5c; }
+/* Clickable cut ROOT — taps through to Words Garden filtered to its pool.
+   Affix parts (com·…·e) render in .wc-cut-part with no is-root styling. */
+.wc-cut-sep  { color: rgba(122,90,42,0.5); margin: 0 0.06em; }
+.wc-cut-part.is-root {
+  cursor: pointer;
+  color: #6a4d12;
+  border-bottom: 1.5px dotted rgba(150,110,40,0.7);
+  padding-bottom: 1px;
+  transition: background 120ms ease, color 120ms ease;
+}
+.wc-cut-part.is-root:hover,
+.wc-cut-part.is-root:active {
+  background: rgba(196,164,104,0.28); color: #4a3608; border-radius: 4px;
+}
 .wc-mean { margin: 0.35em 0 0.7em; }
 .wc-mean-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4em; line-height: 1.4; }
 .wc-mean-n { font-weight: 700; color: #9a7a3a; min-width: 1.1em; }

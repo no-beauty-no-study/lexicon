@@ -162,10 +162,19 @@ const WordCard = (function () {
   // CUT — the slash decomposition (ab/band/on) + its Chinese, shown as a small
   // plaque under the title. The same hint pops on a dictation miss.
   function cutHTML(word) {
-    let cut = null;
+    let cut = null, parts = null;
     try { cut = (window.VocabRuntime && VocabRuntime.getCut) ? VocabRuntime.getCut(word) : null; } catch (_) {}
     if (!cut || !cut.slash) return "";
-    return `<div class="wc-cut"><span class="wc-cut-slash">${esc(cut.slash)}</span>`
+    try { parts = (window.VocabRuntime && VocabRuntime.cutParts) ? VocabRuntime.cutParts(word) : null; } catch (_) {}
+    // ROOT parts are tappable — they jump into Words Garden filtered to that
+    // root's whole pool (com·MUT·e → every "mut" word). Affix parts stay plain.
+    const slash = parts && parts.length
+      ? parts.map((p, i) => (i ? `<span class="wc-cut-sep">/</span>` : "")
+          + (p.root
+              ? `<span class="wc-cut-part is-root" data-cut-part="${esc(p.key)}" title="探索 ${esc(p.key)}${p.zh ? " · " + p.zh : ""}">${esc(p.text)}</span>`
+              : `<span class="wc-cut-part">${esc(p.text)}</span>`)).join("")
+      : esc(cut.slash);
+    return `<div class="wc-cut"><span class="wc-cut-slash">${slash}</span>`
          + (cut.zh ? `<span class="wc-cut-zh">${esc(cut.zh)}</span>` : "") + `</div>`;
   }
   // OWL meanings — one block per meaning: POS · 中文 · 同义词(gloss) + example + phrases.
@@ -279,6 +288,14 @@ const WordCard = (function () {
     //   • anything else (blank, title, body) → reveal the NEXT 区 (section)
     drawerEl.addEventListener("click", (e) => {
       e.stopPropagation();
+      // A tappable cut ROOT → leave the card and open Words Garden filtered to
+      // that root's whole pool (com·MUT·e → every "mut" word).
+      const cp = e.target.closest(".wc-cut-part.is-root");
+      if (cp && cp.dataset.cutPart) {
+        closeDrawer();
+        if (typeof window.go === "function") { window.__navDir = "forward"; window.go("#word-garden?cut=" + encodeURIComponent(cp.dataset.cutPart)); }
+        return;
+      }
       const j = e.target.closest(".wc-jump");
       if (j) { openBigCard(j.dataset.jump); return; }
       if (e.target.closest("button, input, textarea, [data-go]")) return;

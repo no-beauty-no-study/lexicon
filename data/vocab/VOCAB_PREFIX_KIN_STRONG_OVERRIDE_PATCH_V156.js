@@ -205,7 +205,8 @@
       tense: ["attention", "contention", "extension", "intention", "pretension"],
       sist_adj: ["consistent", "existent", "insistent", "persistent", "resistant"],
       gular: ["singular", "regular", "irregular", "triangular"],
-      gularity: ["singularity", "regularity", "irregularity"]
+      gularity: ["singularity", "regularity", "irregularity"],
+      mut: ["commute", "commuter", "commutable", "commutation", "mutability", "mutable", "mutagen", "mutate", "mutation"]
     };
 
     Object.keys(groups).forEach(function (root) {
