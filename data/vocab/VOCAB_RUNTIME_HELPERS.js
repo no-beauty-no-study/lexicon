@@ -94,6 +94,14 @@
     if (/ed$/.test(w))   { add(w.slice(0, -2)); add(w.slice(0, -1)); }
     if (/ing$/.test(w))  { add(w.slice(0, -3)); add(w.slice(0, -3) + 'e'); }
     if (/ly$/.test(w))   add(w.slice(0, -2));
+    // comparative / superlative (-er / -est), incl. -ier/-iest → -y
+    if (/iest$/.test(w)) add(w.slice(0, -4) + 'y');
+    if (/est$/.test(w))  { add(w.slice(0, -3)); add(w.slice(0, -2)); }
+    if (/ier$/.test(w))  add(w.slice(0, -3) + 'y');
+    if (/er$/.test(w))   { add(w.slice(0, -2)); add(w.slice(0, -1)); }
+    // doubled-consonant inflections: bigger→big, hottest→hot, stopped→stop, running→run
+    const dbl = w.match(/([bcdfghjklmnpqrstvwxz])\1(er|est|ed|ing)$/);
+    if (dbl) add(w.slice(0, w.length - dbl[0].length + 1));
     return out;
   }
   function cleanTok(raw) { return norm(raw).replace(/^[^a-z]+|[^a-z]+$/g, '').replace(/'s$/, ''); }
@@ -155,6 +163,22 @@
           clickableForBigCard: hasBig, resolvedWord: card.word || rk };
       }
     }
+    // LAST RESORT — the word isn't a proper/place card and the registry +
+    // reading graph don't cover it, but the owl warehouse does. Build a small
+    // card from the warehouse so the reading word is still a clickable entry
+    // (e.g. customary). Its big card shows the warehouse meanings + cut.
+    if (!res) {
+      const m = owlMatch(w);
+      if (m && m.entry.meanings && m.entry.meanings.length) {
+        const owl = m.entry;
+        const zh = owl.meanings.map(x => x.zh).filter(Boolean).join('；');
+        const phrases = []; owl.meanings.forEach(x => (x.phrases || []).forEach(p => phrases.push(p)));
+        const examples = []; owl.meanings.forEach(x => { if (x.example || x.example_zh) examples.push({ example: x.example, example_zh: x.example_zh }); });
+        res = { type: 'owl', word: m.key, pos: owl.meanings[0].pos || '', zh,
+          phrases: normPhrases(phrases), examples: normExamples(examples),
+          head: null, clickableForBigCard: true, owl: true, resolvedWord: m.key };
+      }
+    }
     smallCache.set(w, res);
     return res;
   }
@@ -174,7 +198,7 @@
     const w0 = cleanTok(word);
     if (properMap.has(w0)) return null;
     const w = regKey(w0);
-    if (!w) return null;
+    if (!w) return owlBigCard(w0);          // warehouse-only word (e.g. customary)
     if (bigCache.has(w)) return bigCache.get(w);
     const c = regMap.get(w);
     const head = learningHead(w);
@@ -215,9 +239,13 @@
         phrases: normPhrases(hc.phrases, 2), examples: normExamples(hc.examples).slice(0, 1), clickable: true };
     }
 
-    // "owl" — a bare word with no head / family / kin / group is small-card
-    // only: no big card, never expanded, never a quiz target.
-    if (!headObj && !family.length && !kin.length && !group.length) { bigCache.set(w, null); return null; }
+    // A bare word with no head / family / kin / group has no graph to expand —
+    // but if the warehouse carries its meanings/cut, still open a big card on
+    // those (so warehouse words open big cards, per the user's request). Only
+    // when the warehouse is silent too is it small-card-only (null).
+    if (!headObj && !family.length && !kin.length && !group.length) {
+      const ob = owlBigCard(w); bigCache.set(w, ob); return ob;
+    }
 
     const out = { word: c.word || w, family_head: head, pos: posOf(c), zh: c.zh || '',
       phrases: normPhrases(c.phrases), examples: normExamples(c.examples),
@@ -234,13 +262,32 @@
   }
 
   /* ---------- word-owl supplement (cut + per-meaning synonyms) ---------- */
-  function getOwl(word) {
+  // Resolve a surface word to its owl-warehouse entry, returning the matched
+  // KEY too (so callers know the canonical lemma — e.g. customary, not
+  // "customarily"). The warehouse is the broadest layer (≈14k words), so it
+  // also serves as the LAST-RESORT entry: any reading word the registry /
+  // reading-set / family graph doesn't cover still becomes a clickable card
+  // if the warehouse knows it (user req: reading entries must stay connected
+  // as material grows).
+  function owlMatch(word) {
     const W = (typeof window !== 'undefined') && window.WORD_OWL;
     if (!W) return null;
     const w = cleanTok(word); if (!w) return null;
-    if (W[w]) return W[w];
-    for (const c of lemmaCandidates(w)) if (W[c]) return W[c];
+    if (W[w]) return { key: w, entry: W[w] };
+    for (const c of lemmaCandidates(w)) if (W[c]) return { key: c, entry: W[c] };
     return null;
+  }
+  function getOwl(word) { const m = owlMatch(word); return m ? m.entry : null; }
+  // Minimal big-card object built straight from a warehouse entry, for words
+  // the family/kin/group graph doesn't reach. renderBody pulls the cut + per-
+  // meaning blocks itself (via getOwl/getCut), so empty member regions are fine.
+  function owlBigCard(word) {
+    const m = owlMatch(word);
+    if (!m || !m.entry.meanings || !m.entry.meanings.length) return null;
+    const first = m.entry.meanings[0] || {};
+    return { word: m.key, family_head: null, pos: first.pos || '', zh: first.zh || '',
+      phrases: [], examples: [], head: null,
+      family_members: [], kin_members: [], group: [], owl: true };
   }
   // The slash decomposition + its Chinese, for the dictation-miss hint and the
   // word card. Returns null when the word has no real cut.

@@ -841,11 +841,14 @@ const Views = (function () {
             <span class="wce-en">${esc(exEn)}</span>
             ${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}
           </div>` : "";
-        // (HEAD chip removed at the user's request — the head data was noisy,
-        // e.g. hold → "holey". Tapping the card body still opens the big card.)
+        // HEAD chip — the word's 原型 / learning head, shown when it differs
+        // from the word; tapping it opens the head's big card.
+        const hw = (sc.word || id);
+        const headChip = (sc.head && sc.head.word && sc.head.word.toLowerCase() !== String(hw).toLowerCase())
+          ? `<span class="wc-head-chip" data-open-head="${esc(sc.head.word)}">原型 ${esc(sc.head.word)}</span>` : "";
         return `
           <div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
-            <div class="word-card-headword">${esc(sc.word || id)}</div>
+            <div class="word-card-headword">${esc(hw)}${headChip}</div>
             <div class="word-card-meaning">${esc(sc.zh || "")}</div>
             ${phraseRows}
             ${exampleRow}
@@ -3819,15 +3822,22 @@ const Views = (function () {
         flow.appendChild(tag); scrollEnd();
       }
 
-      // Right word-column small card — same shape as the reading view's.
-      function vnSmallCardHTML(sc, id) {
+      // Paths folds land in their own Notes scope so they merge into the
+      // global Notes view alongside reading folds. Grouped by protagonist.
+      const vnNoteChap = "paths", vnNoteSec = params.path || (story && story.id) || "mainline";
+      // Right word-column small card — same shape as the reading view's, with
+      // the 原型 head chip and FOLD-saved state.
+      function vnSmallCardHTML(sc, id, savedAlready) {
         const phraseRows = (sc.phrases || []).slice(0, 2).map(p => `
           <div class="word-card-phrase"><span class="wcp-en">${esc(p.phrase || p.en || "")}</span>${(p.phrase_zh || p.zh) ? `<span class="wcp-zh">${esc(p.phrase_zh || p.zh)}</span>` : ""}</div>`).join("");
         const ex = (sc.examples || [])[0];
         const exEn = ex && (ex.example || ex.en) || "", exZh = ex && (ex.example_zh || ex.zh) || "";
         const exampleRow = exEn ? `<div class="word-card-example"><span class="wce-en">${esc(exEn)}</span>${exZh ? `<span class="wce-zh">${esc(exZh)}</span>` : ""}</div>` : "";
-        return `<div class="word-card is-current is-entering${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
-            <div class="word-card-headword">${esc(sc.word || id)}</div>
+        const hw = (sc.word || id);
+        const headChip = (sc.head && sc.head.word && sc.head.word.toLowerCase() !== String(hw).toLowerCase())
+          ? `<span class="wc-head-chip" data-open-head="${esc(sc.head.word)}">原型 ${esc(sc.head.word)}</span>` : "";
+        return `<div class="word-card is-current is-entering${savedAlready ? " is-saved" : ""}${sc.clickableForBigCard ? " is-openable" : ""}" data-id="${esc(id)}">
+            <div class="word-card-headword">${esc(hw)}${headChip}</div>
             <div class="word-card-meaning">${esc(sc.zh || "")}</div>${phraseRows}${exampleRow}</div>`;
       }
       function vnRenderCard(sc) {
@@ -3837,18 +3847,81 @@ const Views = (function () {
         const empty = stack.querySelector(".word-card-empty"); if (empty) empty.remove();
         stack.querySelectorAll(".word-card.is-current").forEach(x => x.classList.remove("is-current"));
         const existing = stack.querySelector(`.word-card[data-id="${cssEsc(id)}"]`);
-        if (existing) { existing.classList.add("is-current"); existing.scrollIntoView({ block: "nearest", behavior: "smooth" }); return; }
-        stack.insertAdjacentHTML("beforeend", vnSmallCardHTML(sc, id));
+        if (existing) { existing.classList.add("is-current"); existing.scrollIntoView({ block: "nearest", behavior: "smooth" }); syncVnFold(); return; }
+        const savedAlready = (typeof Storage !== "undefined") && Storage.isSaved(id, vnNoteChap, vnNoteSec);
+        stack.insertAdjacentHTML("beforeend", vnSmallCardHTML(sc, id, savedAlready));
         const fresh = stack.lastElementChild;
         setTimeout(() => fresh.classList.remove("is-entering"), 620);
         fresh.addEventListener("click", (e) => {
           e.stopPropagation();
           stack.querySelectorAll(".word-card.is-current").forEach(x => x.classList.remove("is-current"));
           fresh.classList.add("is-current");
-          if (sc.clickableForBigCard && typeof WordCard !== "undefined") WordCard.openBigCard(sc.word, { from: "paths" });
+          const chip = e.target.closest("[data-open-head]");
+          if ((chip || sc.clickableForBigCard) && typeof WordCard !== "undefined")
+            WordCard.openBigCard(chip ? chip.dataset.openHead : sc.word, { from: "paths" });
+          syncVnFold();
         });
         fresh.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        syncVnFold();
       }
+
+      // FOLD button (mirror of the reading marginalia): toggle-save the
+      // current small card into Notes, with a running locket count.
+      function syncVnFold() {
+        const fold = host.querySelector('.marginalia-btn[data-action="fold"]');
+        if (!fold) return;
+        const card = host.querySelector(".word-card.is-current");
+        const id = card && card.dataset.id;
+        if (!id) { fold.disabled = true; fold.classList.remove("is-active"); return; }
+        fold.disabled = false;
+        fold.classList.toggle("is-active", Storage.isSaved(id, vnNoteChap, vnNoteSec));
+      }
+      function syncVnLocket(pop) {
+        const el = host.querySelector("[data-saved-count]");
+        if (!el || typeof Storage === "undefined") return;
+        el.textContent = String(Storage.getChapterNoteCount(vnNoteChap));
+        if (pop) { const locket = el.closest(".marginalia-locket"); if (locket) { locket.classList.remove("is-pop"); void locket.offsetWidth; locket.classList.add("is-pop"); } }
+      }
+      (function loadVnFolds() {
+        const stack = host.querySelector(".word-card-stack");
+        if (!stack || typeof Storage === "undefined" || !Storage.getNotes) return;
+        const ids = Storage.getNotes(vnNoteChap, vnNoteSec) || [];
+        if (!ids.length) { syncVnLocket(false); return; }
+        const empty = stack.querySelector(".word-card-empty"); if (empty) empty.remove();
+        ids.forEach(id => {
+          const sc = (window.VocabRuntime && VocabRuntime.getSmallCard) ? VocabRuntime.getSmallCard(id) : null;
+          const card = sc || { word: id, zh: "", phrases: [], examples: [], clickableForBigCard: false };
+          stack.insertAdjacentHTML("beforeend", vnSmallCardHTML(card, id, true).replace("is-current is-entering", "is-saved"));
+          const fresh = stack.lastElementChild;
+          fresh.addEventListener("click", (e) => {
+            e.stopPropagation();
+            stack.querySelectorAll(".word-card.is-current").forEach(x => x.classList.remove("is-current"));
+            fresh.classList.add("is-current");
+            const chip = e.target.closest("[data-open-head]");
+            if ((chip || card.clickableForBigCard) && typeof WordCard !== "undefined")
+              WordCard.openBigCard(chip ? chip.dataset.openHead : card.word, { from: "paths" });
+            syncVnFold();
+          });
+        });
+        syncVnLocket(false);
+      })();
+      const vnFold = host.querySelector('.marginalia-btn[data-action="fold"]');
+      if (vnFold) vnFold.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const card = host.querySelector(".word-card.is-current");
+        const id = card && card.dataset.id;
+        if (!id) return;
+        if (Storage.isSaved(id, vnNoteChap, vnNoteSec)) {
+          Storage.unsaveWord(id, vnNoteChap, vnNoteSec);
+          if (card) card.classList.remove("is-saved");
+          window.toast && window.toast("Unfolded");
+        } else {
+          Storage.saveWord(id, vnNoteChap, vnNoteSec);
+          if (card) { card.classList.add("is-saved", "just-folded"); setTimeout(() => card.classList.remove("just-folded"), 540); }
+          window.toast && window.toast("Folded into Notes");
+        }
+        syncVnFold(); syncVnLocket(true);
+      });
 
       function advance(voice) {
         if (choiceOpen || ended) return;
