@@ -10,7 +10,8 @@ with_toefl_source 3572
 with_old_registry 11683
 with_kin_glossary 2543
 with_dotted_cut 9494
-with_family_head 5516
+with_family_head 7825
 with_family_member 6144
+self_family_fallback 2309
 with_clean_old_example 2591
 demoted_to_small_card 414

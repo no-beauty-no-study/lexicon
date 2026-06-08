@@ -46431,6 +46431,12 @@ def main():
         if normalized not in selected:
             selected.append(normalized)
             family_added.append(normalized)
+    old_family_words_total = len(family_heads)
+    self_family_added = []
+    for word in selected:
+        if word not in family_heads:
+            family_heads[word] = word
+            self_family_added.append(word)
 
     lines = [
         "# word owl draft - TOEFL + old registry",
@@ -46447,6 +46453,8 @@ def main():
         "# family member card audit",
         "",
         f"family_words_total {len(family_heads)}",
+        f"old_family_words_total {old_family_words_total}",
+        f"self_family_fallback_total {len(self_family_added)}",
         f"family_words_added_to_draft {len(family_added)}",
         "",
     ]
@@ -46503,6 +46511,7 @@ def main():
         f"with_dotted_cut {sum(1 for w in selected if w in dotted_cuts)}",
         f"with_family_head {sum(1 for w in selected if w in family_heads and family_heads[w] == w)}",
         f"with_family_member {sum(1 for w in selected if w in family_heads and family_heads[w] != w)}",
+        f"self_family_fallback {len(self_family_added)}",
         f"with_clean_old_example {sum(1 for w in selected if old.get(w, {}).get('examples'))}",
         f"demoted_to_small_card {len(demoted_small)}",
         "",
@@ -46515,6 +46524,13 @@ def main():
     (AUDITS / "english_gloss_missing_audit.md").write_text("\n".join(gloss_audit_lines), encoding="utf8")
     (AUDITS / "small_card_demotions.md").write_text(
         "# small card demotions\n\n" + "\n".join(sorted(demoted_small)),
+        encoding="utf8",
+    )
+    (AUDITS / "family_self_fallback.md").write_text(
+        "# family self fallback\n\n"
+        "# These are still big cards, but old family data did not provide reliable members yet.\n"
+        "# They are temporarily treated as head-only families, not small cards.\n\n"
+        + "\n".join(sorted(self_family_added)),
         encoding="utf8",
     )
     print("\n".join(summary))
