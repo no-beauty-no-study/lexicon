@@ -146,7 +146,7 @@
       notes:         "02_note.mp3",
       "word-garden": "03_words_garden.mp3",
       voices:        "29_ui_manu_sunlit_alice_kept.mp3",
-      paths:         P("00_glass_bloom_main_theme_long.mp3"),  // Follow station → main theme
+      paths:         P("17_luv_poem_from_hum.mp3"),  // Follow station — a gentle hub loop that is NOT any chapter's opening track, so entering a path always audibly changes (was 00 = ch1's own opener → no change)
     },
     holdViews: ["save", "load"],   // ride the current track; fall back to `ui`
     reading,
