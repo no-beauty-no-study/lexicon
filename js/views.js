@@ -1560,9 +1560,12 @@ const Views = (function () {
             spell += `<span class="${ok ? "gs-c-ok" : "gs-c-bad"}">${esc(ch)}</span>`;
             pi++;
           }
+          const cut = (window.VocabRuntime && VocabRuntime.getCut) ? VocabRuntime.getCut(q.word) : null;
+          const cutRow = (cut && cut.slash) ? `<div class="gs-c-row gs-c-cutrow"><span class="gs-c-key">Cut 切割</span><span class="gs-c-cut">${esc(cut.slash)}${cut.zh ? ` <em>${esc(cut.zh)}</em>` : ""}</span></div>` : "";
           corr.innerHTML = `
             <div class="gs-c-row"><span class="gs-c-key">Your answer</span><span class="gs-c-you">${esc(typed) || "—"}</span></div>
             <div class="gs-c-row"><span class="gs-c-key">Correct spelling</span><span class="gs-c-correct">${spell}</span></div>
+            ${cutRow}
             ${q.meaning ? `<div class="gs-c-row"><span class="gs-c-key">Meaning</span><span class="gs-c-mean">${esc(q.meaning)}</span></div>` : ""}
             <div class="gs-c-tip">Tap the writing line to try again.</div>`;
           corr.hidden = false;
@@ -3228,7 +3231,9 @@ const Views = (function () {
             html += `<span class="${ok ? "rv-c-ok" : "rv-c-bad"}">${esc(ch)}</span>`;
             pi++;
           }
-          corr.innerHTML = `<span class="rv-c-key">Correct spelling</span><span class="rv-c-word">${html}</span>`;
+          const cut = (VR && VR.getCut) ? VR.getCut(q.word) : null;
+          const cutRow = (cut && cut.slash) ? `<span class="rv-c-key">Cut 切割</span><span class="rv-c-cut">${esc(cut.slash)}${cut.zh ? ` <em>${esc(cut.zh)}</em>` : ""}</span>` : "";
+          corr.innerHTML = `<span class="rv-c-key">Correct spelling</span><span class="rv-c-word">${html}</span>${cutRow}`;
           corr.hidden = false;
           zhEl.textContent = q.zh || "";
         }

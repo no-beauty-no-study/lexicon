@@ -159,12 +159,41 @@ const WordCard = (function () {
     (routes || []).forEach(r => (r.words || []).slice(0, 3).forEach(m => { if (m.word) parts.push(m.word); }));
     return parts.join(". ");
   }
+  // CUT — the slash decomposition (ab/band/on) + its Chinese, shown as a small
+  // plaque under the title. The same hint pops on a dictation miss.
+  function cutHTML(word) {
+    let cut = null;
+    try { cut = (window.VocabRuntime && VocabRuntime.getCut) ? VocabRuntime.getCut(word) : null; } catch (_) {}
+    if (!cut || !cut.slash) return "";
+    return `<div class="wc-cut"><span class="wc-cut-slash">${esc(cut.slash)}</span>`
+         + (cut.zh ? `<span class="wc-cut-zh">${esc(cut.zh)}</span>` : "") + `</div>`;
+  }
+  // OWL meanings — one block per meaning: POS · 中文 · 同义词(gloss) + example + phrases.
+  function owlMeaningsHTML(word) {
+    let owl = null;
+    try { owl = (window.VocabRuntime && VocabRuntime.getOwl) ? VocabRuntime.getOwl(word) : null; } catch (_) {}
+    if (!owl || !owl.meanings || !owl.meanings.length) return "";
+    return owl.meanings.map((m, i) => `<div class="wc-mean">
+        <div class="wc-mean-head"><span class="wc-mean-n">${i + 1}</span>`
+        + (m.pos ? `<span class="wc-mean-pos">${esc(m.pos)}</span>` : "")
+        + `<span class="wc-mean-zh">${esc(m.zh)}</span>`
+        + (m.gloss ? `<span class="wc-mean-syn">${esc(m.gloss)}</span>` : "")
+      + `</div>`
+      + (m.example ? `<div class="wc-ex"><div class="wc-ex-en">${esc(m.example)}</div>`
+          + (m.example_zh ? `<div class="wc-ex-zh">${esc(m.example_zh)}</div>` : "") + `</div>` : "")
+      + (m.phrases || []).slice(0, 2).map(p => phraseRow(p.en, p.zh)).join("")
+      + `</div>`).join("");
+  }
+
   function renderBody(d) {
+    const cutBlk = cutHTML(d.word);
+    const owlBlk = owlMeaningsHTML(d.word);
     // OWN section (no heading): the focus word's own collocations + example.
-    const ownPh = (d.phrases || []).slice(0, 4)
+    // When the owl warehouse has structured meanings, prefer them.
+    const ownPh = owlBlk ? "" : (d.phrases || []).slice(0, 4)
       .filter(p => p.phrase || p.en)
       .map(p => phraseRow(p.phrase || p.en, p.phrase_zh || p.zh || "")).join("");
-    const ownEx = exHTML(d.examples, 2);
+    const ownEx = owlBlk ? "" : exHTML(d.examples, 2);
     const ownSpeak = [d.word]
       .concat((d.phrases || []).slice(0, 4).map(p => p.phrase || p.en))
       .concat((d.examples || []).slice(0, 1).map(x => x.example || x.en))
@@ -173,7 +202,8 @@ const WordCard = (function () {
     // Regions: owl (the word) → family → kin → group. The "Head · 原型" region
     // was removed at the user's request — its data was noisy/unreliable
     // (e.g. hold → "holey") and made the card heavy and confusing.
-    return section("wc-own", "", ownPh + ownEx, ownSpeak)
+    return (cutBlk ? `<section class="wc-sec wc-cut-sec">${cutBlk}</section>` : "")
+      + (owlBlk ? section("wc-mean-sec", "Meanings", owlBlk, ownSpeak) : section("wc-own", "", ownPh + ownEx, ownSpeak))
       + section("wc-fam", "Family", membersHTML(d.family_members, d.word), membersSpeak(d.family_members, d.word))
       + section("wc-kin", "Kin",    membersHTML(d.kin_members,    d.word), membersSpeak(d.kin_members,    d.word))
       + section("wc-grp", "Group",  membersHTML(d.group,          d.word), membersSpeak(d.group,          d.word));
