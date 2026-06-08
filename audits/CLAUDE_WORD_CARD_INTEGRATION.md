@@ -32,6 +32,16 @@ Use these files as the first clean content handoff for the lexicon word-card lay
   - Big cards whose old family map had no reliable members yet.
   - Treat each listed word as a temporary head-only family, not as a small card and not as an owl-only orphan.
 
+- `audits/family_relation_total.md`
+  - Canonical family rows for the current big-card warehouse.
+  - Format: `head: head member member ...`
+  - Every big card appears in exactly one family row.
+
+- `audits/family_word_to_head.md`
+  - Direct lookup table for reading entrance words.
+  - Format: `member head`
+  - Use this when a reading word is a family member, so it can still open the correct big-card family.
+
 - `audits/english_gloss_missing_audit.md`
   - English gloss audit.
   - Current state is clean.
@@ -41,6 +51,9 @@ Use these files as the first clean content handoff for the lexicon word-card lay
 - Big cards should come from `word_owl_toefl_old_merged.md`.
 - Small-card-only words should come from `small_card_demotions.md`.
 - Every big card should have a family relation. If a word appears in `family_self_fallback.md`, use `head = word` and `family = [word]` until richer members are added.
+- Reading entrances should first check `family_word_to_head.md`.
+  - If the reading word appears there, make it clickable as a big card and route it to that family head.
+  - Sanity checks: `customary -> custom`, `unsolicited -> solicit`, `permeation -> permeate`.
 - Family heads may show examples.
 - Family members can be lighter: meaning + one accurate phrase is enough.
 - Do not show demoted proper nouns, places, animals, or specialist terms as expandable big cards.
@@ -52,7 +65,7 @@ Use these files as the first clean content handoff for the lexicon word-card lay
 - Bad cut placeholders: 0
 - Family member phrase missing: 0
 - Owl-only big cards: 0
-- Temporary head-only family fallback: 2309
+- Temporary head-only family fallback: 2308
 - Self-gloss suspect: 0
 - Demoted small-card-only words: 414
 

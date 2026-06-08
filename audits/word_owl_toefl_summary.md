@@ -2,16 +2,16 @@
 
 toefl_entries_parsed 3587
 big_card_word_universe_input 7035
-draft_cards 13969
-family_words_added_to_draft 6953
+draft_cards 13972
+family_words_added_to_draft 6956
 toefl_words_in_draft 3572
 universe_words_in_draft 7000
 with_toefl_source 3572
 with_old_registry 11683
 with_kin_glossary 2543
 with_dotted_cut 9494
-with_family_head 7825
-with_family_member 6144
-self_family_fallback 2309
+with_family_head 7824
+with_family_member 6148
+self_family_fallback 2308
 with_clean_old_example 2591
 demoted_to_small_card 414

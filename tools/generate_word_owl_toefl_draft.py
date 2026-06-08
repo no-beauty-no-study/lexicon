@@ -741,6 +741,8 @@ SMALL_CARD_ONLY.update({
 })
 
 EXTRA_GLOSSES = {
+    "customarily": ("adv.", "照惯例地；通常", "usually, traditionally"),
+    "customary": ("adj.", "习惯上的；惯例的", "usual, traditional"),
     "hunger": ("n.", "饥饿；渴望", "starvation, desire"),
     "inhibitory": ("adj.", "抑制性的", "restraining"),
     "innately": ("adv.", "天生地；固有地", "naturally"),
@@ -985,9 +987,13 @@ EXTRA_GLOSSES = {
     "configurational": ("adj.", "构型的；配置的", "structural, arrangement-related"),
     "incompleteness": ("n.", "不完整；不完备", "lack of completeness"),
     "progression": ("n.", "进展；连续过程", "development, sequence"),
+    "solicitation": ("n.", "请求；招揽", "request, asking"),
+    "unsolicited": ("adj.", "主动提供的；未经请求的", "not requested, unasked-for"),
 }
 
 EXTRA_CUTS = {
+    "customarily": ["custom/ari/ly", "习惯；惯例/形容词/副词"],
+    "customary": ["custom/ary", "习惯；惯例/形容词"],
     "science": ["sci/ence", "知道；知识/名词"],
     "scientist": ["sci/ent/ist", "知道；知识/形容词；人/专家；人"],
     "scientific": ["sci/ent/ific", "知道；知识/形容词；人/形成；形容词"],
@@ -1033,6 +1039,8 @@ EXTRA_CUTS = {
     "publicize": ["public/ize", "公众/使成为"],
     "rampant": ["ramp/ant", "蔓延；攀爬/形容词"],
     "reasonable": ["reason/able", "理由；理性/能够；形容词"],
+    "solicitation": ["solicit/ation", "请求；招揽/名词"],
+    "unsolicited": ["un/solicit/ed", "不；未/请求；招揽/形容词"],
     "reckless": ["reck/less", "顾忌/无；缺少"],
     "recreation": ["re/create/ion", "再次/创造/名词"],
     "refined": ["refine/d", "精炼；改进/形容词"],
@@ -1456,6 +1464,12 @@ EXTRA_CUTS = {
 }
 
 MEANING_PHRASE_PATCHES = {
+    "customarily": {
+        1: [("customarily treated as", "通常被视为")],
+    },
+    "customary": {
+        1: [("customary practice", "惯例做法"), ("customary commentary", "习惯性的评论")],
+    },
     "simultaneously": {
         1: [("happen simultaneously", "同时发生")],
     },
@@ -1473,6 +1487,12 @@ MEANING_PHRASE_PATCHES = {
     },
     "prosperous": {
         1: [("prosperous economy", "繁荣的经济")],
+    },
+    "solicitation": {
+        1: [("solicitation of donations", "募捐；征求捐款")],
+    },
+    "unsolicited": {
+        1: [("unsolicited advice", "主动给出的建议"), ("unsolicited commentary", "未经请求的评论")],
     },
 }
 
@@ -32466,6 +32486,40 @@ def load_kin_glossary():
     return out
 
 
+MANUAL_OVERRIDES.update({
+    "crispr": {
+        "meanings": [
+            {
+                "pos": "n.",
+                "zh": "基因编辑技术",
+                "syn": "gene-editing method",
+                "phrases": [("CRISPR technology", "CRISPR 基因编辑技术")],
+            },
+        ],
+    },
+    "democrat": {
+        "meanings": [
+            {
+                "pos": "n.",
+                "zh": "美国民主党人；民主主义者",
+                "syn": "member of the Democratic Party",
+                "phrases": [("a Democrat senator", "一位民主党参议员")],
+            },
+        ],
+    },
+    "mound": {
+        "meanings": [
+            {
+                "pos": "n.",
+                "zh": "土丘；小山丘",
+                "syn": "small hill, heap",
+                "phrases": [("a burial mound", "墓冢；坟丘")],
+            },
+        ],
+    },
+})
+
+
 def load_family_heads():
     source = ROOT / "data/vocab/VOCAB_FAMILY_SHARED_CLUSTERS_LITE.js"
     if not source.exists():
@@ -32482,6 +32536,9 @@ def load_family_heads():
             if re.fullmatch(r"[a-z][a-z-]*", word):
                 out[word] = head
     family_head_overrides = {
+        "custom": "custom",
+        "customarily": "custom",
+        "customary": "custom",
         "copy": "copy",
         "copybook": "copy",
         "copyedit": "copy",
@@ -32516,6 +32573,9 @@ def load_family_heads():
         "rationally": "ration",
         "irrational": "ration",
         "irrationality": "ration",
+        "solicit": "solicit",
+        "solicitation": "solicit",
+        "unsolicited": "solicit",
     }
     out.update(family_head_overrides)
     return out
@@ -45391,6 +45451,16 @@ def replace_self_gloss(word, zh, pos, syn):
     if not syn:
         return syn
     specific = {
+        ("absolute", "绝对事物"): "ultimate principle",
+        ("art", "艺术"): "creative work",
+        ("crispr", "基因编辑技术"): "gene-editing method",
+        ("democrat", "美国民主党人"): "member of the Democratic Party",
+        ("person", "人"): "individual, human being",
+        ("place", "地方"): "location, area",
+        ("range", "变动"): "vary, extend",
+        ("soil", "土壤"): "earth, ground",
+        ("stone", "石头"): "rock, mineral",
+        ("substance", "物质"): "matter, material",
         ("behaviorism", "行为主义者"): "behaviourist",
         ("cell", "细胞的"): "cellular",
         ("climate", "气候的"): "climatic",
@@ -46359,7 +46429,7 @@ def render_card(word, toefl, old, kin, dotted_cuts, family_heads):
                 if zh:
                     target["phrases"].append((word, zh))
 
-    out = [f"{word} [{ipa}]" if ipa else word]
+    out = [f"{word} [{ipa}]"]
     if cut:
         out += ["cut:", cut[0]]
         if len(cut) > 1:
@@ -46394,7 +46464,12 @@ def render_card(word, toefl, old, kin, dotted_cuts, family_heads):
         if word in MEANING_PHRASE_PATCHES and idx in MEANING_PHRASE_PATCHES[word]:
             add_unique_phrases(meaning.setdefault("phrases", []), MEANING_PHRASE_PATCHES[word][idx])
         phrase_limit = 4 if is_family_head else 1
-        for phrase, phrase_zh in meaning.get("phrases", [])[:phrase_limit]:
+        phrases = meaning.get("phrases", [])
+        if word in MEANING_PHRASE_PATCHES and idx in MEANING_PHRASE_PATCHES[word]:
+            priority = MEANING_PHRASE_PATCHES[word][idx]
+            priority_keys = {(p.lower(), z) for p, z in priority}
+            phrases = priority + [(p, z) for p, z in phrases if (p.lower(), z) not in priority_keys]
+        for phrase, phrase_zh in phrases[:phrase_limit]:
             out.append(f"phrase: {phrase} - {phrase_zh}")
         out.append("")
     if not meanings:
@@ -46409,7 +46484,7 @@ def main():
     dotted_cuts = load_dotted_cuts()
     family_heads = load_family_heads()
     entries = load_entry_words()
-    sources = set(toefl) | set(old) | set(kin) | set(MANUAL_OVERRIDES)
+    sources = set(toefl) | set(old) | set(kin) | set(MANUAL_OVERRIDES) | set(EXTRA_GLOSSES)
     selected = []
     demoted_small = set()
     for word in entries:
@@ -46437,6 +46512,14 @@ def main():
         if word not in family_heads:
             family_heads[word] = word
             self_family_added.append(word)
+    family_by_head = {}
+    for word in selected:
+        head = family_heads.get(word, word)
+        family_by_head.setdefault(head, [])
+        if head not in family_by_head[head]:
+            family_by_head[head].append(head)
+        if word not in family_by_head[head]:
+            family_by_head[head].append(word)
 
     lines = [
         "# word owl draft - TOEFL + old registry",
@@ -46533,6 +46616,26 @@ def main():
         + "\n".join(sorted(self_family_added)),
         encoding="utf8",
     )
+    family_lines = [
+        "# family relation total",
+        "",
+        "# format: head: head member member ...",
+        "# Every big card appears in exactly one family row.",
+        "",
+    ]
+    for head in sorted(family_by_head):
+        words = family_by_head[head]
+        family_lines.append(f"{head}: {' '.join(words)}")
+    (AUDITS / "family_relation_total.md").write_text("\n".join(family_lines) + "\n", encoding="utf8")
+    word_to_head_lines = [
+        "# family word to head",
+        "",
+        "# format: member head",
+        "",
+    ]
+    for word in sorted(selected):
+        word_to_head_lines.append(f"{word} {family_heads.get(word, word)}")
+    (AUDITS / "family_word_to_head.md").write_text("\n".join(word_to_head_lines) + "\n", encoding="utf8")
     print("\n".join(summary))
 
 

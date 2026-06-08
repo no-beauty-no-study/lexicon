@@ -499,7 +499,6 @@ cultivated
 cuneiform
 cupboard
 curl
-customary
 customer
 cylinder
 daily
