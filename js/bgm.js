@@ -7,7 +7,7 @@
    hash change. */
 (function () {
   const BGM_DIR = "assets/bgm/";
-  const BGM_VER = "20260608c";                 // cache-bust revised tracks
+  const BGM_VER = "20260608d";                 // cache-bust revised tracks
   const srcOf = (t) => BGM_DIR + t + "?v=" + BGM_VER;
   const DEFAULT_VOLUME = 0.55;
   function plan() { return (typeof window !== "undefined" && window.READING_BGM_PLAN) || null; }
@@ -126,11 +126,13 @@
       if (isPathChapter(ch)) arr = (p.pathsByChar && p.pathsByChar[ch]) || [p.byView && p.byView.paths].filter(Boolean);
       else if (p.reading && p.reading[ch]) arr = rangeTracks(p.reading[ch], params && params.section);
       if (!arr || !arr.length) return null;
-      if (arr.length === 1) return { track: arr[0], array: null };
-      const ord = sectionOrdinal(ch, params && params.section);
-      let idx = ord % arr.length;
-      if (arr[idx] === currentTrack && arr.length > 1) idx = (idx + 1) % arr.length;  // no back-to-back repeat
-      return { track: arr[idx], array: arr, idx };
+      // ONE dedicated track per section, looped — no mid-section rotation. The
+      // old "rotate the array on track-end" behaviour flipped a section to a
+      // second / interlude track halfway through, which read as the BGM
+      // "changing back to the old one" ("新的放完又变回老的"). Each section now
+      // simply loops its primary track; moving BETWEEN sections still changes
+      // the music, so there's variety across the chapter, just not within a beat.
+      return { track: arr[0], array: null };
     }
     if (name === "quiz" || name === "quizstatus" || name === "comprehension") {
       const qs = p.quizByStage || {};
