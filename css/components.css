@@ -2285,6 +2285,37 @@ button.ornate-panel {
 .wc-cut-part.is-root:active {
   background: rgba(196,164,104,0.28); color: #4a3608; border-radius: 4px;
 }
+/* In-drawer cut-root POOL — slides over the card body; tap a word to swap the
+   big card in place. Never leaves the reading page. */
+.wc-cutpool {
+  position: absolute; inset: 12% 7% 9% 7%;
+  display: flex; flex-direction: column;
+  background: rgba(247, 240, 224, 0.985);
+  border: 1px solid rgba(150,120,70,0.5); border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(40,28,12,0.32);
+  z-index: 5; padding: 10px 12px 12px;
+}
+.wc-cutpool[hidden] { display: none; }
+.wc-cutpool-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(184,160,111,0.4);
+}
+.wc-cutpool-title { font-family: var(--font-display), Georgia, serif; font-size: 16px; color: #6a4d12; }
+.wc-cutpool-zh { color: #8a7a5c; font-size: 0.9em; }
+.wc-cutpool-close {
+  font-size: 15px; line-height: 1; color: #8a7653; cursor: pointer;
+  border: 1px solid rgba(184,160,111,0.5); border-radius: 50%;
+  width: 24px; height: 24px; background: rgba(184,160,111,0.14);
+}
+.wc-cutpool-close:hover { background: rgba(184,160,111,0.3); }
+.wc-cutpool-list { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; }
+.wc-cutpool-row {
+  display: flex; align-items: baseline; gap: 0.6em;
+  padding: 7px 6px; border-bottom: 1px solid rgba(184,160,111,0.18); cursor: pointer;
+}
+.wc-cutpool-row:hover { background: rgba(196,164,104,0.16); }
+.wc-cp-en { font-family: var(--font-body); font-size: 16px; color: #3f3a31; font-weight: 600; }
+.wc-cp-zh { font-family: "Songti SC","Noto Serif SC",serif; font-size: 13.5px; color: #6e6048; }
 .wc-mean { margin: 0.35em 0 0.7em; }
 .wc-mean-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4em; line-height: 1.4; }
 .wc-mean-n { font-weight: 700; color: #9a7a3a; min-width: 1.1em; }
