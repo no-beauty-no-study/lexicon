@@ -271,6 +271,11 @@ const WordCard = (function () {
     // box 1:1 (.word-card-overlay is inset:0 of the wrapper, which
     // shrink-wraps the img).
     drawerEl.innerHTML = `
+      <div class="wc-cutpool" hidden>
+        <div class="wc-cutpool-head"><span class="wc-cutpool-title"></span>
+          <button type="button" class="wc-cutpool-close" aria-label="Close">✕</button></div>
+        <ul class="wc-cutpool-list"></ul>
+      </div>
       <div class="word-card-wrapper">
         <img class="word-card-bg" src="assets/bg/ui/word-card-frame.jpg" alt="">
         <div class="word-card-overlay">
@@ -280,11 +285,6 @@ const WordCard = (function () {
           <div class="word-card-open-zone"></div>
           <div class="word-card-body-zone"></div>
           <div class="word-card-sign-zone"></div>
-          <div class="wc-cutpool" hidden>
-            <div class="wc-cutpool-head"><span class="wc-cutpool-title"></span>
-              <button type="button" class="wc-cutpool-close" aria-label="Close">✕</button></div>
-            <ul class="wc-cutpool-list"></ul>
-          </div>
         </div>
       </div>`;
     // ONE tap handler for the whole card (like reading's "tap anywhere"):

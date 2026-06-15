@@ -7,7 +7,7 @@
    hash change. */
 (function () {
   const BGM_DIR = "assets/bgm/";
-  const BGM_VER = "20260615a";                 // cache-bust revised tracks
+  const BGM_VER = "20260615b";                 // cache-bust revised tracks
   const srcOf = (t) => BGM_DIR + t + "?v=" + BGM_VER;
   const DEFAULT_VOLUME = 0.55;
   function plan() { return (typeof window !== "undefined" && window.READING_BGM_PLAN) || null; }
@@ -127,12 +127,9 @@
       else if (p.reading && p.reading[ch]) arr = rangeTracks(p.reading[ch], params && params.section);
       if (!arr || !arr.length) return null;
       if (arr.length === 1) return { track: arr[0], array: null };
-      // Rotate the section's track set on track-end (variety across a long
-      // section) — this is what surfaces every re-recorded track, so it stays.
-      const ord = sectionOrdinal(ch, params && params.section);
-      let idx = ord % arr.length;
-      if (arr[idx] === currentTrack && arr.length > 1) idx = (idx + 1) % arr.length;  // no back-to-back repeat
-      return { track: arr[idx], array: arr, idx };
+      // The first track in each section's set is the OLD recording the user
+      // replaced; loop the SECOND (the new one) — no rotation, no old track.
+      return { track: arr[1], array: null };
     }
     if (name === "quiz" || name === "quizstatus" || name === "comprehension") {
       const qs = p.quizByStage || {};
