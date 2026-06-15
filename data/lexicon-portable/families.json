@@ -1,6 +1,6 @@
 {
   "source": "/Users/nishenglan/Documents/lexicon 2/data/vocab/VOCAB_FAMILY_SHARED_CLUSTERS_LITE.js",
-  "count": 6819,
+  "count": 6827,
   "families": {
     "abandon": [
       "abandon",
@@ -5398,13 +5398,6 @@
       "detectivework",
       "detector"
     ],
-    "deter": [
-      "deter",
-      "deteriorate",
-      "deterioration",
-      "deterrable",
-      "deterrer"
-    ],
     "determine": [
       "determine"
     ],
@@ -9876,7 +9869,6 @@
     "invent": [
       "invent",
       "invention",
-      "inventions",
       "inventive",
       "inventiveness",
       "inventor",
@@ -10044,14 +10036,6 @@
     ],
     "juror": [
       "juror"
-    ],
-    "jury": [
-      "jury",
-      "juridical",
-      "jurisdiction",
-      "jurisdictional",
-      "jurisprudence",
-      "jurist"
     ],
     "justify": [
       "justify",
@@ -14532,10 +14516,6 @@
     "recourse": [
       "recourse"
     ],
-    "recovery": [
-      "recovery",
-      "recover"
-    ],
     "recreate": [
       "recreate",
       "recreation"
@@ -17701,11 +17681,11 @@
     "theorist": [
       "theorist"
     ],
-    "theorize": [
-      "theorize"
-    ],
     "theory": [
-      "theory"
+      "theory",
+      "theoretical",
+      "theoretically",
+      "theorize"
     ],
     "therapeutic": [
       "therapeutic"
@@ -20639,8 +20619,7 @@
       "protolanguage"
     ],
     "protocol": [
-      "protocol",
-      "protocolized"
+      "protocol"
     ],
     "proton": [
       "proton",
@@ -21496,6 +21475,25 @@
       "professional",
       "professionally"
     ],
+    "discipline": [
+      "discipline",
+      "disciplinarian",
+      "disciplinary"
+    ],
+    "neutral": [
+      "neutral",
+      "neutrality",
+      "neutralize",
+      "neutrally"
+    ],
+    "jurisdiction": [
+      "jurisdiction",
+      "jurisdictional"
+    ],
+    "deteriorate": [
+      "deteriorate",
+      "deterioration"
+    ],
     "respect": [
       "respect",
       "respectable",
@@ -22086,11 +22084,6 @@
       "antagonism",
       "antagonize"
     ],
-    "discipline": [
-      "discipline",
-      "disciplinarian",
-      "disciplinary"
-    ],
     "economy": [
       "economy",
       "economic",
@@ -22214,6 +22207,10 @@
     "dent": [
       "dent",
       "indent"
+    ],
+    "deter": [
+      "deter",
+      "deterrable"
     ],
     "detonate": [
       "detonate",
@@ -23427,6 +23424,9 @@
     "destined": [
       "destined"
     ],
+    "deterrer": [
+      "deterrer"
+    ],
     "devotion": [
       "devotion"
     ],
@@ -24267,6 +24267,9 @@
     "intrusion": [
       "intrusion"
     ],
+    "inventions": [
+      "inventions"
+    ],
     "irresistible": [
       "irresistible"
     ],
@@ -24314,6 +24317,18 @@
     ],
     "jupiter": [
       "jupiter"
+    ],
+    "juridical": [
+      "juridical"
+    ],
+    "jurisprudence": [
+      "jurisprudence"
+    ],
+    "jurist": [
+      "jurist"
+    ],
+    "jury": [
+      "jury"
     ],
     "juvenile": [
       "juvenile"
@@ -25285,6 +25300,9 @@
     ],
     "prose": [
       "prose"
+    ],
+    "protocolized": [
+      "protocolized"
     ],
     "prototyping": [
       "prototyping"
@@ -26758,6 +26776,11 @@
     ],
     "zealous": [
       "zealous"
+    ],
+    "precarious": [
+      "precarious",
+      "precariously",
+      "precariousness"
     ]
   }
 }

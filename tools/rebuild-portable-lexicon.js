@@ -340,6 +340,37 @@ function parseFamilies() {
   families.perform = ["perform", "overperform", "performance"];
   families.profession = ["profession", "professional", "professionally"];
   families.allocate = ["allocate", "allocation", "reallocation", "reallocating"];
+  families.restrain = ["restrain", "restraint"];
+  families.discipline = ["discipline", "disciplinarian", "disciplinary"];
+  families.structure = ["structure", "structural", "structuralism", "structuralist", "structurally"];
+  families.require = ["require", "requirement"];
+  families.access = ["access", "accessibility", "accessible", "inaccessible"];
+  families.demonstrate = ["demonstrate", "demonstration", "demonstrative"];
+  families.consist = ["consist", "consistency", "consistent", "consistently", "inconsistency", "inconsistent", "inconsistently"];
+  families.institute = ["institute", "institution", "institutional", "institutionally"];
+  families.assess = ["assess", "assessment", "assessor"];
+  families.precise = ["precise", "precision", "precisely", "imprecise"];
+  families.accurate = ["accurate", "accuracy", "accurately", "inaccurate", "inaccuracy"];
+  families.select = ["select", "selection", "selective", "selectively"];
+  families.neutral = ["neutral", "neutrality", "neutrally", "neutralize"];
+  families.precarious = ["precarious", "precariously", "precariousness"];
+  families.theory = ["theory", "theoretical", "theoretically", "theorize"];
+  families.circumstance = ["circumstance", "circumstantial"];
+  families.ambiguous = ["ambiguous", "ambiguity", "ambiguously", "unambiguous", "unambiguously"];
+  families.consent = ["consent", "consensual", "consensus"];
+  families.conceal = ["conceal", "concealment"];
+  families.preserve = ["preserve", "preservation", "preservative"];
+  families.expose = ["expose", "exposure"];
+  families.evidence = ["evidence", "evident", "evidence-based"];
+  families.protocol = ["protocol"];
+  families.invent = ["invent", "invention", "inventive", "inventor", "inventory", "inventorial"];
+  families.cooperate = ["cooperate", "cooperation", "cooperative", "cooperator"];
+  families.jurisdiction = ["jurisdiction", "jurisdictional"];
+  families.deteriorate = ["deteriorate", "deterioration"];
+  families.material = ["material", "materially", "materiality", "immaterial", "immaterially", "materialism", "materialistic"];
+  delete families.recovery;
+  delete families.jury;
+  delete families.deter;
   families.region = ["region", "regional"];
   families.respect = ["respect", "respectable", "respectful"];
   families.senior = ["senior", "seniority"];
@@ -8627,11 +8658,15 @@ const finalCutOverridesApplied = applyCutOverrides(cards);
 const cutCoverageExactized = exactizeCutLetterCoverage(cards);
 const cutCoverageFallbacks = enforceCutLetterCoverage(cards);
 applyFinalEntryCardFixes(cards);
+families.precarious = ["precarious", "precariously", "precariousness"];
 
 function applyFinalEntryCardFixes(cards) {
   const replace = (head, patch) => {
     const card = cards.find((item) => item.head === head);
-    if (!card) return;
+    if (!card) {
+      cards.push({ head, ...patch });
+      return;
+    }
     Object.assign(card, patch);
   };
   replace("president", {
@@ -9527,6 +9562,780 @@ function applyFinalEntryCardFixes(cards) {
     }
   };
   for (const [head, patch] of Object.entries(finalEntryPatchesTwo)) replace(head, { head, ...patch });
+  const chapterZeroExamPatches = {
+    restraint: {
+      cut: "re/strain/t",
+      cutMeaning: "回；反复/拉紧；约束/名词",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "克制；约束；限制",
+        gloss: "control, restriction",
+        examples: [{
+          en: "Legal restraint prevents emergency powers from becoming a permanent habit.",
+          zh: "法律约束能防止紧急权力变成永久习惯。"
+        }],
+        phrases: [
+          { en: "show restraint", zh: "表现克制" },
+          { en: "restraint on power", zh: "对权力的限制" }
+        ]
+      }]
+    },
+    discipline: {
+      cut: "disciplin/e",
+      cutMeaning: "学习；训练；纪律/词尾",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "自律；纪律",
+          gloss: "self-control, order",
+          examples: [{
+            en: "Discipline helps a rescue team follow protocol when the situation becomes chaotic.",
+            zh: "局面混乱时，纪律能帮助救援队遵守流程。"
+          }],
+          phrases: [
+            { en: "self-discipline", zh: "自律" },
+            { en: "strict discipline", zh: "严格纪律" }
+          ]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "学科；专业领域",
+          gloss: "academic field, subject",
+          examples: [{
+            en: "Neurology became a discipline because doctors needed shared methods to study the nervous system.",
+            zh: "神经学成为一门学科，是因为医生需要共同方法来研究神经系统。"
+          }],
+          phrases: [{ en: "academic discipline", zh: "学科" }]
+        }
+      ]
+    },
+    structural: {
+      cut: "struct/ur/al",
+      cutMeaning: "建造；结构/名词/形容词",
+      senses: [{
+        index: "1",
+        pos: "adj.",
+        zh: "结构性的；结构上的",
+        gloss: "structure-related, systemic",
+        examples: [{
+          en: "Structural weakness in the bridge made the route unsafe after heavy rain.",
+          zh: "桥梁的结构性弱点使这条路线在暴雨后变得不安全。"
+        }],
+        phrases: [
+          { en: "structural damage", zh: "结构性损坏" },
+          { en: "structural problem", zh: "结构性问题" }
+        ]
+      }]
+    },
+    requirement: {
+      cut: "re/quir/e/ment",
+      cutMeaning: "反复；回/寻求；要求/动词/名词",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "要求；规定",
+          gloss: "rule, demand",
+          examples: [{
+            en: "The payment receipt was a requirement before students could access the laboratory.",
+            zh: "学生进入实验室前，付款收据是一项要求。"
+          }],
+          phrases: [{ en: "legal requirement", zh: "法律要求" }]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "必要条件；所需之物",
+          gloss: "need, condition",
+          examples: [{
+            en: "Reliable evidence is a basic requirement for a fair assessment.",
+            zh: "可靠证据是公正评估的基本必要条件。"
+          }],
+          phrases: [{ en: "basic requirement", zh: "基本必要条件" }]
+        }
+      ]
+    },
+    access: {
+      cut: "ac/cess",
+      cutMeaning: "向；加强/走；进入",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "进入权；使用权",
+          gloss: "right to enter or use",
+          examples: [{
+            en: "Emergency workers need access to the inventory before they can dispatch supplies.",
+            zh: "应急人员需要清单访问权，才能调派物资。"
+          }],
+          phrases: [{ en: "access to records", zh: "查阅记录的权限" }]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "通道；入口",
+          gloss: "entry, route",
+          examples: [{
+            en: "Flood water blocked access to the clinic for two days.",
+            zh: "洪水阻断了通往诊所的通道两天。"
+          }],
+          phrases: [{ en: "road access", zh: "道路通道" }]
+        },
+        {
+          index: "3",
+          pos: "v.",
+          zh: "访问；获取",
+          gloss: "reach, obtain",
+          examples: [{
+            en: "Only verified staff can access the payment system.",
+            zh: "只有经过核验的工作人员才能访问支付系统。"
+          }],
+          phrases: [{ en: "access a database", zh: "访问数据库" }]
+        }
+      ]
+    },
+    demonstrate: {
+      cut: "de/monstr/ate",
+      cutMeaning: "加强/显示；指明/动词",
+      senses: [
+        {
+          index: "1",
+          pos: "v.",
+          zh: "证明；表明",
+          gloss: "show, prove",
+          examples: [{
+            en: "The audit demonstrated that several payments had never reached the supplier.",
+            zh: "审计证明有几笔付款从未到达供应商。"
+          }],
+          phrases: [{ en: "demonstrate accuracy", zh: "证明准确性" }]
+        },
+        {
+          index: "2",
+          pos: "v.",
+          zh: "展示；演示",
+          gloss: "display, illustrate",
+          examples: [{
+            en: "The instructor demonstrated how to verify a signature before accepting a transfer.",
+            zh: "讲师演示了在接受转账前如何核验签名。"
+          }],
+          phrases: [{ en: "demonstrate a procedure", zh: "演示流程" }]
+        }
+      ]
+    },
+    consistency: {
+      cut: "con/sist/ency",
+      cutMeaning: "共同；加强/站立；保持一致/名词",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "一致性；连贯性",
+        gloss: "agreement, coherence",
+        examples: [{
+          en: "Consistency in the records helped investigators recover the missing payment quickly.",
+          zh: "记录的一致性帮助调查人员迅速找回丢失的付款。"
+        }],
+        phrases: [
+          { en: "logical consistency", zh: "逻辑一致性" },
+          { en: "policy consistency", zh: "政策一致性" }
+        ]
+      }]
+    },
+    allocate: {
+      cut: "al/loc/ate",
+      cutMeaning: "向；加强/放置；位置/动词",
+      senses: [{
+        index: "1",
+        pos: "v.",
+        zh: "分配；拨给",
+        gloss: "assign, distribute",
+        examples: [{
+          en: "The council must allocate emergency funds before the road can be repaired.",
+          zh: "委员会必须先分配应急资金，道路才能修复。"
+        }],
+        phrases: [
+          { en: "allocate resources", zh: "分配资源" },
+          { en: "allocate funding", zh: "拨给资金" }
+        ]
+      }]
+    },
+    institution: {
+      cut: "in/stitut/ion",
+      cutMeaning: "进入；使成/放置；建立/名词",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "机构；组织",
+          gloss: "organization, body",
+          examples: [{
+            en: "A trusted institution can coordinate recovery when many agencies hold different pieces of evidence.",
+            zh: "当多个机构掌握不同证据时，可信机构可以协调恢复工作。"
+          }],
+          phrases: [{ en: "public institution", zh: "公共机构" }]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "制度；惯例",
+          gloss: "system, established practice",
+          examples: [{
+            en: "The institution of public review makes hidden clauses harder to preserve.",
+            zh: "公开审查制度使隐藏条款更难被保留下来。"
+          }],
+          phrases: [{ en: "legal institution", zh: "法律制度" }]
+        }
+      ]
+    },
+    framework: {
+      cut: "frame/work",
+      cutMeaning: "框架/工作；体系",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "框架；构架",
+          gloss: "structure, system",
+          examples: [{
+            en: "The new framework explains how evidence, consent, and jurisdiction should interact.",
+            zh: "新框架解释了证据、同意和管辖权应如何相互作用。"
+          }],
+          phrases: [{ en: "legal framework", zh: "法律框架" }]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "原则体系；思维框架",
+          gloss: "set of principles",
+          examples: [{
+            en: "An ethical framework helps officials act when every option has a cost.",
+            zh: "当每个选项都有代价时，伦理框架能帮助官员行动。"
+          }],
+          phrases: [{ en: "ethical framework", zh: "伦理框架" }]
+        }
+      ]
+    },
+    assessment: {
+      cut: "as/sess/ment",
+      cutMeaning: "向；加强/坐；评估/名词",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "评估；评价",
+        gloss: "evaluation, judgment",
+        examples: [{
+          en: "The assessment compared accuracy with speed before changing the dispatch protocol.",
+          zh: "这项评估在改变调度流程前比较了准确性和速度。"
+        }],
+        phrases: [
+          { en: "risk assessment", zh: "风险评估" },
+          { en: "formal assessment", zh: "正式评估" }
+        ]
+      }]
+    },
+    precision: {
+      cut: "pre/cis/ion",
+      cutMeaning: "向前；预先/切；决定/名词",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "精确；精度",
+        gloss: "exactness, accuracy",
+        examples: [{
+          en: "Precision matters when a single digit can send a payment to the wrong account.",
+          zh: "当一个数字就可能把付款转到错误账户时，精确性很重要。"
+        }],
+        phrases: [
+          { en: "high precision", zh: "高精度" },
+          { en: "measurement precision", zh: "测量精度" }
+        ]
+      }]
+    },
+    accuracy: {
+      cut: "ac/cur/acy",
+      cutMeaning: "向；加强/关心；注意/名词",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "准确性；正确性",
+        gloss: "correctness, exactness",
+        examples: [{
+          en: "The accuracy of the inventory determined whether the team could find the missing medicine.",
+          zh: "清单的准确性决定了团队能否找到丢失的药品。"
+        }],
+        phrases: [
+          { en: "data accuracy", zh: "数据准确性" },
+          { en: "improve accuracy", zh: "提高准确性" }
+        ]
+      }]
+    },
+    selective: {
+      cut: "se/lect/ive",
+      cutMeaning: "分开/选择；收集/形容词",
+      senses: [{
+        index: "1",
+        pos: "adj.",
+        zh: "有选择性的；选择性的",
+        gloss: "choosy, discriminating",
+        examples: [{
+          en: "Selective access to evidence can make a public assessment appear neutral when it is not.",
+          zh: "对证据的选择性开放会让公共评估看起来中立，尽管事实并非如此。"
+        }],
+        phrases: [
+          { en: "selective access", zh: "选择性访问" },
+          { en: "selective attention", zh: "选择性注意" }
+        ]
+      }]
+    },
+    neutral: {
+      cut: "neutr/al",
+      cutMeaning: "中性；不偏/形容词",
+      senses: [
+        {
+          index: "1",
+          pos: "adj.",
+          zh: "中立的；不偏不倚的",
+          gloss: "impartial, unbiased",
+          examples: [{
+            en: "A neutral reviewer should examine the clause without protecting either side.",
+            zh: "中立审查者应审查条款，而不保护任何一方。"
+          }],
+          phrases: [{ en: "neutral position", zh: "中立立场" }]
+        },
+        {
+          index: "2",
+          pos: "adj.",
+          zh: "中性的；无明显特征的",
+          gloss: "neither one nor the other",
+          examples: [{
+            en: "The report used neutral language so readers could focus on the evidence.",
+            zh: "报告使用中性语言，让读者能专注于证据。"
+          }],
+          phrases: [{ en: "neutral language", zh: "中性语言" }]
+        }
+      ]
+    },
+    precarious: {
+      phonetic: "prɪˈkeriəs",
+      cut: "precari/ous",
+      cutMeaning: "不稳定；依赖他人恩准/形容词",
+      senses: [{
+        index: "1",
+        pos: "adj.",
+        zh: "不稳定的；危险的",
+        gloss: "unstable, insecure",
+        examples: [{
+          en: "The family's recovery remained precarious because one unpaid debt could cancel months of progress.",
+          zh: "这个家庭的恢复仍不稳定，因为一笔未付债务就可能抵消数月进展。"
+        }],
+        phrases: [
+          { en: "precarious position", zh: "不稳定处境" },
+          { en: "precarious balance", zh: "脆弱平衡" }
+        ]
+      }]
+    },
+    precariously: {
+      cut: "precari/ous/ly",
+      cutMeaning: "不稳定；依赖他人恩准/形容词/副词",
+      senses: [{
+        index: "1",
+        pos: "adv.",
+        zh: "不稳定地；危险地",
+        gloss: "insecurely, dangerously",
+        examples: [{
+          en: "The old shelf leaned precariously above the medicine cabinet.",
+          zh: "旧架子危险地倾斜在药柜上方。"
+        }],
+        phrases: [{ en: "hang precariously", zh: "危险地悬着" }]
+      }]
+    },
+    precariousness: {
+      cut: "precari/ous/ness",
+      cutMeaning: "不稳定；依赖他人恩准/形容词/名词",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "不稳定；危险状态",
+        gloss: "insecurity, instability",
+        examples: [{
+          en: "The precariousness of the route made emergency delivery difficult.",
+          zh: "路线的不稳定使应急递送变得困难。"
+        }],
+        phrases: [{ en: "economic precariousness", zh: "经济不稳定" }]
+      }]
+    },
+    theoretical: {
+      cut: "theor/et/ical",
+      cutMeaning: "看；理论/名词连接/形容词",
+      senses: [{
+        index: "1",
+        pos: "adj.",
+        zh: "理论上的；理论性的",
+        gloss: "abstract, conceptual",
+        examples: [{
+          en: "A theoretical model is useful only if it can explain the evidence in a real case.",
+          zh: "理论模型只有在能解释真实案例中的证据时才有用。"
+        }],
+        phrases: [
+          { en: "theoretical framework", zh: "理论框架" },
+          { en: "theoretical explanation", zh: "理论解释" }
+        ]
+      }]
+    },
+    circumstance: {
+      cut: "circum/stance",
+      cutMeaning: "周围/站立；处境",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "情况；境况；环境",
+        gloss: "situation, condition",
+        examples: [{
+          en: "Under the circumstance, the officer had discretion to delay the transfer.",
+          zh: "在这种情况下，官员有权酌情推迟转交。"
+        }],
+        phrases: [
+          { en: "under the circumstances", zh: "在这种情况下" },
+          { en: "special circumstance", zh: "特殊情况" }
+        ]
+      }]
+    },
+    ambiguity: {
+      cut: "ambi/gu/ity",
+      cutMeaning: "两边；双重/引导；不确定/名词",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "模糊性；歧义",
+        gloss: "uncertainty, double meaning",
+        examples: [{
+          en: "Ambiguity in the clause allowed both sides to claim they had followed the protocol.",
+          zh: "条款中的歧义让双方都声称自己遵守了流程。"
+        }],
+        phrases: [
+          { en: "legal ambiguity", zh: "法律歧义" },
+          { en: "reduce ambiguity", zh: "减少模糊性" }
+        ]
+      }]
+    },
+    discretion: {
+      cut: "dis/cret/ion",
+      cutMeaning: "分开/辨别；判断/名词",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "谨慎；慎重",
+          gloss: "carefulness, prudence",
+          examples: [{
+            en: "Discretion is necessary when a report contains private medical evidence.",
+            zh: "当报告包含私人医疗证据时，谨慎是必要的。"
+          }],
+          phrases: [{ en: "use discretion", zh: "谨慎行事" }]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "自行决定权；酌处权",
+          gloss: "freedom to decide",
+          examples: [{
+            en: "The protocol gave officers discretion to arrange delivery during an emergency.",
+            zh: "该流程允许官员在紧急情况下酌情安排递送。"
+          }],
+          phrases: [{ en: "official discretion", zh: "官方酌处权" }]
+        }
+      ]
+    },
+    consent: {
+      cut: "con/sent",
+      cutMeaning: "共同/感觉；意见",
+      senses: [{
+        index: "1",
+        pos: "n./v.",
+        zh: "同意；许可",
+        gloss: "agreement, permission",
+        examples: [{
+          en: "Researchers must obtain consent before exposing volunteers to any avoidable risk.",
+          zh: "研究人员在让志愿者接触任何可避免风险前必须取得同意。"
+        }],
+        phrases: [
+          { en: "informed consent", zh: "知情同意" },
+          { en: "give consent", zh: "给予同意" }
+        ]
+      }]
+    },
+    conceal: {
+      cut: "con/ceal",
+      cutMeaning: "共同；完全/隐藏",
+      senses: [{
+        index: "1",
+        pos: "v.",
+        zh: "隐藏；隐瞒",
+        gloss: "hide, cover up",
+        examples: [{
+          en: "A false inventory can conceal missing equipment until a real emergency begins.",
+          zh: "虚假清单可能会隐藏设备缺失，直到真正的紧急情况开始。"
+        }],
+        phrases: [
+          { en: "conceal evidence", zh: "隐藏证据" },
+          { en: "conceal a debt", zh: "隐瞒债务" }
+        ]
+      }]
+    },
+    preserve: {
+      cut: "pre/serv/e",
+      cutMeaning: "预先；在前/保持；服务/动词",
+      senses: [
+        {
+          index: "1",
+          pos: "v.",
+          zh: "保留；保存",
+          gloss: "keep, save",
+          examples: [{
+            en: "The archive preserves old payment records so later investigators can verify them.",
+            zh: "档案馆保存旧付款记录，以便后来的调查人员核验。"
+          }],
+          phrases: [{ en: "preserve records", zh: "保存记录" }]
+        },
+        {
+          index: "2",
+          pos: "v.",
+          zh: "维持；保护",
+          gloss: "maintain, protect",
+          examples: [{
+            en: "A clear protocol can preserve public trust during an emergency.",
+            zh: "清晰流程能在紧急情况下维持公众信任。"
+          }],
+          phrases: [{ en: "preserve trust", zh: "维持信任" }]
+        }
+      ]
+    },
+    expose: {
+      cut: "ex/pos/e",
+      cutMeaning: "出；向外/放置/动词",
+      senses: [
+        {
+          index: "1",
+          pos: "v.",
+          zh: "暴露；使接触",
+          gloss: "uncover, leave unprotected",
+          examples: [{
+            en: "A broken clause exposed workers to risks that the original contract had tried to prevent.",
+            zh: "一条失效条款使工人暴露于原合同试图防止的风险中。"
+          }],
+          phrases: [{ en: "expose workers to risk", zh: "使工人暴露于风险" }]
+        },
+        {
+          index: "2",
+          pos: "v.",
+          zh: "揭露；揭示",
+          gloss: "reveal, disclose",
+          examples: [{
+            en: "The audit exposed a pattern of selective reporting in the institution.",
+            zh: "审计揭露了该机构选择性报告的模式。"
+          }],
+          phrases: [{ en: "expose corruption", zh: "揭露腐败" }]
+        }
+      ]
+    },
+    evidence: {
+      cut: "e/vid/ence",
+      cutMeaning: "出/看见/名词",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "证据；证明",
+          gloss: "proof, support",
+          examples: [{
+            en: "The committee refused to act until it had clear evidence of misconduct.",
+            zh: "委员会在获得明确不当行为证据前拒绝行动。"
+          }],
+          phrases: [{ en: "clear evidence", zh: "明确证据" }]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "迹象；根据",
+          gloss: "sign, indication",
+          examples: [{
+            en: "The empty shelves were evidence of a serious inventory problem.",
+            zh: "空货架是库存出现严重问题的迹象。"
+          }],
+          phrases: [{ en: "evidence of failure", zh: "失败迹象" }]
+        }
+      ]
+    },
+    protocol: {
+      cut: "proto/col",
+      cutMeaning: "最初；第一/粘合；规则记录",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "流程；规程",
+          gloss: "procedure, rules",
+          examples: [{
+            en: "The emergency protocol told staff when to dispatch medicine and when to wait for verification.",
+            zh: "应急流程告诉工作人员何时调派药品，何时等待核验。"
+          }],
+          phrases: [{ en: "safety protocol", zh: "安全流程" }]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "协议；通信协议",
+          gloss: "agreement, communication rules",
+          examples: [{
+            en: "A secure protocol protects payment data during transfer.",
+            zh: "安全协议在转账过程中保护支付数据。"
+          }],
+          phrases: [{ en: "communication protocol", zh: "通信协议" }]
+        }
+      ]
+    },
+    inventory: {
+      cut: "in/vent/ory",
+      cutMeaning: "进入；里面/来；发现/物；名词",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "清单；详细目录",
+          gloss: "list, catalogue",
+          examples: [{
+            en: "The rescue team checked the inventory before arranging delivery to each shelter.",
+            zh: "救援队在安排向每个避难所递送前检查了清单。"
+          }],
+          phrases: [{ en: "equipment inventory", zh: "设备清单" }]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "库存；存货",
+          gloss: "stock, supplies",
+          examples: [{
+            en: "Low inventory forced the clinic to limit payments to essential medicine.",
+            zh: "库存不足迫使诊所只为必需药品付款。"
+          }],
+          phrases: [{ en: "inventory control", zh: "库存管理" }]
+        }
+      ]
+    },
+    recovery: {
+      cut: "re/cover/y",
+      cutMeaning: "再次；回/覆盖；恢复/名词",
+      senses: [
+        {
+          index: "1",
+          pos: "n.",
+          zh: "恢复；康复",
+          gloss: "return to health or normal state",
+          examples: [{
+            en: "Recovery after the flood depended on cooperation between the clinic and the council.",
+            zh: "洪水后的恢复取决于诊所与委员会之间的合作。"
+          }],
+          phrases: [{ en: "economic recovery", zh: "经济恢复" }]
+        },
+        {
+          index: "2",
+          pos: "n.",
+          zh: "找回；追回",
+          gloss: "getting back",
+          examples: [{
+            en: "The recovery of the missing payment required accurate records and patient verification.",
+            zh: "找回丢失付款需要准确记录和耐心核验。"
+          }],
+          phrases: [{ en: "data recovery", zh: "数据恢复；找回" }]
+        }
+      ]
+    },
+    cooperation: {
+      cut: "co/oper/at/ion",
+      cutMeaning: "共同/工作；操作/动词/名词",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "合作；协作",
+        gloss: "collaboration, working together",
+        examples: [{
+          en: "Cooperation between institutions made the recovery faster and more accurate.",
+          zh: "机构之间的合作让恢复工作更快也更准确。"
+        }],
+        phrases: [
+          { en: "international cooperation", zh: "国际合作" },
+          { en: "close cooperation", zh: "密切合作" }
+        ]
+      }]
+    },
+    jurisdiction: {
+      cut: "juris/dict/ion",
+      cutMeaning: "法律；权利/说；宣布/名词",
+      senses: [{
+        index: "1",
+        pos: "n.",
+        zh: "管辖权；管辖范围",
+        gloss: "legal authority, official power",
+        examples: [{
+          en: "The court had jurisdiction because the transfer was arranged inside the city.",
+          zh: "法院拥有管辖权，因为这次转交是在城内安排的。"
+        }],
+        phrases: [
+          { en: "legal jurisdiction", zh: "法律管辖权" },
+          { en: "outside the jurisdiction", zh: "超出管辖范围" }
+        ]
+      }]
+    },
+    deteriorate: {
+      cut: "deterior/ate",
+      cutMeaning: "变坏；更差/动词",
+      senses: [
+        {
+          index: "1",
+          pos: "v.",
+          zh: "恶化；变坏",
+          gloss: "worsen, decline",
+          examples: [{
+            en: "The patient's condition began to deteriorate when delivery of the medicine was delayed.",
+            zh: "药品递送延误后，病人的情况开始恶化。"
+          }],
+          phrases: [{ en: "deteriorate rapidly", zh: "迅速恶化" }]
+        },
+        {
+          index: "2",
+          pos: "v.",
+          zh: "退化；变质",
+          gloss: "decay, degrade",
+          examples: [{
+            en: "Paper records deteriorate quickly if the archive is damp.",
+            zh: "如果档案室潮湿，纸质记录会很快变质。"
+          }],
+          phrases: [{ en: "deteriorate over time", zh: "随时间退化" }]
+        }
+      ]
+    },
+    materially: {
+      cut: "materi/al/ly",
+      cutMeaning: "物质；重要内容/形容词/副词",
+      senses: [{
+        index: "1",
+        pos: "adv.",
+        zh: "实质上；显著地",
+        gloss: "substantially, significantly",
+        examples: [{
+          en: "The missing signature materially changed the legal status of the payment.",
+          zh: "缺失的签名实质上改变了这笔付款的法律状态。"
+        }],
+        phrases: [
+          { en: "materially affect", zh: "实质影响" },
+          { en: "materially different", zh: "实质不同" }
+        ]
+      }]
+    }
+  };
+  for (const [head, patch] of Object.entries(chapterZeroExamPatches)) replace(head, { head, ...patch });
 }
 
 function buildCutIndex(cards) {

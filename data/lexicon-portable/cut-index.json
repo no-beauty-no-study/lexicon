@@ -1,6 +1,6 @@
 {
   "source": "/Users/nishenglan/Documents/lexicon 2/audits/kin_repository_total.md",
-  "count": 2447,
+  "count": 2445,
   "index": {
     "a": [
       "abandon",
@@ -1543,6 +1543,7 @@
       "isolation",
       "iteration",
       "junction",
+      "jurisdiction",
       "legation",
       "legislation",
       "lesion",
@@ -1603,6 +1604,7 @@
       "possession",
       "postulation",
       "precipitation",
+      "precision",
       "predation",
       "prediction",
       "prescription",
@@ -2733,6 +2735,7 @@
       "alleviation",
       "alliance",
       "alliteration",
+      "allocate",
       "allocation",
       "allow",
       "allowable",
@@ -2827,7 +2830,6 @@
       "communal",
       "compartmentalize",
       "computational",
-      "conceal",
       "concealment",
       "conceptual",
       "conceptualization",
@@ -3663,6 +3665,7 @@
       "potentially",
       "practically",
       "praiseworthily",
+      "precariously",
       "preciously",
       "precipitately",
       "precisely",
@@ -4137,6 +4140,7 @@
       "ordinariness",
       "politeness",
       "praiseworthiness",
+      "precariousness",
       "preciousness",
       "pristineness",
       "productiveness",
@@ -4530,6 +4534,7 @@
       "preface",
       "prejudice",
       "prepare",
+      "preserve",
       "preside",
       "presume",
       "prime",
@@ -7098,6 +7103,7 @@
       "dictum",
       "edict",
       "indict",
+      "jurisdiction",
       "predict",
       "predictable",
       "predictably",
@@ -8832,12 +8838,8 @@
       "literate",
       "transliterate"
     ],
-    "alloc": [
-      "allocate",
-      "reallocating",
-      "reallocation"
-    ],
     "loc": [
+      "allocate",
       "allocation",
       "local",
       "locate",
@@ -9521,6 +9523,9 @@
       "poisonous",
       "porous",
       "porously",
+      "precarious",
+      "precariously",
+      "precariousness",
       "precious",
       "preciously",
       "preciousness",
@@ -10748,8 +10753,7 @@
       "appreciation",
       "precious",
       "preciously",
-      "preciousness",
-      "precision"
+      "preciousness"
     ],
     "prehend": [
       "apprehend",
@@ -10785,6 +10789,7 @@
       "precipitation",
       "precise",
       "precisely",
+      "precision",
       "preclude",
       "preconscious",
       "precursor",
@@ -11517,7 +11522,6 @@
       "dispersion",
       "extension",
       "incursion",
-      "precision",
       "procession",
       "recursion",
       "succession",
@@ -11622,6 +11626,7 @@
       "assistance",
       "assistant",
       "consist",
+      "consistency",
       "desist",
       "insist",
       "insisted",
@@ -11744,7 +11749,8 @@
       "blanket",
       "closet",
       "phonetics",
-      "tablet"
+      "tablet",
+      "theoretical"
     ],
     "atmo": [
       "atmosphere",
@@ -12304,7 +12310,6 @@
       "material",
       "materialism",
       "materiality",
-      "materially",
       "participate",
       "participation",
       "patient",
@@ -13734,6 +13739,7 @@
       "doubtless",
       "joint",
       "jointly",
+      "restraint",
       "sculpt",
       "sculptor",
       "sculptural",
@@ -14630,7 +14636,8 @@
       "incise",
       "incisive",
       "precise",
-      "precisely"
+      "precisely",
+      "precision"
     ],
     "polar": [
       "circumpolar",
@@ -15023,7 +15030,8 @@
       "colossal",
       "colossality",
       "colossally",
-      "colour"
+      "colour",
+      "protocol"
     ],
     "labor": [
       "collaborate",
@@ -15444,6 +15452,7 @@
     ],
     "con": [
       "concave",
+      "conceal",
       "concede",
       "conceivable",
       "conceive",
@@ -15581,6 +15590,7 @@
       "consideration",
       "consign",
       "consist",
+      "consistency",
       "consistent",
       "consistently",
       "consolatory",
@@ -15721,10 +15731,6 @@
       "unconstrained",
       "unconventional",
       "unconventionally"
-    ],
-    "conce": [
-      "conceal",
-      "concealment"
     ],
     "cede": [
       "concede",
@@ -16415,6 +16421,7 @@
       "observance",
       "observatory",
       "observe",
+      "preserve",
       "serve"
     ],
     "serva": [
@@ -16428,7 +16435,6 @@
     "serve": [
       "conserve",
       "deserve",
-      "preserve",
       "reserve"
     ],
     "sider": [
@@ -16508,6 +16514,7 @@
     "strain": [
       "constrain",
       "restrain",
+      "restraint",
       "strain",
       "strainer",
       "unconstrained"
@@ -16537,7 +16544,6 @@
       "instrumentality",
       "instrumentation",
       "misconstrue",
-      "structural",
       "structuralism",
       "structuralist",
       "structurally",
@@ -16549,7 +16555,6 @@
       "constructive",
       "constructivism",
       "constructivist",
-      "structural",
       "structuralism",
       "structuralist",
       "structurally",
@@ -17259,6 +17264,7 @@
       "restore",
       "restorer",
       "restrain",
+      "restraint",
       "restrict",
       "restricted",
       "restructure",
@@ -18182,6 +18188,7 @@
       "reconstruction",
       "reconstructive",
       "restructure",
+      "structural",
       "superstructural",
       "superstructure"
     ],
@@ -21935,7 +21942,6 @@
       "protest",
       "protestant",
       "protestantism",
-      "protocol",
       "proton",
       "protract",
       "proverb",
@@ -22419,10 +22425,6 @@
       "jurisdictional",
       "jurisprudence"
     ],
-    "diction": [
-      "jurisdiction",
-      "jurisdictional"
-    ],
     "prudence": [
       "jurisprudence",
       "prudence"
@@ -22877,8 +22879,7 @@
     "mater": [
       "material",
       "materialism",
-      "materiality",
-      "materially"
+      "materiality"
     ],
     "matern": [
       "maternal",
@@ -24509,6 +24510,7 @@
     "proto": [
       "proto",
       "protochordate",
+      "protocol",
       "protohistory",
       "protolanguage",
       "protostar",
@@ -24679,6 +24681,10 @@
       "rationalist",
       "rationality",
       "rationally"
+    ],
+    "alloc": [
+      "reallocating",
+      "reallocation"
     ],
     "reason": [
       "reasonable",
@@ -25978,10 +25984,6 @@
       "theology",
       "theory"
     ],
-    "theoret": [
-      "theoretical",
-      "theoretically"
-    ],
     "there": [
       "thereby",
       "therefore"
@@ -26442,6 +26444,11 @@
       "zoology",
       "zoonosis",
       "zooplankton"
+    ],
+    "precari": [
+      "precarious",
+      "precariously",
+      "precariousness"
     ]
   },
   "rootIndex": {
@@ -26867,6 +26874,7 @@
         "dictum",
         "edict",
         "indict",
+        "jurisdiction",
         "predict",
         "predictable",
         "predictably",
@@ -28433,8 +28441,7 @@
         "appreciation",
         "precious",
         "preciously",
-        "preciousness",
-        "precision"
+        "preciousness"
       ]
     },
     "prehend": {
@@ -29508,7 +29515,8 @@
         "incise",
         "incisive",
         "precise",
-        "precisely"
+        "precisely",
+        "precision"
       ]
     },
     "cit": {
@@ -30066,6 +30074,7 @@
       "words": [
         "constrain",
         "restrain",
+        "restraint",
         "strain",
         "strainer",
         "unconstrained"
@@ -30103,7 +30112,6 @@
         "instrumentality",
         "instrumentation",
         "misconstrue",
-        "structural",
         "structuralism",
         "structuralist",
         "structurally",
@@ -30661,6 +30669,7 @@
         "reconstruction",
         "reconstructive",
         "restructure",
+        "structural",
         "superstructural",
         "superstructure"
       ]
