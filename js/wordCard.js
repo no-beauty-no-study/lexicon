@@ -280,6 +280,11 @@ const WordCard = (function () {
           <div class="word-card-open-zone"></div>
           <div class="word-card-body-zone"></div>
           <div class="word-card-sign-zone"></div>
+          <div class="wc-cutpool" hidden>
+            <div class="wc-cutpool-head"><span class="wc-cutpool-title"></span>
+              <button type="button" class="wc-cutpool-close" aria-label="Close">✕</button></div>
+            <ul class="wc-cutpool-list"></ul>
+          </div>
         </div>
       </div>`;
     // ONE tap handler for the whole card (like reading's "tap anywhere"):
@@ -288,14 +293,14 @@ const WordCard = (function () {
     //   • anything else (blank, title, body) → reveal the NEXT 区 (section)
     drawerEl.addEventListener("click", (e) => {
       e.stopPropagation();
-      // A tappable cut ROOT → leave the card and open Words Garden filtered to
-      // that root's whole pool (com·MUT·e → every "mut" word).
+      // A tappable cut ROOT → show that root's whole pool RIGHT HERE in the
+      // drawer (no page change — the reader keeps their place). Tapping a pooled
+      // word swaps the big card in place so they can keep studying.
       const cp = e.target.closest(".wc-cut-part.is-root");
-      if (cp && cp.dataset.cutPart) {
-        closeDrawer();
-        if (typeof window.go === "function") { window.__navDir = "forward"; window.go("#word-garden?cut=" + encodeURIComponent(cp.dataset.cutPart)); }
-        return;
-      }
+      if (cp && cp.dataset.cutPart) { e.stopPropagation(); showCutPool(cp.dataset.cutPart); return; }
+      if (e.target.closest(".wc-cutpool-close")) { e.stopPropagation(); hideCutPool(); return; }
+      const pj = e.target.closest(".wc-cutpool-list [data-jump]");
+      if (pj) { e.stopPropagation(); hideCutPool(); openBigCard(pj.dataset.jump); return; }
       const j = e.target.closest(".wc-jump");
       if (j) { openBigCard(j.dataset.jump); return; }
       if (e.target.closest("button, input, textarea, [data-go]")) return;
@@ -330,9 +335,37 @@ const WordCard = (function () {
     page.appendChild(drawerEl);
   }
 
+  // The cut-root POOL, shown inside the drawer (no navigation). Lists every
+  // word sharing the tapped root as tappable rows; picking one swaps the big
+  // card in place, so the reader explores a root family without ever leaving
+  // their reading spot.
+  function hideCutPool() {
+    const pool = drawerEl && drawerEl.querySelector(".wc-cutpool");
+    if (pool) pool.hidden = true;
+  }
+  function showCutPool(part) {
+    if (!drawerEl) return;
+    const rt = R();
+    const words = (rt && rt.cutPartWords) ? rt.cutPartWords(part) : [];
+    const zh = (rt && rt.cutPartZh) ? rt.cutPartZh(part) : "";
+    const pool = drawerEl.querySelector(".wc-cutpool");
+    if (!pool || !words.length) return;
+    pool.querySelector(".wc-cutpool-title").innerHTML =
+      `◆ ${esc(part)}${zh ? ` <span class="wc-cutpool-zh">${esc(zh)}</span>` : ""} · ${words.length}`;
+    pool.querySelector(".wc-cutpool-list").innerHTML = words.map(w => {
+      const sc = (rt && rt.getSmallCard) ? rt.getSmallCard(w) : null;
+      const g = sc ? String(sc.zh || "").replace(/^\s*[A-Za-z.\/&]+\.\s*/, "") : "";
+      return `<li class="wc-cutpool-row" data-jump="${esc(w)}"><span class="wc-cp-en">${esc(w)}</span>`
+           + (g ? `<span class="wc-cp-zh">${esc(g)}</span>` : "") + `</li>`;
+    }).join("");
+    pool.querySelector(".wc-cutpool-list").scrollTop = 0;
+    pool.hidden = false;
+  }
+
   function openBigCard(word, ctx, opts) {
     ensureDrawer();
     if (!drawerEl) return;
+    hideCutPool();
     const rt = R();
     let data = null;
     try { data = rt && rt.getBigCard ? rt.getBigCard(word) : null; } catch (_) { data = null; }
