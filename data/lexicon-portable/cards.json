@@ -1,6 +1,6 @@
 {
   "source": "/Users/nishenglan/Documents/lexicon 2/audits/word_owl_toefl_old_merged.md",
-  "count": 13032,
+  "count": 13035,
   "cards": [
     {
       "head": "abandon",
@@ -9863,11 +9863,15 @@
       "cutMeaning": "极漫长时期",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "n.",
-          "zh": "极漫长时期；万古",
-          "gloss": "period",
+          "zh": "极漫长的时期；千万年",
+          "gloss": "vast age, eternity",
           "examples": [
+            {
+              "en": "Human civilisation occupies only a tiny moment beside the aeons of Earth history.",
+              "zh": "和地球历史的漫长年代相比，人类文明只占极短一瞬。"
+            },
             {
               "en": "Over aeons, small climatic shifts can reshape entire ecosystems.",
               "zh": "历经万古，微小的气候变化也能重塑整个生态系统。"
@@ -9875,12 +9879,16 @@
           ],
           "phrases": [
             {
-              "en": "over aeons",
-              "zh": "历经万古"
+              "en": "after aeons of change",
+              "zh": "经过极漫长的变化之后"
             },
             {
               "en": "geological aeons",
-              "zh": "地质时代的漫长时期"
+              "zh": "地质年代"
+            },
+            {
+              "en": "over aeons",
+              "zh": "历经万古"
             }
           ]
         }
@@ -32046,14 +32054,18 @@
       "head": "attenuate",
       "phonetic": "əˈtenjueɪt",
       "cut": "at/tenu/ate",
-      "cutMeaning": "向；加强/细；薄/动词",
+      "cutMeaning": "向；加强/薄；拉细/动词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "v.",
-          "zh": "减弱；削弱",
+          "zh": "削弱；减弱",
           "gloss": "weaken, reduce",
           "examples": [
+            {
+              "en": "Clear evidence can attenuate public fear when people face unfamiliar medical risks.",
+              "zh": "当人们面对陌生医疗风险时，清晰证据可以减弱公众恐惧。"
+            },
             {
               "en": "Clearer regulation can attenuate the harm caused by misleading online medical advice.",
               "zh": "更清晰的监管可以减弱误导性线上医疗建议造成的伤害。"
@@ -32069,12 +32081,12 @@
           ],
           "phrases": [
             {
-              "en": "attenuate harmful effects",
-              "zh": "减弱有害影响"
+              "en": "attenuate a signal",
+              "zh": "削弱信号"
             },
             {
-              "en": "attenuate a signal",
-              "zh": "减弱信号"
+              "en": "attenuate harmful effects",
+              "zh": "减弱有害影响"
             },
             {
               "en": "attenuate risk",
@@ -32091,6 +32103,24 @@
             {
               "en": "attenuating factor",
               "zh": "减弱因素"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "v.",
+          "zh": "使变薄；使变细",
+          "gloss": "make thin, stretch out",
+          "examples": [
+            {
+              "en": "Expansion can attenuate light until only a faint signal remains.",
+              "zh": "膨胀会削弱光，直到只剩微弱信号。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "attenuated light",
+              "zh": "衰减后的光"
             }
           ]
         }
@@ -32530,14 +32560,18 @@
       "head": "audible",
       "phonetic": "ˈɔːdəbl",
       "cut": "aud/ible",
-      "cutMeaning": "听/能够的",
+      "cutMeaning": "听/形容词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "adj.",
-          "zh": "听得见的",
-          "gloss": "hearable",
+          "zh": "听得见的；声音清楚的",
+          "gloss": "able to be heard",
           "examples": [
+            {
+              "en": "Public warnings should be clearly audible during emergencies.",
+              "zh": "公共警报在紧急情况下应该清楚可听。"
+            },
             {
               "en": "A barely audible signal can still carry important information.",
               "zh": "几乎听不见的信号仍然可能携带重要信息。"
@@ -32549,12 +32583,16 @@
           ],
           "phrases": [
             {
-              "en": "audible sound",
-              "zh": "可听声音"
-            },
-            {
               "en": "barely audible",
               "zh": "几乎听不见的"
+            },
+            {
+              "en": "audible warning",
+              "zh": "可听警告"
+            },
+            {
+              "en": "audible sound",
+              "zh": "可听声音"
             },
             {
               "en": "audible signal",
@@ -38330,33 +38368,73 @@
       "head": "beam",
       "phonetic": "biːm",
       "cut": "beam",
-      "cutMeaning": "束",
+      "cutMeaning": "光束；横梁；发射",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "n.",
-          "zh": "束",
-          "gloss": "ray, support bar",
+          "zh": "光束",
+          "gloss": "ray, shaft of light",
           "examples": [
+            {
+              "en": "A beam of light can reveal tiny particles floating in the air.",
+              "zh": "一束光可以显现空气中漂浮的微小颗粒。"
+            },
             {
               "en": "A beam of light entered through the broken roof.",
               "zh": "一束光从破损屋顶射入。"
             }
           ],
-          "phrases": []
+          "phrases": [
+            {
+              "en": "a beam of light",
+              "zh": "一束光"
+            },
+            {
+              "en": "laser beam",
+              "zh": "激光束"
+            }
+          ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "n.",
-          "zh": "横梁",
-          "gloss": "timber, bar",
+          "zh": "横梁；支梁",
+          "gloss": "supporting bar",
           "examples": [
+            {
+              "en": "Old houses may collapse if their wooden beams are damaged by moisture.",
+              "zh": "如果木梁受潮损坏，老房子可能倒塌。"
+            },
             {
               "en": "The wooden beam cracked under the weight of the floor.",
               "zh": "木横梁在地板重量下开裂。"
             }
           ],
-          "phrases": []
+          "phrases": [
+            {
+              "en": "wooden beam",
+              "zh": "木梁"
+            }
+          ]
+        },
+        {
+          "index": "3",
+          "pos": "v.",
+          "zh": "发射；传送",
+          "gloss": "transmit, send",
+          "examples": [
+            {
+              "en": "Satellites beam signals across long distances to connect remote areas.",
+              "zh": "卫星远距离发射信号，把偏远地区连接起来。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "beam signals",
+              "zh": "发射信号"
+            }
+          ]
         }
       ]
     },
@@ -55074,21 +55152,29 @@
     {
       "head": "capacity",
       "phonetic": "",
-      "cut": "cap/acity",
-      "cutMeaning": "拿取；容纳/名词",
+      "cut": "cap/ac/ity",
+      "cutMeaning": "拿；容纳/向；加强/名词",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "n.",
-          "zh": "容量；容纳能力",
-          "gloss": "volume, holding ability",
+          "zh": "能力；才能",
+          "gloss": "ability, capability",
           "examples": [
+            {
+              "en": "Education should strengthen students' capacity to think independently.",
+              "zh": "教育应增强学生独立思考的能力。"
+            },
             {
               "en": "Institutional capacity determines whether a policy can survive implementation.",
               "zh": "制度能力决定政策能否撑过执行阶段。"
             }
           ],
           "phrases": [
+            {
+              "en": "capacity to think",
+              "zh": "思考能力"
+            },
             {
               "en": "storage capacity",
               "zh": "存储容量"
@@ -55112,11 +55198,15 @@
           ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "n.",
-          "zh": "能力；才能",
-          "gloss": "ability",
+          "zh": "容量；容纳量",
+          "gloss": "volume, holding ability",
           "examples": [
+            {
+              "en": "Cloud services increase storage capacity but raise concerns about data privacy.",
+              "zh": "云服务增加储存容量，但也引发数据隐私担忧。"
+            },
             {
               "en": "Her capacity to explain complex ideas made her an effective teacher.",
               "zh": "她解释复杂思想的能力使她成为一名有效的教师。"
@@ -55124,23 +55214,35 @@
           ],
           "phrases": [
             {
+              "en": "storage capacity",
+              "zh": "储存容量"
+            },
+            {
               "en": "institutional capacity",
               "zh": "制度能力"
             }
           ]
         },
         {
-          "index": 3,
+          "index": "3",
           "pos": "n.",
-          "zh": "身份；职责",
-          "gloss": "role",
+          "zh": "身份；职位",
+          "gloss": "role, position",
           "examples": [
+            {
+              "en": "In her capacity as principal, she must balance parents' demands with teachers' workload.",
+              "zh": "以校长身份，她必须平衡家长需求和教师工作量。"
+            },
             {
               "en": "He signed the letter in his capacity as director of the museum.",
               "zh": "他以博物馆馆长的身份签署了这封信。"
             }
           ],
           "phrases": [
+            {
+              "en": "in a professional capacity",
+              "zh": "以专业身份"
+            },
             {
               "en": "in the capacity of director",
               "zh": "以主任身份"
@@ -76289,20 +76391,28 @@
       "head": "command",
       "phonetic": "kəˈmænd",
       "cut": "com/mand",
-      "cutMeaning": "共同；加强/命令；委托",
+      "cutMeaning": "共同；完全/命令；委托",
       "senses": [
         {
-          "index": 1,
-          "pos": "n.",
-          "zh": "命令；指令",
-          "gloss": "order",
+          "index": "1",
+          "pos": "v.",
+          "zh": "掌握；精通",
+          "gloss": "master, know well",
           "examples": [
+            {
+              "en": "Students who command academic English can understand complex arguments more quickly.",
+              "zh": "精通学术英语的学生能更快理解复杂论证。"
+            },
             {
               "en": "The soldiers waited for a clear command before crossing the bridge.",
               "zh": "士兵等待明确命令后才过桥。"
             }
           ],
           "phrases": [
+            {
+              "en": "command a language",
+              "zh": "精通一门语言"
+            },
             {
               "en": "give a command",
               "zh": "下命令"
@@ -76326,17 +76436,25 @@
           ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "v.",
-          "zh": "命令；指挥",
-          "gloss": "order, lead",
+          "zh": "命令；指挥；控制",
+          "gloss": "order, control",
           "examples": [
+            {
+              "en": "A commander must command an army under pressure without losing judgment.",
+              "zh": "指挥官必须在压力下指挥军队，同时不失去判断。"
+            },
             {
               "en": "A general must command troops without losing sight of civilian safety.",
               "zh": "将军必须指挥军队，同时不忽视平民安全。"
             }
           ],
           "phrases": [
+            {
+              "en": "command an army",
+              "zh": "指挥军队"
+            },
             {
               "en": "command troops",
               "zh": "指挥军队"
@@ -76348,17 +76466,25 @@
           ]
         },
         {
-          "index": 3,
+          "index": "3",
           "pos": "n.",
-          "zh": "掌握；控制",
-          "gloss": "control, mastery",
+          "zh": "掌握；控制；指挥权",
+          "gloss": "mastery, control, authority",
           "examples": [
+            {
+              "en": "A strong command of language helps students compare sources and detect weak arguments.",
+              "zh": "扎实的语言能力帮助学生比较资料并识别薄弱论点。"
+            },
             {
               "en": "A strong command of language helps students explain complex ideas clearly.",
               "zh": "扎实的语言掌握能力帮助学生清楚解释复杂想法。"
             }
           ],
           "phrases": [
+            {
+              "en": "a strong command of English",
+              "zh": "英语掌握很好"
+            },
             {
               "en": "command of English",
               "zh": "英语掌握能力"
@@ -80953,7 +81079,7 @@
     {
       "head": "comprehensively",
       "phonetic": "",
-      "cut": "com/prehens/ive/ly",
+      "cut": "com/prehens/ively",
       "cutMeaning": "共同；加强/抓住/形容词/副词",
       "senses": [
         {
@@ -81081,14 +81207,18 @@
       "head": "compression",
       "phonetic": "kəmˈpreʃn",
       "cut": "com/press/ion",
-      "cutMeaning": "共同；加强/压/名词",
+      "cutMeaning": "共同；完全/压；挤/名词",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "n.",
           "zh": "压缩；压迫",
-          "gloss": "pressure, squeezing",
+          "gloss": "pressure, squeezing, compacting",
           "examples": [
+            {
+              "en": "Extreme compression can change the physical properties of a material.",
+              "zh": "极端压缩可以改变一种材料的物理性质。"
+            },
             {
               "en": "Data compression makes storage easier but may remove detail.",
               "zh": "数据压缩让存储更容易，但可能去除细节。"
@@ -81099,6 +81229,10 @@
             }
           ],
           "phrases": [
+            {
+              "en": "extreme compression",
+              "zh": "极端压缩"
+            },
             {
               "en": "data compression",
               "zh": "数据压缩"
@@ -81114,12 +81248,21 @@
           ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "n.",
-          "zh": "压缩量；压缩比",
-          "gloss": "reduction",
-          "examples": [],
+          "zh": "数据压缩；文本压缩",
+          "gloss": "reduction, shortening",
+          "examples": [
+            {
+              "en": "Data compression allows platforms to store and transmit information more efficiently.",
+              "zh": "数据压缩使平台能更高效地存储和传输信息。"
+            }
+          ],
           "phrases": [
+            {
+              "en": "data compression",
+              "zh": "数据压缩"
+            },
             {
               "en": "compression ratio",
               "zh": "压缩比"
@@ -81132,7 +81275,7 @@
       "head": "compressive",
       "phonetic": "",
       "cut": "com/press/ive",
-      "cutMeaning": "共同；加强/压/形容词",
+      "cutMeaning": "共同；加强/挤压/形容词",
       "senses": [
         {
           "index": "",
@@ -83180,14 +83323,18 @@
       "head": "condense",
       "phonetic": "kənˈdens",
       "cut": "con/dense",
-      "cutMeaning": "共同；加强/密集",
+      "cutMeaning": "共同；加强/密集；浓缩",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "v.",
-          "zh": "压缩；浓缩",
-          "gloss": "compress, shorten",
+          "zh": "压缩；浓缩；缩短",
+          "gloss": "compress, shorten, concentrate",
           "examples": [
+            {
+              "en": "Teachers can condense difficult theories into visual examples.",
+              "zh": "老师可以把困难理论压缩成可视化例子。"
+            },
             {
               "en": "A good summary can condense information without destroying the logic.",
               "zh": "好摘要可以压缩信息，同时不破坏逻辑。"
@@ -83229,17 +83376,25 @@
           ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "v.",
           "zh": "凝结；冷凝",
-          "gloss": "turn from gas to liquid",
+          "gloss": "turn into liquid",
           "examples": [
+            {
+              "en": "Water vapour condenses on cold glass when warm air meets a cooler surface.",
+              "zh": "暖空气遇到较冷表面时，水蒸气会在冷玻璃上凝结。"
+            },
             {
               "en": "Water vapour condenses on the cold glass and forms small drops.",
               "zh": "水蒸气在冷玻璃上凝结，形成小水滴。"
             }
           ],
           "phrases": [
+            {
+              "en": "water vapour condenses",
+              "zh": "水蒸气凝结"
+            },
             {
               "en": "condense water vapour",
               "zh": "凝结水蒸气"
@@ -98004,14 +98159,18 @@
       "head": "crack",
       "phonetic": "kræk",
       "cut": "crack",
-      "cutMeaning": "（使）破裂",
+      "cutMeaning": "裂开；破解",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "v.",
-          "zh": "（使）破裂",
-          "gloss": "break",
+          "zh": "破解；解决",
+          "gloss": "decode, solve, decipher",
           "examples": [
+            {
+              "en": "Historians cracked the code by comparing repeated symbols with known names.",
+              "zh": "历史学家通过比较重复符号和已知名字破解了密码。"
+            },
             {
               "en": "Heat caused the glass to crack across the middle.",
               "zh": "高温使玻璃从中间裂开。"
@@ -98019,23 +98178,54 @@
           ],
           "phrases": [
             {
+              "en": "crack a code",
+              "zh": "破解密码"
+            },
+            {
               "en": "deep crack",
               "zh": "深裂缝"
             }
           ]
         },
         {
-          "index": 2,
-          "pos": "n.",
-          "zh": "裂（缝、纹）",
-          "gloss": "split",
+          "index": "2",
+          "pos": "v.",
+          "zh": "裂开；破裂",
+          "gloss": "break, split",
           "examples": [
+            {
+              "en": "Poorly built roads may crack under pressure from heavy traffic.",
+              "zh": "建造质量差的道路可能在重型交通压力下开裂。"
+            },
             {
               "en": "A crack in the wall widened after the earthquake.",
               "zh": "地震后，墙上的裂缝变宽了。"
             }
           ],
-          "phrases": []
+          "phrases": [
+            {
+              "en": "crack under pressure",
+              "zh": "在压力下破裂"
+            }
+          ]
+        },
+        {
+          "index": "3",
+          "pos": "n.",
+          "zh": "裂缝；漏洞",
+          "gloss": "gap, split, weakness",
+          "examples": [
+            {
+              "en": "The pandemic exposed cracks in many public health systems.",
+              "zh": "疫情暴露了许多公共卫生系统中的漏洞。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "a crack in the system",
+              "zh": "制度漏洞"
+            }
+          ]
         }
       ]
     },
@@ -105065,14 +105255,18 @@
       "head": "dawn",
       "phonetic": "dɔːn",
       "cut": "dawn",
-      "cutMeaning": "黎明",
+      "cutMeaning": "黎明；开端；显现",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "n.",
           "zh": "黎明",
           "gloss": "daybreak",
           "examples": [
+            {
+              "en": "The researchers left the village before dawn to reach the site safely.",
+              "zh": "研究者黎明前离开村庄，以便安全到达现场。"
+            },
             {
               "en": "Fishermen left the harbour at dawn.",
               "zh": "渔民在黎明离开港口。"
@@ -105080,23 +105274,54 @@
           ],
           "phrases": [
             {
+              "en": "before dawn",
+              "zh": "黎明前"
+            },
+            {
               "en": "dawn temperature inversion",
               "zh": "黎明温度逆温"
             }
           ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "n.",
-          "zh": "开端",
-          "gloss": "outset",
+          "zh": "开端；初期",
+          "gloss": "beginning, emergence",
           "examples": [
+            {
+              "en": "The dawn of artificial intelligence has forced schools to rethink learning.",
+              "zh": "人工智能时代的开端迫使学校重新思考学习。"
+            },
             {
               "en": "The invention marked the dawn of modern surgery.",
               "zh": "这项发明标志着现代外科的开端。"
             }
           ],
-          "phrases": []
+          "phrases": [
+            {
+              "en": "the dawn of the digital age",
+              "zh": "数字时代开端"
+            }
+          ]
+        },
+        {
+          "index": "3",
+          "pos": "v.",
+          "zh": "逐渐明白；开始显现",
+          "gloss": "become clear",
+          "examples": [
+            {
+              "en": "It dawned on the committee that the protocol had failed.",
+              "zh": "委员会逐渐意识到流程已经失效。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "it dawned on me",
+              "zh": "我逐渐意识到"
+            }
+          ]
         }
       ]
     },
@@ -109920,14 +110145,18 @@
       "head": "defy",
       "phonetic": "",
       "cut": "de/fy",
-      "cutMeaning": "反对；离开/做",
+      "cutMeaning": "离开；反向/信任；挑战",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "v.",
-          "zh": "违抗；挑战；难以解释",
-          "gloss": "interpretation, explanation",
+          "zh": "违抗；挑战",
+          "gloss": "resist, disobey, challenge",
           "examples": [
+            {
+              "en": "Citizens may defy authority when laws are seen as unfair.",
+              "zh": "当法律被认为不公平时，公民可能反抗权威。"
+            },
             {
               "en": "A result that defies explanation should invite investigation, not denial.",
               "zh": "难以解释的结果应该引发调查，而不是否认。"
@@ -109940,7 +110169,7 @@
           "phrases": [
             {
               "en": "defy authority",
-              "zh": "违抗权威"
+              "zh": "反抗权威"
             },
             {
               "en": "defy explanation",
@@ -109949,6 +110178,28 @@
             {
               "en": "defy expectations",
               "zh": "挑战预期"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "v.",
+          "zh": "超出理解；难以解释",
+          "gloss": "go beyond, be beyond",
+          "examples": [
+            {
+              "en": "Quantum physics often defies intuition because particles do not behave like ordinary objects.",
+              "zh": "量子物理常常违背直觉，因为粒子的行为不像普通物体。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "defy intuition",
+              "zh": "违背直觉"
+            },
+            {
+              "en": "defy interpretation",
+              "zh": "难以解读"
             }
           ]
         }
@@ -112587,20 +112838,32 @@
       "head": "dense",
       "phonetic": "dens",
       "cut": "dense",
-      "cutMeaning": "",
+      "cutMeaning": "密集；浓厚",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "adj.",
-          "zh": "密集的，浓厚的",
-          "gloss": "thick",
+          "zh": "密集的；浓厚的",
+          "gloss": "crowded, compact, thick",
           "examples": [
+            {
+              "en": "Dense fog can disrupt flights and make road transport dangerous.",
+              "zh": "浓雾会扰乱航班，并使道路交通变得危险。"
+            },
             {
               "en": "A dense text becomes easier when its structure is visible.",
               "zh": "当结构可见时，难懂文本会变得更容易。"
             }
           ],
           "phrases": [
+            {
+              "en": "dense fog",
+              "zh": "浓雾"
+            },
+            {
+              "en": "dense population",
+              "zh": "密集人口"
+            },
             {
               "en": "dense city",
               "zh": "紧凑城市"
@@ -112610,16 +112873,30 @@
               "zh": "密集住房"
             },
             {
-              "en": "dense population",
-              "zh": "密集人口"
-            },
-            {
               "en": "dense forest",
               "zh": "茂密森林"
             },
             {
               "en": "dense text",
               "zh": "难懂文本"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "adj.",
+          "zh": "难懂的；复杂的",
+          "gloss": "difficult, complex",
+          "examples": [
+            {
+              "en": "Dense academic writing becomes easier when teachers identify its main claim.",
+              "zh": "当老师指出主要论点时，难懂的学术写作会更容易理解。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "dense argument",
+              "zh": "复杂难懂的论证"
             }
           ]
         }
@@ -122546,21 +122823,29 @@
     {
       "head": "disentangle",
       "phonetic": "",
-      "cut": "dis/entangle",
-      "cutMeaning": "分开；否定/缠住",
+      "cut": "dis/en/tangle",
+      "cutMeaning": "分开；解除/使进入/缠结",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "v.",
-          "zh": "解开；理清；分清",
-          "gloss": "untangle, untangle",
+          "zh": "解开；摆脱纠缠",
+          "gloss": "untangle, free, separate",
           "examples": [
+            {
+              "en": "Young adults may struggle to disentangle themselves from unhealthy debt.",
+              "zh": "年轻人可能很难摆脱不健康债务。"
+            },
             {
               "en": "Researchers must disentangle correlation from causation before drawing a conclusion.",
               "zh": "研究者在得出结论前必须区分相关性和因果关系。"
             }
           ],
           "phrases": [
+            {
+              "en": "disentangle oneself from debt",
+              "zh": "摆脱债务纠缠"
+            },
             {
               "en": "disentangle cause and effect",
               "zh": "分清原因和结果"
@@ -122572,6 +122857,24 @@
             {
               "en": "disentangle evidence from assumption",
               "zh": "把证据和假设区分开"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "v.",
+          "zh": "理清；区分",
+          "gloss": "clarify, sort out",
+          "examples": [
+            {
+              "en": "Students should learn to disentangle fact from opinion when reading news online.",
+              "zh": "学生阅读网络新闻时应学会区分事实和观点。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "disentangle fact from opinion",
+              "zh": "区分事实和观点"
             }
           ]
         }
@@ -122605,8 +122908,8 @@
     {
       "head": "disentangler",
       "phonetic": "",
-      "cut": "dis/entangl/er",
-      "cutMeaning": "分开；否定/缠住/人；物",
+      "cut": "disentangler",
+      "cutMeaning": "理清者",
       "senses": [
         {
           "index": "",
@@ -125110,14 +125413,18 @@
       "head": "dissipate",
       "phonetic": "",
       "cut": "dis/sip/ate",
-      "cutMeaning": "分开；否定/消散/动词；使成为",
+      "cutMeaning": "分散；离开/投掷；散开/动词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "v.",
-          "zh": "消散；耗散",
-          "gloss": "scatter, fade",
+          "zh": "消散；驱散",
+          "gloss": "disperse, fade, scatter",
           "examples": [
+            {
+              "en": "Clear public information can dissipate fear during a health crisis.",
+              "zh": "清晰的公共信息可以在健康危机中消除恐惧。"
+            },
             {
               "en": "Clear information can dissipate fear before rumours take control.",
               "zh": "清晰信息可以在谣言控制局面前驱散恐惧。"
@@ -125134,7 +125441,7 @@
             },
             {
               "en": "dissipate fear",
-              "zh": "消散恐惧"
+              "zh": "消除恐惧"
             },
             {
               "en": "dissipate energy",
@@ -125143,6 +125450,24 @@
             {
               "en": "dissipated energy",
               "zh": "耗散能量"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "v.",
+          "zh": "浪费；挥霍",
+          "gloss": "waste, squander",
+          "examples": [
+            {
+              "en": "Poor planning can dissipate public resources that should support schools and hospitals.",
+              "zh": "糟糕规划可能浪费本应用于学校和医院的公共资源。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "dissipate resources",
+              "zh": "浪费资源"
             }
           ]
         }
@@ -125176,8 +125501,8 @@
     {
       "head": "dissipative",
       "phonetic": "",
-      "cut": "dissipative",
-      "cutMeaning": "耗散的",
+      "cut": "dis/sip/at/ive",
+      "cutMeaning": "分开；否定/消散/动词；使成为/形容词",
       "senses": [
         {
           "index": "",
@@ -140660,15 +140985,19 @@
     {
       "head": "encompass",
       "phonetic": "ɪnˈkʌmpəs",
-      "cut": "en/compass",
-      "cutMeaning": "进入/范围",
+      "cut": "en/com/pass",
+      "cutMeaning": "使进入；包围/共同；完全/走；范围",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "v.",
-          "zh": "包含",
-          "gloss": "include",
+          "zh": "包括；涵盖；围住",
+          "gloss": "include, cover, contain",
           "examples": [
+            {
+              "en": "Public health policy should encompass prevention, diagnosis and long-term care.",
+              "zh": "公共卫生政策应涵盖预防、诊断和长期护理。"
+            },
             {
               "en": "Urban planning should encompass housing, transport, green space, and local employment opportunities.",
               "zh": "城市规划应涵盖住房、交通、绿地和本地就业机会。"
@@ -140679,6 +141008,10 @@
             }
           ],
           "phrases": [
+            {
+              "en": "encompass a wide range of issues",
+              "zh": "涵盖广泛问题"
+            },
             {
               "en": "encompass social costs",
               "zh": "包括社会成本"
@@ -140708,27 +141041,14 @@
               "zh": "全面方法"
             }
           ]
-        },
-        {
-          "index": 2,
-          "pos": "v.",
-          "zh": "环绕",
-          "gloss": "encircle",
-          "examples": [
-            {
-              "en": "A serious explanation should encompass many factors, not just one cause.",
-              "zh": "严肃解释应涵盖许多因素，而不是只有一个原因。"
-            }
-          ],
-          "phrases": []
         }
       ]
     },
     {
       "head": "encompassment",
       "phonetic": "",
-      "cut": "en/compass/ment",
-      "cutMeaning": "进入/范围/名词",
+      "cut": "encompassment",
+      "cutMeaning": "涵盖",
       "senses": [
         {
           "index": "",
@@ -145354,14 +145674,18 @@
       "head": "epoch",
       "phonetic": "ˈepək",
       "cut": "epoch",
-      "cutMeaning": "",
+      "cutMeaning": "时代；纪元",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "n.",
-          "zh": "新纪元",
-          "gloss": "era",
+          "zh": "时代；纪元；历史阶段",
+          "gloss": "era, period, age",
           "examples": [
+            {
+              "en": "The internet has created a new epoch in which information spreads faster than institutions can regulate it.",
+              "zh": "互联网创造了一个新时代，在其中信息传播速度超过机构监管速度。"
+            },
             {
               "en": "A historical epoch is often recognised only after its underlying logic becomes clear.",
               "zh": "一个历史时代往往只有在其底层逻辑变清楚后才被认出来."
@@ -145375,6 +145699,10 @@
             {
               "en": "historical epoch",
               "zh": "历史时代"
+            },
+            {
+              "en": "remote epoch",
+              "zh": "遥远时代"
             },
             {
               "en": "geological epoch",
@@ -145405,19 +145733,6 @@
               "zh": "快速城市化时代"
             }
           ]
-        },
-        {
-          "index": 2,
-          "pos": "n.",
-          "zh": "时代",
-          "gloss": "era",
-          "examples": [
-            {
-              "en": "A historical epoch is often recognised only after its logic becomes clear.",
-              "zh": "一个历史时代往往只有在其逻辑变清楚后才被认出来。"
-            }
-          ],
-          "phrases": []
         }
       ]
     },
@@ -146371,14 +146686,18 @@
       "head": "erect",
       "phonetic": "ɪˈrekt",
       "cut": "e/rect",
-      "cutMeaning": "e/竖，直",
+      "cutMeaning": "向外；使成/直；正",
       "senses": [
         {
-          "index": 1,
-          "pos": "adj.",
-          "zh": "直立的",
-          "gloss": "upright",
+          "index": "1",
+          "pos": "v.",
+          "zh": "建立；竖立",
+          "gloss": "build, set up",
           "examples": [
+            {
+              "en": "The city erected a monument to remember the workers who rebuilt the bridge.",
+              "zh": "这座城市建立纪念碑，以纪念重建桥梁的工人。"
+            },
             {
               "en": "The guard stood erect beside the gate.",
               "zh": "卫兵直立站在大门旁。"
@@ -146387,7 +146706,7 @@
           "phrases": [
             {
               "en": "erect a monument",
-              "zh": "竖立纪念碑"
+              "zh": "建立纪念碑"
             },
             {
               "en": "erect legal barriers",
@@ -146396,17 +146715,26 @@
           ]
         },
         {
-          "index": 2,
-          "pos": "v.",
-          "zh": "建立",
-          "gloss": "establish",
+          "index": "2",
+          "pos": "adj.",
+          "zh": "竖直的；挺直的",
+          "gloss": "upright, straight",
           "examples": [
+            {
+              "en": "An erect posture can make a speaker appear more confident.",
+              "zh": "挺直的姿势会让演讲者显得更自信。"
+            },
             {
               "en": "Workers erected a temporary shelter after the flood.",
               "zh": "洪水后，工人建立了临时庇护所。"
             }
           ],
-          "phrases": []
+          "phrases": [
+            {
+              "en": "an erect posture",
+              "zh": "挺直的姿势"
+            }
+          ]
         }
       ]
     },
@@ -146783,20 +147111,32 @@
       "head": "erupt",
       "phonetic": "ɪˈrʌpt",
       "cut": "e/rupt",
-      "cutMeaning": "出/断",
+      "cutMeaning": "出/破裂",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "v.",
-          "zh": "爆发",
-          "gloss": "burst out",
+          "zh": "爆发；喷发",
+          "gloss": "burst out, explode",
           "examples": [
+            {
+              "en": "Violence may erupt when social inequality remains unresolved for too long.",
+              "zh": "当社会不平等长期得不到解决时，暴力可能爆发。"
+            },
             {
               "en": "Public anger can erupt when institutions ignore repeated warnings.",
               "zh": "当机构忽视反复警告时，公众愤怒可能爆发。"
             }
           ],
           "phrases": [
+            {
+              "en": "violence erupts",
+              "zh": "暴力爆发"
+            },
+            {
+              "en": "a volcano erupts",
+              "zh": "火山喷发"
+            },
             {
               "en": "volcanoes erupt",
               "zh": "火山喷发"
@@ -146810,12 +147150,26 @@
               "zh": "火山喷发"
             },
             {
-              "en": "violence erupts",
-              "zh": "暴力爆发"
-            },
-            {
               "en": "erupted violently",
               "zh": "猛烈喷发"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "v.",
+          "zh": "突然表达强烈情绪",
+          "gloss": "burst into anger",
+          "examples": [
+            {
+              "en": "Parents may erupt in anger when schools fail to explain important decisions.",
+              "zh": "当学校没有解释重要决定时，家长可能勃然大怒。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "erupt in anger",
+              "zh": "勃然大怒"
             }
           ]
         }
@@ -154571,14 +154925,18 @@
       "head": "exponential",
       "phonetic": "",
       "cut": "ex/pon/ent/ial",
-      "cutMeaning": "出；向外/放置/形容词；名词/形容词",
+      "cutMeaning": "出/放置；提出/名词；人/形容词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "adj.",
-          "zh": "指数级的；快速增长的",
-          "gloss": "growth",
+          "zh": "指数级的；急剧增长的",
+          "gloss": "rapidly accelerating",
           "examples": [
+            {
+              "en": "The exponential growth of online information makes reliable sources harder to identify.",
+              "zh": "线上信息的指数级增长使可靠来源更难识别。"
+            },
             {
               "en": "Exponential growth looks slow at first and then suddenly becomes overwhelming.",
               "zh": "指数增长起初看起来很慢，然后突然变得压倒性。"
@@ -154591,7 +154949,7 @@
           "phrases": [
             {
               "en": "exponential growth",
-              "zh": "指数增长"
+              "zh": "指数级增长"
             },
             {
               "en": "exponential increase",
@@ -154602,6 +154960,24 @@
               "zh": "指数曲线"
             }
           ]
+        },
+        {
+          "index": "2",
+          "pos": "adj.",
+          "zh": "指数的；幂的",
+          "gloss": "using powers",
+          "examples": [
+            {
+              "en": "Exponential functions are often used to model population growth.",
+              "zh": "指数函数常用于模拟人口增长。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "exponential function",
+              "zh": "指数函数"
+            }
+          ]
         }
       ]
     },
@@ -154609,7 +154985,7 @@
       "head": "exponentially",
       "phonetic": "",
       "cut": "ex/pon/ent/ial/ly",
-      "cutMeaning": "出；向外/放置/形容词；名词/形容词/副词",
+      "cutMeaning": "出/放置/人或物/形容词/副词",
       "senses": [
         {
           "index": "",
@@ -157761,14 +158137,18 @@
       "head": "faint",
       "phonetic": "feɪnt",
       "cut": "faint",
-      "cutMeaning": "",
+      "cutMeaning": "微弱；昏眩",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "adj.",
           "zh": "微弱的；模糊的",
-          "gloss": "weak, unclear",
+          "gloss": "weak, slight, unclear",
           "examples": [
+            {
+              "en": "A faint signal can still contain valuable information.",
+              "zh": "一个微弱信号仍可能包含有价值的信息。"
+            },
             {
               "en": "A faint signal from the satellite reached the station after midnight.",
               "zh": "午夜后，卫星发出的微弱信号到达了地面站。"
@@ -157776,16 +158156,20 @@
           ],
           "phrases": [
             {
+              "en": "faint light",
+              "zh": "微弱的光"
+            },
+            {
+              "en": "faint hope",
+              "zh": "一线希望"
+            },
+            {
               "en": "faint signal",
               "zh": "微弱信号"
             },
             {
               "en": "faint outline",
               "zh": "模糊轮廓"
-            },
-            {
-              "en": "faint hope",
-              "zh": "微弱希望"
             },
             {
               "en": "fainthearted response to reform",
@@ -157798,17 +158182,25 @@
           ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "v.",
-          "zh": "昏厥；晕倒",
+          "zh": "昏倒",
           "gloss": "lose consciousness",
           "examples": [
+            {
+              "en": "Several workers fainted after standing for hours in extreme heat.",
+              "zh": "几名工人在酷热中站了数小时后昏倒。"
+            },
             {
               "en": "A patient may faint when pain, fear, and low blood pressure combine.",
               "zh": "疼痛、恐惧和低血压同时出现时，患者可能晕倒。"
             }
           ],
           "phrases": [
+            {
+              "en": "faint from hunger",
+              "zh": "饿晕"
+            },
             {
               "en": "feel faint",
               "zh": "感到要晕倒"
@@ -170461,20 +170853,28 @@
       "head": "fraction",
       "phonetic": "ˈfrækʃn",
       "cut": "fract/ion",
-      "cutMeaning": "碎裂/名词",
+      "cutMeaning": "打碎；分开/名词",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "n.",
-          "zh": "小部分",
-          "gloss": "portion, segment",
+          "zh": "小部分；一点点",
+          "gloss": "small part",
           "examples": [
+            {
+              "en": "Even a small fraction of public spending can improve education if it supports teachers.",
+              "zh": "哪怕公共支出的一小部分，如果投向教师，也能改善教育。"
+            },
             {
               "en": "Only a fraction of the original forest remains after decades of farming.",
               "zh": "经过数十年耕作后，原始森林只剩下一小部分。"
             }
           ],
           "phrases": [
+            {
+              "en": "a small fraction of the cost",
+              "zh": "成本的一小部分"
+            },
             {
               "en": "a small fraction",
               "zh": "一小部分"
@@ -170494,17 +170894,25 @@
           ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "n.",
           "zh": "分数",
-          "gloss": "part of a whole figure",
+          "gloss": "mathematical part",
           "examples": [
+            {
+              "en": "Students convert a fraction into a decimal to compare quantities more easily.",
+              "zh": "学生把分数转成小数，以便更容易比较数量。"
+            },
             {
               "en": "A fraction shows how many equal parts of a whole are being counted.",
               "zh": "分数表示一个整体中有多少等份被计入。"
             }
           ],
           "phrases": [
+            {
+              "en": "simple fraction",
+              "zh": "简单分数"
+            },
             {
               "en": "fraction calculation",
               "zh": "分数计算"
@@ -203750,20 +204158,28 @@
       "head": "incomprehensible",
       "phonetic": "",
       "cut": "in/com/pre/hens/ible",
-      "cutMeaning": "不/共同；加强/预先/抓住；理解/能够；形容词",
+      "cutMeaning": "不/共同；完全/向前/抓住；理解/形容词",
       "senses": [
         {
-          "index": "",
-          "pos": "n./adj./adv.",
-          "zh": "难以理解的",
-          "gloss": "understanding",
+          "index": "1",
+          "pos": "adj.",
+          "zh": "无法理解的；难以领会的",
+          "gloss": "hard to grasp, beyond understanding",
           "examples": [
+            {
+              "en": "If public policies are written in incomprehensible language, citizens may lose trust.",
+              "zh": "如果公共政策用难以理解的语言写成，公民可能失去信任。"
+            },
             {
               "en": "A public rule becomes useless when its explanation is incomprehensible to ordinary citizens.",
               "zh": "当一条公共规则的解释对普通公民来说难以理解时，它就会失去作用。"
             }
           ],
           "phrases": [
+            {
+              "en": "incomprehensible system",
+              "zh": "难以理解的系统"
+            },
             {
               "en": "incomprehensible explanation",
               "zh": "难以理解的解释"
@@ -203775,10 +204191,6 @@
             {
               "en": "incomprehensible text",
               "zh": "难懂文本"
-            },
-            {
-              "en": "incomprehensible system",
-              "zh": "难以理解的系统"
             }
           ]
         }
@@ -203788,20 +204200,32 @@
       "head": "inconceivable",
       "phonetic": "",
       "cut": "in/con/ceiv/able",
-      "cutMeaning": "不/共同；完全/拿取；理解/能够；形容词",
+      "cutMeaning": "不/共同；完全/拿取；构想/形容词",
       "senses": [
         {
-          "index": "",
-          "pos": "n./adj./adv.",
-          "zh": "难以想象的",
-          "gloss": "imagination",
+          "index": "1",
+          "pos": "adj.",
+          "zh": "不可想象的；难以置信的",
+          "gloss": "unimaginable, unthinkable",
           "examples": [
+            {
+              "en": "Unchecked climate change could cause inconceivable damage to coastal cities.",
+              "zh": "不受控制的气候变化可能对沿海城市造成不可想象的损害。"
+            },
             {
               "en": "What once seemed inconceivable can become ordinary within a generation.",
               "zh": "曾经不可想象的事可能在一代人内变得普通。"
             }
           ],
           "phrases": [
+            {
+              "en": "inconceivable heat",
+              "zh": "不可想象的高温"
+            },
+            {
+              "en": "inconceivable damage",
+              "zh": "不可想象的损害"
+            },
             {
               "en": "inconceivable pressure",
               "zh": "难以想象的压力"
@@ -208176,8 +208600,8 @@
     {
       "head": "inflate",
       "phonetic": "ɪnˈfleɪt",
-      "cut": "inflate",
-      "cutMeaning": "使充气",
+      "cut": "infl/ate",
+      "cutMeaning": "使充气/动词；使成为",
       "senses": [
         {
           "index": 1,
@@ -208210,15 +208634,19 @@
     {
       "head": "inflation",
       "phonetic": "ɪnˈfleɪʃn",
-      "cut": "infl/ation",
-      "cutMeaning": "通货膨胀/名词",
+      "cut": "in/flat/ion",
+      "cutMeaning": "进入；使成/吹；膨胀/名词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "n.",
-          "zh": "通货膨胀",
-          "gloss": "price rise",
+          "zh": "膨胀；扩张",
+          "gloss": "expansion, swelling",
           "examples": [
+            {
+              "en": "Cosmic inflation describes a very early period when the universe expanded rapidly.",
+              "zh": "宇宙暴胀描述的是宇宙早期快速扩张的阶段。"
+            },
             {
               "en": "High inflation reduces purchasing power, but a deep recession may reduce jobs and investment even more quickly.",
               "zh": "高通胀削弱购买力，但深度经济衰退可能更快减少就业和投资。"
@@ -208230,6 +208658,10 @@
           ],
           "phrases": [
             {
+              "en": "cosmic inflation",
+              "zh": "宇宙暴胀"
+            },
+            {
               "en": "high inflation",
               "zh": "高通胀"
             },
@@ -208240,6 +208672,24 @@
             {
               "en": "balloon inflation",
               "zh": "充气"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "n.",
+          "zh": "通货膨胀",
+          "gloss": "rising prices",
+          "examples": [
+            {
+              "en": "High inflation reduces consumers' purchasing power and pressures low-income families.",
+              "zh": "高通胀削弱消费者购买力，并给低收入家庭带来压力。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "control inflation",
+              "zh": "控制通胀"
             }
           ]
         }
@@ -232333,21 +232783,29 @@
     {
       "head": "linger",
       "phonetic": "ˈlɪ ɡər",
-      "cut": "ling/er",
-      "cutMeaning": "徘徊/人；物",
+      "cut": "linger",
+      "cutMeaning": "逗留；残留",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "v.",
-          "zh": "徘徊",
-          "gloss": "hover",
+          "zh": "逗留；停留",
+          "gloss": "stay longer",
           "examples": [
+            {
+              "en": "Students lingered after class to ask about the ancient writing system.",
+              "zh": "学生课后留下来询问古代文字系统。"
+            },
             {
               "en": "Debt can linger for years when credit card interest is extremely high.",
               "zh": "当信用卡利息极高时，债务会持续多年。"
             }
           ],
           "phrases": [
+            {
+              "en": "linger after class",
+              "zh": "课后逗留"
+            },
             {
               "en": "linger in memory",
               "zh": "留在记忆中"
@@ -232373,14 +232831,32 @@
               "zh": "对证据挥之不去的怀疑"
             }
           ]
+        },
+        {
+          "index": "2",
+          "pos": "v.",
+          "zh": "继续存在；迟迟不消散",
+          "gloss": "remain, persist",
+          "examples": [
+            {
+              "en": "The lingering effects of poverty can limit education after income improves.",
+              "zh": "贫困的持续影响即使在收入改善后也会限制教育。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "lingering doubts",
+              "zh": "挥之不去的疑虑"
+            }
+          ]
         }
       ]
     },
     {
       "head": "lingerer",
       "phonetic": "",
-      "cut": "ling/er/er",
-      "cutMeaning": "徘徊/人；物/人；物",
+      "cut": "lingerer",
+      "cutMeaning": "逗留者",
       "senses": [
         {
           "index": "",
@@ -257290,15 +257766,19 @@
     {
       "head": "nascent",
       "phonetic": "",
-      "cut": "nascent",
-      "cutMeaning": "新生的",
+      "cut": "nasc/ent",
+      "cutMeaning": "出生；产生/形容词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "adj.",
           "zh": "新生的；初期的",
-          "gloss": "newly forming",
+          "gloss": "emerging, newly formed",
           "examples": [
+            {
+              "en": "A nascent industry may need public investment before it can compete internationally.",
+              "zh": "新兴产业可能需要公共投资，才能参与国际竞争。"
+            },
             {
               "en": "A nascent movement needs language before it can build institutions.",
               "zh": "新生运动需要先拥有语言，才能建立制度。"
@@ -257311,15 +257791,15 @@
           "phrases": [
             {
               "en": "nascent industry",
-              "zh": "新生行业"
+              "zh": "新兴产业"
+            },
+            {
+              "en": "nascent democracy",
+              "zh": "新生民主制度"
             },
             {
               "en": "nascent movement",
               "zh": "初生运动"
-            },
-            {
-              "en": "nascent democracy",
-              "zh": "初期民主"
             },
             {
               "en": "a nascent industry",
@@ -282242,14 +282722,18 @@
       "head": "permeate",
       "phonetic": "ˈpɜːrmieɪt",
       "cut": "per/me/ate",
-      "cutMeaning": "通过/流动；经过/动词",
+      "cutMeaning": "穿过；完全/通过；移动/动词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "v.",
-          "zh": "弥漫，渗透",
-          "gloss": "spread through, penetrate",
+          "zh": "弥漫；遍布",
+          "gloss": "spread through",
           "examples": [
+            {
+              "en": "Digital technology now permeates education, work and entertainment.",
+              "zh": "数字技术如今渗透教育、工作和娱乐。"
+            },
             {
               "en": "A hidden norm can permeate daily life without being stated openly.",
               "zh": "隐性规范可以在不被公开说出的情况下渗入日常生活。"
@@ -282261,6 +282745,10 @@
           ],
           "phrases": [
             {
+              "en": "permeate daily life",
+              "zh": "渗透日常生活"
+            },
+            {
               "en": "permeate society",
               "zh": "渗透社会"
             },
@@ -282269,12 +282757,26 @@
               "zh": "渗入土壤"
             },
             {
-              "en": "permeate daily life",
-              "zh": "渗入日常生活"
-            },
-            {
               "en": "permeate the atmosphere",
               "zh": "弥漫在大气中"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "v.",
+          "zh": "渗透；影响各部分",
+          "gloss": "penetrate, affect throughout",
+          "examples": [
+            {
+              "en": "Distrust can permeate an institution when leaders conceal evidence.",
+              "zh": "当领导层隐藏证据时，不信任会渗透整个机构。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "permeate society",
+              "zh": "渗透社会"
             }
           ]
         }
@@ -299286,15 +299788,19 @@
     {
       "head": "primordial",
       "phonetic": "praɪˈmɔːrdiəl",
-      "cut": "prim/ord/ial",
-      "cutMeaning": "第一/顺序/形容词",
+      "cut": "prim/ordi/al",
+      "cutMeaning": "最初；首要/开始；秩序/形容词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "adj.",
-          "zh": "原始的，最初的",
-          "gloss": "primeval, primitive, fundamental",
+          "zh": "原始的；最初的",
+          "gloss": "original, earliest, primitive",
           "examples": [
+            {
+              "en": "Primordial matter gradually formed the structures from which stars later emerged.",
+              "zh": "原始物质逐渐形成了后来恒星从中出现的结构。"
+            },
             {
               "en": "The primordial universe contained the conditions for later structure.",
               "zh": "原始宇宙包含了后来结构形成的条件。"
@@ -299306,6 +299812,14 @@
           ],
           "phrases": [
             {
+              "en": "primordial matter",
+              "zh": "原始物质"
+            },
+            {
+              "en": "primordial life",
+              "zh": "原始生命"
+            },
+            {
               "en": "primordial soup",
               "zh": "原始汤"
             },
@@ -299316,10 +299830,24 @@
             {
               "en": "primordial condition",
               "zh": "原始状态"
-            },
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "adj.",
+          "zh": "本能的；根本的",
+          "gloss": "instinctive, fundamental",
+          "examples": [
             {
-              "en": "primordial matter",
-              "zh": "原始物质"
+              "en": "A primordial fear of danger can make people react before they fully understand a threat.",
+              "zh": "对危险的原始恐惧会让人在完全理解威胁之前作出反应。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "primordial fear",
+              "zh": "原始恐惧"
             }
           ]
         }
@@ -299328,8 +299856,8 @@
     {
       "head": "primordially",
       "phonetic": "",
-      "cut": "prim/ord/ial/ly",
-      "cutMeaning": "第一/顺序/形容词/副词",
+      "cut": "primordially",
+      "cutMeaning": "原始地",
       "senses": [
         {
           "index": "",
@@ -303646,14 +304174,18 @@
       "head": "propagate",
       "phonetic": "ˈprɑːpəɡeɪt",
       "cut": "pro/pag/ate",
-      "cutMeaning": "向前；支持/砍；切/动词；使成为",
+      "cutMeaning": "向前；公开/固定；推进/动词",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "v.",
-          "zh": "繁殖",
-          "gloss": "raise, reproduce",
+          "zh": "传播；扩散",
+          "gloss": "spread, transmit",
           "examples": [
+            {
+              "en": "False information can propagate freely when platforms lack effective moderation.",
+              "zh": "当平台缺乏有效审核时，虚假信息会自由传播。"
+            },
             {
               "en": "Platforms can propagate misinformation faster than institutions can correct it.",
               "zh": "平台传播错误信息的速度可能快于机构纠正它的速度。"
@@ -303661,9 +304193,17 @@
             {
               "en": "Social media can propagate misinformation faster than institutions can correct it.",
               "zh": "社交媒体传播错误信息的速度可能快过机构纠正它的速度。"
+            },
+            {
+              "en": "Radio allowed political ideas to propagate across remote villages.",
+              "zh": "广播使政治思想能传播到偏远村庄。"
             }
           ],
           "phrases": [
+            {
+              "en": "propagate signals",
+              "zh": "传播信号"
+            },
             {
               "en": "propagate ideas",
               "zh": "传播观念"
@@ -303675,38 +304215,30 @@
             {
               "en": "propagate misinformation",
               "zh": "传播错误信息"
-            },
-            {
-              "en": "propagate signals",
-              "zh": "传播信号"
             }
           ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "v.",
-          "zh": "散布",
-          "gloss": "spread",
+          "zh": "繁殖；培育",
+          "gloss": "breed, reproduce",
           "examples": [
+            {
+              "en": "Farmers can propagate plants from seeds or cuttings to protect local food supplies.",
+              "zh": "农民可以通过种子或插枝繁殖植物，以保护本地食物供应。"
+            },
             {
               "en": "Social media can propagate misinformation faster than institutions can correct it.",
               "zh": "社交媒体传播错误信息的速度可能快过机构纠正它的速度。"
             }
           ],
-          "phrases": []
-        },
-        {
-          "index": 3,
-          "pos": "v.",
-          "zh": "传播",
-          "gloss": "spread, disperse",
-          "examples": [
+          "phrases": [
             {
-              "en": "Radio allowed political ideas to propagate across remote villages.",
-              "zh": "广播使政治思想能传播到偏远村庄。"
+              "en": "propagate plants",
+              "zh": "繁殖植物"
             }
-          ],
-          "phrases": []
+          ]
         }
       ]
     },
@@ -310109,14 +310641,18 @@
       "head": "radiance",
       "phonetic": "",
       "cut": "radi/ance",
-      "cutMeaning": "光线/名词",
+      "cutMeaning": "光线；辐射/名词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "n.",
-          "zh": "光辉；辐射亮度",
-          "gloss": "radiate",
+          "zh": "光辉；光芒",
+          "gloss": "brightness, light",
           "examples": [
+            {
+              "en": "Art can preserve the radiance of a culture after its political power disappears.",
+              "zh": "艺术可以在政治权力消失后保存一种文化的光辉。"
+            },
             {
               "en": "Solar radiance affects climate, energy, and life on Earth.",
               "zh": "太阳辐射亮度影响地球的气候、能量和生命。"
@@ -310124,12 +310660,12 @@
           ],
           "phrases": [
             {
-              "en": "solar radiance",
-              "zh": "太阳光辉"
-            },
-            {
               "en": "ancient radiance",
               "zh": "古老光辉"
+            },
+            {
+              "en": "solar radiance",
+              "zh": "太阳光辉"
             },
             {
               "en": "radiance of a star",
@@ -310138,6 +310674,24 @@
             {
               "en": "inner radiance",
               "zh": "内在光辉"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "n.",
+          "zh": "容光焕发；光彩",
+          "gloss": "glow, visible happiness",
+          "examples": [
+            {
+              "en": "Her radiance returned when she heard that the recovery had succeeded.",
+              "zh": "听到恢复成功后，她重新容光焕发。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "facial radiance",
+              "zh": "面部光彩"
             }
           ]
         }
@@ -310248,8 +310802,8 @@
     {
       "head": "radiative",
       "phonetic": "",
-      "cut": "radi/at/ive",
-      "cutMeaning": "光线/动词；使成为/形容词",
+      "cut": "radiative",
+      "cutMeaning": "辐射的",
       "senses": [
         {
           "index": "",
@@ -321733,14 +322287,18 @@
       "head": "relentless",
       "phonetic": "",
       "cut": "re/lent/less",
-      "cutMeaning": "反复；回/放松/无",
+      "cutMeaning": "反复；回/放缓；宽容/没有",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "adj.",
-          "zh": "不停的；不懈的",
-          "gloss": "persistent",
+          "zh": "不停的；持续强烈的",
+          "gloss": "persistent, continuous",
           "examples": [
+            {
+              "en": "Relentless competition may improve efficiency but damage workers' mental health.",
+              "zh": "持续激烈的竞争可能提高效率，但会损害劳动者心理健康。"
+            },
             {
               "en": "Relentless pressure from voters forced officials to respond.",
               "zh": "选民持续不断的压力迫使官员回应。"
@@ -321750,6 +322308,24 @@
             {
               "en": "relentless pressure",
               "zh": "持续压力"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "adj.",
+          "zh": "不留情的；严酷的",
+          "gloss": "harsh, unforgiving",
+          "examples": [
+            {
+              "en": "Relentless criticism can make young researchers afraid to test new ideas.",
+              "zh": "无情批评会让年轻研究者害怕测试新想法。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "relentless criticism",
+              "zh": "无情批评"
             }
           ]
         }
@@ -323440,21 +324016,29 @@
     {
       "head": "remote",
       "phonetic": "rɪˈmoʊt",
-      "cut": "re/mot/e",
-      "cutMeaning": "再次；重新/动/词尾",
+      "cut": "re/mote",
+      "cutMeaning": "离开；向后/移动；远离",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "adj.",
-          "zh": "偏僻的，遥远的",
-          "gloss": "faraway",
+          "zh": "遥远的；偏僻的",
+          "gloss": "distant, far-off",
           "examples": [
+            {
+              "en": "Remote regions often suffer from limited access to healthcare and education.",
+              "zh": "偏远地区通常难以获得医疗和教育资源。"
+            },
             {
               "en": "Remote work can reduce commuting pressure but may weaken workplace relationships gradually.",
               "zh": "远程工作可以减少通勤压力，但可能逐渐削弱职场关系。"
             }
           ],
           "phrases": [
+            {
+              "en": "remote region",
+              "zh": "偏远地区"
+            },
             {
               "en": "remote control",
               "zh": "遥控器"
@@ -323470,6 +324054,24 @@
             {
               "en": "work remotely",
               "zh": "远程工作"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "adj.",
+          "zh": "远程的；线上的",
+          "gloss": "online, virtual",
+          "examples": [
+            {
+              "en": "Remote work can reduce commuting pressure but weaken social interaction.",
+              "zh": "远程办公可以减少通勤压力，但可能削弱社交互动。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "remote work",
+              "zh": "远程办公"
             }
           ]
         }
@@ -328739,15 +329341,19 @@
     {
       "head": "restore",
       "phonetic": "rɪˈstɔːr",
-      "cut": "re/stor/e",
-      "cutMeaning": "再次；重新/建立；修复/词尾",
+      "cut": "re/store",
+      "cutMeaning": "再次；回/放置；储存",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "v.",
-          "zh": "恢复，修复",
-          "gloss": "renovate",
+          "zh": "恢复；重新建立",
+          "gloss": "bring back, re-establish",
           "examples": [
+            {
+              "en": "Clear communication can restore public confidence after a policy failure.",
+              "zh": "政策失败后，清晰沟通可以恢复公众信心。"
+            },
             {
               "en": "Transparent investigations can restore public trust after serious corruption scandals emerge publicly.",
               "zh": "透明调查可以在严重腐败丑闻公开出现后恢复公众信任。"
@@ -328755,12 +329361,12 @@
           ],
           "phrases": [
             {
-              "en": "restore function",
-              "zh": "恢复功能"
-            },
-            {
               "en": "restore confidence",
               "zh": "恢复信心"
+            },
+            {
+              "en": "restore function",
+              "zh": "恢复功能"
             },
             {
               "en": "restore a building",
@@ -328781,6 +329387,42 @@
             {
               "en": "restores mechanism",
               "zh": "restores 机制"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "v.",
+          "zh": "修复；修缮",
+          "gloss": "repair, renovate",
+          "examples": [
+            {
+              "en": "Museums restore damaged paintings to preserve artistic heritage.",
+              "zh": "博物馆修复受损画作，以保存艺术遗产。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "restore ancient buildings",
+              "zh": "修复古建筑"
+            }
+          ]
+        },
+        {
+          "index": "3",
+          "pos": "v.",
+          "zh": "归还；恢复给",
+          "gloss": "return, give back",
+          "examples": [
+            {
+              "en": "Courts may restore property to its original owner if it was taken illegally.",
+              "zh": "如果财产被非法夺走，法院可能将其归还原主人。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "restore rights",
+              "zh": "恢复权利"
             }
           ]
         }
@@ -340852,20 +341494,28 @@
       "head": "scholar",
       "phonetic": "ˈskɑːlər",
       "cut": "schol/ar",
-      "cutMeaning": "学者/人；物",
+      "cutMeaning": "学校；学问/人",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "n.",
           "zh": "学者",
-          "gloss": "academician",
+          "gloss": "academic, researcher, expert",
           "examples": [
+            {
+              "en": "Leading scholars often disagree because historical evidence can be incomplete.",
+              "zh": "重要学者之间常有分歧，因为历史证据可能不完整。"
+            },
             {
               "en": "The scholar compared ancient maps with modern satellite images.",
               "zh": "学者把古代地图与现代卫星图像进行比较。"
             }
           ],
           "phrases": [
+            {
+              "en": "leading scholar",
+              "zh": "重要学者"
+            },
             {
               "en": "Islamic scholar",
               "zh": "伊斯兰学者"
@@ -340881,6 +341531,24 @@
             {
               "en": "academic scholar",
               "zh": "学术研究者"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "n.",
+          "zh": "奖学金获得者",
+          "gloss": "scholarship student",
+          "examples": [
+            {
+              "en": "Young scholars need funding and academic freedom to develop original ideas.",
+              "zh": "青年学者需要资金和学术自由来发展原创思想。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "Rhodes scholar",
+              "zh": "罗德奖学金获得者"
             }
           ]
         }
@@ -351587,8 +352255,8 @@
     {
       "head": "single",
       "phonetic": "",
-      "cut": "single",
-      "cutMeaning": "单一的",
+      "cut": "sing/le",
+      "cutMeaning": "单一的/词尾",
       "senses": [
         {
           "index": "",
@@ -351634,14 +352302,18 @@
       "head": "singularity",
       "phonetic": "",
       "cut": "singul/ar/ity",
-      "cutMeaning": "单数的/人；物/名词",
+      "cutMeaning": "单一；独特/形容词/名词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "n.",
-          "zh": "奇点；独特性",
-          "gloss": "quality, property",
+          "zh": "奇点；异常点",
+          "gloss": "critical point, exceptional point",
           "examples": [
+            {
+              "en": "In cosmology, a singularity refers to a point where density becomes extremely high.",
+              "zh": "在宇宙学中，奇点指密度变得极高的点。"
+            },
             {
               "en": "The technological singularity is often imagined as a point where prediction fails.",
               "zh": "技术奇点常被想象成预测失效的节点。"
@@ -351649,12 +352321,12 @@
           ],
           "phrases": [
             {
-              "en": "initial singularity",
-              "zh": "初始奇点"
-            },
-            {
               "en": "gravitational singularity",
               "zh": "引力奇点"
+            },
+            {
+              "en": "initial singularity",
+              "zh": "初始奇点"
             },
             {
               "en": "approach a singularity",
@@ -351663,6 +352335,24 @@
             {
               "en": "technological singularity",
               "zh": "技术奇点"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "n.",
+          "zh": "独特性；非凡性",
+          "gloss": "uniqueness, distinctiveness",
+          "examples": [
+            {
+              "en": "The singularity of the manuscript made it valuable to scholars.",
+              "zh": "这份手稿的独特性使其对学者很有价值。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "cultural singularity",
+              "zh": "文化独特性"
             }
           ]
         }
@@ -394910,15 +395600,19 @@
     {
       "head": "undergo",
       "phonetic": "ˌʌndərˈɡoʊ",
-      "cut": "un/dergo",
-      "cutMeaning": "不；相反/经历",
+      "cut": "under/go",
+      "cutMeaning": "在下；承受/经历；去",
       "senses": [
         {
-          "index": 1,
+          "index": "1",
           "pos": "v.",
-          "zh": "经历",
-          "gloss": "experience",
+          "zh": "经历；经受",
+          "gloss": "experience, go through",
           "examples": [
+            {
+              "en": "Education systems must undergo reform when old exams fail to measure real ability.",
+              "zh": "当旧考试无法衡量真实能力时，教育体系必须经历改革。"
+            },
             {
               "en": "A society may undergo change before it develops language to explain it.",
               "zh": "社会可能先经历变化，再发展出解释变化的语言。"
@@ -394929,6 +395623,10 @@
             }
           ],
           "phrases": [
+            {
+              "en": "undergo reform",
+              "zh": "经历改革"
+            },
             {
               "en": "undergo change",
               "zh": "经历变化"
@@ -394948,17 +395646,26 @@
           ]
         },
         {
-          "index": 2,
+          "index": "2",
           "pos": "v.",
-          "zh": "遭受",
-          "gloss": "suffer",
+          "zh": "接受治疗或手术",
+          "gloss": "receive, have",
           "examples": [
+            {
+              "en": "Patients should receive clear information before they undergo surgery.",
+              "zh": "病人在接受手术前应该获得清晰信息。"
+            },
             {
               "en": "Cities undergo rapid change when transport networks and housing policies are redesigned together.",
               "zh": "当交通网络和住房政策一起被重新设计时，城市会经历快速变化。"
             }
           ],
-          "phrases": []
+          "phrases": [
+            {
+              "en": "undergo surgery",
+              "zh": "接受手术"
+            }
+          ]
         }
       ]
     },
@@ -402754,15 +403461,19 @@
     {
       "head": "velocity",
       "phonetic": "vəˈlɑːsəti",
-      "cut": "velocity",
-      "cutMeaning": "速度",
+      "cut": "veloc/ity",
+      "cutMeaning": "快速/名词",
       "senses": [
         {
-          "index": "",
+          "index": "1",
           "pos": "n.",
-          "zh": "速度 ，速率",
-          "gloss": "rate",
+          "zh": "速度；速率",
+          "gloss": "speed, rate of movement",
           "examples": [
+            {
+              "en": "Satellites must travel at a precise velocity to remain in orbit.",
+              "zh": "卫星必须以精确速度运行才能留在轨道中。"
+            },
             {
               "en": "A car's velocity changes when acceleration increases, which allows it to move faster within a shorter time.",
               "zh": "当加速度增加时，汽车速度会改变，使它能在更短时间内移动得更快。"
@@ -402770,12 +403481,34 @@
           ],
           "phrases": [
             {
+              "en": "high velocity",
+              "zh": "高速"
+            },
+            {
               "en": "constant velocity",
               "zh": "匀速"
             },
             {
               "en": "flow velocity",
               "zh": "流速"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "n.",
+          "zh": "变化速度；发展速度",
+          "gloss": "pace, rate",
+          "examples": [
+            {
+              "en": "The velocity of technological change makes curricula hard to update quickly.",
+              "zh": "技术变化的速度使课程难以及时更新。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "velocity of change",
+              "zh": "变化速度"
             }
           ]
         }
@@ -406626,14 +407359,18 @@
       "head": "void",
       "phonetic": "",
       "cut": "void",
-      "cutMeaning": "空",
+      "cutMeaning": "空；无效",
       "senses": [
         {
-          "index": "",
-          "pos": "n./adj.",
-          "zh": "空缺；无效的",
-          "gloss": "empty space, invalid",
+          "index": "1",
+          "pos": "n.",
+          "zh": "空处；空白；虚空",
+          "gloss": "empty space, emptiness",
           "examples": [
+            {
+              "en": "Community libraries can fill a void when schools lack enough reading resources.",
+              "zh": "当学校缺乏足够阅读资源时，社区图书馆可以填补空白。"
+            },
             {
               "en": "The court declared the contract void because one signature was false.",
               "zh": "法院宣布合同无效，因为其中一个签名是假的。"
@@ -406641,12 +407378,52 @@
           ],
           "phrases": [
             {
+              "en": "fill a void",
+              "zh": "填补空白"
+            },
+            {
               "en": "legal void",
               "zh": "法律空白"
             },
             {
               "en": "void contract",
               "zh": "无效合同"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "adj.",
+          "zh": "无效的",
+          "gloss": "invalid, not effective",
+          "examples": [
+            {
+              "en": "A contract may become void if one party was forced to sign it.",
+              "zh": "如果一方被迫签署，合同可能变得无效。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "null and void",
+              "zh": "无效的"
+            }
+          ]
+        },
+        {
+          "index": "3",
+          "pos": "adj.",
+          "zh": "缺乏的；没有的",
+          "gloss": "lacking, without",
+          "examples": [
+            {
+              "en": "A public accusation void of evidence can damage trust and reputation.",
+              "zh": "缺乏证据的公开指控可能损害信任和声誉。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "void of evidence",
+              "zh": "缺乏证据"
             }
           ]
         }
@@ -415586,6 +416363,99 @@
             {
               "en": "economic precariousness",
               "zh": "经济不稳定"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "head": "corrupt",
+      "cut": "cor/rupt",
+      "cutMeaning": "共同；完全/破裂；败坏",
+      "senses": [
+        {
+          "index": "1",
+          "pos": "adj.",
+          "zh": "腐败的；堕落的",
+          "gloss": "dishonest, immoral",
+          "examples": [
+            {
+              "en": "Corrupt officials can make citizens lose trust in public institutions.",
+              "zh": "腐败官员会让公民失去对公共机构的信任。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "corrupt officials",
+              "zh": "腐败官员"
+            }
+          ]
+        },
+        {
+          "index": "2",
+          "pos": "v.",
+          "zh": "腐蚀；败坏",
+          "gloss": "damage morally, spoil",
+          "examples": [
+            {
+              "en": "Secret payments can corrupt public institutions before the damage becomes visible.",
+              "zh": "秘密付款会在损害显现之前腐蚀公共机构。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "corrupt public institutions",
+              "zh": "腐蚀公共机构"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "head": "corruption",
+      "cut": "cor/rupt/ion",
+      "cutMeaning": "共同；完全/破裂；败坏/名词",
+      "senses": [
+        {
+          "index": "1",
+          "pos": "n.",
+          "zh": "腐败；腐化",
+          "gloss": "dishonesty, moral decay",
+          "examples": [
+            {
+              "en": "Independent audits can expose corruption before it becomes normal inside an institution.",
+              "zh": "独立审计可以在腐败成为机构内部常态之前揭露它。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "political corruption",
+              "zh": "政治腐败"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "head": "corruptible",
+      "cut": "cor/rupt/ible",
+      "cutMeaning": "共同；完全/破裂；败坏/可...的",
+      "senses": [
+        {
+          "index": "1",
+          "pos": "adj.",
+          "zh": "易腐败的；可被收买的",
+          "gloss": "open to bribery, morally weak",
+          "examples": [
+            {
+              "en": "A corruptible official can turn a fair protocol into a private advantage.",
+              "zh": "一个易被收买的官员可能把公平流程变成私人利益。"
+            }
+          ],
+          "phrases": [
+            {
+              "en": "corruptible official",
+              "zh": "易腐败官员"
             }
           ]
         }

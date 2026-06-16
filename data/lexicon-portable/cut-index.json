@@ -1,6 +1,6 @@
 {
   "source": "/Users/nishenglan/Documents/lexicon 2/audits/kin_repository_total.md",
-  "count": 2445,
+  "count": 2441,
   "index": {
     "a": [
       "abandon",
@@ -253,7 +253,6 @@
       "differential",
       "differently",
       "disclaimer",
-      "disentangler",
       "dispatcher",
       "dissenter",
       "dweller",
@@ -344,8 +343,6 @@
       "ledger",
       "lever",
       "leverage",
-      "linger",
-      "lingerer",
       "listener",
       "lower",
       "lowering",
@@ -585,7 +582,6 @@
       "enactment",
       "encampment",
       "encirclement",
-      "encompassment",
       "encouragement",
       "endangerment",
       "endorsement",
@@ -1140,6 +1136,7 @@
       "incubate",
       "inculcate",
       "indicate",
+      "inflate",
       "initiate",
       "innovate",
       "inoculate",
@@ -1388,6 +1385,7 @@
       "cooperation",
       "correction",
       "correlation",
+      "corruption",
       "creation",
       "creationism",
       "criterion",
@@ -1508,6 +1506,7 @@
       "induction",
       "inexaction",
       "infection",
+      "inflation",
       "inflection",
       "infliction",
       "inhibition",
@@ -1802,6 +1801,7 @@
       "bisexuality",
       "brutality",
       "capability",
+      "capacity",
       "carcerality",
       "celebrity",
       "celerity",
@@ -1979,6 +1979,7 @@
       "utility",
       "validity",
       "vanity",
+      "velocity",
       "verity",
       "vernacularity",
       "versatility",
@@ -3177,6 +3178,7 @@
       "positional",
       "postural",
       "primal",
+      "primordial",
       "principal",
       "principality",
       "principally",
@@ -3391,7 +3393,6 @@
       "completely",
       "complexly",
       "complicatedly",
-      "comprehensively",
       "compulsorily",
       "concisely",
       "concretely",
@@ -3674,7 +3675,6 @@
       "preliminarily",
       "previously",
       "primitively",
-      "primordially",
       "principally",
       "privately",
       "productively",
@@ -3845,7 +3845,6 @@
       "collectively",
       "commemorative",
       "comprehensive",
-      "comprehensively",
       "comprehensiveness",
       "compressive",
       "compulsive",
@@ -3888,6 +3887,7 @@
       "disincentive",
       "dismissive",
       "disruptive",
+      "dissipative",
       "distinctive",
       "distributive",
       "effective",
@@ -3975,7 +3975,6 @@
       "protectiveness",
       "qualitative",
       "qualitatively",
-      "radiative",
       "reactive",
       "reconstructive",
       "reflective",
@@ -4022,6 +4021,9 @@
       "abruptness",
       "bankrupt",
       "bankruptcy",
+      "corrupt",
+      "corruptible",
+      "corruption",
       "disrupt",
       "disruption",
       "disruptive",
@@ -4565,7 +4567,6 @@
       "refuse",
       "reintroduce",
       "relieve",
-      "remote",
       "remotely",
       "remoteness",
       "repose",
@@ -4576,7 +4577,6 @@
       "response",
       "restate",
       "restatement",
-      "restore",
       "revere",
       "reverse",
       "revise",
@@ -4750,6 +4750,7 @@
       "latent",
       "latently",
       "latentness",
+      "nascent",
       "nutrient",
       "obedient",
       "obediently",
@@ -5673,6 +5674,7 @@
       "acquirer",
       "acquisition",
       "acquisitive",
+      "capacity",
       "cardiac",
       "reacquire"
     ],
@@ -5841,7 +5843,6 @@
       "indication",
       "indignation",
       "infestation",
-      "inflation",
       "information",
       "informational",
       "inhalation",
@@ -6114,6 +6115,7 @@
       "combustible",
       "compatible",
       "comprehensible",
+      "corruptible",
       "credible",
       "crucible",
       "defensible",
@@ -6504,6 +6506,7 @@
       "dissemination",
       "disseminator",
       "dissipation",
+      "dissipative",
       "domestication",
       "duplication",
       "elaboration",
@@ -6627,7 +6630,6 @@
       "proliferation",
       "propagation",
       "propagator",
-      "radiative",
       "reallocating",
       "recreation",
       "regulation",
@@ -7840,8 +7842,6 @@
       "potentially",
       "preferentially",
       "presidential",
-      "primordial",
-      "primordially",
       "professorial",
       "prudential",
       "quintessential",
@@ -8634,6 +8634,7 @@
       "citizenship",
       "darken",
       "disenfranchisement",
+      "disentangle",
       "enable",
       "enablement",
       "enabler",
@@ -8648,7 +8649,6 @@
       "enclose",
       "enclosure",
       "encompass",
-      "encompassment",
       "encounter",
       "encourage",
       "encouragement",
@@ -9087,6 +9087,7 @@
       "infinite",
       "infirm",
       "infirmity",
+      "inflation",
       "inflection",
       "inflexible",
       "inflict",
@@ -12365,6 +12366,7 @@
       "compasses",
       "compassion",
       "compassionless",
+      "encompass",
       "overpass",
       "pass",
       "passage",
@@ -12793,6 +12795,7 @@
       "compute",
       "computer",
       "decomposition",
+      "encompass",
       "incoming",
       "incompatible",
       "incompetence",
@@ -13329,6 +13332,7 @@
       "settle",
       "settleable",
       "settlement",
+      "single",
       "smuggle",
       "stifle",
       "subtle",
@@ -13944,10 +13948,6 @@
       "capture",
       "incapable"
     ],
-    "acity": [
-      "capacity",
-      "sagacity"
-    ],
     "ital": [
       "capital",
       "capitalism",
@@ -14044,7 +14044,8 @@
     ],
     "go": [
       "cargo",
-      "go"
+      "go",
+      "undergo"
     ],
     "carn": [
       "carnivore",
@@ -14979,6 +14980,7 @@
     ],
     "ively": [
       "cohesively",
+      "comprehensively",
       "inclusively",
       "inconclusively",
       "prohibitively"
@@ -15210,7 +15212,6 @@
       "motto",
       "promotion",
       "promotional",
-      "remote",
       "remotely",
       "remoteness"
     ],
@@ -16868,6 +16869,9 @@
       "correspondence",
       "correspondingly",
       "corrode",
+      "corrupt",
+      "corruptible",
+      "corruption",
       "cortex",
       "decor",
       "incorrect",
@@ -18495,7 +18499,6 @@
       "disenfranchisement",
       "disentangle",
       "disentanglement",
-      "disentangler",
       "disfigure",
       "disgorge",
       "disguise",
@@ -18568,6 +18571,7 @@
       "dissimilar",
       "dissipate",
       "dissipation",
+      "dissipative",
       "dissolve",
       "distal",
       "distance",
@@ -18664,10 +18668,6 @@
     "encumber": [
       "disencumber",
       "encumber"
-    ],
-    "entangle": [
-      "disentangle",
-      "disentanglement"
     ],
     "gorge": [
       "disgorge",
@@ -18860,7 +18860,8 @@
     ],
     "sip": [
       "dissipate",
-      "dissipation"
+      "dissipation",
+      "dissipative"
     ],
     "tal": [
       "distal",
@@ -19441,10 +19442,6 @@
     "empow": [
       "empower",
       "empowerment"
-    ],
-    "compass": [
-      "encompass",
-      "encompassment"
     ],
     "rance": [
       "encumbrance",
@@ -20445,7 +20442,8 @@
     "flat": [
       "flat",
       "flatly",
-      "flatness"
+      "flatness",
+      "inflation"
     ],
     "flav": [
       "flavor",
@@ -22333,7 +22331,6 @@
       "radiant",
       "radiate",
       "radiation",
-      "radiative",
       "radiator",
       "radio",
       "radius"
@@ -22637,10 +22634,6 @@
       "limit",
       "limitation"
     ],
-    "ling": [
-      "linger",
-      "lingerer"
-    ],
     "lingua": [
       "lingua",
       "linguafranca"
@@ -22678,7 +22671,8 @@
     ],
     "mote": [
       "locomote",
-      "promote"
+      "promote",
+      "remote"
     ],
     "ev": [
       "longevity",
@@ -23104,6 +23098,7 @@
       "underdressed",
       "underestimate",
       "underestimation",
+      "undergo",
       "undergraduate",
       "underground",
       "underlying",
@@ -23729,7 +23724,6 @@
       "unconventional",
       "unconventionally",
       "uncover",
-      "undergo",
       "underlay",
       "undermine",
       "underminer",
@@ -24409,12 +24403,7 @@
       "primitive",
       "primitively",
       "primitivism",
-      "primordial",
-      "primordially"
-    ],
-    "ord": [
-      "primordial",
-      "primordially"
+      "primordial"
     ],
     "soup": [
       "primordialsoup",
@@ -24822,10 +24811,13 @@
     "stor": [
       "restoration",
       "restorative",
-      "restore",
       "restorer",
       "storage",
       "storey"
+    ],
+    "store": [
+      "restore",
+      "store"
     ],
     "tali": [
       "retaliate",
@@ -26519,6 +26511,9 @@
         "abruptness",
         "bankrupt",
         "bankruptcy",
+        "corrupt",
+        "corruptible",
+        "corruption",
         "disrupt",
         "disruption",
         "disruptive",
@@ -27682,6 +27677,7 @@
         "infinite",
         "infirm",
         "infirmity",
+        "inflation",
         "inflection",
         "inflexible",
         "inflict",
@@ -29667,7 +29663,6 @@
         "motto",
         "promotion",
         "promotional",
-        "remote",
         "remotely",
         "remoteness"
       ]
@@ -31551,7 +31546,6 @@
         "radiant",
         "radiate",
         "radiation",
-        "radiative",
         "radiator",
         "radio",
         "radius"
@@ -31634,6 +31628,7 @@
         "underdressed",
         "underestimate",
         "underestimation",
+        "undergo",
         "undergraduate",
         "underground",
         "underlying",
@@ -31720,7 +31715,6 @@
         "unconventional",
         "unconventionally",
         "uncover",
-        "undergo",
         "underlay",
         "undermine",
         "underminer",
@@ -31857,8 +31851,7 @@
         "primitive",
         "primitively",
         "primitivism",
-        "primordial",
-        "primordially"
+        "primordial"
       ]
     },
     "punct": {

@@ -1,6 +1,6 @@
 {
   "source": "/Users/nishenglan/Documents/lexicon 2/data/vocab/VOCAB_FAMILY_SHARED_CLUSTERS_LITE.js",
-  "count": 6827,
+  "count": 6832,
   "families": {
     "abandon": [
       "abandon",
@@ -2632,8 +2632,7 @@
       "capable",
       "capability",
       "capacity",
-      "incapable",
-      "incapacity"
+      "incapable"
     ],
     "capacious": [
       "capacious"
@@ -3879,6 +3878,8 @@
     "conceive": [
       "conceive",
       "conceivable",
+      "concept",
+      "conception",
       "inconceivable"
     ],
     "concentrate": [
@@ -7985,9 +7986,6 @@
     ],
     "fractal": [
       "fractal"
-    ],
-    "fracture": [
-      "fracture"
     ],
     "fragile": [
       "fragile",
@@ -12915,8 +12913,7 @@
       "impermeable",
       "permeability",
       "permeable",
-      "permeation",
-      "semipermeable"
+      "permeation"
     ],
     "permit": [
       "permit",
@@ -14196,6 +14193,8 @@
     "radiate": [
       "radiate",
       "irradiate",
+      "radiance",
+      "radiant",
       "radiation",
       "radiative",
       "radiator"
@@ -16196,7 +16195,9 @@
       "sinewless"
     ],
     "single": [
-      "single"
+      "single",
+      "singular",
+      "singularity"
     ],
     "singular": [
       "singular",
@@ -18296,10 +18297,9 @@
       "undercharge"
     ],
     "undergo": [
-      "undergo"
-    ],
-    "undergone": [
-      "undergone"
+      "undergo",
+      "undergone",
+      "underwent"
     ],
     "undergraduate": [
       "undergraduate"
@@ -18355,9 +18355,6 @@
     ],
     "underweight": [
       "underweight"
-    ],
-    "underwent": [
-      "underwent"
     ],
     "underwhelm": [
       "underwhelm"
@@ -18839,8 +18836,9 @@
     ],
     "void": [
       "void",
+      "avoid",
+      "avoidance",
       "voidable",
-      "voidance",
       "voidness"
     ],
     "volatile": [
@@ -19422,7 +19420,10 @@
       "dimensional"
     ],
     "fraction": [
-      "fraction"
+      "fraction",
+      "fracture",
+      "fragile",
+      "fragment"
     ],
     "friction": [
       "friction",
@@ -20353,8 +20354,7 @@
     ],
     "primordial": [
       "primordial",
-      "primordially",
-      "primordialsoup"
+      "primordially"
     ],
     "construe": [
       "construe",
@@ -21494,6 +21494,50 @@
       "deteriorate",
       "deterioration"
     ],
+    "beam": [
+      "beam"
+    ],
+    "dense": [
+      "dense",
+      "condensation",
+      "condense",
+      "densely",
+      "density"
+    ],
+    "exponent": [
+      "exponent",
+      "exponential",
+      "exponentially"
+    ],
+    "inflate": [
+      "inflate",
+      "inflation"
+    ],
+    "remote": [
+      "remote",
+      "remotely",
+      "remoteness"
+    ],
+    "relent": [
+      "relentless",
+      "relentlessly"
+    ],
+    "static": [
+      "static",
+      "antistatic"
+    ],
+    "restore": [
+      "restore",
+      "restoration",
+      "restorative"
+    ],
+    "capacity": [
+      "capacity",
+      "capability",
+      "capable",
+      "incapable",
+      "incapacity"
+    ],
     "respect": [
       "respect",
       "respectable",
@@ -22112,10 +22156,6 @@
       "ritual",
       "ritualistic"
     ],
-    "static": [
-      "static",
-      "antistatic"
-    ],
     "station": [
       "station",
       "stationary",
@@ -22151,9 +22191,6 @@
     ],
     "policy": [
       "policy"
-    ],
-    "restore": [
-      "restore"
     ],
     "clause": [
       "clause"
@@ -22358,10 +22395,6 @@
     ],
     "relation": [
       "relation"
-    ],
-    "relentless": [
-      "relentless",
-      "relentlessly"
     ],
     "remind": [
       "remind",
@@ -22724,9 +22757,6 @@
     ],
     "bead": [
       "bead"
-    ],
-    "beam": [
-      "beam"
     ],
     "beginner": [
       "beginner"
@@ -23669,9 +23699,6 @@
     ],
     "expire": [
       "expire"
-    ],
-    "exponent": [
-      "exponent"
     ],
     "exposition": [
       "exposition"
@@ -25262,6 +25289,9 @@
     "pretty": [
       "pretty"
     ],
+    "primordialsoup": [
+      "primordialsoup"
+    ],
     "printmaker": [
       "printmaker"
     ],
@@ -25763,6 +25793,9 @@
     ],
     "semester": [
       "semester"
+    ],
+    "semipermeable": [
+      "semipermeable"
     ],
     "senate": [
       "senate"
@@ -26612,6 +26645,9 @@
     "visualize": [
       "visualize"
     ],
+    "voidance": [
+      "voidance"
+    ],
     "volume": [
       "volume"
     ],
@@ -26781,6 +26817,12 @@
       "precarious",
       "precariously",
       "precariousness"
+    ],
+    "corrupt": [
+      "corrupt",
+      "corruption",
+      "corruptible",
+      "incorruptible"
     ]
   }
 }
