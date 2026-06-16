@@ -1,0 +1,1259 @@
+/* ============================================================
+   The Princess Lexicon — pages.css
+   Page-specific overrides only. Keep small; reuse layout / components.
+   ============================================================ */
+
+/* ============================================================
+   PAINTED-UI PAGES
+   When a page uses a painted artwork as its full UI background,
+   add .art-bg to .page. The page-level frame ::before/::after
+   are then hidden, and elements are positioned absolutely as a
+   percentage of the 1448x1086 stage so they line up with the
+   painted slots.
+   ============================================================ */
+.page.art-bg {
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: var(--paper-bg);
+}
+.page.art-bg::before,
+.page.art-bg::after { display: none !important; }
+
+/* Invisible click zone overlaid on a painted button / element.
+   Default fully transparent; a faint warm tint appears on hover. */
+.hit-zone {
+  position: absolute;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: background 180ms ease, border-color 180ms ease;
+  appearance: none;
+  font: inherit;
+  color: transparent;       /* hide accidental text content */
+}
+.hit-zone:hover {
+  background: rgba(167, 141, 91, 0.12);
+  border-color: rgba(167, 141, 91, 0.55);
+}
+.hit-zone:active {
+  background: rgba(167, 141, 91, 0.22);
+}
+
+/* ============================================================
+   CHAPTERS / TOC PAGE — chapters.jpg is the full UI.
+   The 10 chapter zones are positioned by master-frame-relative
+   percentages defined in debug.css (.zone-toc-NN). Each zone
+   renders a .toc-card via chapters.html's inline script. The
+   visual style for the card body + OPEN CHAPTER plaque lives
+   at the bottom of this file under "CHAPTERS (Table of Contents)
+   text + plaque". The shared bottom nav handles BACK / MENU.
+   ============================================================ */
+
+/* ============================================================
+   READING PAGE — chapter illustration is the full UI background.
+   Text and marginalia overlay the painted parchment slots; the
+   painted left princess column doubles as the chapter illustration.
+   ============================================================ */
+.reading-art {
+  background-color: var(--paper-bg);
+}
+
+/* Typography for content INSIDE the title / body zones. Positioning
+   is owned by .ui-zone (see debug.css); these rules only describe
+   how text looks once it's inside its zone. */
+.reading-art .reading-kicker {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #7a7467;
+  margin: 0 0 12px;
+}
+.reading-art .reading-title {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1.12;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #2b3b51;
+  margin: 0 0 6px;
+}
+/* Reading title divider — same visual grammar as .antique-divider
+   but slightly wider in the middle so it matches the painted UI. */
+.reading-art .antique-divider {
+  width: 58%;
+  margin: 6px auto 10px;
+}
+.reading-art .reading-subtitle {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: #9a7b3f;
+  font-weight: 400;
+  font-style: italic;
+  margin: 4px 0 18px;
+}
+.reading-art .reading-body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.82;
+  letter-spacing: 0.032em;
+  word-spacing: 0.07em;
+  color: #3f3a31;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  /* Stay tappable inside reveal.js's container click handler. */
+  -webkit-overflow-scrolling: touch;
+}
+.reading-art .reading-body::-webkit-scrollbar { width: 6px; }
+.reading-art .reading-body::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.32); border-radius: 3px;
+}
+.reading-art .reading-body p {
+  margin: 0 0 18px;
+}
+
+/* Clickable words — default: NO background, only a soft dotted
+   underline. Hover: very faint warm tint. Selected (clicked): pale
+   gold ink-stain. Exactly one .is-selected at a time, driven by JS. */
+.reading-art .reading-body .clickable-word {
+  color: #4d4436;
+  background: transparent;
+  border-bottom: 1px dotted rgba(126, 103, 67, 0.42);
+  padding: 0 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.reading-art .reading-body .clickable-word:hover {
+  background: rgba(168, 143, 93, 0.08);
+  border-bottom-color: rgba(167, 141, 91, 0.62);
+  color: #3f3426;
+}
+.reading-art .reading-body .clickable-word.is-selected {
+  background: rgba(201, 174, 103, 0.24);
+  border-bottom-color: rgba(142, 112, 55, 0.72);
+  color: #33291f;
+}
+
+/* ============================================================
+   ANTIQUE DIVIDER — the universal "── ✤ ──" rule.
+   Two thin fading line-segments flank a single small glyph. Used
+   below every chapter title and at the top edge of every small
+   antique card. Lines fade out at both ends so the rule reads as
+   engraved into the parchment, not stamped on top of it.
+   ============================================================ */
+.antique-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin: 6px auto 8px;
+  pointer-events: none;
+}
+.antique-divider::before,
+.antique-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.55) 25%,
+    rgba(126, 105, 74, 0.55) 75%,
+    transparent 100%);
+}
+.antique-divider-glyph {
+  font-family: Georgia, serif;
+  font-size: 12px;
+  line-height: 1;
+  color: rgba(126, 105, 74, 0.85);
+}
+
+/* ============================================================
+   MARGINALIA CARD — fixed right-side card. Per the user spec:
+   no white/yellow gradient (the user dislikes that look). A
+   transparent panel over the parchment with 4 corner ticks and
+   a top "── ✤ ──" rule; below that the body is left-aligned and
+   the FOLD / SAVE buttons share the bottom.
+     FOLD = bookmark this word into Notes
+     SAVE = bookmark this chapter into Storage.saveChapter
+   ============================================================ */
+.marginalia-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 14px 14px;
+  background: transparent;
+  /* Per user reference image: a clean thin outer line + thinner
+     inner line, no harsh 2 px bar. 1 px outer + 1 px inner faded
+     to ~40 % keeps the engraved-on-parchment feel. */
+  border: 1px solid var(--ink-frame);
+  border-radius: 4px;
+  z-index: 9;
+}
+/* Inner thin line — pseudo-element so the parchment behind stays
+   visible through both. */
+.marginalia-card::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--ink-frame);
+  border-radius: 3px;
+  opacity: 0.42;
+  pointer-events: none;
+}
+/* Top centerpiece — ✤ sits on the outer line, no background pill so
+   the painted parchment shows through behind it. */
+.marginalia-card::after {
+  content: "✤";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 6px;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--ink-frame);
+  pointer-events: none;
+}
+/* The 4-corner-tick spans are no longer needed — the double-line
+   frame + ✤ does the same job at a much smaller visual cost. */
+.marginalia-card > .corner-tick { display: none; }
+/* The old .marginalia-card-rule (separate ✤ row under the card top)
+   is now redundant since the frame ::after provides the same ✤. */
+.marginalia-card-rule { display: none; }
+
+/* Top rule inside the card — same visual grammar as antique-divider. */
+.marginalia-card-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0 0 10px;
+  pointer-events: none;
+}
+.marginalia-card-rule::before,
+.marginalia-card-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.45) 30%,
+    rgba(126, 105, 74, 0.45) 70%,
+    transparent 100%);
+}
+
+/* WORD-CARD STACK — scrollable column of mini-cards. Cards are
+   appended on click and never recycled; the container scrolls
+   when the stack outgrows the marginalia. Each card renders 6
+   rows: word / translation / phrase / phrase-zh / phrase / phrase-zh.
+   Cards are separated by a thin fading rule (matches antique-
+   divider grammar — wider in the middle, fading at the ends). */
+.marginalia-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  text-align: left;
+}
+.marginalia-card-body::-webkit-scrollbar { width: 5px; }
+.marginalia-card-body::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.38); border-radius: 3px;
+}
+.word-card-stack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.word-card-empty {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: #8d7f68;
+  font-style: italic;
+  opacity: 0.78;
+  text-align: left;
+  padding: 4px 0;
+}
+/* Card separator — fading rule, thinner at ends, denser in middle. */
+.word-card {
+  position: relative;
+  padding: 11px 6px 13px;
+  cursor: pointer;
+  transform-origin: center center;
+  transition:
+    background 220ms ease,
+    transform 220ms cubic-bezier(0.2, 0.8, 0.4, 1.2),
+    box-shadow 220ms ease;
+}
+.word-card + .word-card {
+  border-top: 0;
+}
+.word-card + .word-card::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(126, 105, 74, 0.42) 22%,
+    rgba(126, 105, 74, 0.42) 78%,
+    transparent 100%);
+}
+.word-card:hover { background: rgba(167, 141, 91, 0.06); }
+.word-card.is-current {
+  background: rgba(201, 174, 103, 0.10);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 174, 103, 0.32),
+    0 0 14px rgba(201, 174, 103, 0.18);
+}
+/* Pressed: brief inward push + gold halo — 'depress into paper' feel. */
+.word-card:active {
+  transform: scale(0.965);
+  background: rgba(201, 174, 103, 0.16);
+}
+.word-card-headword {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: 0.03em;
+  color: #2f261d;
+}
+.word-card-meaning {
+  margin-top: 4px;
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: #5e5040;
+}
+.word-card-phrase {
+  margin-top: 7px;
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: #5a4e3a;
+  font-style: italic;
+}
+.marginalia-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  text-align: left;
+}
+.marginalia-card-empty {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: #8d7f68;
+  font-style: italic;
+  opacity: 0.78;
+}
+.marginalia-headword {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.18;
+  letter-spacing: 0.04em;
+  color: #3f3a31;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+}
+.marginalia-headword:hover { color: #6b5a37; }
+.marginalia-collocations {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+.marginalia-collocations li {
+  position: relative;
+  padding-left: 10px;
+  margin-bottom: 4px;
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  line-height: 1.38;
+  letter-spacing: 0.01em;
+  color: #6c6254;
+  text-align: left;
+}
+.marginalia-collocations li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: #a78d5b;
+  font-weight: 700;
+}
+/* Action row — single FOLD button now (SAVE moved to bottom nav). */
+.marginalia-card-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(167, 141, 91, 0.30);
+}
+.marginalia-card-actions .marginalia-btn {
+  min-width: 70%;
+}
+.marginalia-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 2px solid var(--ink-frame);
+  padding: 6px 8px;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--ink-frame);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 160ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.marginalia-btn-glyph {
+  color: rgba(167, 141, 91, 0.78);
+  font-size: 0.78em;
+  line-height: 1;
+}
+/* No modern background-fill on hover. Only the text + glyph
+   warm up; the parchment behind the button stays unchanged. */
+.marginalia-btn:hover:not(:disabled):not(.is-active) {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.55);
+}
+.marginalia-btn:hover:not(:disabled):not(.is-active) .marginalia-btn-glyph {
+  color: rgba(124, 95, 50, 0.95);
+}
+.marginalia-btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  color: #8e826b;
+}
+.marginalia-btn.is-active {
+  color: #2a1e08;
+  text-shadow: 0 0 8px rgba(201, 174, 103, 0.75);
+  cursor: default;
+}
+.marginalia-btn.is-active .marginalia-btn-glyph { color: rgba(124, 95, 50, 0.95); }
+
+/* Bottom 5-button nav is .page-bottom-nav in components.css. No
+   reading-specific overrides needed. */
+
+/* Tap-to-begin overlay — keep painted feel. */
+.reading-art .tap-overlay {
+  background: rgba(244, 237, 221, 0.40);
+}
+
+/* Reveal block ink color tuned for the parchment bg. */
+.reading-art .reveal-block { color: rgba(63, 58, 49, 0.10); }
+.reading-art .reveal-block.is-revealed { color: var(--color-body); }
+
+/* Reading title is also reveal-eligible — initially faint (the user
+   wants 若隐若现) and on first tap fades in to full ink as the TTS
+   speaks 'The Universe. 1.1 · The First Light'. Quiz title stays
+   normal-coloured (user: '选择题页面的标题不需要'). */
+.reading-art [data-page="reading"] .zone-reading-title,
+.reading-art:not([data-page="quiz"]) .zone-reading-title {
+  transition: opacity 280ms ease-out, color 280ms ease-out;
+}
+.reading-art:not([data-page="quiz"]) .zone-reading-title:not(.is-revealed) {
+  opacity: 0.18;
+}
+.reading-art:not([data-page="quiz"]) .zone-reading-title.is-revealed {
+  opacity: 1;
+}
+
+/* Quiz body lives in .zone-reading-body, same slot as reading body. */
+.reading-art .quiz-body {
+  font-family: var(--font-body);
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.reading-art .quiz-body::-webkit-scrollbar { width: 0; }
+/* Compressed inter-question + inter-option spacing so all 3 questions
+   × 4 options fit inside the painted body slot without scrolling. */
+.reading-art .quiz-item { margin: 0 0 12px; padding-left: 18px; }
+.reading-art .quiz-no {
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-subtitle);
+  margin: 0 0 3px -18px;
+}
+.reading-art .quiz-question {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  color: var(--color-body);
+  margin: 0 0 6px -18px;
+}
+.reading-art .quiz-options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* PAPER-GRADING quiz option style. No modern row highlight, no
+   coloured backgrounds, no blue selection. Each option is just
+   "letter + text" inked on paper; feedback is a small marginal
+   mark to the LEFT of the letter (✤ for correct, × for wrong)
+   plus, for correct, a faint gold under-ink-stain under the text. */
+.reading-art .quiz-option {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.95em;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 0.30em;            /* was 0.72em — tighter row spacing */
+  padding: 0.04em 0.32em 0.04em 0.2em;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.32;             /* was 1.42 — tighter */
+  letter-spacing: 0.035em;
+  color: #3f3a31;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  text-align: left;
+}
+.reading-art .quiz-option::before {
+  content: "";
+  position: absolute;
+  left: -0.9em;
+  top: 50%;
+  width: 0.42em;
+  height: 0.42em;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: transparent;
+}
+.reading-art .quiz-option:hover { color: #2f281f; }
+.reading-art .quiz-option:hover::before {
+  background: rgba(167, 141, 91, 0.42);
+}
+.reading-art .quiz-option-letter {
+  width: 1.85em;
+  color: #8a7653;
+  letter-spacing: 0.12em;
+  flex: 0 0 auto;
+}
+.reading-art .quiz-option-text {
+  position: relative;
+  display: inline;
+}
+
+/* User-picked but not yet judged — short gold tick at the left. */
+.reading-art .quiz-option.is-selected { color: #3a3024; }
+.reading-art .quiz-option.is-selected::before {
+  content: "";
+  width: 2px;
+  height: 1.4em;
+  border-radius: 0;
+  background: rgba(167, 141, 91, 0.72);
+}
+
+/* Correct answer — gold ✤ mark + faint gold under-ink on the text. */
+.reading-art .quiz-option.is-correct { color: #5d4d2f; }
+.reading-art .quiz-option.is-correct::before {
+  content: "✤";
+  left: -1.25em;
+  width: auto; height: auto;
+  transform: translateY(-50%);
+  background: transparent;
+  color: #a78d5b;
+  font-size: 0.82em;
+  border-radius: 0;
+}
+.reading-art .quiz-option.is-correct .quiz-option-text {
+  background: linear-gradient(180deg, transparent 58%, rgba(201, 174, 103, 0.22) 58%);
+}
+
+/* Wrong answer — red-brown × in the margin + strikethrough line. */
+.reading-art .quiz-option.is-wrong {
+  color: #7a5048;
+  opacity: 0.72;
+}
+.reading-art .quiz-option.is-wrong::before {
+  content: "×";
+  left: -1.1em;
+  width: auto; height: auto;
+  transform: translateY(-52%);
+  background: transparent;
+  color: rgba(122, 80, 72, 0.72);
+  font-size: 0.92em;
+  border-radius: 0;
+}
+.reading-art .quiz-option.is-wrong .quiz-option-text::after {
+  content: "";
+  position: absolute;
+  left: -0.08em;
+  right: -0.08em;
+  top: 54%;
+  height: 1px;
+  background: rgba(122, 80, 72, 0.58);
+  transform: rotate(-1.5deg);
+}
+.reading-art .quiz-option.is-locked { pointer-events: none; }
+
+/* ============================================================
+   WORD DRAWER — painted word-card page slides in from the right.
+   The bg JPG is a COMPLETE word-card with painted floral borders,
+   title cartouche, and bottom ribbon. CSS text must stay inside
+   two SAFE ZONES that avoid the painted artwork:
+     A) .word-card-title-zone — top cartouche slot
+     B) .word-card-body-zone  — middle empty parchment (scroll here)
+   Footer is pinned ABOVE the painted ribbon, NOT inside body scroll.
+   ============================================================ */
+.word-drawer {
+  position: absolute;
+  top: 3.6%; right: 2.2%;
+  width: 35.5%;
+  height: 92%;
+  z-index: 50;
+  transform: translateX(112%);
+  transition: transform 260ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  background-image: url("../assets/bg/ui/frame-blank.jpg");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: -18px 0 30px rgba(48, 38, 24, 0.22);
+  overflow: hidden;
+}
+.word-drawer.is-open { transform: translateX(0); }
+
+.word-drawer-close {
+  position: absolute;
+  top: 3.4%; right: 4.6%;
+  width: 22px; height: 22px;
+  border: none;
+  background: transparent;
+  color: rgba(95, 81, 59, 0.72);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 4;
+}
+.word-drawer-close:hover { color: #3f3a31; }
+
+/* A. Title safe zone — inside the painted top cartouche. */
+.word-card-title-zone {
+  position: absolute;
+  left: 14%; top: 7.8%;
+  width: 72%; height: 12.5%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: left;
+  color: #3f3a31;
+  z-index: 2;
+}
+.word-card-word-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45em;
+}
+.word-card-word {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1.05;
+  letter-spacing: 0.045em;
+  font-weight: 400;
+  color: #3f3a31;
+}
+.word-card-pos {
+  font-size: 14px;
+  font-style: italic;
+  color: #7b6f5c;
+}
+.word-card-meaning {
+  margin-top: 0.4em;
+  font-family: var(--font-cn);
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: 0.035em;
+  color: #6b5c44;
+}
+
+/* B. Body safe zone — avoids ALL 4 painted floral borders. */
+.word-card-body-zone {
+  position: absolute;
+  left: 13.5%; top: 23.5%;
+  width: 73%; height: 60%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding-right: 3%;
+  color: #3f3a31;
+  z-index: 2;
+  scrollbar-width: none;
+}
+.word-card-body-zone::-webkit-scrollbar { width: 0; height: 0; }
+
+.word-section { margin: 0 0 15px; }
+.word-section-title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #9a8358;
+}
+.word-section-title::before {
+  content: "❦";
+  margin-right: 7px;
+  color: #a78d5b;
+  font-size: 0.9em;
+}
+.word-entry-list { list-style: none; margin: 0; padding: 0; }
+.word-entry {
+  position: relative;
+  margin-bottom: 6px;
+  padding-left: 14px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 1.46;
+  letter-spacing: 0.02em;
+  color: #403a31;
+}
+.word-entry::before {
+  content: "•";
+  position: absolute;
+  left: 0; top: 0;
+  color: #a78d5b;
+}
+.word-entry strong { font-weight: 600; color: #332e27; }
+.word-entry em { font-style: italic; color: #5d5347; }
+
+.example-box {
+  margin: 13px 0 15px;
+  padding: 10px 12px;
+  border: 1px solid rgba(185, 170, 138, 0.34);
+  background: rgba(246, 238, 218, 0.34);
+}
+.example-en {
+  margin: 0 0 6px;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  line-height: 1.48;
+  font-style: italic;
+  color: #514839;
+}
+.example-zh {
+  margin: 0;
+  font-family: var(--font-cn);
+  font-size: 11px;
+  line-height: 1.42;
+  color: #7b6f5c;
+}
+
+/* Footer — pinned above the painted ribbon, NOT inside body scroll. */
+.word-drawer-footer {
+  position: absolute;
+  left: 18%; bottom: 11%;
+  width: 64%;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9a8358;
+  z-index: 2;
+}
+
+.word-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 28, 20, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  z-index: 40;
+}
+.word-drawer-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ----- Stage scaling for non-iPad viewports ----- */
+.stage[data-scale] .page {
+  transform: scale(var(--page-scale, 1));
+}
+
+/* ----- index.html ----- */
+.home-hero .t-hero { margin: 0; }
+.home-hero .t-menu-sub { margin-top: 18px; }
+
+.home-emblem {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: 0.5em;
+  color: var(--color-gold);
+  margin-bottom: 14px;
+}
+
+.home-buttons .btn { min-width: 280px; }
+
+/* ----- select.html ----- */
+.select-header .t-hero { font-size: 38px; }
+.select-header .t-menu-sub { margin-top: 12px; font-size: 16px; }
+
+/* ----- reading.html small bits ----- */
+.reading-side-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(154, 131, 88, 0.30);
+  padding-bottom: 8px;
+}
+
+/* ----- chapters.html ----- */
+.chapters-header .t-hero { font-size: 36px; }
+
+/* ----- notes / word garden ----- */
+.split-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 6px 0 14px;
+  margin-bottom: 10px;
+  border-bottom: var(--hairline);
+}
+.split-header .sh-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--color-title);
+}
+.split-header .sh-count {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Visual frame comes from .ornate-panel; .detail-pane only sets fill rules. */
+.detail-pane {
+  min-height: 100%;
+}
+.detail-pane.ornate-panel {
+  padding: 26px 32px 36px;
+}
+.detail-pane .empty-state { margin: 0; }
+
+/* ============================================================
+   BOTTOM NAV — per-page slot coordinates.
+   ALL values are MASTER-FRAME-RELATIVE — the nav lives inside
+   the .master-frame container, so its absolute % positioning
+   resolves against the master frame, not the full page.
+   Reading nav: directly hand-measured by the user (red dots).
+   Select nav: measured page-relative, then converted to
+   master-relative via (p-1.78)/96.33 horizontally and
+   (p-2.15)/95.85 vertically.
+   ============================================================ */
+/* USER FIX-UP: when we pre-cropped every painted bg at source
+   (~1.5% trimmed off top + bottom), the painted bottom strip
+   shifted UP about 1.5% in displayed page-relative coords. The
+   user-originally-measured nav-top values are kept below for
+   reference; the .pre-crop column is what we actually use. */
+.page[data-page="reading"],
+.page[data-page="quiz"] {
+  --nav-count:  5;
+  --nav-left:   29.47%;
+  --nav-top:    93.00%;   /* was 91.50%, +1.5% pre-crop comp */
+  --nav-width:  51.04%;
+  --nav-height:  6.70%;   /* was 8.19% */
+}
+.page.select-art {
+  --nav-count:  2;
+  --nav-left:   22.60%;
+  --nav-top:    93.70%;   /* was 92.20% */
+  --nav-width:  54.92%;
+  --nav-height:  6.10%;   /* was 7.58% */
+}
+.page[data-page="chapters"] {
+  --nav-count:  2;
+  --nav-left:   35.00%;
+  --nav-top:    95.00%;   /* was 93.50% */
+  --nav-width:  30.00%;
+  --nav-height:  4.50%;   /* was 5.50% */
+}
+.page[data-page="word-garden"] {
+  --nav-count:  2;
+  --nav-left:   35.00%;
+  --nav-top:    93.00%;   /* was 91.50% */
+  --nav-width:  30.00%;
+  --nav-height:  5.50%;   /* was 6.50% */
+}
+.page[data-page="save"],
+.page[data-page="load"] {
+  --nav-count:  2;
+  --nav-left:   30.00%;
+  --nav-top:    90.50%;   /* was 89.00% */
+  --nav-width:  40.00%;
+  --nav-height:  5.50%;   /* was 6.50% */
+}
+
+/* ============================================================
+   CHAPTERS (Table of Contents) — text + plaque inside each slot
+   The user's hand-measured zones cover only the EMPTY right side
+   of each painted chapter card. Inside the slot we stack:
+     (top half)    .toc-card-text     — title + tagline
+     (bottom half) .toc-card-action   — centred OPEN CHAPTER plaque
+   The text block aligns left; the plaque centres.
+   ============================================================ */
+/* TEXT zone — title + italic tagline. No button inside. */
+/* Per user feedback: 'tagline 直接写在填空区的顶端 — 同列同行
+   不要参差不齐'. The hand-measured .zone-toc-NN already covers
+   the BLANK text-writing area UNDER each painted '01 THE UNIVERSE'
+   label (the painted label is above the zone, not inside). Pinning
+   the tagline to the TOP of every zone gives an even baseline
+   across the 5×2 grid — every italic intro sits at the same
+   relative height inside its zone. */
+.toc-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;     /* tagline at the TOP of the zone */
+  padding: 2px 8px 0;
+  pointer-events: none;
+}
+.toc-card-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: stretch;
+}
+.toc-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #324154;
+  line-height: 1.18;
+}
+.toc-card-tagline {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 10px;
+  line-height: 1.32;
+  letter-spacing: 0.01em;
+  color: #6c6254;
+  font-style: italic;
+}
+
+/* BUTTON zone — its position IS the button. The .toc-btn-zone fills
+   its zone exactly (no width:132px override) so all 10 plaques sit
+   between the user's measured red lines. */
+.toc-btn-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.toc-btn-zone .antique-button {
+  pointer-events: auto;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 6px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+
+/* ============================================================
+   ANTIQUE BUTTON — the OPEN CHAPTER plaque style. Per the user
+   spec: outer thin border, inner thin rule (top + bottom), four
+   broken corner ticks, near-transparent paper fill. Hover warms
+   the gold without recolouring (no modern button look). Reused
+   anywhere a small parchment plaque is needed.
+   ============================================================ */
+.antique-button {
+  position: relative;
+  pointer-events: auto;
+  min-width: 130px;
+  height: 26px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--ink-frame);
+  border-radius: 3px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-frame);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+/* Inner thin top + bottom rules — softer (1 px opacity 0.42). */
+.antique-button::before,
+.antique-button::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  height: 1px;
+  background: var(--ink-frame);
+  opacity: 0.42;
+  pointer-events: none;
+}
+.antique-button::before { top: 3px; }
+.antique-button::after  { bottom: 3px; }
+/* Corner-tick spans no longer needed for the refined look. */
+.antique-button-corner { display: none; }
+.antique-button-label { position: relative; z-index: 1; }
+/* Per user spec: NO modern internal-colour change on hover. The
+   plaque stays the same; only the LABEL warms + glows. */
+.antique-button:hover {
+  background: rgba(247, 241, 226, 0.18);  /* unchanged from rest */
+}
+.antique-button:hover .antique-button-label {
+  color: #2a1e08;
+  text-shadow: 0 0 6px rgba(201, 174, 103, 0.65);
+}
+.antique-button:active { background: rgba(247, 241, 226, 0.18); }
+.antique-button:focus  { outline: none; }
+
+/* ============================================================
+   WORD GARDEN — full A–Z dictionary view.
+   Layout (inside .master-frame, all coords master-relative):
+     zone-wg-search   top strip   search bar
+     zone-wg-az       below       A–Z letter directory
+     zone-wg-table    main area   two parchment columns of rows
+   The 4 zone coordinates live in debug.css. Visuals here.
+   ============================================================ */
+
+/* Search bar */
+.wg-searchbar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wg-searchbar input {
+  width: 100%;
+  max-width: 560px;
+  height: 44px;
+  padding: 0 56px 0 22px;
+  border-radius: 22px;
+  border: 1px solid #B9A57A;
+  background: rgba(248, 240, 223, 0.78);
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1;
+  color: #2f261d;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 1px 0 rgba(255, 250, 233, 0.55);
+  outline: none;
+}
+.wg-searchbar input::placeholder {
+  color: rgba(128, 111, 89, 0.75);
+  font-style: italic;
+}
+.wg-searchbar input:focus {
+  border-color: #9d8052;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 233, 0.55),
+    0 0 0 2px rgba(167, 141, 91, 0.18);
+}
+.wg-search-icon {
+  position: absolute;
+  right: calc(50% - 280px + 18px);
+  top: 50%;
+  transform: translateY(-52%);
+  font-size: 18px;
+  line-height: 1;
+  color: #5B4A36;
+  pointer-events: none;
+}
+
+/* A–Z directory — flex row, NEVER wrap. The 58% container width
+   fits 26 letters at this font-size + spacing combo. */
+.wg-az {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+.wg-az-letter {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 0;
+  padding: 4px 0 8px;
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: #5A4633;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+.wg-az-letter:hover { color: #2f261d; }
+.wg-az-letter.is-disabled {
+  color: rgba(90, 70, 51, 0.48);
+  cursor: not-allowed;
+}
+.wg-az-letter.is-current::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 1px;
+  background: #B99B62;
+}
+
+/* Two-column word table — same visual grammar as the marginalia
+   card: transparent bg, 4 broken corner ticks, top ✤ rule, row
+   separators that fade at the ends. Each column scrolls. */
+.wg-table {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  align-items: stretch;
+}
+.wg-table > .wg-col-frame {
+  min-height: 0;          /* let grid item shrink so inner can scroll */
+  display: flex;
+  flex-direction: column;
+}
+/* Column FRAME — wraps the scrollable list and holds the 4 corner
+   ticks so they stay pinned while the list scrolls inside. */
+.wg-col-frame {
+  position: relative;
+  background: rgba(248, 240, 223, 0.18);
+  border: 1px solid var(--ink-frame);
+  border-radius: 4px;
+}
+.wg-col-frame::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--ink-frame);
+  border-radius: 3px;
+  opacity: 0.42;
+  pointer-events: none;
+}
+.wg-col-frame::after {
+  content: "✤";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 6px;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--ink-frame);
+  background: transparent;
+  pointer-events: none;
+}
+.wg-col-frame > .corner-tick { display: none; }
+.wg-col {
+  position: relative;
+  margin: 0;
+  padding: 18px 22px 16px;
+  list-style: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: transparent;
+}
+.wg-col::-webkit-scrollbar { width: 5px; }
+.wg-col::-webkit-scrollbar-thumb {
+  background: rgba(167, 141, 91, 0.38); border-radius: 3px;
+}
+
+/* Row — English left / Chinese right. Thin fading rule below each
+   row (matches antique-divider: thinner at ends, denser middle). */
+.wg-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 138px 1fr;
+  align-items: center;
+  gap: 28px;
+  height: 32px;
+  padding: 0 4px;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+.wg-row:hover { background: rgba(167, 141, 91, 0.06); }
+.wg-row + .wg-row::before {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(166, 148, 112, 0.55) 18%,
+    rgba(166, 148, 112, 0.55) 82%,
+    transparent 100%);
+}
+.wg-row-en {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #2F261D;
+}
+.wg-row-zh {
+  font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC",
+               var(--font-body);
+  font-size: 16px;
+  font-weight: 400;
+  color: #5E5040;
+  line-height: 1.2;
+}

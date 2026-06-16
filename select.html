@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Select a Mode · The Princess Lexicon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/debug.css">
+<style>
+  .page.select-art {
+    background-image: url("assets/bg/ui/select-mode.jpg");
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <main class="page art-bg select-art">
+
+    <div class="master-frame">
+
+      <!-- Title plates: upper-half cream strip inside each arch -->
+      <div class="ui-zone zone-select-story-title is-text select-title-text" data-zone="story title">
+        <h2 class="select-card-title">Story</h2>
+        <p class="select-card-subtitle">Read the tale.</p>
+      </div>
+      <div class="ui-zone zone-select-notes-title is-text select-title-text" data-zone="notes title">
+        <h2 class="select-card-title">Notes</h2>
+        <p class="select-card-subtitle">Keep saved words.</p>
+      </div>
+      <div class="ui-zone zone-select-garden-title is-text select-title-text" data-zone="garden title">
+        <h2 class="select-card-title">Word Garden</h2>
+        <p class="select-card-subtitle">Search every word.</p>
+      </div>
+
+      <!-- Full-arch hotspots cover the entire arch and sit above the
+           title plates so the cursor on any part of an arch reads as
+           a click on that arch.  Story is special: per user spec it
+           continues the user's last reading session (resume), not a
+           fresh trip through the chapter index. -->
+      <button type="button" class="select-hotspot ui-zone zone-select-story-hit"
+              data-action="resume"        aria-label="Story"></button>
+      <button type="button" class="select-hotspot ui-zone zone-select-notes-hit"
+              data-go="notes.html"        aria-label="Notes"></button>
+      <button type="button" class="select-hotspot ui-zone zone-select-garden-hit"
+              data-go="word-garden.html"  aria-label="Word Garden"></button>
+
+      <nav class="ui-bottom-nav is-two">
+        <button type="button" onclick="go('menu.html')">Menu</button>
+        <button type="button" onclick="go('load.html')">Load</button>
+      </nav>
+    </div>
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+  // Click feedback for the 3 arch buttons:
+  //  1. Add .is-pressed for the gold pulse animation.
+  //  2. Play a brief golden sine arpeggio (Web Audio, no asset).
+  //  3. Navigate after the pulse + chime starts so the user gets
+  //     the feedback even on a fast tap.
+  function playSelectChime() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      const ctx = new Ctx();
+      const notes = [659.25, 880.00, 1318.51];   // E5 A5 E6
+      const now = ctx.currentTime;
+      notes.forEach((freq, i) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = "sine";
+        o.frequency.value = freq;
+        const t0 = now + i * 0.10;
+        g.gain.setValueAtTime(0, t0);
+        g.gain.linearRampToValueAtTime(0.16, t0 + 0.018);
+        g.gain.exponentialRampToValueAtTime(0.0008, t0 + 0.65);
+        o.connect(g).connect(ctx.destination);
+        o.start(t0);
+        o.stop(t0 + 0.7);
+      });
+      setTimeout(() => { try { ctx.close(); } catch(_) {} }, 1300);
+    } catch (_) { /* silent */ }
+  }
+  // The painted arch IS the button — never recolour it. Click feedback
+  // is a brief gold glow on the title-plate TEXT (which sits inside
+  // the arch as a sibling element) plus the sine arpeggio chime.
+  const HOT_TO_TITLE = {
+    "zone-select-story-hit":  ".zone-select-story-title",
+    "zone-select-notes-hit":  ".zone-select-notes-title",
+    "zone-select-garden-hit": ".zone-select-garden-title",
+  };
+  // Story arch resumes the user's last reading session; Notes /
+  // Garden go to their fixed destinations.
+  function resumeReading() {
+    let last = null;
+    try { last = JSON.parse(localStorage.getItem("tpl.lastRead") || "null"); }
+    catch (_) {}
+    if (last && last.chapter) {
+      return "reading.html?chapter=" + encodeURIComponent(last.chapter)
+           + "&section="  + encodeURIComponent(last.section || "1.1");
+    }
+    return "chapters.html";
+  }
+  document.querySelectorAll(".select-hotspot").forEach(el => {
+    el.addEventListener("click", () => {
+      const titleSel = Object.entries(HOT_TO_TITLE)
+        .find(([cls]) => el.classList.contains(cls))?.[1];
+      const titleEl = titleSel && document.querySelector(titleSel);
+      if (titleEl) {
+        titleEl.classList.remove("is-pressed");
+        void titleEl.offsetWidth;
+        titleEl.classList.add("is-pressed");
+      }
+      playSelectChime();
+      const dest = el.dataset.action === "resume"
+                 ? resumeReading()
+                 : el.dataset.go;
+      setTimeout(() => window.go(dest), 380);
+    });
+  });
+</script>
+<script src="js/bgm.js"></script>
+<script src="js/viewport.js"></script>
+</body>
+</html>

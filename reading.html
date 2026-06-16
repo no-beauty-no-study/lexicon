@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reading · The Princess Lexicon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/debug.css">
+</head>
+<body>
+<div class="stage">
+  <main class="page art-bg reading-art" data-page="reading">
+
+    <!-- MASTER FRAME — the single legal layout box, defined by the 4
+         painted blue corner medallions. Every interactive zone below
+         is its child and uses MASTER-FRAME-RELATIVE percentages, not
+         page-relative ones. -->
+    <div class="master-frame">
+
+      <!-- TOP-LEFT quadrant — title strip. Title + ✤ rule + subtitle. -->
+      <div class="ui-zone zone-reading-title is-text" data-zone="reading title">
+        <div class="reading-kicker" data-chapter-number>Chapter 01</div>
+        <h1 class="reading-title" data-chapter-title>The Universe</h1>
+        <div class="antique-divider"><span class="antique-divider-glyph">✤</span></div>
+        <h2 class="reading-subtitle" data-chapter-section>1.1 · The First Light</h2>
+      </div>
+
+      <!-- BOTTOM-LEFT quadrant — body. Same top/bottom as the
+           marginalia card so the two columns sit on the same baseline. -->
+      <div class="ui-zone zone-reading-body is-text" data-zone="reading body">
+        <article class="reading-body"><!-- reveal blocks injected by reading.js --></article>
+      </div>
+
+      <!-- BOTTOM-RIGHT quadrant — marginalia card. The user wants a
+           STACK of mini word-cards: clicking a word in the body adds
+           one card here; clicking another stacks below; once the
+           stack overflows the container, new cards cycle back to the
+           top (replacing the oldest). FOLD / SAVE buttons act on
+           whatever card is currently highlighted. -->
+      <div class="ui-zone zone-marginalia" data-zone="marginalia">
+        <aside class="marginalia-card">
+          <div class="marginalia-card-body">
+            <div class="word-card-stack">
+              <div class="word-card-empty">Tap a word</div>
+            </div>
+          </div>
+          <div class="marginalia-card-actions">
+            <button type="button" class="marginalia-btn" data-action="fold" disabled>
+              <span class="marginalia-btn-glyph">✤</span>FOLD
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Bottom nav — 5 cells with thin vertical rules between them.
+           Notes is reachable via Menu → Select, not from this row. -->
+      <nav class="ui-bottom-nav">
+        <button type="button" onclick="go('save.html')">
+          <span class="nav-glyph">✤</span>Save
+        </button>
+        <button type="button" onclick="go('load.html')">
+          <span class="nav-glyph">✤</span>Load
+        </button>
+        <button type="button" data-quiz>
+          <span class="nav-glyph">✤</span>Quiz
+        </button>
+        <button type="button" data-next>
+          Next<span class="nav-glyph-after">›</span>
+        </button>
+        <button type="button" onclick="go('menu.html')">
+          <span class="nav-glyph">✤</span>Menu
+        </button>
+      </nav>
+    </div>
+  </main>
+</div>
+
+<script src="data/mockWords.js"></script>
+<script src="data/wordLibrary.js"></script>
+<script src="data/wordIndex.js"></script>
+<script src="data/mockChapters.js"></script>
+<script src="data/chapterIllustrations.js"></script>
+<script src="data/readingContent.js"></script>
+<script src="js/app.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/wordCard.js"></script>
+<script src="js/reveal.js"></script>
+<script src="js/chapterNav.js"></script>
+<script src="js/reading.js"></script>
+<script src="js/bgm.js"></script>
+<script src="js/viewport.js"></script>
+</body>
+</html>

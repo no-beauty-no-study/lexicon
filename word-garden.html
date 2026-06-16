@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Word Garden · The Princess Lexicon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/debug.css">
+<style>
+  .page.wg-art {
+    background-image: url("assets/bg/ui/word-garden.jpg");
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <main class="page art-bg wg-art" data-page="word-garden">
+
+    <div class="master-frame">
+
+      <!-- Search bar — fixed width, centered under the painted title. -->
+      <div class="ui-zone zone-wg-search is-text" data-zone="search">
+        <form class="wg-searchbar" onsubmit="event.preventDefault();">
+          <input id="wg-search" type="search" autocomplete="off"
+                 placeholder="Search words or meanings…" />
+          <span class="wg-search-icon" aria-hidden="true">⌕</span>
+        </form>
+      </div>
+
+      <!-- A–Z directory: jumps to first word starting with that letter. -->
+      <div class="ui-zone zone-wg-az is-text" data-zone="A-Z nav">
+        <nav class="wg-az" id="wg-az"></nav>
+      </div>
+
+      <!-- Two columns of word rows. Each column is a transparent
+           parchment frame with 4 broken corner ticks (same grammar
+           as the reading marginalia card) wrapping a scrollable list. -->
+      <div class="ui-zone zone-wg-table" data-zone="word table">
+        <div class="wg-table">
+          <div class="wg-col-frame">
+            <span class="corner-tick tl"></span>
+            <span class="corner-tick tr"></span>
+            <span class="corner-tick bl"></span>
+            <span class="corner-tick br"></span>
+            <ol class="wg-col" id="wg-col-left"></ol>
+          </div>
+          <div class="wg-col-frame">
+            <span class="corner-tick tl"></span>
+            <span class="corner-tick tr"></span>
+            <span class="corner-tick bl"></span>
+            <span class="corner-tick br"></span>
+            <ol class="wg-col" id="wg-col-right"></ol>
+          </div>
+        </div>
+      </div>
+
+      <nav class="ui-bottom-nav">
+        <button type="button" onclick="go('select.html')">
+          <span class="nav-glyph">‹</span>Back
+        </button>
+        <button type="button" onclick="go('menu.html')">
+          <span class="nav-glyph">✤</span>Menu
+        </button>
+      </nav>
+    </div>
+  </main>
+</div>
+
+<script src="data/mockWords.js"></script>
+<script src="data/wordLibrary.js"></script>
+<script src="js/app.js"></script>
+<script src="js/wordCard.js"></script>
+<script src="js/wordGarden.js"></script>
+<script src="js/bgm.js"></script>
+<script src="js/viewport.js"></script>
+</body>
+</html>
