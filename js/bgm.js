@@ -7,7 +7,7 @@
    hash change. */
 (function () {
   const BGM_DIR = "assets/bgm/";
-  const BGM_VER = "20260615c";                 // cache-bust revised tracks
+  const BGM_VER = "20260615d";                 // cache-bust revised tracks
   const srcOf = (t) => BGM_DIR + t + "?v=" + BGM_VER;
   const DEFAULT_VOLUME = 0.55;
   function plan() { return (typeof window !== "undefined" && window.READING_BGM_PLAN) || null; }

@@ -2149,6 +2149,34 @@
   font-size: 18px; letter-spacing: 0.08em;
   color: rgba(74, 61, 43, 0.6);
 }
+/* Bookmark deck — one card per saved sentence (sentence + chapter + ✕). */
+.bookmark-cards { list-style: none; margin: 0; padding: 2px 0 50px; display: flex; flex-direction: column; gap: 12px; }
+.bookmark-card {
+  position: relative;
+  background: rgba(250, 244, 230, 0.96);
+  border: 1px solid rgba(150, 120, 70, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(40, 28, 12, 0.16);
+  padding: 12px 40px 13px 16px;
+  cursor: pointer;
+}
+.bookmark-card:hover { background: rgba(250, 244, 230, 1); }
+.bm-source {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #9a7a3a; margin-bottom: 5px;
+}
+.bm-text {
+  font-family: var(--font-body), Georgia, serif;
+  font-size: 16px; line-height: 1.5; color: #3f3a31;
+}
+.bm-del {
+  position: absolute; top: 8px; right: 8px;
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 1px solid rgba(184,160,111,0.5); background: rgba(184,160,111,0.14);
+  color: #8a7653; font-size: 13px; line-height: 1; cursor: pointer;
+}
+.bm-del:hover { background: rgba(184,160,111,0.32); color: #5a4a2a; }
 
 /* Spotlight a word when arriving from a note's "Open Chapter". */
 .reading-art .reading-body .clickable-word.is-spotlight {
