@@ -6,6 +6,7 @@
 const Storage = (function () {
   const NOTES_KEY = "tpl.notes";        // array of word ids
   const SLOTS_KEY = "tpl.slots";        // array of save slot objects, length=6
+  const BOOKMARKS_KEY = "tpl.bookmarks";// array of sentence bookmarks
   const SLOT_COUNT = 6;
 
   function read(key, fallback) {
@@ -152,5 +153,29 @@ const Storage = (function () {
     getNotes, isSaved, saveWord, unsaveWord, findScopeOf, getChapterNoteCount,
     getSlots, setSlot, clearSlot,
     saveChapter,
+    getBookmarks, addBookmark, removeBookmark, isBookmarked,
   };
+
+  /* ----- sentence bookmarks (Reading "Save" → 书签) -----
+     A bookmark keeps the exact reading spot AND the sentence text, so the
+     Bookmarks deck can preview it and jump straight back to that line. */
+  function bmKey(b) { return (b.chapter || "") + "|" + (b.section || "") + "|" + (b.line || 0); }
+  function getBookmarks() { return read(BOOKMARKS_KEY, []); }
+  function addBookmark(bm) {
+    const list = getBookmarks();
+    const k = bmKey(bm);
+    if (list.some(b => bmKey(b) === k)) return list;     // already saved
+    list.unshift({ chapter: bm.chapter, section: bm.section, line: bm.line || 0,
+      text: bm.text || "", title: bm.title || "", time: Date.now() });
+    write(BOOKMARKS_KEY, list);
+    return list;
+  }
+  function removeBookmark(key) {
+    const list = getBookmarks().filter(b => bmKey(b) !== key);
+    write(BOOKMARKS_KEY, list);
+    return list;
+  }
+  function isBookmarked(chapter, section, line) {
+    return getBookmarks().some(b => bmKey(b) === bmKey({ chapter, section, line }));
+  }
 })();
