@@ -1392,32 +1392,6 @@ const Views = (function () {
         window.go(href);
       });
 
-      // Save = bookmark the CURRENT sentence (its text + exact line), so the
-      // Bookmarks deck can jump back here. Toggle: press again to un-bookmark.
-      const bmBtn = host.querySelector("[data-bookmark]");
-      function syncBookmarkBtn() {
-        if (!bmBtn || typeof Storage === "undefined") return;
-        const on = Storage.isBookmarked(chapterId, sectionNum, Math.max(0, curIdx));
-        bmBtn.classList.toggle("is-active", on);
-      }
-      if (bmBtn) {
-        bmBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (typeof Storage === "undefined") return;
-          const line = Math.max(0, curIdx);
-          const text = (blocks[line] && blocks[line].textContent.trim()) || "";
-          const title = (typeof getChapter === "function" && getChapter(chapterId) && getChapter(chapterId).title) || chapterId;
-          if (Storage.isBookmarked(chapterId, sectionNum, line)) {
-            Storage.removeBookmark(chapterId + "|" + sectionNum + "|" + line);
-            window.toast && window.toast("Bookmark removed");
-          } else {
-            Storage.addBookmark({ chapter: chapterId, section: sectionNum, line, text, title });
-            window.toast && window.toast("Sentence bookmarked");
-          }
-          syncBookmarkBtn();
-        });
-      }
-
       // Arrived from a Notes card "Open Chapter": show the whole section
       // (all sentences fully visible) and spotlight the saved word on its
       // sentence for ~2s.
@@ -2569,6 +2543,14 @@ const Views = (function () {
       if (!listEl) return;
       const byId = {};
       let lastCard = null;
+      // "Story" returns to the mainline reading at the exact line left off
+      // (the "Index" + "Menu" buttons are plain data-go). Notes is now reached
+      // from BOTH the study hub and the chapter index, and escapes to either.
+      const storyBtn = host.querySelector("[data-notes-story]");
+      if (storyBtn) storyBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); window.__navDir = "back";
+        window.go(typeof storyEntryHash === "function" ? storyEntryHash() : "#select");
+      });
 
       // Display order is persisted so PINNED words (tap a note's number) jump to
       // the front and stay there — keeping the weakest words on top.
@@ -2660,47 +2642,6 @@ const Views = (function () {
           const scope = resolveScope((entry && entry.word) || card.dataset.id, Storage.findScopeOf ? Storage.findScopeOf(card.dataset.id) : null);
           if (entry && typeof WordCard !== "undefined") WordCard.openDrawer(entry, Object.assign({ from: "note" }, scope || {}));
         }
-      });
-    },
-  };
-
-
-  /* ---------- bookmarks ----------
-     The reader's saved SENTENCES (set with Save while reading). Each card shows
-     the sentence + its chapter; tapping it jumps back to that exact line. Built
-     in the same painted-card deck as Notes. */
-  const bookmarks = {
-    init(host) {
-      const listEl = host.querySelector(".bookmark-cards");
-      if (!listEl || typeof Storage === "undefined") return;
-      function render() {
-        const items = Storage.getBookmarks();
-        if (!items.length) {
-          listEl.innerHTML = `<li class="notes-empty">No bookmarks yet — tap Save while reading to keep a sentence here.</li>`;
-          return;
-        }
-        listEl.innerHTML = items.map(b => {
-          const key = (b.chapter || "") + "|" + (b.section || "") + "|" + (b.line || 0);
-          const title = b.title || ((typeof getChapter === "function" && getChapter(b.chapter) && getChapter(b.chapter).title) || b.chapter || "");
-          const where = esc(title) + (b.section ? " · " + esc(String(b.section)) : "");
-          return `<li class="bookmark-card" data-key="${esc(key)}"
-                      data-chapter="${esc(b.chapter || "")}" data-section="${esc(String(b.section || ""))}" data-line="${esc(String(b.line || 0))}">
-              <div class="bm-source">${where}</div>
-              <div class="bm-text">${esc(b.text || "(untitled)")}</div>
-              <button type="button" class="bm-del" data-del="${esc(key)}" aria-label="Remove" title="Remove">✕</button>
-            </li>`;
-        }).join("");
-      }
-      render();
-      listEl.addEventListener("click", (e) => {
-        const del = e.target.closest("[data-del]");
-        if (del) { e.stopPropagation(); Storage.removeBookmark(del.dataset.del); render(); return; }
-        const card = e.target.closest(".bookmark-card");
-        if (!card) return;
-        const ch = card.dataset.chapter, sec = card.dataset.section, line = card.dataset.line;
-        if (!ch) return;
-        window.__navDir = "forward";
-        window.go(`#reading?chapter=${encodeURIComponent(ch)}&section=${encodeURIComponent(sec || "1.1")}&line=${encodeURIComponent(line || 0)}&from=bookmark`);
       });
     },
   };
@@ -4222,7 +4163,7 @@ const Views = (function () {
   return {
     splash, menu, select, chapters, paths, vn: vnread,
     reading, quiz, quizstatus, notes, review, comprehension,
-    "word-garden": wordGarden, bookmarks,
+    "word-garden": wordGarden,
     save, load, voices,
   };
 })();

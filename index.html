@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="stylesheet" href="css/base.css?v=20260615d">
-<link rel="stylesheet" href="css/layout.css?v=20260615d">
-<link rel="stylesheet" href="css/components.css?v=20260615d">
-<link rel="stylesheet" href="css/pages.css?v=20260615d">
-<link rel="stylesheet" href="css/debug.css?v=20260615d">
+<link rel="stylesheet" href="css/base.css?v=20260615e">
+<link rel="stylesheet" href="css/layout.css?v=20260615e">
+<link rel="stylesheet" href="css/components.css?v=20260615e">
+<link rel="stylesheet" href="css/pages.css?v=20260615e">
+<link rel="stylesheet" href="css/debug.css?v=20260615e">
 <style>
   /* Splash uses the user-supplied PNG original directly so any future
      re-upload of the same UUID-named file flows through with no
@@ -854,9 +854,9 @@
       <div class="ui-zone zone-toc-btn-09 toc-btn-zone" data-zone="btn 09"></div>
       <div class="ui-zone zone-toc-btn-10 toc-btn-zone" data-zone="btn 10"></div>
       <nav class="ui-bottom-nav">
-        <!-- Bookmarks: the reader's saved sentences (set with Save while
-             reading). Opens the Bookmarks deck; tap one to jump to that line. -->
-        <button type="button" data-go="#bookmarks"><span class="nav-glyph">❧</span>Bookmarks</button>
+        <!-- The index gets the full Notes deck too: words folded while browsing
+             here land in the same painted Notes deck (folds are global). -->
+        <button type="button" data-go="#notes?from=chapters"><span class="nav-glyph">❧</span>Notes</button>
         <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
       </nav>
     </div>
@@ -915,7 +915,7 @@
            (entered from the index) rebuilds this to Prev · Back · Next
            in Views.reading.init. -->
       <nav class="ui-bottom-nav is-three">
-        <button type="button" data-bookmark><span class="nav-glyph">❦</span>Save</button>
+        <button type="button" data-go="#notes?from=reading"><span class="nav-glyph">❧</span>Notes</button>
         <button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>
         <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
       </nav>
@@ -1034,23 +1034,11 @@
     <div class="notes-scroll">
       <ul class="note-cards" aria-label="Saved words"></ul>
     </div>
-    <nav class="ui-bottom-nav is-two">
-      <button type="button" data-go="#select"><span class="nav-glyph">‹</span>Back</button>
-      <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
-    </nav>
-  </main>
-</template>
-
-<template id="view-bookmarks">
-  <main class="page notes-art" data-page="bookmarks">
-    <!-- Saved sentences. Each is one card: the sentence + its chapter; tap to
-         jump back to that exact line in the reading view. Built in
-         Views.bookmarks.init. -->
-    <div class="notes-scroll">
-      <ul class="bookmark-cards" aria-label="Saved sentences"></ul>
-    </div>
-    <nav class="ui-bottom-nav is-two">
-      <button type="button" data-go="#chapters"><span class="nav-glyph">‹</span>Back</button>
+    <!-- Two returns: the mainline Story (resume your exact line) and the chapter
+         Index — so Notes is reachable AND escapable from both flows. -->
+    <nav class="ui-bottom-nav is-three">
+      <button type="button" data-notes-story><span class="nav-glyph">❖</span>Story</button>
+      <button type="button" data-go="#chapters"><span class="nav-glyph">❖</span>Index</button>
       <button type="button" data-go="#menu"><span class="nav-glyph">✤</span>Menu</button>
     </nav>
   </main>
@@ -1212,57 +1200,57 @@
 </template>
 
 
-<script src="data/mockChapters.js?v=20260615d"></script>
-<script src="data/chapterIllustrations.js?v=20260615d"></script>
-<script src="data/readingContent.js?v=20260615d"></script>
-<script src="data/readingComprehension.js?v=20260615d"></script>
-<script src="data/readingComprehension_ch5.js?v=20260615d"></script>
-<script src="data/readingComprehensionZh.js?v=20260615d"></script>
-<script src="data/vocabDrill.js?v=20260615d"></script>
-<script src="data/readingTranslations.js?v=20260615d"></script>
-<script src="data/paths.js?v=20260615d"></script>
-<script src="data/paths-content.js?v=20260615d"></script>
-<script src="data/paths-bgm-tags.js?v=20260615d"></script>
-<script src="data/pathsBgm.js?v=20260615d"></script>
-<script src="data/readingBgmPlan.js?v=20260615d"></script>
-<script src="data/mockWords.js?v=20260615d"></script>
-<script src="data/wordLibrary.js?v=20260615d"></script>
-<script src="data/wordIndex.js?v=20260615d"></script>
+<script src="data/mockChapters.js?v=20260615e"></script>
+<script src="data/chapterIllustrations.js?v=20260615e"></script>
+<script src="data/readingContent.js?v=20260615e"></script>
+<script src="data/readingComprehension.js?v=20260615e"></script>
+<script src="data/readingComprehension_ch5.js?v=20260615e"></script>
+<script src="data/readingComprehensionZh.js?v=20260615e"></script>
+<script src="data/vocabDrill.js?v=20260615e"></script>
+<script src="data/readingTranslations.js?v=20260615e"></script>
+<script src="data/paths.js?v=20260615e"></script>
+<script src="data/paths-content.js?v=20260615e"></script>
+<script src="data/paths-bgm-tags.js?v=20260615e"></script>
+<script src="data/pathsBgm.js?v=20260615e"></script>
+<script src="data/readingBgmPlan.js?v=20260615e"></script>
+<script src="data/mockWords.js?v=20260615e"></script>
+<script src="data/wordLibrary.js?v=20260615e"></script>
+<script src="data/wordIndex.js?v=20260615e"></script>
 
 <!-- Vocab system (load order per README): word master → family content
      → family-head map → kin clusters → proper small cards → runtime.
      Builds window.VocabRuntime used by reading clicks, the word drawer,
      and the word garden. -->
-<script src="data/vocab/VOCAB_WORD_CONTENT_REGISTRY_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_READING_WORDS_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_FAMILY_SHARED_CLUSTERS_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_KIN_CLEAN_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_KIN_HEAD_BRIDGE_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_GROUP_CLEAN_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_WORD_ENTRY_POLICY_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_ENTRY_VISIBILITY_POLICY_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_HEAD_TO_FAMILY_KIN_NAV_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_KIN_NAV_EXPANSION_PATCH_V149.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_KIN_CONTROL_VARIABLE_PATCH_V153.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_PREFIX_KIN_STRONG_OVERRIDE_PATCH_V156.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_DOTTED_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_PROPER_SMALL_CARDS_FINAL.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V158.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V159.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V160.js?v=20260615d"></script>
-<script src="data/vocab/wordOwl.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_CUT_PART_INDEX_LITE.js?v=20260615d"></script>
-<script src="data/vocab/VOCAB_RUNTIME_HELPERS.js?v=20260615d"></script>
+<script src="data/vocab/VOCAB_WORD_CONTENT_REGISTRY_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_READING_WORDS_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_FAMILY_SHARED_CLUSTERS_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_KIN_CLEAN_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_KIN_HEAD_BRIDGE_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_GROUP_CLEAN_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_WORD_ENTRY_POLICY_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_ENTRY_VISIBILITY_POLICY_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_HEAD_TO_FAMILY_KIN_NAV_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_KIN_NAV_EXPANSION_PATCH_V149.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_KIN_CONTROL_VARIABLE_PATCH_V153.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_PREFIX_KIN_STRONG_OVERRIDE_PATCH_V156.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_DOTTED_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_PROPER_SMALL_CARDS_FINAL.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V158.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V159.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V160.js?v=20260615e"></script>
+<script src="data/vocab/wordOwl.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_CUT_PART_INDEX_LITE.js?v=20260615e"></script>
+<script src="data/vocab/VOCAB_RUNTIME_HELPERS.js?v=20260615e"></script>
 
-<script src="js/storage.js?v=20260615d"></script>
-<script src="js/chapterNav.js?v=20260615d"></script>
-<script src="js/quiz.js?v=20260615d"></script>
-<script src="js/tts.js?v=20260615d"></script>
-<script src="js/wordCard.js?v=20260615d"></script>
+<script src="js/storage.js?v=20260615e"></script>
+<script src="js/chapterNav.js?v=20260615e"></script>
+<script src="js/quiz.js?v=20260615e"></script>
+<script src="js/tts.js?v=20260615e"></script>
+<script src="js/wordCard.js?v=20260615e"></script>
 
-<script src="js/bgm.js?v=20260615d"></script>
-<script src="js/views.js?v=20260615d"></script>
-<script src="js/app.js?v=20260615d"></script>
+<script src="js/bgm.js?v=20260615e"></script>
+<script src="js/views.js?v=20260615e"></script>
+<script src="js/app.js?v=20260615e"></script>
 
 </body>
 </html>
