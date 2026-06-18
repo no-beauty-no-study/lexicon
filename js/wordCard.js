@@ -271,12 +271,12 @@ const WordCard = (function () {
     // box 1:1 (.word-card-overlay is inset:0 of the wrapper, which
     // shrink-wraps the img).
     drawerEl.innerHTML = `
-      <div class="wc-cutpool" hidden>
-        <div class="wc-cutpool-head"><span class="wc-cutpool-title"></span>
-          <button type="button" class="wc-cutpool-close" aria-label="Close">✕</button></div>
-        <ul class="wc-cutpool-list"></ul>
-      </div>
       <div class="word-card-wrapper">
+        <div class="wc-cutpool" hidden>
+          <div class="wc-cutpool-head"><span class="wc-cutpool-title"></span>
+            <button type="button" class="wc-cutpool-close" aria-label="Close">✕</button></div>
+          <ul class="wc-cutpool-list"></ul>
+        </div>
         <img class="word-card-bg" src="assets/bg/ui/word-card-frame.jpg" alt="">
         <div class="word-card-overlay">
           <button type="button" class="word-drawer-back" aria-label="Back" title="返回上一页">‹</button>
