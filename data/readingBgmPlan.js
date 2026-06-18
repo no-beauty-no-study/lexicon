@@ -149,7 +149,7 @@
       voices:        "29_ui_manu_sunlit_alice_kept.mp3",
       paths:         P("17_luv_poem_from_hum.mp3"),  // Follow station — a gentle hub loop that is NOT any chapter's opening track, so entering a path always audibly changes (was 00 = ch1's own opener → no change)
     },
-    holdViews: ["save", "load"],   // ride the current track; fall back to `ui`
+    holdViews: ["save", "load", "notes"],   // popups: ride the current track (no switch); fall back to `ui`
     reading,
     pathsByChar,
     quizByStage: {

@@ -239,9 +239,16 @@
   window.go = function (href) {
     const target = toHash(href);
     if (target == null) { location.href = href; return; }
+    // Remember where we're leaving FROM so a view's Back can return there
+    // automatically — "用户从哪来就回哪去", never a guess. One level is enough.
+    const cur = location.hash || "#splash";
+    if (cur !== target && cur.replace(/^#/, "").split("?")[0] !== "splash") window.__backHash = cur;
     if (location.hash === target) render();
     else                          location.hash = target;
   };
+  // The hash to return to (set by the last navigation). Views' Back buttons use
+  // this so the same screen (e.g. Notes) returns to whatever opened it.
+  window.backHash = function (fallback) { return window.__backHash || fallback || "#menu"; };
 
   // Delegate clicks on any element with data-go="…" to window.go.
   document.addEventListener("click", (e) => {
