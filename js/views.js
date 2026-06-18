@@ -1257,7 +1257,7 @@ const Views = (function () {
             + (isEbook
                 ? '<button type="button" data-go="#save"><span class="nav-glyph">❦</span>Save</button>'
                 + '<button type="button" data-go="#load"><span class="nav-glyph">❧</span>Load</button>'
-                : '<button type="button" data-idxquiz><span class="nav-glyph">✦</span>Quiz</button>')
+                : '<button type="button" data-go="#notes?from=reading"><span class="nav-glyph">❧</span>Notes</button>')
             + '<button type="button" data-next>Next<span class="nav-glyph-after">›</span></button>';
           nav.style.setProperty("--nav-count", isEbook ? "5" : "4");
           const iq = nav.querySelector("[data-idxquiz]");
@@ -1397,8 +1397,18 @@ const Views = (function () {
       // sentence for ~2s.
       // Load (文游 save): resume at the exact saved SENTENCE — reveal everything
       // up to it, mark it current, and scroll it into view.
-      if (params.line != null && blocks.length) {
-        const ln = Math.max(0, Math.min(blocks.length - 1, parseInt(params.line, 10) || 0));
+      // Re-entering a section you were already reading (e.g. Back from Notes)
+      // with no explicit line → resume the exact line from tpl.readPos, so you
+      // land right where you left ("从哪来回哪去").
+      let resumeLine = params.line;
+      if (resumeLine == null && !params.word) {
+        try {
+          const rp = JSON.parse(localStorage.getItem("tpl.readPos") || "null");
+          if (rp && !rp.vn && rp.chapter === chapterId && String(rp.section) === String(sectionNum) && rp.line > 0) resumeLine = rp.line;
+        } catch (_) {}
+      }
+      if (resumeLine != null && blocks.length) {
+        const ln = Math.max(0, Math.min(blocks.length - 1, parseInt(resumeLine, 10) || 0));
         for (let k = 0; k <= ln; k++) blocks[k].classList.add("is-revealed", "is-read");
         revealFrontier = ln + 1; curIdx = ln; persistReadPos();
         titleZone && titleZone.classList.add("is-revealed");
@@ -2543,13 +2553,12 @@ const Views = (function () {
       if (!listEl) return;
       const byId = {};
       let lastCard = null;
-      // "Story" returns to the mainline reading at the exact line left off
-      // (the "Index" + "Menu" buttons are plain data-go). Notes is now reached
-      // from BOTH the study hub and the chapter index, and escapes to either.
-      const storyBtn = host.querySelector("[data-notes-story]");
-      if (storyBtn) storyBtn.addEventListener("click", (e) => {
+      // Back returns to whatever opened Notes (reading / index / hub) — the
+      // router's referrer — so the user never has to choose where "上一级" is.
+      const backBtn = host.querySelector("[data-notes-back]");
+      if (backBtn) backBtn.addEventListener("click", (e) => {
         e.stopPropagation(); window.__navDir = "back";
-        window.go(typeof storyEntryHash === "function" ? storyEntryHash() : "#select");
+        window.go((window.backHash && window.backHash("#select")) || "#select");
       });
 
       // Display order is persisted so PINNED words (tap a note's number) jump to
