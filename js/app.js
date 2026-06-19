@@ -216,63 +216,7 @@
     } else {
       render();
     }
-    // After the shell is on screen, stream in the heavy vocab warehouse
-    // (~18 MB) in the background so first paint + images aren't blocked.
-    loadVocabBundle();
   });
-
-  // ---- lazy vocab loader ---------------------------------------------------
-  // The word warehouse is huge; loading it up front white-screened the app on
-  // mobile (it had to download everything before painting). We inject these in
-  // ORDER after the first render; VocabRuntime (last) builds its indexes then,
-  // and any vocab-dependent view re-renders once it's ready.
-  var VOCAB_VER = "20260615i";
-  var VOCAB_BUNDLE = [
-    "data/vocab/VOCAB_WORD_CONTENT_REGISTRY_LITE.js",
-    "data/vocab/VOCAB_READING_WORDS_LITE.js",
-    "data/vocab/VOCAB_FAMILY_SHARED_CLUSTERS_LITE.js",
-    "data/vocab/VOCAB_KIN_CLEAN_LITE.js",
-    "data/vocab/VOCAB_KIN_HEAD_BRIDGE_LITE.js",
-    "data/vocab/VOCAB_GROUP_CLEAN_LITE.js",
-    "data/vocab/VOCAB_WORD_ENTRY_POLICY_LITE.js",
-    "data/vocab/VOCAB_ENTRY_VISIBILITY_POLICY_LITE.js",
-    "data/vocab/VOCAB_HEAD_TO_FAMILY_KIN_NAV_LITE.js",
-    "data/vocab/VOCAB_KIN_NAV_EXPANSION_PATCH_V149.js",
-    "data/vocab/VOCAB_KIN_CONTROL_VARIABLE_PATCH_V153.js",
-    "data/vocab/VOCAB_PREFIX_KIN_STRONG_OVERRIDE_PATCH_V156.js",
-    "data/vocab/VOCAB_DOTTED_LITE.js",
-    "data/vocab/VOCAB_PROPER_SMALL_CARDS_FINAL.js",
-    "data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V158.js",
-    "data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V159.js",
-    "data/vocab/VOCAB_CLAUDE_SUPPLEMENT_V160.js",
-    "data/vocab/wordOwl.js",
-    "data/vocab/VOCAB_CUT_PART_INDEX_LITE.js",
-    "data/vocab/VOCAB_RUNTIME_HELPERS.js",   // builds window.VocabRuntime — must be last
-  ];
-  function loadVocabBundle() {
-    if (window.__vocabLoading) return;
-    window.__vocabLoading = true;
-    var i = 0;
-    (function next() {
-      if (i >= VOCAB_BUNDLE.length) {
-        window.__vocabReady = true;
-        // Re-render the current view if it needs the warehouse, so words that
-        // weren't clickable yet light up now.
-        var v = document.body.dataset.currentView || "";
-        // Only re-render views that rebuild cleanly — never a quiz/review in
-        // progress (that would reset the user's answers).
-        if (/^(reading|word-garden|notes|vn)$/.test(v)) {
-          try { render(); } catch (_) {}
-        }
-        return;
-      }
-      var s = document.createElement("script");
-      s.src = VOCAB_BUNDLE[i++] + "?v=" + VOCAB_VER;
-      s.async = false;             // preserve execution order
-      s.onload = s.onerror = next; // continue even if one fails
-      document.head.appendChild(s);
-    })();
-  }
 
 
   /* ---------- nav helpers ---------- */
