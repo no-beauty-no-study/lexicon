@@ -1692,7 +1692,7 @@
   width: 100%;
   max-width: 560px;
   height: 44px;
-  padding: 0 56px 0 22px;
+  padding: 0 48px 0 48px;
   border-radius: 22px;
   border: 1px solid #B9A57A;
   background: rgba(248, 240, 223, 0.78);
@@ -1704,6 +1704,8 @@
   box-shadow: inset 0 1px 0 rgba(255, 250, 233, 0.55);
   outline: none;
 }
+/* hide the browser's native search ✕ — we draw our own */
+.wg-searchbar input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }
 .wg-searchbar input::placeholder {
   color: rgba(128, 111, 89, 0.75);
   font-style: italic;
@@ -1716,7 +1718,7 @@
 }
 .wg-search-icon {
   position: absolute;
-  right: calc(50% - 280px + 18px);
+  left: calc(50% - 280px + 18px);
   top: 50%;
   transform: translateY(-52%);
   font-size: 18px;
@@ -1724,6 +1726,22 @@
   color: #5B4A36;
   pointer-events: none;
 }
+/* one-tap clear ✕ on the right edge of the input (shown only when non-empty) */
+.wg-search-clear {
+  position: absolute;
+  right: calc(50% - 280px + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(150, 120, 70, 0.4);
+  background: rgba(168, 143, 93, 0.16);
+  color: #6a5436; font-size: 12px; line-height: 1;
+  cursor: pointer; pointer-events: auto;
+}
+.wg-search-clear:hover { background: rgba(168, 143, 93, 0.34); color: #4a3a22; }
+.wg-search-clear[hidden] { display: none; }
 
 /* A–Z directory — flex row, NEVER wrap. The 58% container width
    fits 26 letters at this font-size + spacing combo. */

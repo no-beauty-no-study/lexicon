@@ -2812,12 +2812,20 @@ const Views = (function () {
         });
       }
       const search = host.querySelector("#wg-search");
+      const clearBtn = host.querySelector("#wg-search-clear");
+      function syncClear() { if (clearBtn) clearBtn.hidden = !(search && search.value); }
       if (search) {
         search.addEventListener("input", (e) => {
           query = e.target.value.trim().toLowerCase();
-          renderAZ(); renderTable();
+          syncClear(); renderAZ(); renderTable();
         });
       }
+      if (clearBtn) clearBtn.addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation();
+        if (search) { search.value = ""; search.focus(); }
+        query = ""; syncClear(); renderAZ(); renderTable();
+      });
+      syncClear();
       renderAZ(); renderTable();
     },
   };
