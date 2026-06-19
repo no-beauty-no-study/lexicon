@@ -145,7 +145,7 @@
       select:        "30_ui_select_sun_ribbon.mp3",
       notes:         "02_note.mp3",
       bookmarks:     "02_note.mp3",
-      "word-garden": "03_words_garden.mp3",
+      "word-garden": "29_ui_manu_sunlit_alice_kept.mp3",   // same as the menu (user req)
       voices:        "29_ui_manu_sunlit_alice_kept.mp3",
       paths:         P("17_luv_poem_from_hum.mp3"),  // Follow station — a gentle hub loop that is NOT any chapter's opening track, so entering a path always audibly changes (was 00 = ch1's own opener → no change)
     },
