@@ -2679,9 +2679,26 @@ const Views = (function () {
       const collectedList = () => (window.Quiz && Quiz.collectedWords) ? Quiz.collectedWords() : [];
       const spelledList   = () => (window.Quiz && Quiz.spelledWords) ? Quiz.spelledWords() : [];
       const toSpell       = () => (window.Quiz && Quiz.toSpellWords) ? Quiz.toSpellWords() : [];
+      // Relevance score (LOWER = closer to what you typed): exact match first,
+      // then words that START with it (shorter first), then words that merely
+      // CONTAIN it (earlier position + shorter first), then Chinese-gloss-only
+      // matches. So searching "mut" lists mutable/mutate before commute.
+      function relScore(w, zh, q) {
+        w = String(w).toLowerCase(); zh = String(zh || "").toLowerCase();
+        if (!q) return 0;
+        if (w === q) return 0;
+        if (w.startsWith(q)) return 1000 + w.length;
+        const i = w.indexOf(q);
+        if (i >= 0) return 2000 + i * 20 + w.length;
+        if (zh.indexOf(q) >= 0) return 5000 + w.length;   // gloss-only match
+        return 99999;
+      }
       function applyQuery(list) {
         if (!query) return list;
-        return list.filter(w => w.toLowerCase().includes(query) || glossOf(w).toLowerCase().includes(query));
+        const q = query;
+        return list
+          .filter(w => w.toLowerCase().includes(q) || glossOf(w).toLowerCase().includes(q))
+          .sort((a, b) => relScore(a, glossOf(a), q) - relScore(b, glossOf(b), q) || a.localeCompare(b));
       }
       // Flat index of EVERY carded word — so search isn't limited to words you've
       // already accumulated ("我想看这个单词还没法看那就尴尬了"). Built once.
@@ -2701,14 +2718,17 @@ const Views = (function () {
       // collected / sealed columns (those are shown there).
       function libraryMatches() {
         if (!query) return [];
+        const q = query;
         const have = new Set(collectedList().concat(spelledList()).map(w => w.toLowerCase()));
-        const out = [];
+        const hits = [];
         for (const e of libIndex()) {
-          if (out.length >= 60) break;
           if (have.has(e.word)) continue;
-          if (e.word.includes(query) || e.zh.toLowerCase().includes(query)) out.push(e.word);
+          if (e.word.includes(q) || e.zh.toLowerCase().includes(q)) hits.push(e);
         }
-        return out;
+        // rank by closeness, then take the top 60 (so the most relevant win the
+        // cut, not whatever happened to come first in the registry).
+        hits.sort((a, b) => relScore(a.word, a.zh, q) - relScore(b.word, b.zh, q) || a.word.localeCompare(b.word));
+        return hits.slice(0, 60).map(e => e.word);
       }
       function rowHTML(word) {
         const st = (window.Quiz && Quiz.wordStat) ? Quiz.wordStat(word) : { w: 0, rc: 0, spelled: false };
