@@ -58,7 +58,8 @@ const CHAPTER_CONTENT = {
       "a": "plasma"
      }
     ],
-    "audio_prefix": "assets/audio/ch1/1.2"
+    "audio_prefix": "assets/audio/ch1/1.2",
+    "audio": "assets/audio/ch1/1.2-full.mp3"
    },
    {
     "number": "1.3",
