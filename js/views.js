@@ -1088,6 +1088,45 @@ const Views = (function () {
       // — then, the moment the voice ends, that highlight is cleared and
       // the sentence simply stays fully visible ("read"). The title is
       // shown but NEVER spoken. opts.onEnd lets AUTO chain onward.
+      // ---- recorded narration (ElevenLabs) + per-sentence marks ----
+      // section.audio = one mp3 of the whole section; the start time of each
+      // sentence comes from localStorage (the calibrate tool) or a baked
+      // section.audioMarks (length = #sentences + 1, last = end). When present,
+      // a sentence PLAYS the recording (seek to its mark) instead of TTS — so
+      // tapping a line / its 中文 jumps to that spot in the audio.
+      const recSrc = (section && section.audio) ? section.audio : null;
+      let recAudio = null;
+      function ensureRec() {
+        if (!recAudio && recSrc) {
+          recAudio = new Audio(recSrc); recAudio.preload = "auto";
+          try { if (window.__recAudio && window.__recAudio !== recAudio) window.__recAudio.pause(); } catch (_) {}
+          window.__recAudio = recAudio;   // router pauses this on navigation
+        }
+        return recAudio;
+      }
+      function getMarks() {
+        try { const m = JSON.parse(localStorage.getItem("tpl.audioMarks|" + chapterId + "|" + sectionNum) || "null"); if (Array.isArray(m) && m.length) return m; } catch (_) {}
+        return (section && Array.isArray(section.audioMarks) && section.audioMarks.length) ? section.audioMarks : null;
+      }
+      function stopRec() { if (recAudio) { try { recAudio.pause(); } catch (_) {} clearInterval(recAudio._mon); } }
+      function playClip(i, onEnd) {
+        const m = getMarks(); if (!recSrc || !m || m[i] == null) return false;
+        const a = ensureRec();
+        const start = +m[i];
+        const end = (m[i + 1] != null) ? +m[i + 1] : (isFinite(a.duration) ? a.duration : start + 12);
+        try { if (typeof TTS !== "undefined" && TTS.cancel) TTS.cancel(); } catch (_) {}
+        clearInterval(a._mon);
+        const begin = () => {
+          try { a.currentTime = start; } catch (_) {}
+          const pr = a.play(); if (pr && pr.catch) pr.catch(() => {});
+          a._mon = setInterval(() => {
+            if (a.paused || a.currentTime >= end - 0.04) { a.pause(); clearInterval(a._mon); if (onEnd) onEnd(); }
+          }, 40);
+        };
+        if (a.readyState >= 1) begin(); else a.addEventListener("loadedmetadata", begin, { once: true });
+        return true;
+      }
+
       function speakSentence(i, opts) {
         if (i < 0 || i >= blocks.length) { if (opts && opts.onEnd) opts.onEnd(); return; }
         const b = blocks[i];
@@ -1112,10 +1151,16 @@ const Views = (function () {
           clearZh(b);                 // translation lives only while the voice plays
           if (opts && opts.onEnd) opts.onEnd();
         };
-        // Fallback in case the voice's onend never fires (no voices / muted).
+        // Prefer the recorded narration (seek to this sentence's mark); fall
+        // back to TTS when there's no recording / no marks yet.
         const words = (b.textContent.match(/\S+/g) || []).length;
-        b._clr = setTimeout(done, words * 360 + 2500);
-        TTS.speak(b.textContent, { onEnd: done });
+        if (playClip(i, done)) {
+          const m = getMarks(); const span = (m && m[i + 1] != null) ? (m[i + 1] - m[i]) : 12;
+          b._clr = setTimeout(done, span * 1000 + 5000);   // safety only
+        } else {
+          b._clr = setTimeout(done, words * 360 + 2500);
+          TTS.speak(b.textContent, { onEnd: done });
+        }
       }
 
       // LINEAR reveal: a tap on blank page / the title / not-yet-shown
@@ -1442,6 +1487,56 @@ const Views = (function () {
           }, 80);
           setTimeout(() => target.classList.remove("is-spotlight"), 2300);
         }
+      }
+
+      // ---- one-time audio CALIBRATION tool (#reading?...&calib=1) ----
+      // Plays the recording; you tap "标记下一句" at the start of each sentence
+      // (then once more at the very end). Saves the marks to localStorage so
+      // sentence-tap seeking works immediately; also prints the array to paste
+      // back so it can be baked in permanently.
+      if (params.calib === "1" && recSrc) {
+        const a = ensureRec();
+        const N = blocks.length;
+        const sents = blocks.map(b => b.textContent);
+        const marks = [];
+        const ov = document.createElement("div");
+        ov.className = "calib-overlay";
+        ov.innerHTML =
+          '<div class="calib-box">'
+          + '<div class="calib-title">校准 ' + esc(sectionNum) + ' 语音 · 共 ' + N + ' 句</div>'
+          + '<div class="calib-hint">点▶播放，在<b>每一句刚开口</b>那一刻点一下「标记」。第 1 下＝第 1 句开头…第 ' + N + ' 下＝第 ' + N + ' 句开头，<b>最后再点一下＝结尾</b>（共 ' + (N + 1) + ' 下）。</div>'
+          + '<div class="calib-now">下一个要标：<b class="calib-next"></b></div>'
+          + '<div class="calib-sent"></div>'
+          + '<div class="calib-time">0.0s</div>'
+          + '<div class="calib-row"><button type="button" class="calib-btn calib-play">▶ 播放</button>'
+          + '<button type="button" class="calib-btn calib-mark">● 标记</button>'
+          + '<button type="button" class="calib-btn calib-undo">↶ 撤销</button></div>'
+          + '<div class="calib-row"><button type="button" class="calib-btn calib-save">保存</button>'
+          + '<button type="button" class="calib-btn calib-close">关闭</button></div>'
+          + '<textarea class="calib-out" readonly placeholder="标记结果会出现在这里"></textarea>'
+          + '</div>';
+        host.appendChild(ov);
+        ov.addEventListener("click", (e) => e.stopPropagation());
+        const nextEl = ov.querySelector(".calib-next"), sentEl = ov.querySelector(".calib-sent"),
+              timeEl = ov.querySelector(".calib-time"), outEl = ov.querySelector(".calib-out"),
+              playBtn = ov.querySelector(".calib-play");
+        function refresh() {
+          const k = marks.length;
+          nextEl.textContent = k < N ? ("第 " + (k + 1) + " 句") : (k === N ? "结尾（最后一下）" : "已完成 ✓");
+          sentEl.textContent = k < N ? sents[k] : (k === N ? "（在朗读结束处点一下）" : "全部标记完成，点「保存」");
+          outEl.value = JSON.stringify(marks.map(x => +x.toFixed(2)));
+        }
+        refresh();
+        a.addEventListener("timeupdate", () => { timeEl.textContent = a.currentTime.toFixed(1) + "s"; });
+        playBtn.addEventListener("click", (e) => { e.stopPropagation(); if (a.paused) { a.play(); playBtn.textContent = "⏸ 暂停"; } else { a.pause(); playBtn.textContent = "▶ 播放"; } });
+        ov.querySelector(".calib-mark").addEventListener("click", (e) => { e.stopPropagation(); if (marks.length <= N) { marks.push(a.currentTime); refresh(); } });
+        ov.querySelector(".calib-undo").addEventListener("click", (e) => { e.stopPropagation(); marks.pop(); refresh(); });
+        ov.querySelector(".calib-save").addEventListener("click", (e) => {
+          e.stopPropagation();
+          try { localStorage.setItem("tpl.audioMarks|" + chapterId + "|" + sectionNum, JSON.stringify(marks.map(x => +x.toFixed(2)))); } catch (_) {}
+          window.toast && window.toast("已保存 " + marks.length + " 个标记");
+        });
+        ov.querySelector(".calib-close").addEventListener("click", (e) => { e.stopPropagation(); try { a.pause(); } catch (_) {} ov.remove(); });
       }
     },
   };

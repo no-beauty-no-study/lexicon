@@ -81,6 +81,9 @@
     const tpl = document.getElementById("view-" + name);
     const stage = document.getElementById("stage");
     if (!tpl || !stage) return;
+    // Stop any recorded narration when navigating (the reading view's <audio>
+    // object outlives its page otherwise and keeps playing).
+    try { if (window.__recAudio) { window.__recAudio.pause(); clearInterval(window.__recAudio._mon); } } catch (_) {}
 
     const node = tpl.content.firstElementChild.cloneNode(true);
     const prev = stage.querySelector(".page");
